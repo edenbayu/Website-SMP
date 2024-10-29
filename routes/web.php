@@ -100,6 +100,6 @@ Route::middleware('auth')->group(function () {
 });
 
 // Default route redirect to login page
-Route::get('/', function () {
+Route::get('', function () {
     return view('auth.login');
 });
