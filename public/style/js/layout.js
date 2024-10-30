@@ -5,24 +5,76 @@ sidebarToggle.addEventListener("click", function(){
 });
 
 // Active Sidebar
-// Menambahkan event listener untuk semua link di dalam item sidebar
+// Fungsi untuk menetapkan kelas 'active' berdasarkan URL yang tersimpan di localStorage
+function setActiveLink() {
+    // Ambil path tersimpan di localStorage
+    const savedPath = localStorage.getItem('activeSidebarLink');
+    const openDropdownId = localStorage.getItem('openDropdownId');
+
+    // Loop melalui setiap link di sidebar
+    document.querySelectorAll('.sidebar-nav li.sidebar-item a').forEach(function(link) {
+        const linkPath = link.getAttribute('href');
+
+        // Hapus kelas 'active' dari semua item awalnya
+        link.closest('li.sidebar-item').classList.remove('active');
+
+        // Jika path link cocok dengan path tersimpan, tambahkan kelas 'active'
+        if (savedPath === linkPath) {
+            link.closest('li.sidebar-item').classList.add('active');
+
+            // Jika link ini berada di dalam dropdown, buka dropdown tersebut
+            const dropdown = link.closest('.sidebar-dropdown');
+            if (dropdown) {
+                const dropdownToggle = dropdown.previousElementSibling;
+                dropdown.classList.add('show');
+                dropdownToggle.classList.remove('collapsed');
+                dropdownToggle.setAttribute('aria-expanded', 'true');
+            }
+        }
+    });
+
+    // Jika ada dropdown yang tersimpan, buka dropdown tersebut
+    if (openDropdownId) {
+        const dropdown = document.getElementById(openDropdownId);
+        if (dropdown) {
+            const dropdownToggle = dropdown.previousElementSibling;
+            dropdown.classList.add('show');
+            dropdownToggle.classList.remove('collapsed');
+            dropdownToggle.setAttribute('aria-expanded', 'true');
+        }
+    }
+}
+
+// Event listener untuk setiap link di sidebar
 document.querySelectorAll('.sidebar-nav li.sidebar-item a').forEach(function(link) {
     link.addEventListener('click', function(event) {
-        // Check if the clicked element does not have the 'collapsed' class (i.e., it is not a dropdown toggle)
-        if (!this.classList.contains('collapsed')) {
-            // Remove the 'active' class from all items in the sidebar
-            document.querySelectorAll('.sidebar-nav li.sidebar-item.active').forEach(function(activeItem) {
-                activeItem.classList.remove('active');
-            });
+        // Simpan path URL yang diklik ke localStorage
+        localStorage.setItem('activeSidebarLink', this.getAttribute('href'));
 
-            // Add the 'active' class to the clicked item
-            this.closest('li.sidebar-item').classList.add('active');
+        // Hapus kelas 'active' dari semua item di sidebar
+        document.querySelectorAll('.sidebar-nav li.sidebar-item.active').forEach(function(activeItem) {
+            activeItem.classList.remove('active');
+        });
+
+        // Tambahkan kelas 'active' ke item yang diklik
+        this.closest('li.sidebar-item').classList.add('active');
+
+        // Jika klik pada dropdown toggle, simpan ID dropdown ke localStorage
+        if (this.classList.contains('collapsed')) {
+            const targetDropdown = this.getAttribute('data-bs-target').substring(1); // Ambil ID tanpa '#'
+            localStorage.setItem('openDropdownId', targetDropdown);
         } else {
-            // If it's a dropdown toggle, prevent the default link action
-            event.preventDefault();
+            // Hapus ID dropdown dari localStorage jika item di dalam dropdown diklik
+            localStorage.removeItem('openDropdownId');
         }
     });
 });
+
+// Saat halaman dimuat, panggil fungsi untuk menetapkan link aktif
+window.addEventListener('load', setActiveLink);
+
+
+
 
 //tabel
 

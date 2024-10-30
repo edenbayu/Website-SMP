@@ -43,13 +43,6 @@
                             <i class="fa-solid fa-list-ul"></i> Mengelola Semester
                         </a>
                     </li>
-
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="fa-solid fa-database"></i>
-                            Database
-                        </a>
-                    </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#biografi" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-address-book pe-2"></i>
@@ -68,10 +61,18 @@
                         </ul>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('jadwalmapel.index')}}" class="sidebar-link">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#mapel" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-book-open"></i>
-                            Jadwal Pelajaran
+                            Mata Pelajaran
                         </a>
+                        <ul id="mapel" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="{{route('mapel.index')}}" class="sidebar-link">Mengelola Mata Pelajaran</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{route('jadwalmapel.index')}} "class="sidebar-link">Jadwal Mata Pelajaran</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="sidebar-item">
                         <a href="{{route('kelas.index')}}" class="sidebar-link">
