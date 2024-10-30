@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid mt-3">
     <h1>Semesters</h1>
     
     <!-- Button trigger modal -->

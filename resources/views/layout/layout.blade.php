@@ -40,7 +40,8 @@
                     </li>
                     <li class="sidebar-item">
                         <a href="{{ route('semesters.index') }}" class="sidebar-link">
-                            <i class="fa-solid fa-list-ul"></i> Mengelola Semester
+                            <i class="fa-solid fa-chart-simple"></i>
+                            Mengelola Semester
                         </a>
                     </li>
                     <li class="sidebar-item">
