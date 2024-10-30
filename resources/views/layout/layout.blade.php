@@ -44,6 +44,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="{{ route('kelas.index') }}" class="sidebar-link">
+                            <i class="fa-solid fa-users"></i>
+                            Kelas
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#biografi" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-address-book pe-2"></i>
                             Biodata
@@ -75,7 +81,7 @@
                         </ul>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('kelas.index')}}" class="sidebar-link">
+                        <a href="{{route('kalenderakademik.index')}}" class="sidebar-link">
                             <i class="fa-solid fa-calendar-days"></i>
                             Kalender Akademik
                         </a>

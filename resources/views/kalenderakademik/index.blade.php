@@ -1,5 +1,9 @@
+@extends('layout.layout')
+@section('content')
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +13,8 @@
 
     <!-- Custom CSS -->
     <style>
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
@@ -53,13 +58,25 @@
         }
 
         /* Custom event colors */
-        .bg-blue { background-color: blue !important; color: white !important; }
-        .bg-red { background-color: red !important; color: white !important; }
-        .bg-green { background-color: green !important; color: white !important; }
+        .bg-blue {
+            background-color: blue !important;
+            color: white !important;
+        }
+
+        .bg-red {
+            background-color: red !important;
+            color: white !important;
+        }
+
+        .bg-green {
+            background-color: green !important;
+            color: white !important;
+        }
     </style>
 </head>
+
 <body>
-    <h1>Kalender Akademik</h1>  
+    <h1>Kalender Akademik</h1>
     <div id='calendar'></div>
 
     <!-- Modal for Create/Edit Event -->
@@ -191,18 +208,18 @@
                 };
 
                 fetch('{{ route('kalenderakademik.ajax') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    calendar.refetchEvents();
-                    closeModal();
-                });
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                    .then(response => response.json())
+                    .then(data => {
+                        calendar.refetchEvents();
+                        closeModal();
+                    });
             }
 
             function updateEvent(event) {
@@ -215,35 +232,40 @@
                     type: 'update'
                 };
 
-                fetch('{{ route('kalenderakademik.ajax') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    calendar.refetchEvents();
-                    closeModal();
-                });
+                fetch('{{ route('
+                        kalenderakademik.ajax ') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                    .then(response => response.json())
+                    .then(data => {
+                        calendar.refetchEvents();
+                        closeModal();
+                    });
             }
 
             function deleteEvent(id) {
-                fetch('{{ route('kalenderakademik.ajax') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ id: id, type: 'delete' })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    calendar.refetchEvents();
-                    closeModal();
-                });
+                fetch('{{ route('
+                        kalenderakademik.ajax ') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                id: id,
+                                type: 'delete'
+                            })
+                        })
+                    .then(response => response.json())
+                    .then(data => {
+                        calendar.refetchEvents();
+                        closeModal();
+                    });
             }
 
             function updateEventData(id) {
@@ -256,21 +278,25 @@
                     type: 'update'
                 };
 
-                fetch('{{ route('kalenderakademik.ajax') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    calendar.refetchEvents();
-                    closeModal();
-                });
+                fetch('{{ route('
+                        kalenderakademik.ajax ') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                    .then(response => response.json())
+                    .then(data => {
+                        calendar.refetchEvents();
+                        closeModal();
+                    });
             }
         });
     </script>
 </body>
+
 </html>
+
+@endsection
