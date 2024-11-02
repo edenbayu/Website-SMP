@@ -78,7 +78,7 @@
                                 <a href="{{route('mapel.index')}}" class="sidebar-link">Mengelola Mata Pelajaran</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('jadwalmapel.index')}} "class="sidebar-link">Jadwal Mata Pelajaran</a>
+                                <a href="{{route('kalendermapel.index')}} "class="sidebar-link">Jadwal Mata Pelajaran</a>
                             </li>
                         </ul>
                     </li>

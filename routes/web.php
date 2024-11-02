@@ -6,7 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KalenderAkademikController;
-use App\Http\Controllers\JadwalMapelController;
+use App\Http\Controllers\KalenderMapelController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\KelasController;
@@ -88,16 +88,17 @@ Route::middleware('auth')->group(function () {
             Route::post('/{mapelId}/assign-kelas', 'assignKelasToMapel')->name('mapel.assign-kelas');
         });
 
-        // Jadwal Mapel routes
-        Route::controller(JadwalMapelController::class)->group(function() {
-            Route::get('/jadwalmapel', 'index')->name('jadwalmapel.index');
-        });
-
         // Kalender Akademik routes
         Route::prefix('kalender-akademik')->controller(KalenderAkademikController::class)->group(function() {
             Route::get('/', 'index')->name('kalenderakademik.index');              
             Route::get('/list', 'listEvent')->name('kalenderakademik.list');       
             Route::post('/ajax', 'ajax')->name('kalenderakademik.ajax');
+        });
+
+        Route::prefix('kalender-mapel')->controller(KalenderMapelController::class)->group(function() {
+            Route::get('/', 'index')->name('kalendermapel.index');
+            Route::get('/events', 'listEvent')->name('kalendermapel.list');
+            Route::post('/ajax', 'ajax')->name('kalendermapel.ajax');
         });
 
         // Semester routes
