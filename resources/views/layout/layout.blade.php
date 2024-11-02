@@ -8,6 +8,7 @@
     <link rel="icon" href="{{asset('style/assets/logo-sekolah.png')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('style/css/layout.css')}}">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <script src="https://kit.fontawesome.com/9d2abd8931.js" crossorigin="anonymous"></script>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css"> -->
@@ -85,6 +86,12 @@
                         <a href="{{route('kalenderakademik.index')}}" class="sidebar-link">
                             <i class="fa-solid fa-calendar-days"></i>
                             Kalender Akademik
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{route('siswa.import')}}" class="sidebar-link">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            Import Data Siswa
                         </a>
                     </li>
                     <li class="sidebar-item">

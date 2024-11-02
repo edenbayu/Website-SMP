@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('no_un')->nullable(); // Marked as nullable
             $table->integer('no_peserta')->nullable(); // Marked as nullable
             $table->integer('nisn')->nullable(); // Marked as nullable
+            $table->integer('nis')->nullable();
             $table->integer('no_formulir')->nullable(); // Marked as nullable
             $table->string('nama')->nullable(); // Marked as nullable
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable(); // Marked as nullable

@@ -14,6 +14,7 @@ class Siswa extends Model
         'no_un',
         'no_peserta',
         'nisn',
+        'nis',
         'no_formulir',
         'nama',
         'jenis_kelamin',

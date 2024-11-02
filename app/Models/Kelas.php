@@ -10,7 +10,8 @@ class Kelas extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama',
+        'kelas',
+        'rombongan_belajar',
         'id_guru',       // Foreign key for Wali Kelas
         'id_semester',   // Foreign key for Semester
     ];

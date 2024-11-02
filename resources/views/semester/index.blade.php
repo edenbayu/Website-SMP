@@ -36,9 +36,19 @@
                     <td>{{ $semester->start }}</td>
                     <td>{{ $semester->end }}</td>
                     <td>
-                        <!-- Edit and Delete actions -->
+                        <!-- Trigger Button for the Edit Modal -->
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}">Edit</button>
+
+                        <!-- Delete Button -->
+                        <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
+                <!-- Load the Modal -->
+                @include('semester.semester-edit')
             @endforeach
         </tbody>
     </table>

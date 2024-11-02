@@ -51,6 +51,7 @@ class SiswaController extends Controller
 
         // Update `Siswa` to reference the new user's ID
         $siswa->id_user = $user->id; // Set the new id_user
+        $siswa->nis = $siswa->id; // Set user nis same as siswa's id
         $siswa->save(); // Save the changes
 
         return redirect()->route('siswa.index')->with('success', 'User berhasil dibuat dengan username ' . $user->username . ' dan password ' . $password);

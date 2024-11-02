@@ -32,7 +32,8 @@
     <table class="table mt-3">
         <thead>
             <tr>
-                <th>Nama Kelas</th>
+                <th>Kelas</th>
+                <th>Rombongan Belajar</th>
                 <th>Wali Kelas</th>
                 <th>Semester</th>
                 <th>Aksi</th>
@@ -41,49 +42,16 @@
         <tbody>
             @foreach($kelas as $k)
                 <tr>
-                    <td>{{ $k->nama }}</td>
+                    <td>{{ $k->kelas }}</td>
+                    <td>{{ $k->rombongan_belajar }}</td>
                     <td>{{ $k->guru->nama ?? 'N/A' }}</td>
                     <td>{{ $k->semester->semester . " | " . $k->semester->tahun_ajaran}}</td>
                     <td>
                         <!-- View Students Button -->
-                        <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info">Buka Kelas</a>
-
-                        <!-- Add Student Modal Trigger -->
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal-{{ $k->id }}">Tambah Siswa</button>
+                        <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info">Lihat</a>
 
                         <!-- Edit Class Modal Trigger -->
                         <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}">Edit</button>
-
-                        <!-- Add Student Modal -->
-                        <div class="modal fade" id="addStudentModal-{{ $k->id }}" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <form action="{{ route('kelas.addStudent', $k->id) }}" method="POST">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="addStudentModalLabel">Tambah Siswa ke {{ $k->nama }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="id_siswa" class="form-label">Pilih Siswa</label>
-                                                <select name="id_siswa" class="form-select" required>
-                                                    <option value="">Pilih Siswa</option>
-                                                    @foreach($siswa as $s)
-                                                        @if(!$k->siswas->contains($s->id))
-                                                            <option value="{{ $s->id }}">{{ $s->nama }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Tambah Siswa</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Edit Class Modal -->
                         <div class="modal fade" id="editKelasModal-{{ $k->id }}" tabindex="-1" aria-labelledby="editKelasModalLabel" aria-hidden="true">
@@ -91,15 +59,19 @@
                                 <div class="modal-content">
                                     <form action="{{ route('kelas.update', $k->id) }}" method="POST">
                                         @csrf
-                                        @method('PUT') <!-- Use PUT here to match REST conventions for updates -->
+                                        @method('POST') <!-- Use PUT here to match REST conventions for updates -->
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="editKelasModalLabel">Edit Kelas - {{ $k->nama }}</h5>
+                                            <h5 class="modal-title" id="editKelasModalLabel">Edit Kelas - {{ $k->rombongan_belajar }}</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label for="nama" class="form-label">Nama Kelas</label>
-                                                <input type="text" name="nama" class="form-control" value="{{ $k->nama }}" required>
+                                                <label for="kelas" class="form-label">Kelas</label>
+                                                <input type="text" name="kelas" class="form-control" value="{{ $k->kelas }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                            <label for="rombongan_belajar" class="form-label">Rombongan Belajar</label>
+                                                <input type="text" name="rombongan_belajar" class="form-control" value="{{ $k->kelas }}" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="id_guru" class="form-label">Wali Kelas</label>
@@ -155,8 +127,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="nama" class="form-label">Nama Kelas</label>
-                            <input type="text" name="nama" class="form-control" required>
+                            <label for="kelas" class="form-label">Kelas</label>
+                            <select name="kelas" class="form-select" required>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rombongan_belajar" class="form-label">Rombongan Belajar</label>
+                            <input type="text" name="rombongan_belajar" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label for="id_guru" class="form-label">Wali Kelas</label>

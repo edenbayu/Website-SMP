@@ -43,6 +43,4 @@ class AccountController extends Controller
     
         return redirect()->route('account.index')->with('success', 'Account and role updated successfully');
     }
-    
-    
 }

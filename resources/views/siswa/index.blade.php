@@ -19,7 +19,7 @@
                 <th>Nomor Pendaftaran</th>
                 <th>Nomor Formulir</th>
                 <th>Nama</th>
-                <th>NISN</th>
+                <th>NIS</th>
                 <th>Jenis Kelamin</th>
                 <th>Action</th>
             </tr>
@@ -35,7 +35,7 @@
                 <td>{{ $siswa->no_pendaftaran }}</td>
                 <td>{{ $siswa->no_formulir }}</td>
                 <td>{{ $siswa->nama }}</td>
-                <td>{{ $siswa->nisn }}</td>
+                <td>{{ $siswa->nis }}</td>
                 <td>{{ $siswa->jenis_kelamin }}</td>
                 <td>
                     <!-- Edit Button to trigger modal -->

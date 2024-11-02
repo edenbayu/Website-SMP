@@ -54,7 +54,6 @@ class SemesterController extends Controller
         return redirect()->route('semesters.index')->with('success', 'Semester updated successfully.');
     }
 
-
     public function destroy($id)
     {
         Semester::find($id)->delete();

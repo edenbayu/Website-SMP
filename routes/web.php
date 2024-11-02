@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/{kelasId}/add-student', 'addStudentToClass')->name('kelas.addStudent');
             Route::get('/{kelasId}/buka', 'bukaKelas')->name('kelas.buka');
             Route::post('/{kelasId}/hapus', 'hapusKelas')->name('kelas.hapus');
+            Route::post('/{kelasId}/auto-assign', 'autoAddStudents')->name('kelas.autoAdd');
         });
 
         //Mapel routes
@@ -84,9 +85,9 @@ Route::middleware('auth')->group(function () {
 
         // Kalender Akademik routes
         Route::prefix('kalender-akademik')->controller(KalenderAkademikController::class)->group(function() {
-            Route::get('/', 'index')->name('kalenderakademik.index');
-            Route::get('/list', 'listEvent')->name('kalenderakademik.list');
-            Route::post('/ajax', 'ajax')->name('kalenderakademik.ajax');
+            Route::get('/', 'index')->name('kalenderakademik.index');              // Display the main calendar view
+            Route::get('/list', 'listEvent')->name('kalenderakademik.list');       // Fetch list of events for a specified period
+            Route::post('/ajax', 'ajax')->name('kalenderakademik.ajax');           // Handle create, update, delete via AJAX
         });
 
         // Semester routes
