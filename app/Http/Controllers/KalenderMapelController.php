@@ -13,7 +13,7 @@ class KalenderMapelController extends Controller
      */
     public function index()
     {
-        $results = KalenderMapel::with([
+        $events = KalenderMapel::with([
             'kelas:id,rombongan_belajar',
             'mapel:id,nama,semester_id',
             'mapel.semester:id,semester'
@@ -29,7 +29,7 @@ class KalenderMapelController extends Controller
             ];
         });
 
-        return view('kalendermapel.index',compact('results'));
+        return view('kalendermapel.index');
     }
 
     /**
@@ -43,17 +43,23 @@ class KalenderMapelController extends Controller
         $start = $request->start ? date('Y-m-d', strtotime($request->start)) : now()->startOfMonth()->toDateString();
         $end = $request->end ? date('Y-m-d', strtotime($request->end)) : now()->endOfMonth()->toDateString();
 
-        $events = KalenderMapel::where('start', '>=', $start)
-            ->where('end', '<=', $end)
-            ->get()
-            ->map(fn ($item) => [
-                'id' => $item->id,
-                'title' => $item->title,
-                'kelas' => $item->kelas,
-                'start' => $item->start,
-                'end' => date('Y-m-d', strtotime($item->end . '+1 days')),
-                'className' => ['bg-' . $item->category]
-            ]);
+        $events = KalenderMapel::where('start_time', '>=', $start)
+        ->where('end_time', '<=' , $end)
+        ->with([
+            'kelas:id,rombongan_belajar',
+            'mapel:id,nama,semester_id',
+            'mapel.semester:id,semester'
+        ])
+        ->get()
+        ->map(function ($mapelKelas) {
+            return [
+                'rombongan_belajar' => $mapelKelas->kelas->rombongan_belajar,
+                'nama' => $mapelKelas->mapel->nama,
+                'semester' => $mapelKelas->mapel->semester->semester,
+                'start_time' => $mapelKelas->mapel->semester->start_time,
+                'end_time' => $mapelKelas->mapel->semester->end_time,
+            ];
+        });
 
         return response()->json($events);
     }
