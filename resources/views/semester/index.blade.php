@@ -1,5 +1,6 @@
 @extends('layout.layout')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
 
 <div class="container-fluid mt-3">
@@ -14,27 +15,27 @@
     @include('modal.semester')
 
     <!-- Display existing semesters in a table -->
-    <table class="table mt-4">
+    <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>No</th>
                 <th>Semester</th>
                 <th>Tahun Ajaran</th>
                 <th>Status</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+                <th class="text-start">Start Date</th>
+                <th class="text-start">End Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach($semesters as $semester)
                 <tr>
-                    <td>{{ $semester->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $semester->semester }}</td>
                     <td>{{ $semester->tahun_ajaran }}</td>
                     <td>{{ $semester->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
-                    <td>{{ $semester->start }}</td>
-                    <td>{{ $semester->end }}</td>
+                    <td class="text-start">{{ $semester->start }}</td>
+                    <td class="text-start">{{ $semester->end }}</td>
                     <td>
                         <!-- Trigger Button for the Edit Modal -->
                         <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}">Edit</button>
@@ -53,5 +54,11 @@
         </tbody>
     </table>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    new DataTable('#example');
+</script>
 @endsection

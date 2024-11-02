@@ -53,8 +53,8 @@
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#biografi" data-bs-toggle="collapse" aria-expanded="false">
-                            <i class="fa-solid fa-address-book pe-2"></i>
-                            Biodata
+                            <i class="fa-solid fa-database"></i>
+                            Master Database
                         </a>
                         <ul id="biografi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
@@ -89,7 +89,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('siswa.import')}}" class="sidebar-link">
+                        <a href="#" class="sidebar-link">
                             <i class="fa-solid fa-calendar-days"></i>
                             Ekstrakulikuler
                         </a>
@@ -214,10 +214,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('style/js/layout.js')}}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+    <!-- <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script> -->
+    <!-- <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script> -->
     <script>
         new DataTable('#example');
     </script>

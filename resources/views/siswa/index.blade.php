@@ -8,14 +8,17 @@
     @endif
 @endsection
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+
 @section('content')
 <!-- Generate Multiple Users Form -->
 <form id="generateMultipleUsersForm" action="{{ route('siswa.generateMultipleUsers') }}" method="POST">
     @csrf
-    <table>
+    <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th><input type="checkbox" id="selectAll"></th>
+                <th>No</th>
                 <th>Nomor Pendaftaran</th>
                 <th>Nomor Formulir</th>
                 <th>Nama</th>
@@ -28,9 +31,10 @@
         @foreach($siswas as $siswa)
             <tr>
                 <td>
-                    @if(empty($siswa->id_user))
+                    {{$loop->iteration}}
+                    <!-- @if(empty($siswa->id_user))
                         <input type="checkbox" name="siswa_ids[]" value="{{ $siswa->id }}" class="select-checkbox">
-                    @endif
+                    @endif -->
                 </td>
                 <td>{{ $siswa->no_pendaftaran }}</td>
                 <td>{{ $siswa->no_formulir }}</td>
@@ -117,8 +121,16 @@
     </table>
 
     <!-- Button to generate multiple users for selected rows -->
-    <button type="submit" class="btn btn-success mt-3">Generate Selected Users</button>
+    <!-- <button type="submit" class="btn btn-success mt-3">Generate Selected Users</button> -->
 </form>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    new DataTable('#example');
+</script>
 
 <script>
     // Select All functionality
