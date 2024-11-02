@@ -58,7 +58,7 @@
                         </a>
                         <ul id="biografi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Admin</a>
+                                <a href="{{route('admin.index')}}" class="sidebar-link">Admin</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="{{route('guru.index')}} "class="sidebar-link">Guru</a>
@@ -91,7 +91,7 @@
                     <li class="sidebar-item">
                         <a href="{{route('siswa.import')}}" class="sidebar-link">
                             <i class="fa-solid fa-calendar-days"></i>
-                            Import Data Siswa
+                            Ekstrakulikuler
                         </a>
                     </li>
                     <li class="sidebar-item">

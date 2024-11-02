@@ -21,14 +21,18 @@ class MapelController extends Controller
         $mapels = Mapel::with('guru', 'semester')->get(); // Eager load relationships
         $kelas = Kelas::all();
     
-        // Get the unique semester_ids from the mapels
+        // Get unique semester_ids and kelas values (7, 8, or 9) from the mapels
         $semesterIds = $mapels->pluck('semester_id')->unique();
+        $kelasValues = $mapels->pluck('kelas')->unique(); // Get unique kelas values from Mapel
     
-        // Filter kelas based on the semester_ids from the mapels
-        $kelasOptions = Kelas::whereIn('id_semester', $semesterIds)->get();
-    
+        // Filter Kelas based on the semester_ids and kelas values from the mapels
+        $kelasOptions = Kelas::whereIn('id_semester', $semesterIds)
+                              ->whereIn('kelas', $kelasValues) // Match based on kelas values
+                              ->get();
+        
         return view('mapel.index', compact('kelasOptions', 'kelas', 'semesters', 'gurus', 'mapelId', 'mapels'));
     }
+    
 
     public function hapusMapel($mapelId)
     {
@@ -43,6 +47,7 @@ class MapelController extends Controller
         // Validate the incoming request data
         $request->validate([
             'nama' => 'required|string|max:255', // Ensure 'nama' is a required string with a maximum length
+            'kelas' => 'required|integer',
             'guru_id' => 'required|exists:gurus,id', // Ensure 'guru_id' exists in the gurus table
             'semester_id' => 'required|exists:semesters,id', // Ensure 'semester_id' exists in the semesters table
         ]);
@@ -50,6 +55,7 @@ class MapelController extends Controller
         // Create a new Mata Pelajaran (Mapel) using the validated data
         Mapel::create([
             'nama' => $request->nama,
+            'kelas' => $request->kelas,
             'guru_id' => $request->guru_id,
             'semester_id' => $request->semester_id,
         ]);
@@ -69,13 +75,5 @@ class MapelController extends Controller
         $mapel->kelas()->syncWithoutDetaching($request->kelas_id);
     
         return redirect()->route('mapel.index')->with('success', 'Kelas has been successfully assigned to the Mata Pelajaran.');
-    }
-    
-    public function showAssignKelasModal($mapelId)
-    {
-        $mapel = Mapel::findOrFail($mapelId);
-        $kelasOptions = Kelas::where('semester_id', $mapel->semester_id)->get(); // Adjusted to match the correct field name
-    
-        return view('mapel.assign-kelas', compact('mapel', 'kelasOptions'));
     }
 }

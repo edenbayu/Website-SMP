@@ -15,6 +15,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nama</th>
+                <th>Kelas</th>
                 <th>Guru</th>
                 <th>Semester</th>
                 <th>Aksi</th>
@@ -25,8 +26,9 @@
                 <tr>
                     <td>{{ $mapel->id }}</td>
                     <td>{{ $mapel->nama }}</td>
+                    <td>{{ $mapel->kelas }}</td>
                     <td>{{ $mapel->guru->nama }}</td>
-                    <td>{{ $mapel->semester->semester }}</td>
+                    <td>{{ $mapel->semester->semester. " | " . $mapel->semester->tahun_ajaran . ($mapel->semester->status == 1 ? " | Aktif" : "") }}</td>
                     <td>
                         <!-- Delete Mata Pelajaran Button -->
                         <form action="{{ route('mapel.delete', $mapel->id) }}" method="POST" style="display:inline;">
@@ -54,9 +56,9 @@
                                             <div class="mb-3">
                                                 <label for="kelas_id" class="form-label">Pilih Kelas</label>
                                                 <select name="kelas_id" id="kelas_id" class="form-select" required>
-                                                    @foreach ($kelasOptions as $kelas)
-                                                        <option value="{{ $kelas->id }}">{{ $kelas->nama }}</option>
-                                                    @endforeach
+                                                @foreach ($kelasOptions->where('id_semester', $mapel->semester_id)->where('kelas', $mapel->kelas) as $k)
+                                                    <option value="{{ $k->id }}">{{ $k->rombongan_belajar }}</option>
+                                                @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -91,6 +93,14 @@
                         <input type="text" class="form-control" name="nama" id="nama" required>
                     </div>
                     <div class="mb-3">
+                        <label for="kelas" class="form-label">Kelas</label>
+                        <select name="kelas" id="guru_id" class="form-select" required>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="guru_id" class="form-label">Pilih Guru</label>
                         <select name="guru_id" id="guru_id" class="form-select" required>
                             @foreach ($gurus as $guru)
@@ -102,7 +112,7 @@
                         <label for="semester_id" class="form-label">Pilih Semester</label>
                         <select name="semester_id" id="semester_id" class="form-select" required>
                             @foreach ($semesters as $semester)
-                                <option value="{{ $semester->id }}">{{ $semester->semester }}</option>
+                                <option value="{{ $semester->id }}">{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}</option>
                             @endforeach
                         </select>
                     </div>

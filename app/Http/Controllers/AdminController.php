@@ -2,35 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guru;
+use App\Models\Admin;
 use Illuminate\Http\Request;
-use App\Imports\GuruImport;
+use App\Imports\AdminImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\User;
 
-class GuruController extends Controller 
+class AdminController extends Controller 
 {
-    public function index(){
-        $gurus = Guru::orderBy('created_at', 'desc')->get();
-        return view('guru.index', compact('gurus'));
+    public function index(Request $request)
+    {
+        // Ini untuk filter semester berapa yg mau dilist
+        $jabatan = $request->input('jabatan');
+
+        $admin = Admin::orderBy('created_at', 'desc')->get();
+        return view('admin.index', compact('admin', 'jabatan'));
     }
 
     public function import(Request $request) {
         $request->validate([
             'file' => 'required|file|max:2048'
         ]);
-        Excel::import(new GuruImport, $request->file('file'));
+        Excel::import(new AdminImport, $request->file('file'));
 
-        return redirect()->route('guru.index')->with('success', 'File berhasil diimport!');
+        return redirect()->route('admin.index')->with('success', 'File berhasil diimport!');
     }
 
     public function create(Request $request)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'nip' => 'nullable|string|max:50|unique:gurus,nip',
+            'nip' => 'nullable|string|max:50|unique:admins,nip',
+            'jabatan' => 'nullable|string',
             'tempat_lahir' => 'nullable|string|max:255',
             'tanggal_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
@@ -41,17 +46,18 @@ class GuruController extends Controller
             'pendidikan' => 'nullable|string|max:50',
         ]);
 
-        Guru::create($request->all());
-        return redirect()->route('guru.index')->with('success', 'Guru created successfully!');
+        Admin::create($request->all());
+        return redirect()->route('admin.index')->with('success', 'Data created successfully!');
     }
 
     public function update(Request $request, $id)
     {
-        $guru = Guru::findOrFail($id);
+        $guru = Admin::findOrFail($id);
 
         $request->validate([
             'nama' => 'required|string|max:255',
             'nip' => 'nullable|string|max:50|unique:gurus,nip,'.$id,
+            'jabatan' => 'nullable|string',
             'tempat_lahir' => 'nullable|string|max:255',
             'tanggal_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
@@ -63,34 +69,33 @@ class GuruController extends Controller
         ]);
 
         $guru->update($request->all());
-        return redirect()->route('guru.index')->with('success', 'Guru updated successfully!');
+        return redirect()->route('admin.index')->with('success', 'Data updated successfully!');
     }
 
     public function destroy($id) {
         $guru = Guru::findOrFail($id);
         $guru->delete();
-        return redirect()->route('guru.index')->with('success', 'Guru deleted successfully!');
+        return redirect()->route('admin.index')->with('success', 'Data deleted successfully!');
     }
 
-    public function generateUser(Request $request, $guruId)
+    public function generateUser(Request $request, $adminId)
     {
-        $guru = Guru::findOrFail($guruId);
+        $admin = Admin::findOrFail($adminId);
 
         $request->validate([
             'username' => 'required|string|unique:users,username',
             'password' => 'required|string',
-            'role' => 'required|string'
         ]);
 
         $user = User::create([
-            'name' => $guru->nama,
+            'name' => $admin->nama,
             'username' => $request->username,
             'password' => $request->password
         ]);
         
-        $user->assignRole($request->role);
-        $guru->id_user = $user->id;
-        $guru->save();
+        $user->assignRole('Admin');
+        $admin->id_user = $user->id;
+        $admin->save();
         return redirect()->route('guru.index')->with('success', 'Berhasil membuat akun guru baru.');
     }
 }

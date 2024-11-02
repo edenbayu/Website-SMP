@@ -11,6 +11,8 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
+use App\Http\Controllers\AdminController;
+
 
 // Group routes for LoginController using Route::controller
 Route::controller(LoginController::class)->group(function () {
@@ -51,11 +53,20 @@ Route::middleware('auth')->group(function () {
         Route::prefix('guru')->controller(GuruController::class)->group(function() {
             Route::get('/', 'index')->name('guru.index');                         
             Route::post('/import', 'import')->name('guru.import');                
-            Route::post('/create', 'create')->name('guru.create');               
-            Route::get('/{id}/edit', 'edit')->name('guru.edit');                  
+            Route::post('/create', 'create')->name('guru.create');                              
             Route::put('/{id}/update', 'update')->name('guru.update');           
             Route::delete('/{id}', 'destroy')->name('guru.destroy');              
             Route::post('/{guruId}/generate-user', 'generateUser')->name('guru.generateUser'); 
+        });
+
+        // Admin data routes
+        Route::prefix('staffs')->controller(AdminController::class)->group(function() {
+            Route::get('/', 'index')->name('admin.index');                         
+            Route::post('/import', 'import')->name('admin.import');                
+            Route::post('/create', 'create')->name('admin.create');                              
+            Route::put('/{id}/update', 'update')->name('admin.update');           
+            Route::delete('/{id}', 'destroy')->name('admin.destroy');              
+            Route::post('/{guruId}/generate-user', 'generateUser')->name('admin.generateUser'); 
         });
 
         Route::prefix('kelas')->controller(KelasController::class)->group(function () {
@@ -75,7 +86,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/store', 'store')->name('mapel.store');
             Route::delete('/{mapelId}/delete', 'hapusMapel')->name('mapel.delete');
             Route::post('/{mapelId}/assign-kelas', 'assignKelasToMapel')->name('mapel.assign-kelas');
-            Route::get('/{mapelId}/show-assign-kelas-modal', 'showAssignKelasModal')->name('mapel.show-assign-kelas-modal');
         });
 
         // Jadwal Mapel routes
@@ -85,9 +95,9 @@ Route::middleware('auth')->group(function () {
 
         // Kalender Akademik routes
         Route::prefix('kalender-akademik')->controller(KalenderAkademikController::class)->group(function() {
-            Route::get('/', 'index')->name('kalenderakademik.index');              // Display the main calendar view
-            Route::get('/list', 'listEvent')->name('kalenderakademik.list');       // Fetch list of events for a specified period
-            Route::post('/ajax', 'ajax')->name('kalenderakademik.ajax');           // Handle create, update, delete via AJAX
+            Route::get('/', 'index')->name('kalenderakademik.index');              
+            Route::get('/list', 'listEvent')->name('kalenderakademik.list');       
+            Route::post('/ajax', 'ajax')->name('kalenderakademik.ajax');
         });
 
         // Semester routes
