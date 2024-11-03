@@ -4,10 +4,12 @@
 @section('content')
 
 <div class="container-fluid mt-3">
-    <h1>Semesters</h1>
+    <div class="mb-3">
+        <h2>Mengelola Semester</h2>
+    </div>
     
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSemesterModal">
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createSemesterModal">
         Create Semester
     </button>
 
