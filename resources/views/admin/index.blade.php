@@ -46,12 +46,8 @@
     </form> -->
 
     <!-- import button -->
-    <div class="row">
-        <div class="col-3">
-            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Import Excel</button>
-            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah Data</button>
-        </div>
-    </div>
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Import Excel</button>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah Data</button>
 
     <!-- Add Admin Button -->
     <!-- <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah Data</button> -->

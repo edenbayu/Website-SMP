@@ -42,12 +42,8 @@
             <span>Import Excel</span>
         </a>
     </button> -->
-    <div class="row">
-        <div class="col-3">
-            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Import Excel</button>
-            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createGuruModal">Tambah Guru</button>
-        </div>
-    </div>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Import Excel</button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createGuruModal">Tambah Guru</button>
 
     <!-- Import Form -->
     <!-- <form action="{{ route('guru.import') }}" method="POST" enctype="multipart/form-data">

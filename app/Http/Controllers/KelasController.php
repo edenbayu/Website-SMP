@@ -230,6 +230,6 @@ class KelasController extends Controller
 
         $mapel->kelas()->syncWithoutDetaching($kelas->id);
 
-        return redirect()->route('kelas.ekstrakulikuler')->with('success', 'Ekstrakulikuler created successfully!');
+        return redirect()->route('kelas.index')->with('success', 'Ekstrakulikuler created successfully!');
     }
 }

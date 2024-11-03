@@ -31,6 +31,7 @@
     @endif
 
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createKelasModal">Buat Kelas Baru</button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createEkstrakulikulerModal">Buat Ekstrakulikuler Baru</button>
 
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
@@ -157,6 +158,51 @@
                                 @foreach($semesters as $semester)
                                 <option value="{{ $semester->id }}">{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}
                                 </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan Kelas</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+     <!-- Modal untuk membuat Ekstrakulikuler -->
+     <!-- Create Kelas Modal -->
+     <div class="modal fade" id="createEkstrakulikulerModal" tabindex="-1" aria-labelledby="createEkstrakulikulerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('kelas.storeEkskul') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createEkstrakulikulerModalLabel">Buat Ekstrakulikuler Baru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="rombongan_belajar" class="form-label">Nama Ekstrakulikuler</label>
+                            <select name="rombongan_belajar" id=""></select>
+                            <input type="text" name="rombongan_belajar" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_guru" class="form-label">Pendamping</label>
+                            <select name="id_guru" class="form-select" required>
+                                <option value="">Pilih Wali Kelas</option>
+                                @foreach($gurus as $guru)
+                                    <option value="{{ $guru->id }}">{{ $guru->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_semester" class="form-label">Semester</label>
+                            <select name="id_semester" class="form-select" required>
+                                <option value="">Pilih Semester</option>
+                                @foreach($semesters as $semester)
+                                    <option value="{{ $semester->id }}">{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
