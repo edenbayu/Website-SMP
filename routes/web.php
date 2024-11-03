@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('kelas.index');
             Route::get('/create', 'create')->name('kelas.create');
             Route::post('/store', 'store')->name('kelas.store');
+            Route::post('/storeEkskul', 'storeEkskul')->name('kelas.storeEkskul');
             Route::post('/{kelasId}/update', 'update')->name('kelas.update');
             Route::post('/{kelasId}/add-student', 'addStudentToClass')->name('kelas.addStudent');
             Route::get('/{kelasId}/buka', 'bukaKelas')->name('kelas.buka');

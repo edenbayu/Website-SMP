@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             DefaultUserSeeder::class,
             KalenderAkademikSeeder::class,
-            SemesterSeeder::class
+            SemesterSeeder::class,
+            WeekSeeder::class,
         ]);
     }
 }

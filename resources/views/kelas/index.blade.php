@@ -37,7 +37,7 @@
             <tr>
                 <th>Kelas</th>
                 <th>Rombongan Belajar</th>
-                <th>Wali Kelas</th>
+                <th>Wali Kelas / Pendamping</th>
                 <th>Semester</th>
                 <th>Aksi</th>
             </tr>

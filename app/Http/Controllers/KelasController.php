@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\Guru;
 use App\Models\Siswa;
 use App\Models\Semester;
+use App\Models\Mapel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -53,6 +54,8 @@ class KelasController extends Controller
                           $query->where('id_semester', $semesterId);
                       })
                       ->get();
+        
+        $gurus = Guru::all();
     
         $walikelas = Guru::whereHas('user.roles', function ($query) {
             $query->where('name', 'Wali Kelas'); // Check if the role is 'Wali Kelas'
@@ -64,7 +67,7 @@ class KelasController extends Controller
         // Get all students
         $siswa = Siswa::all();
     
-        return view('kelas.index', compact('kelas', 'semesters', 'siswa', 'walikelas', 'semesterId'));
+        return view('kelas.index', compact('kelas', 'semesters', 'siswa', 'walikelas', 'semesterId', 'gurus'));
     }
     
 
@@ -162,7 +165,6 @@ class KelasController extends Controller
         return redirect()->back()->with('success', $selectedStudents->count() . ' siswa berhasil ditambahkan ke kelas.');
     }
 
-
     // Add a student to a class
     public function addStudentToClass(Request $request, $kelasId)
     {
@@ -202,5 +204,32 @@ class KelasController extends Controller
     
         return redirect()->route('kelas.index')->with('success', 'Kelas updated successfully.');
     }
-    
+
+    public function storeEkskul(Request $request)
+    {
+        $request->validate([
+            'rombongan_belajar' => 'required|string|max:255',
+            'id_guru' => 'required|exists:gurus,id',
+            'id_semester' => 'required|exists:semesters,id',
+        ]);
+
+        $kelas = Kelas::create([
+            'kelas' => 'Ekskul',
+            'rombongan_belajar' => $request->rombongan_belajar,
+            'id_guru' => $request->id_guru,
+            'id_semester' => $request->id_semester
+        ]);
+        
+        $mapel = Mapel::create([
+            'nama' => $request->rombongan_belajar,
+            'kelas' => 'Ekskul',
+            'guru_id' => $request->id_guru,
+            'semester_id' => $request->id_semester,
+
+        ]);
+
+        $mapel->kelas()->syncWithoutDetaching($kelas->id);
+
+        return redirect()->route('kelas.ekstrakulikuler')->with('success', 'Ekstrakulikuler created successfully!');
+    }
 }
