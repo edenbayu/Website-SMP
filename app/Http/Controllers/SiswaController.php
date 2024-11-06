@@ -13,7 +13,7 @@ use App\Models\User;
 class SiswaController extends Controller 
 {
     public function index(){
-        $siswas = Siswa::orderBy('created_at', 'desc')->get();
+        $siswas = Siswa::all();
         return view('siswa.index', compact('siswas'));
     }
 
@@ -57,54 +57,12 @@ class SiswaController extends Controller
         return redirect()->route('siswa.index')->with('success', 'User berhasil dibuat dengan username ' . $user->username . ' dan password ' . $password);
     }
 
-    public function generateMultipleUsers(Request $request)
-    {
-        // Get the selected IDs from the request
-        $siswaIds = $request->input('siswa_ids', []);
-
-        if (empty($siswaIds)) {
-            return redirect()->route('siswa.index')->with('success', 'No users selected for generation.');
-        }
-
-        foreach ($siswaIds as $id) {
-            $siswa = Siswa::findOrFail($id);
-
-            // Only generate a user if id_user is not already set
-            if (empty($siswa->id_user)) {
-                // Generate a random 6-character password
-                $password = Str::random(6);
-
-                // Create a new user associated with the Siswa record (no hashing)
-                $user = User::create([
-                    'name' => $siswa->nama,
-                    'username' => $siswa->nisn,
-                    'password' => $password, // Directly assign password without hashing
-                ]);
-
-                // Assign the 'Siswa' role to the user
-                $user->assignRole('Siswa');
-
-                // Link the new user to the Siswa record
-                $siswa->id_user = $user->id;
-                $siswa->save();
-            }
-        }
-
-        return redirect()->route('siswa.index')->with('success', 'Users generated successfully for selected records.');
-    }
-
     public function delete($siswaId)
     {
         $siswa = Siswa::findOrFail($siswaId);
         $siswa->delete();
 
         return redirect()->route('siswa.index')->with('success', 'Account deleted successfully');
-    }
-
-    public function edit($siswaId)
-    {
-        $siswa = Siswa::findOrFail($siswaId);
-        return view('siswa.index', compact('siswa'));
     }
     
     public function update(Request $request, $siswaId)

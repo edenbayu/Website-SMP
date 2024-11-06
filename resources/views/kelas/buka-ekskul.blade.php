@@ -3,17 +3,11 @@
 @extends('layout.layout')
 
 @section('content')
-<h1>Data Kelas: {{ $kelas->rombongan_belajar }}</h1>
+<h1>Data Ekskul: {{ $kelas->rombongan_belajar }}</h1>
 <h3>Daftar Siswa</h3>
 
 <!-- Add Student Modal Trigger -->
-<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal-{{ $kelas->id }}">Tambah Siswa</button>
-
-<!-- Auto Assign Student Button HERE -->
-<form action="{{ route('kelas.autoAdd', $kelas->id) }}" method="POST" style="display:inline;">
-    @csrf
-    <button type="submit" class="btn btn-primary">Auto Assign Students</button>
-</form>
+<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEkskulModal-{{ $kelas->id }}">Tambah Siswa</button>
 
 <table>
     <thead>
@@ -24,29 +18,29 @@
     </thead>
     <tbody>
         @foreach ($daftar_siswa as $siswa)
-        <tr>
-            <td>{{ $siswa['nama'] }}</td>
-            <td>{{ $siswa['nisn'] }}</td>
-            <td>
-                <form action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </td>            
-        </tr>
+            <tr>
+                <td>{{ $siswa['nama'] }}</td>
+                <td>{{ $siswa['nisn'] }}</td>
+                <td>
+                    <form action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
         @endforeach
     </tbody>
 </table>
 
 <!-- Add Student Modal -->
-<div class="modal fade" id="addStudentModal-{{ $kelas->id }}" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEkskulModal-{{ $kelas->id }}" tabindex="-1" aria-labelledby="addEkskulModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="{{ route('kelas.addStudent', $kelas->id) }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addStudentModalLabel">Tambah Siswa ke {{ $kelas->rombongan_belajar }}</h5>
+                    <h5 class="modal-title" id="addEkskulModalLabel">Tambah Siswa ke {{ $kelas->rombongan_belajar }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

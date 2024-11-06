@@ -41,9 +41,11 @@
                     </form>
 
                     <!-- Button to open Assign Kelas Modal -->
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#assignKelasModal-{{ $mapel->id }}">
-                        Tambah Kelas
-                    </button>
+                    @if ($mapel->kelas != 'Ekskul')
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#assignKelasModal-{{ $mapel->id }}">
+                            Tambah Kelas
+                        </button>
+                    @endif
 
                     <!-- Modal for Assign Kelas -->
                     <div class="modal fade" id="assignKelasModal-{{ $mapel->id }}" tabindex="-1" aria-labelledby="assignKelasModalLabel" aria-hidden="true">

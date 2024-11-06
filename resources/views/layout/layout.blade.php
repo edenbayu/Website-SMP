@@ -48,7 +48,7 @@
                     <li class="sidebar-item">
                         <a href="{{ route('kelas.index') }}" class="sidebar-link">
                             <i class="fa-solid fa-users"></i>
-                            Kelas
+                            Kelas & Ekstrakulikuler
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -88,12 +88,12 @@
                             Kalender Akademik
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <!-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="fa-solid fa-calendar-days"></i>
                             Ekstrakulikuler
                         </a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-item">
                         <a href="{{route('account.index')}}" class="sidebar-link">
                             <i class="fa-solid fa-user"></i>

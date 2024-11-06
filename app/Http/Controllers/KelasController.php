@@ -46,35 +46,57 @@ class KelasController extends Controller
     // Show classes
     public function index(Request $request)
     {
-        // Ini untuk filter semester berapa yg mau dilist
+        // Retrieve the filter inputs
         $semesterId = $request->input('semester_id');
-        
+        $filterKelas = $request->input('kelas');
+
+        // Apply filters for Kelas based on semester and class name
         $kelas = Kelas::with(['guru', 'semester', 'siswas'])
-                      ->when($semesterId, function ($query, $semesterId) {
-                          $query->where('id_semester', $semesterId);
-                      })
-                      ->get();
-        
+                    ->when($semesterId, function ($query, $semesterId) {
+                        $query->where('id_semester', $semesterId);
+                    })
+                    ->when($filterKelas, function ($query, $filterKelas) {
+                        $query->where('kelas', $filterKelas);
+                    })
+                    ->get();
+
         $gurus = Guru::all();
-    
+        
+        // Only retrieve teachers who are assigned as 'Wali Kelas'
         $walikelas = Guru::whereHas('user.roles', function ($query) {
-            $query->where('name', 'Wali Kelas'); // Check if the role is 'Wali Kelas'
+            $query->where('name', 'Wali Kelas');
         })->get();
-    
-        // Get all semesters for the filter options
+
+        // Get all semesters and class names for the filter options
         $semesters = Semester::all();
-    
+        $listKelas = Kelas::select('kelas')
+                 ->distinct()
+                 ->orderBy('kelas', 'ASC')
+                 ->get();
+
+
         // Get all students
         $siswa = Siswa::all();
-    
-        return view('kelas.index', compact('kelas', 'semesters', 'siswa', 'walikelas', 'semesterId', 'gurus'));
+
+        return view('kelas.index', compact('listKelas', 'kelas', 'semesters', 'siswa', 'walikelas', 'semesterId', 'gurus', 'filterKelas'));
     }
-    
+
 
     public function hapusKelas($kelasId)
     {
         $kelas = Kelas::findOrFail($kelasId);
         $kelas->delete();
+
+        if ($kelas->kelas === 'Ekskul') {
+            $mapel = Mapel::where('nama', $kelas->rombongan_belajar)
+                ->where('guru_id', $kelas->id_guru)
+                ->where('semester_id', $kelas->id_semester)
+                ->first();
+
+            if ($mapel) {
+                $mapel->delete();
+            }
+        }
 
         return redirect()->route('kelas.index')->with('success', 'Siswa berhasil ditambahkan ke kelas.');
     }
@@ -86,6 +108,9 @@ class KelasController extends Controller
 
         // Get the semester ID of the current class
         $semesterId = $kelas->id_semester;
+        
+        // Get the rombongan belajar for ekskul siswa assignment
+        $rombonganBelajar = $kelas->rombongan_belajar;
 
         // Retrieve all students
         $allSiswa = Siswa::select('id', 'nama', 'nisn')->get();
@@ -102,19 +127,34 @@ class KelasController extends Controller
             return in_array($siswa->id, $assignedSiswaIds);
         });
 
-        $siswas = $kelas->siswas->map(function ($siswa) {
-            return [
-                'nama' => $siswa->nama,
-                'nisn' => $siswa->nisn,
-            ];
+        $assignedEkskulSiswaIds = DB::table('kelas_siswa')
+            ->join('kelas', 'kelas_siswa.kelas_id', '=', 'kelas.id')
+            ->where('kelas.id_semester', $semesterId)
+            ->where('kelas.rombongan_belajar', $rombonganBelajar)
+            ->pluck('kelas_siswa.siswa_id')
+            ->toArray();
+        
+        $availableEkskulSiswa = $allSiswa->reject(function ($siswa) use ($assignedEkskulSiswaIds){
+            return in_array($siswa->id, $assignedEkskulSiswaIds);
         });
 
-        // Pass the data to the view
-        return view('kelas.buka', [
-            'kelas' => $kelas,
-            'siswas' => $availableSiswa,
-            'daftar_siswa' => $siswas
-        ]);
+        if ($kelas->kelas === 'Ekskul'){
+            // Pass the data to the view
+            return view('kelas.buka-ekskul', [
+                'kelas' => $kelas,
+                'siswas' => $availableEkskulSiswa,
+                'daftar_siswa' => $kelas->siswas
+            ]);
+        }
+
+        else{
+            // Pass the data to the view
+            return view('kelas.buka', [
+                'kelas' => $kelas,
+                'siswas' => $availableSiswa,
+                'daftar_siswa' => $kelas->siswas
+            ]);
+        }
     }
 
     public function autoAddStudents($kelasId)
@@ -195,13 +235,35 @@ class KelasController extends Controller
             'rombongan_belajar' => 'required|string'
         ]);
     
+        // Find and update the Kelas record
         $kelas = Kelas::findOrFail($kelasId);
-        $kelas->id_guru = $request->input('id_guru');  
-        $kelas->id_semester = $request->input('id_semester');  
+
+        if ($kelas->kelas === 'Ekskul') {
+            $mapel = Mapel::where('nama', $kelas->rombongan_belajar)
+                ->where('guru_id', $kelas->id_guru)
+                ->where('semester_id', $kelas->id_semester)
+                ->first();
+    
+            // If a matching Mapel is found, update its fields to match Kelas
+            if ($mapel) {
+                $mapel->kelas = 'Ekskul';
+                $mapel->nama = $request->input('rombongan_belajar');
+                $mapel->guru_id = $request->input('id_guru');
+                $mapel->semester_id = $request->input('id_semester');
+                $mapel->save();
+            }
+        }
+
+        $kelas->id_guru = $request->input('id_guru');
+        $kelas->id_semester = $request->input('id_semester');
         $kelas->kelas = $request->input('kelas');
         $kelas->rombongan_belajar = $request->input('rombongan_belajar');
+        // Conditional update for the Mapel model if Kelas is of type 'Ekskul'
+
+
         $kelas->save();
     
+        // Redirect back to the index with a success message
         return redirect()->route('kelas.index')->with('success', 'Kelas updated successfully.');
     }
 
@@ -232,4 +294,20 @@ class KelasController extends Controller
 
         return redirect()->route('kelas.index')->with('success', 'Ekstrakulikuler created successfully!');
     }
+
+    public function deleteAssignedSiswa($kelasId, $siswaId)
+    {
+        // Assuming the relationship is defined as 'kelases' on the Siswa model for the many-to-many relation
+        $siswa = Siswa::find($siswaId);
+    
+        if (!$siswa) {
+            return redirect()->back()->with('error', 'Siswa not found');
+        }
+    
+        // Detach the student (siswa) from the class (kelas)
+        $siswa->kelases()->detach($kelasId);
+    
+        return redirect()->back()->with('success', 'Data siswa berhasil dihapus');
+    }
+    
 }

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class KalenderMapel extends Model
 {
-    protected $table = 'mapel_kelas';
     protected $fillable = ['kelas_id', 'mapel_id', 'start_time', 'end_time'];
 
     public function kelas()

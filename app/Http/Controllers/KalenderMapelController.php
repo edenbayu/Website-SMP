@@ -4,108 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KalenderMapel;
+use App\Models\Week;
+use App\Models\Kelas;
+use App\Models\Mapel;
+use Illuminate\Support\Facades\DB;
+ 
 use Illuminate\Http\JsonResponse;
 
 class KalenderMapelController extends Controller
 {
-    /**
-     * Display the calendar view.
-     */
-    public function index()
-    {
-        $events = KalenderMapel::with([
-            'kelas:id,rombongan_belajar',
-            'mapel:id,nama,semester_id',
-            'mapel.semester:id,semester'
-        ])
-        ->get()
-        ->map(function ($mapelKelas) {
-            return [
-                'rombongan_belajar' => $mapelKelas->kelas->rombongan_belajar,
-                'nama' => $mapelKelas->mapel->nama,
-                'semester' => $mapelKelas->mapel->semester->semester,
-                'start_time' => $mapelKelas->mapel->semester->start_time,
-                'end_time' => $mapelKelas->mapel->semester->end_time,
-            ];
-        });
 
-        return view('kalendermapel.index');
-    }
+// Menampilkan semua jadwal
+public function index()
+{
+    $datas = DB::table('mapel_kelas')
+        ->join('kelas', 'mapel_kelas.kelas_id', '=', 'kelas.id')
+        ->join('mapels', 'mapel_kelas.mapel_id', '=', 'mapels.id')
+        ->get();
 
-    /**
-     * List events for the calendar based on the given date range.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function listEvent(Request $request): JsonResponse
-    {
-        $start = $request->start ? date('Y-m-d', strtotime($request->start)) : now()->startOfMonth()->toDateString();
-        $end = $request->end ? date('Y-m-d', strtotime($request->end)) : now()->endOfMonth()->toDateString();
+    return view('kalendermapel.index', compact('datas'));
+}
 
-        $events = KalenderMapel::where('start_time', '>=', $start)
-        ->where('end_time', '<=' , $end)
-        ->with([
-            'kelas:id,rombongan_belajar',
-            'mapel:id,nama,semester_id',
-            'mapel.semester:id,semester'
-        ])
-        ->get()
-        ->map(function ($mapelKelas) {
-            return [
-                'rombongan_belajar' => $mapelKelas->kelas->rombongan_belajar,
-                'nama' => $mapelKelas->mapel->nama,
-                'semester' => $mapelKelas->mapel->semester->semester,
-                'start_time' => $mapelKelas->mapel->semester->start_time,
-                'end_time' => $mapelKelas->mapel->semester->end_time,
-            ];
-        });
+// Menyimpan jadwal baru
+public function store(Request $request)
+{
+    $request->validate([
+        'kelas_id' => 'required|exists:kelas,id',
+        'mapel_id' => 'required|exists:mapel,id',
+        'week_id' => 'required|exists:week,id',
+        'jam_mulai' => 'required',
+        'jam_selesai' => 'required',
+    ]);
 
-        return response()->json($events);
-    }
+    KalenderMapel::create([
+        'kelas_id' => $request->kelas_id,
+        'mapel_id' => $request->mapel_id,
+        'week_id' => $request->week_id,
+        'jam_mulai' => $request->jam_mulai,
+        'jam_selesai' => $request->jam_selesai,
+    ]);
 
-    /**
-     * Handle AJAX requests for adding, updating, and deleting events.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function ajax(Request $request): JsonResponse
-    {
-        switch ($request->type) {
-            case 'add':
-                $event = KalenderMapel::create([
-                    'title' => $request->title,
-                    'kelas' => $request->kelas,
-                    'start' => $request->start,
-                    'end' => $request->end,
-                ]);
-
-                return response()->json($event);
-
-            case 'update':
-                $event = KalenderMapel::find($request->id);
-                if ($event) {
-                    $event->update([
-                        'title' => $request->title,
-                        'kelas' => $request->kelas,
-                        'start' => $request->start,
-                        'end' => $request->end,
-                    ]);
-                }
-
-                return response()->json($event);
-
-            case 'delete':
-                $event = KalenderMapel::find($request->id);
-                if ($event) {
-                    $event->delete();
-                }
-
-                return response()->json($event);
-
-            default:
-                return response()->json(['error' => 'Invalid request type'], 400);
-        }
-    }
+    return redirect()->route('kalendermapel.index')->with('success', 'Jadwal berhasil ditambahkan');
+}
 }

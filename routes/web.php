@@ -41,11 +41,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('siswa.index');
             Route::post('/import', 'import')->name('siswa.import');
             Route::get('/import', 'showImportForm')->name('siswa.showImportForm');
-            Route::post('/generate-multiple-users', 'generateMultipleUsers')->name('siswa.generateMultipleUsers');
             Route::post('/{id}/generate-user', 'generateUser')->name('siswa.generateUser');
-            Route::get('/{siswaId}/edit', 'edit')->name('siswa.edit');
-            Route::put('/{siswaId}', 'update')->name('siswa.update');
-            Route::delete('/{siswaId}', 'delete')->name('siswa.delete');
+            Route::put('/update/{siswaId}', 'update')->name('siswa.update');
+            Route::delete('/delete/{siswaId}', 'delete')->name('siswa.delete');
 
         });
 
@@ -78,6 +76,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/{kelasId}/add-student', 'addStudentToClass')->name('kelas.addStudent');
             Route::get('/{kelasId}/buka', 'bukaKelas')->name('kelas.buka');
             Route::post('/{kelasId}/hapus', 'hapusKelas')->name('kelas.hapus');
+            Route::delete('/kelas/{kelasId}/siswa/{siswaId}', 'deleteAssignedSiswa')->name('kelas.siswa.delete');;
             Route::post('/{kelasId}/auto-assign', 'autoAddStudents')->name('kelas.autoAdd');
         });
 

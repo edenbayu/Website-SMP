@@ -1,78 +1,59 @@
 @extends('layout.layout')
+
 @section('content')
+<div class="container">
+    <h2>Jadwal Mata Pelajaran</h2>
 
-<!DOCTYPE html>
-<html lang="en">
+    <form action="" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="kelas_id">Kelas</label>
+            <select name="kelas_id" id="kelas_id" class="form-control" required>
+                @foreach($kelas as $kls)
+                    <option value="{{ $kls->id }}">{{ $kls->kelas }}</option>
+                @endforeach
+            </select>
+        </div>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendar</title>
-  <!-- FullCalendar JS -->
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+        <div class="form-group">
+            <label for="mapel_id">Mata Pelajaran</label>
+            <select name="mapel_id" id="mapel_id" class="form-control" required>
+                @foreach($kelas->first()->mapel as $mapel)
+                    <option value="{{ $mapel->id }}">{{ $mapel->nama }}</option>
+                @endforeach
+            </select>
+        </div>
 
-  <!-- Custom CSS -->
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-      font-size: 14px;
-    }
+        <div class="form-group">
+            <label for="week_id">Hari</label>
+            <select name="week_id" id="week_id" class="form-control" required>
+                @foreach($weeks as $week)
+                    <option value="{{ $week->id }}">{{ $week->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
-    #calendar {
-      max-width: 1100px;
-      margin: 40px auto;
-    }
-  </style>
-</head>
+        <div class="form-group">
+            <label for="jam_mulai">Jam Mulai</label>
+            <input type="time" name="jam_mulai" id="jam_mulai" class="form-control" required>
+        </div>
 
-<body>
-  <div class="container-fluid mt-3">
-    <div class="mb-3">
-      <h1>Jadwal Mata Pelajaran</h1>
-    </div>
-    <div id='calendar'></div>
+        <div class="form-group">
+            <label for="jam_selesai">Jam Selesai</label>
+            <input type="time" name="jam_selesai" id="jam_selesai" class="form-control" required>
+        </div>
 
-    <!-- Custom JS -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
+        <button type="submit" class="btn btn-primary">Tambah Jadwal</button>
+    </form>
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'timeGridWeek',
-          initialDate: '2024-10-07',
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            //   right: 'dayGridMonth,timeGridWeek,timeGridDay'
-          },
-          events: [{
-              title: 'Fisika 7A',
-              start: '2024-10-12T10:30:00',
-              end: '2024-10-12T12:30:00'
-            },
-            {
-              title: 'Matematika 7B',
-              start: '2024-10-12T12:00:00'
-            },
-            {
-              title: 'Kimia 7C',
-              start: '2024-10-12T14:30:00'
-            },
-            {
-              title: 'Kimia 9A',
-              start: '2024-10-13T07:00:00'
-            }
-          ]
-        });
-
-        calendar.render();
-      });
-    </script>
-  </div>
-</body>
-
-</html>
+    <h3>Daftar Jadwal</h3>
+    @foreach($weeks as $week)
+        <h4>{{ $week->name }}</h4>
+        @foreach($kelas as $kls)
+            @foreach($kls->mapel as $mapel)
+                <p>Kelas: {{ $kls->kelas }}, Mata Pelajaran: {{ $mapel->nama }}, Guru: {{ $mapel->guru->nama }}</p>
+            @endforeach
+        @endforeach
+    @endforeach
+</div>
 @endsection
