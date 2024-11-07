@@ -59,8 +59,9 @@
                 <th>Nama</th>
                 <th>NIP</th>
                 <!-- <th>Jabatan</th> -->
-                <th>Tempat Lahir</th>
                 <th>Jenis Kelamin</th>
+                <th>Pendidikan</th>
+                <th>Pangkat</th>
                 <th>Aksi</th>
                 <th>Generate Akun</th>
             </tr>
@@ -71,8 +72,9 @@
                 <td>{{ $a->nama }}</td>
                 <td>{{ $a->nip }}</td>
                 <!-- <td>{{ $a->jabatan}}</td> -->
-                <td>{{ $a->tempat_lahir }}</td>
                 <td>{{ $a->jenis_kelamin }}</td>
+                <td>{{ $a->pendidikan }}</td>
+                <td>{{ $a->pangkat_golongan }}</td>
                 <td>
                     <!-- Edit Class Modal Trigger -->
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}">Lihat</button>

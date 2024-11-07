@@ -51,11 +51,11 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th class="text-start">Nomor Pendaftaran</th>
-                <th class="text-start">Nomor Formulir</th>
-                <th>Nama</th>
-                <th class="text-start">NIS</th>
-                <th>Jenis Kelamin</th>
+                <th class="text-start">Nama</th>
+                <th class="text-start">NISN</th>
+                <th>NIS</th>
+                <th class="text-start">Jenis Kelamin</th>
+                <th>Alamat</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -63,11 +63,11 @@
             @foreach($siswas as $siswa)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td class="text-start">{{ $siswa->no_pendaftaran }}</td>
-                <td class="text-start">{{ $siswa->no_formulir }}</td>
-                <td>{{ $siswa->nama }}</td>
-                <td class="text-start">{{ $siswa->nis }}</td>
-                <td>{{ $siswa->jenis_kelamin }}</td>
+                <td class="text-start">{{ $siswa->nama }}</td>
+                <td class="text-start">{{ $siswa->nisn }}</td>
+                <td>{{ $siswa->nis }}</td>
+                <td class="text-start">{{ $siswa->jenis_kelamin }}</td>
+                <td>{{ $siswa->alamat_lengkap }}</td>
                 <td>
                     <!-- Edit Button to trigger modal -->
                     <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}">
