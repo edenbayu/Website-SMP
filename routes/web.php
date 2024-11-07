@@ -97,8 +97,8 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('kalender-mapel')->controller(KalenderMapelController::class)->group(function() {
             Route::get('/', 'index')->name('kalendermapel.index');
-            Route::get('/events', 'listEvent')->name('kalendermapel.list');
-            Route::post('/ajax', 'ajax')->name('kalendermapel.ajax');
+            Route::post('/get-kelas-by-mapel', 'getKelasByMapel')->name('kalendermapel.ajax');
+
         });
 
         // Semester routes

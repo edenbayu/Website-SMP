@@ -58,7 +58,7 @@
             <tr>
                 <th>Nama</th>
                 <th>NIP</th>
-                <th>Jabatan</th>
+                <!-- <th>Jabatan</th> -->
                 <th>Tempat Lahir</th>
                 <th>Jenis Kelamin</th>
                 <th>Aksi</th>
@@ -70,7 +70,7 @@
             <tr>
                 <td>{{ $a->nama }}</td>
                 <td>{{ $a->nip }}</td>
-                <td>{{ $a->jabatan}}</td>
+                <!-- <td>{{ $a->jabatan}}</td> -->
                 <td>{{ $a->tempat_lahir }}</td>
                 <td>{{ $a->jenis_kelamin }}</td>
                 <td>

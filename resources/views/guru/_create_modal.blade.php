@@ -42,6 +42,10 @@
                         <input type="text" name="alamat" class="form-control" maxlength="255">
                     </div>
                     <div class="mb-3">
+                        <label for="jabatan">Jabatan</label>
+                        <input type="text" name="jabatan" class="form-control" maxlength="255">
+                    </div>
+                    <div class="mb-3">
                         <label for="status">Status</label>
                         <input type="text" name="status" class="form-control" maxlength="50">
                     </div>

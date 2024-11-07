@@ -64,7 +64,7 @@
                 <th>Nama</th>
                 <th>NIP</th>
                 <th>Tempat Lahir</th>
-                <th>Jenis Kelamin</th>
+                <th>Jabatan</th>
                 <th>Aksi</th>
                 <th>Generate Akun</th>
             </tr>
@@ -75,7 +75,7 @@
                 <td>{{ $guru->nama }}</td>
                 <td>{{ $guru->nip }}</td>
                 <td>{{ $guru->tempat_lahir }}</td>
-                <td>{{ $guru->jenis_kelamin }}</td>
+                <td>{{ $guru->jabatan }}</td>
                 <td>
                     <!-- Edit Class Modal Trigger -->
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}">Edit</button>

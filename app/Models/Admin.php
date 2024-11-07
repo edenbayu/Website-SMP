@@ -9,7 +9,6 @@ class Admin extends Model
     protected $fillable = [
         'nama',
         'nip',
-        'jabatan',
         'tempat_lahir',
         'tanggal_lahir',
         'jenis_kelamin',

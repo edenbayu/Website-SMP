@@ -35,7 +35,6 @@ class AdminController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'nip' => 'nullable|string|max:50|unique:admins,nip',
-            'jabatan' => 'nullable|string',
             'tempat_lahir' => 'nullable|string|max:255',
             'tanggal_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
@@ -57,7 +56,6 @@ class AdminController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'nip' => 'nullable|string|max:50|unique:gurus,nip,'.$id,
-            'jabatan' => 'nullable|string',
             'tempat_lahir' => 'nullable|string|max:255',
             'tanggal_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',

@@ -17,7 +17,7 @@
                         <label for="nip">NIP</label>
                         <input type="text" name="nip" class="form-control" maxlength="50">
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="jabatan">Jabatan</label>
                         <select name="jabatan">
                             <option value="Kepala Sekolah">Kepala Sekolah</option>
@@ -25,7 +25,7 @@
                             <option value="Satpam">Satpam</option>
                             <option value="Tenaga Kebersihan">Tenaga Kebersihan</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="mb-3">
                         <label for="tempat_lahir">Tempat Lahir</label>
                         <input type="text" name="tempat_lahir" class="form-control" maxlength="255">

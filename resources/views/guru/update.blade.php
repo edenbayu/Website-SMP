@@ -53,6 +53,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="jabatan">Jabatan</label>
+                        <input type="text" name="jabatan" id="jabatan" class="form-control" value="{{ old('alamat', $guru->alamat) }}">
+                    </div>
+
+                    <div class="form-group">
                         <label for="status">Status</label>
                         <input type="text" name="status" id="status" class="form-control" value="{{ old('status', $guru->status) }}">
                     </div>

@@ -23,6 +23,7 @@
                             <select class="form-select" id="role-{{ $guru->id }}" name="role" required>
                                 <option value="Guru">Guru</option>
                                 <option value="Wali Kelas">Wali Kelas</option>
+                                <option value="Admin">Admin</option>                                
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Generate</button>

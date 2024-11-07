@@ -23,7 +23,7 @@
                         <input type="text" name="nip" id="nip" class="form-control" value="{{ old('nip', $a->nip) }}">
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="nip">Jabatan</label>
                         <select name="jabatan">
                             <option value="Kepala Sekolah">Kepala Sekolah</option>
@@ -31,7 +31,7 @@
                             <option value="Satpam">Satpam</option>
                             <option value="Tenaga Kebersihan">Tenaga Kebersihan</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="tempat_lahir">Tempat Lahir</label>

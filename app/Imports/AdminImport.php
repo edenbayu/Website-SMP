@@ -26,7 +26,6 @@ class AdminImport implements ToModel, WithValidation, WithHeadingRow, WithUpsert
         return [
             'nip' => 'unique:gurus,nip',
             'nama' => 'nullable',
-            'jabatan' => 'nullable',
             'tempat_lahir' => 'nullable',
             'tanggal_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
@@ -48,7 +47,6 @@ class AdminImport implements ToModel, WithValidation, WithHeadingRow, WithUpsert
         return new Admin([
             'nip' => $row['nip'] ?? null,
             'nama' => $row['nama'] ?? null,
-            'jabatan' => $row['jabatan'] ?? null,
             'tempat_lahir' => $row['tempat_lahir'] ?? null,
             'tanggal_lahir' => $row['tanggal_lahir'] ?? null,
             'jenis_kelamin' => $row['jenis_kelamin'] ?? null,

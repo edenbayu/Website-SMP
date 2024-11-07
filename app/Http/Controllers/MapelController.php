@@ -7,31 +7,56 @@ use App\Models\Guru;
 use App\Models\Semester;
 use App\Models\Mapel;
 use App\Models\Kelas;
+use Illuminate\Support\Facades\DB;
 
 class MapelController extends Controller
 {
     public function index(Request $request)
     {
-        // Get the selected semester ID from the request (if applicable)
-        $mapelId = $request->input('semester_id');
-        
-        // Fetch all related data
-        $gurus = Guru::all();
+        // Retrieve all mapels for the dropdown list
+        $listMapel = Mapel::select('nama')->distinct()->get();
         $semesters = Semester::all();
-        $mapels = Mapel::with('guru', 'semester')->get(); // Eager load relationships
+        $gurus = Guru::all();
         $kelas = Kelas::all();
-    
-        // Get unique semester_ids and kelas values (7, 8, or 9) from the mapels
+
+        // Initialize the query for mapels and apply filters if present
+        $query = Mapel::with('guru', 'semester'); // Eager load related data
+
+        if ($request->filled('semester_id')) {
+            $query->where('semester_id', $request->input('semester_id'));
+        }
+
+        if ($request->filled('mapel')) {
+            $query->where('nama', $request->input('mapel'));
+        }
+
+        // Get the filtered results
+        $mapels = $query->get();
+
+        // Get unique semester_ids and kelas values (7, 8, or 9) from the filtered mapels
         $semesterIds = $mapels->pluck('semester_id')->unique();
-        $kelasValues = $mapels->pluck('kelas')->unique(); // Get unique kelas values from Mapel
-    
-        // Filter Kelas based on the semester_ids and kelas values from the mapels
+        $kelasValues = $mapels->pluck('kelas')->unique();
+
+        // Filter Kelas based on semester_ids and kelas values from the mapels
         $kelasOptions = Kelas::whereIn('id_semester', $semesterIds)
-                              ->whereIn('kelas', $kelasValues) // Match based on kelas values
-                              ->get();
-        
-        return view('mapel.index', compact('kelasOptions', 'kelas', 'semesters', 'gurus', 'mapelId', 'mapels'));
+                            ->whereIn('kelas', $kelasValues)
+                            ->get();
+
+        // Generate the rombel data by grouping and combining rombongan_belajar for each mapel ID
+        $rombel = DB::table('mapels')
+                    ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
+                    ->join('kelas', 'mapel_kelas.kelas_id', '=', 'kelas.id')
+                    ->select('mapels.id', 'kelas.rombongan_belajar')
+                    ->get()
+                    ->groupBy('id')
+                    ->map(function ($items) {
+                        return $items->pluck('rombongan_belajar')->implode(', ');
+                    });
+
+        // Pass data to the view
+        return view('mapel.index', compact('kelasOptions', 'kelas', 'semesters', 'gurus', 'mapels', 'rombel', 'listMapel'));
     }
+
     
 
     public function hapusMapel($mapelId)
