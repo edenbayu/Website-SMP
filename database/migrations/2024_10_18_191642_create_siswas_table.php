@@ -43,6 +43,7 @@ return new class extends Migration
             $table->string('lokasi_pendaftaran')->nullable(); // Marked as nullable
             $table->string('lapor_diri')->nullable(); // Marked as nullable
             $table->string('pilihan_1')->nullable(); // Marked as nullable
+            $table->string('angkatan')->nullable();
             $table->foreignId('id_user')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });

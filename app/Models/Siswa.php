@@ -39,7 +39,8 @@ class Siswa extends Model
         'waktu_pengajuan',
         'lokasi_pendaftaran',
         'lapor_diri',
-        'pilihan_1'
+        'pilihan_1',
+        'angkatan'
     ];
     
     public function user()

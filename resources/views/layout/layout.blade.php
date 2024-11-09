@@ -34,7 +34,7 @@
                         Admin
                     </li>
                     <li class="sidebar-item active">
-                        <a href="{{route('siswa.import')}}" class="sidebar-link">
+                        <a href="{{route('home')}}" class="sidebar-link">
                             <i class="fa-solid fa-list-ul"></i>
                             Dashboard
                         </a>
@@ -121,15 +121,11 @@
                             Mata Pelajaran
                         </a>
                         <ul id="mata-pelajaran" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Matematika Kelas 7A</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Matematika Kelas 7B</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Matematika Kelas 7C</a>
-                            </li>
+                            @foreach($listMataPelajaran as $mapel)
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">{{$mapel->nama}}  Kelas  {{$mapel->kelas}}</a>
+                                </li>
+                            @endforeach
                         </ul>
                     </li>
                     <li class="sidebar-item">
@@ -138,15 +134,24 @@
                             Penilaian
                         </a>
                         <ul id="penilaian" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Matematika Kelas 7A</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Matematika Kelas 7B</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Matematika Kelas 7C</a>
-                            </li>
+                            @foreach($listMataPelajaran as $mapel)
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">{{$mapel->nama}}  Kelas  {{$mapel->kelas}}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#ekstrakulikuler" data-bs-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-person-chalkboard"></i>
+                            Ekstrakulikuler
+                        </a>
+                        <ul id="ekstrakulikuler" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            @foreach($listEkskul as $ekskul)
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">{{$ekskul->nama}}</a>
+                                </li>
+                            @endforeach
                         </ul>
                     </li>
                     <li class="sidebar-item">
@@ -179,14 +184,12 @@
                 @role('Guru')
                 <div class="dropdown">
                     <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Semester 1 (2024-2025)
+                        Pilih Semester
                     </button>
                     <ul class="dropdown-menu dropdown-menu-lg-start">
-                        <li><button class="dropdown-item" type="button">SEMESTER 2 (2024-2025)</button></li>
-                        <li><button class="dropdown-item" type="button">SEMESTER 1 (2025-2026)</button></li>
-                        <li><button class="dropdown-item" type="button">SEMESTER 2 (2025-2026)</button></li>
-                        <li><button class="dropdown-item" type="button">SEMESTER 1 (2027-2028)</button></li>
-                        <li><button class="dropdown-item" type="button">SEMESTER 2 (2027-2028)</button></li>
+                        @foreach($semesters as $semester)
+                            <li><button class="dropdown-item" type="button"> {{ $semester->semester }} | {{ $semester->tahun_ajaran }} {{ $semester->status == 1 ? "(Aktif)" : "" }}</button></li>
+                        @endforeach
                     </ul>
                 </div>
                 @endrole

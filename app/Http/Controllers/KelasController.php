@@ -101,8 +101,14 @@ class KelasController extends Controller
         return redirect()->route('kelas.index')->with('success', 'Siswa berhasil ditambahkan ke kelas.');
     }
 
-    public function bukaKelas($kelasId)
+    public function bukaKelas($kelasId, Request $request)
     {
+        $selectedAngkatan = $request->input('angkatan');
+
+        $angkatan = Siswa::select('angkatan')
+                    ->distinct()
+                    ->pluck('angkatan');
+
         // Load the class along with its students
         $kelas = Kelas::with('siswas:id,nama,nisn')->findOrFail($kelasId);
 
@@ -113,7 +119,9 @@ class KelasController extends Controller
         $rombonganBelajar = $kelas->rombongan_belajar;
 
         // Retrieve all students
-        $allSiswa = Siswa::select('id', 'nama', 'nisn')->get();
+        $allSiswa = Siswa::select('id', 'nama', 'nisn')
+                        ->where('angkatan', $selectedAngkatan)
+                        ->get();
 
         // Filter out students who are already in a class for this semester
         $assignedSiswaIds = DB::table('kelas_siswa')
@@ -152,12 +160,13 @@ class KelasController extends Controller
             return view('kelas.buka', [
                 'kelas' => $kelas,
                 'siswas' => $availableSiswa,
-                'daftar_siswa' => $kelas->siswas
+                'daftar_siswa' => $kelas->siswas,
+                'angkatan' => $angkatan
             ]);
         }
     }
 
-    public function autoAddStudents($kelasId)
+    public function autoAddStudents($kelasId, $angkatan)
     {
         // Load the class along with its students
         $kelas = Kelas::with('siswas:id,nama,nisn,jenis_kelamin')->findOrFail($kelasId);
@@ -174,24 +183,28 @@ class KelasController extends Controller
         // Get the semester ID of the current class
         $semesterId = $kelas->id_semester;
 
-        // Retrieve all students who are not already assigned to a class for this semester
+        // Retrieve IDs of students already assigned to a class for this semester
         $assignedSiswaIds = DB::table('kelas_siswa')
             ->join('kelas', 'kelas_siswa.kelas_id', '=', 'kelas.id')
             ->where('kelas.id_semester', $semesterId)
             ->pluck('kelas_siswa.siswa_id')
             ->toArray();
 
-        // Get available students not already assigned in this semester
-        $availableSiswa = Siswa::whereNotIn('id', $assignedSiswaIds)->get();
+        // Get available students of the specified angkatan who are not already assigned this semester
+        $availableSiswa = Siswa::where('angkatan', $angkatan)
+            ->whereNotIn('id', $assignedSiswaIds)
+            ->get();
 
-        // Separate students by gender and limit the number by remaining slots
-        $maleStudents = $availableSiswa->where('jenis_kelamin', 'L')->take($remainingSlots / 2);
-        $femaleStudents = $availableSiswa->where('jenis_kelamin', 'P')->take($remainingSlots / 2);
+        // Split students by gender, limiting to half of remaining slots for each gender
+        $maleSlots = (int) ceil($remainingSlots / 2);
+        $femaleSlots = $remainingSlots - $maleSlots;
 
-        // Combine male and female students; if there’s still room, add more from either group
+        $maleStudents = $availableSiswa->where('jenis_kelamin', 'L')->take($maleSlots);
+        $femaleStudents = $availableSiswa->where('jenis_kelamin', 'P')->take($femaleSlots);
+
+        // Combine male and female students; if there’s still room, add more from remaining pool
         $selectedStudents = $maleStudents->merge($femaleStudents);
 
-        // If we have fewer students than needed, add additional students from the remaining pool
         if ($selectedStudents->count() < $remainingSlots) {
             $extraStudents = $availableSiswa
                 ->whereNotIn('id', $selectedStudents->pluck('id')->toArray())
@@ -199,11 +212,12 @@ class KelasController extends Controller
             $selectedStudents = $selectedStudents->merge($extraStudents);
         }
 
-        // Attach the students to the class using the pivot table
+        // Attach students to the class without detaching existing students
         $kelas->siswas()->syncWithoutDetaching($selectedStudents->pluck('id')->toArray());
 
         return redirect()->back()->with('success', $selectedStudents->count() . ' siswa berhasil ditambahkan ke kelas.');
     }
+
 
     // Add a student to a class
     public function addStudentToClass(Request $request, $kelasId)

@@ -1,16 +1,30 @@
-<!-- resources/views/kelas/buka.blade.php -->
-
 @extends('layout.layout')
 
 @section('content')
 <h1>Data Kelas: {{ $kelas->rombongan_belajar }}</h1>
 <h3>Daftar Siswa</h3>
 
+<!-- Form to filter based on Angkatan -->
+<form action="{{ route('kelas.buka', ['kelasId' => $kelas->id]) }}" method="GET">
+    <div class="form-group">
+        <label for="angkatan">Select Angkatan:</label>
+        <select name="angkatan" id="angkatan" class="form-control">
+            <option value="">-- Select Angkatan --</option>
+            @foreach($angkatan as $year)
+                <option value="{{ $year }}" {{ request('angkatan') == $year ? 'selected' : '' }}>
+                    {{ $year }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
 <!-- Add Student Modal Trigger -->
 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal-{{ $kelas->id }}">Tambah Siswa</button>
 
-<!-- Auto Assign Student Button HERE -->
-<form action="{{ route('kelas.autoAdd', $kelas->id) }}" method="POST" style="display:inline;">
+<!-- Auto Assign Student Button -->
+<form action="{{ route('kelas.autoAdd', ['kelasId' => $kelas->id, 'angkatan' => request('angkatan')]) }}" method="POST" style="display:inline;">
     @csrf
     <button type="submit" class="btn btn-primary">Auto Assign Students</button>
 </form>

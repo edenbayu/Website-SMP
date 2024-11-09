@@ -54,6 +54,7 @@ class SiswaImport implements ToModel, WithValidation, WithHeadingRow, WithUpsert
             'lokasi_pendaftaran' => 'nullable',
             'lapor_diri' => 'nullable',
             'pilihan_1' => 'nullable',
+            'angkatan' => 'nullable'
         ];
     }
     
@@ -95,6 +96,7 @@ class SiswaImport implements ToModel, WithValidation, WithHeadingRow, WithUpsert
             'lokasi_pendaftaran' => $row['lokasi_pendaftaran'] ?? null,
             'lapor_diri' => $row['lapor_diri'] ?? null,
             'pilihan_1' => $row['pilihan_1'] ?? null,
+            'angkatan' => $row['angkatan'] ?? null,
         ]);
     }
 

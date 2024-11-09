@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{kelasId}/buka', 'bukaKelas')->name('kelas.buka');
             Route::post('/{kelasId}/hapus', 'hapusKelas')->name('kelas.hapus');
             Route::delete('/kelas/{kelasId}/siswa/{siswaId}', 'deleteAssignedSiswa')->name('kelas.siswa.delete');;
-            Route::post('/{kelasId}/auto-assign', 'autoAddStudents')->name('kelas.autoAdd');
+            Route::post('/{kelasId}/auto-assign/{angkatan}', 'autoAddStudents')->name('kelas.autoAdd');
         });
 
         //Mapel routes
