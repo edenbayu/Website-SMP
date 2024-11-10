@@ -114,8 +114,8 @@
                         @foreach($kepalaSekolah as $kepala)
                             <p class="card-text">{{ $kepala->nama }}</p>
                         @endforeach
-                        <h5 class="card-title">Operator Admin</h5>
                         @foreach($operator as $op)
+                            <h5 class="card-title">{{$op->jabatan}}</h5>
                             <p class="card-text">{{ $op->nama }}</p>
                         @endforeach
                     </div>

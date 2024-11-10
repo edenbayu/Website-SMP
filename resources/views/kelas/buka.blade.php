@@ -39,8 +39,8 @@
     <tbody>
         @foreach ($daftar_siswa as $siswa)
         <tr>
-            <td>{{ $siswa['nama'] }}</td>
-            <td>{{ $siswa['nisn'] }}</td>
+            <td>{{ $siswa->nama }}</td>
+            <td>{{ $siswa->nisn }}</td>
             <td>
                 <form action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
                     @csrf

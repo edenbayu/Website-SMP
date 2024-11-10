@@ -134,9 +134,9 @@
                             Penilaian
                         </a>
                         <ul id="penilaian" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            @foreach($listMataPelajaran as $mapel)
+                            @foreach($listRombel as $mapel)
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">{{$mapel->nama}}  Kelas  {{$mapel->kelas}}</a>
+                                    <a href="#" class="sidebar-link">{{$mapel->nama}}  |  {{$mapel->rombongan_belajar}}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -182,16 +182,24 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @role('Guru')
-                <div class="dropdown">
-                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Pilih Semester
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-lg-start">
-                        @foreach($semesters as $semester)
-                            <li><button class="dropdown-item" type="button"> {{ $semester->semester }} | {{ $semester->tahun_ajaran }} {{ $semester->status == 1 ? "(Aktif)" : "" }}</button></li>
-                        @endforeach
-                    </ul>
-                </div>
+                <form action="{{ route('select.semester') }}" method="POST">
+                    @csrf 
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Pilih Semester
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-lg-start">
+                            @foreach($semesters as $semester)
+                                <li>
+                                    <button class="dropdown-item" type="submit" name="semester_id" value="{{ $semester->id }}">
+                                        {{ $semester->semester }} | {{ $semester->tahun_ajaran }} 
+                                        {{ $semester->status == 1 ? "(Aktif)" : "" }}
+                                    </button>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </form>
                 @endrole
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">

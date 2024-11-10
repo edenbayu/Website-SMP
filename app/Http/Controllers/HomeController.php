@@ -60,7 +60,7 @@ class HomeController extends Controller
                     ->where('jabatan', 'Kepala Sekolah')
                     ->get();
 
-            $operator = Guru::select('nama')
+            $operator = Guru::select('nama', 'jabatan')
                 ->where('id_user', $user->id)
                 ->get();
 

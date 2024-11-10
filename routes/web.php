@@ -12,6 +12,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SemesterSelectionController;
 
 
 // Group routes for LoginController using Route::controller
@@ -77,7 +78,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{kelasId}/buka', 'bukaKelas')->name('kelas.buka');
             Route::post('/{kelasId}/hapus', 'hapusKelas')->name('kelas.hapus');
             Route::delete('/kelas/{kelasId}/siswa/{siswaId}', 'deleteAssignedSiswa')->name('kelas.siswa.delete');;
-            Route::post('/{kelasId}/auto-assign/{angkatan}', 'autoAddStudents')->name('kelas.autoAdd');
+            Route::post('/{kelasId}/auto-assign', 'autoAddStudents')->name('kelas.autoAdd');
         });
 
         //Mapel routes
@@ -98,7 +99,6 @@ Route::middleware('auth')->group(function () {
         Route::prefix('kalender-mapel')->controller(KalenderMapelController::class)->group(function() {
             Route::get('/', 'index')->name('kalendermapel.index');
             Route::post('/get-kelas-by-mapel', 'getKelasByMapel')->name('kalendermapel.ajax');
-
         });
 
         // Semester routes
@@ -115,3 +115,6 @@ Route::middleware('auth')->group(function () {
 Route::get('', function () {
     return view('auth.login');
 });
+
+
+Route::post('/select-semester', [SemesterSelectionController::class, 'selectSemester'])->name('select.semester');

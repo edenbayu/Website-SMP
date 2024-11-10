@@ -119,9 +119,12 @@ class KelasController extends Controller
         $rombonganBelajar = $kelas->rombongan_belajar;
 
         // Retrieve all students
-        $allSiswa = Siswa::select('id', 'nama', 'nisn')
+        $allSiswa = Siswa::select('*')
                         ->where('angkatan', $selectedAngkatan)
                         ->get();
+
+        $allSiswaEkskul = Siswa::select('*')
+                            ->get();
 
         // Filter out students who are already in a class for this semester
         $assignedSiswaIds = DB::table('kelas_siswa')
@@ -142,7 +145,7 @@ class KelasController extends Controller
             ->pluck('kelas_siswa.siswa_id')
             ->toArray();
         
-        $availableEkskulSiswa = $allSiswa->reject(function ($siswa) use ($assignedEkskulSiswaIds){
+        $availableEkskulSiswa = $allSiswaEkskul->reject(function ($siswa) use ($assignedEkskulSiswaIds){
             return in_array($siswa->id, $assignedEkskulSiswaIds);
         });
 
@@ -166,7 +169,7 @@ class KelasController extends Controller
         }
     }
 
-    public function autoAddStudents($kelasId, $angkatan)
+    public function autoAddStudents($kelasId)
     {
         // Load the class along with its students
         $kelas = Kelas::with('siswas:id,nama,nisn,jenis_kelamin')->findOrFail($kelasId);
@@ -191,8 +194,7 @@ class KelasController extends Controller
             ->toArray();
 
         // Get available students of the specified angkatan who are not already assigned this semester
-        $availableSiswa = Siswa::where('angkatan', $angkatan)
-            ->whereNotIn('id', $assignedSiswaIds)
+        $availableSiswa = Siswa::whereNotIn('id', $assignedSiswaIds)
             ->get();
 
         // Split students by gender, limiting to half of remaining slots for each gender
