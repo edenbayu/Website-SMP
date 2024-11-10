@@ -30,7 +30,7 @@ class ViewServiceProvider extends ServiceProvider
 
             // If the user is a 'Guru', fetch the mapel data for the selected semester
             if ($user && $user->hasRole('Guru')) {
-                $listMataPelajaran = Mapel::select('mapels.nama', 'mapels.kelas')
+                $listMataPelajaran = Mapel::select('mapels.id', 'mapels.nama', 'mapels.kelas')
                     ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                     ->join('users', 'users.id', '=', 'gurus.id_user')
                     ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
@@ -41,7 +41,7 @@ class ViewServiceProvider extends ServiceProvider
                     ->distinct()
                     ->get();
 
-                $listRombel = Mapel::select('mapels.nama', 'kelas.rombongan_belajar')
+                $listRombel = Mapel::select('mapels.id', 'mapels.nama', 'kelas.rombongan_belajar')
                                 ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                                 ->join('users', 'users.id', '=', 'gurus.id_user')
                                 ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
@@ -54,7 +54,7 @@ class ViewServiceProvider extends ServiceProvider
                                 ->get();
 
                 // Query for Ekskul mapels
-                $listEkskul = Mapel::select('mapels.nama', 'mapels.kelas')
+                $listEkskul = Mapel::select('mapels.id', 'mapels.nama', 'mapels.kelas')
                     ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                     ->join('users', 'users.id', '=', 'gurus.id_user')
                     ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')

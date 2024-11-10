@@ -13,6 +13,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SemesterSelectionController;
+use App\Http\Controllers\SillabusController;
 
 
 // Group routes for LoginController using Route::controller
@@ -108,6 +109,26 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id}', 'update')->name('semesters.update');
             Route::delete('/{id}', 'destroy')->name('semesters.destroy');
         });
+    });
+
+    //disini kita protect Routesnya Guru yak!
+
+    Route::middleware('role:Guru')->group(function () {
+
+        Route::prefix('CP')->controller(SillabusController::class)->group(function () {
+            Route::get('/{mapelId}', 'index')->name('silabus.index');
+            Route::post('/{mapelId}/store', 'storeCP')->name('silabus.storeCP');
+            Route::post('/{mapelId}/update/{cpId}', 'updateCP')->name('silabus.updateCP');
+            Route::delete('/{mapelId}/delete/{cpId}', 'deleteCP')->name('silabus.deleteCP');
+        });
+
+        Route::prefix('TP')->controller(SillabusController::class)->group(function () {
+            Route::get('/{mapelId}/cp/{cpId}', 'bukaTP')->name('bukaTP');
+            Route::post('/{mapelId}/cp/{cpId}/store','storeTP')->name('storeTP');
+            Route::post('/{mapelId}/cp/{cpId}/{tpId}/update', 'updateTP')->name('updateTP');
+            Route::delete('/{mapelId}/cp/{cpId}/{tpId}/delete', 'deleteTP')->name('deleteTP');
+        });
+
     });
 });
 

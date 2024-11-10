@@ -98,7 +98,7 @@ class KelasController extends Controller
             }
         }
 
-        return redirect()->route('kelas.index')->with('success', 'Siswa berhasil ditambahkan ke kelas.');
+        return redirect()->route('kelas.index')->with('success', 'Siswa berhasil dihapus.');
     }
 
     public function bukaKelas($kelasId, Request $request)

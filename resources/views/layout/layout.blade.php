@@ -110,7 +110,7 @@
                         Guru
                     </li>
                     <li class="sidebar-item active">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{ route('home')}}" class="sidebar-link">
                             <i class="fa-solid fa-list-ul"></i>
                             Dashboard
                         </a>
@@ -121,11 +121,13 @@
                             Mata Pelajaran
                         </a>
                         <ul id="mata-pelajaran" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            @foreach($listMataPelajaran as $mapel)
-                                <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">{{$mapel->nama}}  Kelas  {{$mapel->kelas}}</a>
-                                </li>
-                            @endforeach
+                        @foreach($listMataPelajaran as $mapel)
+                            <li class="sidebar-item">
+                                <a href="{{ route('silabus.index', ['mapelId' => $mapel->id]) }}" class="sidebar-link">
+                                    {{ $mapel->nama }}  Kelas  {{ $mapel->kelas }}
+                                </a>
+                            </li>
+                        @endforeach
                         </ul>
                     </li>
                     <li class="sidebar-item">
