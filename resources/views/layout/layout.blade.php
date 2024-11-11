@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIAP SMP SATYA</title>
+    <title>SIAKAD</title>
     <link rel="icon" href="{{asset('style/assets/logo-sekolah.png')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('style/css/layout.css')}}">
@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    
+
     <div class="wrapper">
         <aside id="sidebar">
             <!-- Content For Sidebar -->
@@ -31,7 +31,7 @@
                 <!-- Admin -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-header">
-                        Admin
+                        Tenaga Kependidikan
                     </li>
                     <li class="sidebar-item active">
                         <a href="{{route('home')}}" class="sidebar-link">
@@ -42,13 +42,13 @@
                     <li class="sidebar-item">
                         <a href="{{ route('semesters.index') }}" class="sidebar-link">
                             <i class="fa-solid fa-chart-simple"></i>
-                            Mengelola Semester
+                            Semester
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="{{ route('kelas.index') }}" class="sidebar-link">
                             <i class="fa-solid fa-users"></i>
-                            Kelas & Ekstrakulikuler
+                            Kelas & Ekstrakurikuler
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -58,13 +58,13 @@
                         </a>
                         <ul id="biografi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="{{route('admin.index')}}" class="sidebar-link">Admin</a>
+                                <a href="{{route('admin.index')}}" class="sidebar-link">Tenaga Kependidikan</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('guru.index')}} "class="sidebar-link">Guru</a>
+                                <a href="{{route('guru.index')}} " class="sidebar-link">Pendidik</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('siswa.index')}}" class="sidebar-link">Siswa</a>
+                                <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
                             </li>
                         </ul>
                     </li>
@@ -78,7 +78,7 @@
                                 <a href="{{route('mapel.index')}}" class="sidebar-link">Mengelola Mata Pelajaran</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('kalendermapel.index')}} "class="sidebar-link">Jadwal Mata Pelajaran</a>
+                                <a href="{{route('kalendermapel.index')}} " class="sidebar-link">Jadwal Mata Pelajaran</a>
                             </li>
                         </ul>
                     </li>
@@ -121,13 +121,13 @@
                             Mata Pelajaran
                         </a>
                         <ul id="mata-pelajaran" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        @foreach($listMataPelajaran as $mapel)
+                            @foreach($listMataPelajaran as $mapel)
                             <li class="sidebar-item">
                                 <a href="{{ route('silabus.index', ['mapelId' => $mapel->id]) }}" class="sidebar-link">
-                                    {{ $mapel->nama }}  Kelas  {{ $mapel->kelas }}
+                                    {{ $mapel->nama }} Kelas {{ $mapel->kelas }}
                                 </a>
                             </li>
-                        @endforeach
+                            @endforeach
                         </ul>
                     </li>
                     <li class="sidebar-item">
@@ -137,9 +137,9 @@
                         </a>
                         <ul id="penilaian" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listRombel as $mapel)
-                                <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">{{$mapel->nama}}  |  {{$mapel->rombongan_belajar}}</a>
-                                </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
+                            </li>
                             @endforeach
                         </ul>
                     </li>
@@ -150,9 +150,9 @@
                         </a>
                         <ul id="ekstrakulikuler" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listEkskul as $ekskul)
-                                <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">{{$ekskul->nama}}</a>
-                                </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">{{$ekskul->nama}}</a>
+                            </li>
                             @endforeach
                         </ul>
                     </li>
@@ -185,19 +185,19 @@
                 </button>
                 @role('Guru')
                 <form action="{{ route('select.semester') }}" method="POST">
-                    @csrf 
+                    @csrf
                     <div class="dropdown">
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Pilih Semester
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-start">
                             @foreach($semesters as $semester)
-                                <li>
-                                    <button class="dropdown-item" type="submit" name="semester_id" value="{{ $semester->id }}">
-                                        {{ $semester->semester }} | {{ $semester->tahun_ajaran }} 
-                                        {{ $semester->status == 1 ? "(Aktif)" : "" }}
-                                    </button>
-                                </li>
+                            <li>
+                                <button class="dropdown-item" type="submit" name="semester_id" value="{{ $semester->id }}">
+                                    {{ $semester->semester }} | {{ $semester->tahun_ajaran }}
+                                    {{ $semester->status == 1 ? "(Aktif)" : "" }}
+                                </button>
+                            </li>
                             @endforeach
                         </ul>
                     </div>
@@ -205,15 +205,19 @@
                 @endrole
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button class="btn btn-danger me-3" type="submit">Logout</button>
+                        </form>
                         <li class="nav-item dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                                 <img src="{{asset("style/assets/profile.png")}}" class="avatar img-fluid rounded-circle" alt="foto profil">
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end">
+                            <!-- <div class="dropdown-menu dropdown-menu-end">
                                 <a href="#" class="dropdown-item">Profile</a>
                                 <a href="#" class="dropdown-item">Setting</a>
                                 <a href="#" class="dropdown-item">Logout</a>
-                            </div>
+                            </div> -->
                         </li>
                     </ul>
                 </div>
@@ -235,5 +239,5 @@
         new DataTable('#example');
     </script>
 </body>
-    
+
 </html>

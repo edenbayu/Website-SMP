@@ -3,8 +3,10 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
 <div class="container-fluid mt-3">
-    <div class="mb-3">
-        <h2>Data Staff Kependidikan</h2>
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body">
+            <h2 class="m-0">Tenaga Kependidikan</h2>
+        </div>
     </div>
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -16,7 +18,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Import Data Pegawai dari Excel
+                        Impor Data Pegawai dari Excel
                     </h5>
                     <button type="button"
                         class="btn-close"
@@ -29,7 +31,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-success">Import</button>
+                        <button type="submit" class="btn btn-success">Impor</button>
                     </div>
                 </form>
             </div>
@@ -46,8 +48,8 @@
     </form> -->
 
     <!-- import button -->
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Import Excel</button>
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah Data</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Impor</button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah</button>
 
     <!-- Add Admin Button -->
     <!-- <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah Data</button> -->
@@ -56,6 +58,7 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
+                <th>No</th>
                 <th>Nama</th>
                 <th>NIP</th>
                 <!-- <th>Jabatan</th> -->
@@ -69,6 +72,7 @@
         <tbody>
             @foreach($admin as $a)
             <tr>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $a->nama }}</td>
                 <td>{{ $a->nip }}</td>
                 <!-- <td>{{ $a->jabatan}}</td> -->

@@ -3,7 +3,7 @@
 @extends('layout.layout')
 
 @section('content')
-<h1>Mapel: {{ $mapel->nama }} Pembimbing: {{ $-> guru_id}}</h1>
+<h1>Mapel: {{ $mapel->nama }} Pembimbing: {{ $mapel-> guru_id}}</h1>
 <h3>Daftar Siswa</h3>
 
 <!-- Add Student Modal Trigger -->

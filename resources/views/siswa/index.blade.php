@@ -12,9 +12,11 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 
 @section('content')
-<div class="container-fluid mt-3 mx-3">
-    <div class="mb-3">
-        <h2>Data Siswa</h2>
+<div class="container-fluid mt-3">
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body">
+            <h2 class="m-0">Peserta Didik</h2>
+        </div>
     </div>
 
     <!-- Import Modal -->
@@ -22,7 +24,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Import Data Siswa dari Excel</h5>
+                    <h5 class="modal-title">Impor Data Siswa dari Excel</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
@@ -32,7 +34,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-success">Import</button>
+                        <button type="submit" class="btn btn-success">Impor</button>
                     </div>
                 </form>
             </div>
@@ -42,7 +44,7 @@
     <!-- Import Button -->
     <div class="row">
         <div class="col-3">
-            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Import Excel</button>
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Impor</button>
         </div>
     </div>
 
@@ -50,27 +52,27 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th>No</th>
+                <th class="text-start">No</th>
                 <th class="text-start">Nama</th>
                 <th class="text-start">NISN</th>
                 <th>NIS</th>
                 <th class="text-start">Jenis Kelamin</th>
-                <th>Alamat</th>
-                <th>Action</th>
+                <!-- <th>Alamat</th> -->
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach($siswas as $siswa)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $siswa->nama }}</td>
                 <td class="text-start">{{ $siswa->nisn }}</td>
                 <td>{{ $siswa->nis }}</td>
                 <td class="text-start">{{ $siswa->jenis_kelamin }}</td>
-                <td>{{ $siswa->alamat_lengkap }}</td>
+                <!-- <td>{{ $siswa->alamat_lengkap }}</td> -->
                 <td>
                     <!-- Edit Button to trigger modal -->
-                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}">
+                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}">
                         Details
                     </button>
 
@@ -78,17 +80,16 @@
                     <form action="{{ route('siswa.delete', $siswa->id) }}" method="POST" class="d-inline delete-form" id="deleteForm-{{ $siswa->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm delete-button" data-siswa-id="{{ $siswa->id }}" aria-label="Delete Siswa">
-                            <i class="fas fa-trash"></i> Delete
+                        <button type="submit" class="btn btn-danger delete-button" data-siswa-id="{{ $siswa->id }}" aria-label="Delete Siswa">
+                            Delete
                         </button>
-
                     </form>
 
                     <!-- Generate Single User Form -->
                     @if(empty($siswa->id_user))
                     <form action="{{ route('siswa.generateUser', $siswa->id) }}" method="POST" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn btn-primary">Generate User</button>
+                        <button type="submit" class="btn btn-primary ">Buat Akun</button>
                     </form>
                     @else
                     <span>User ID: {{ $siswa->id_user }}</span>
@@ -172,7 +173,7 @@
                                     </div>
 
                                     <!-- Add similar form fields for other attributes -->
-                                    
+
                                 </div>
 
                                 <div class="modal-footer">

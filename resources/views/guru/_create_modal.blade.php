@@ -4,7 +4,7 @@
             <form action="{{ route('guru.create') }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createGuruModalLabel">Tambah Guru</h5>
+                    <h5 class="modal-title" id="createGuruModalLabel">Tambah Pendidik</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body row g-2">

@@ -2,8 +2,12 @@
 @section('content')
     <!-- Admin Dashboard -->
     @role('Admin')
-    <div class="container">
-        <h1 class="my-4">Admin Dashboard</h1>
+    <div class="container-fluid mt-3">
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body">
+            <h2 class="m-0 text-center">Selamat Datang di SIAKAD, Admin!</h2>
+        </div>
+    </div>
 
         <div class="row">
             <!-- Main Dashboard -->
@@ -134,8 +138,8 @@
     @endrole
 
     <!-- Logout Form -->
-    <form action="{{ route('logout') }}" method="POST">
+    <!-- <form action="{{ route('logout') }}" method="POST">
         @csrf
         <button type="submit">Logout</button>
-    </form>
+    </form> -->
 @endsection

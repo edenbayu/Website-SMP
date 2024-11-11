@@ -4,13 +4,15 @@
 @section('content')
 
 <div class="container-fluid mt-3">
-    <div class="mb-3">
-        <h2>Mengelola Semester</h2>
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body">
+            <h2 class="m-0">Semester</h2>
+        </div>
     </div>
-    
+
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createSemesterModal">
-        Create Semester
+        Tambah
     </button>
 
     <!-- Load the modal -->
@@ -20,38 +22,38 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th>No</th>
+                <th class="text-start">No</th>
                 <th>Semester</th>
                 <th>Tahun Ajaran</th>
                 <th>Status</th>
                 <th class="text-start">Start Date</th>
                 <th class="text-start">End Date</th>
-                <th>Actions</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach($semesters as $semester)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $semester->semester }}</td>
-                    <td>{{ $semester->tahun_ajaran }}</td>
-                    <td>{{ $semester->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
-                    <td class="text-start">{{ $semester->start }}</td>
-                    <td class="text-start">{{ $semester->end }}</td>
-                    <td>
-                        <!-- Trigger Button for the Edit Modal -->
-                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}">Edit</button>
+            <tr>
+                <td class="text-start">{{ $loop->iteration }}</td>
+                <td>{{ $semester->semester }}</td>
+                <td>{{ $semester->tahun_ajaran }}</td>
+                <td>{{ $semester->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
+                <td class="text-start">{{ $semester->start }}</td>
+                <td class="text-start">{{ $semester->end }}</td>
+                <td>
+                    <!-- Trigger Button for the Edit Modal -->
+                    <button class="btn btn-warning px-4" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}">Edit</button>
 
-                        <!-- Delete Button -->
-                        <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                <!-- Load the Modal -->
-                @include('semester.semester-edit')
+                    <!-- Delete Button -->
+                    <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger px-3">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            <!-- Load the Modal -->
+            @include('semester.semester-edit')
             @endforeach
         </tbody>
     </table>

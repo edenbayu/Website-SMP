@@ -3,8 +3,10 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
 <div class="container-fluid mt-3">
-    <div class="mb-3">
-        <h2>Data Guru</h2>
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body">
+            <h2 class="m-0">Pendidik</h2>
+        </div>
     </div>
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -16,7 +18,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Import Data Pegawai dari Excel
+                        Impor Data Pegawai dari Excel
                     </h5>
                     <button type="button"
                         class="btn-close"
@@ -29,21 +31,21 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-success">Import</button>
+                        <button type="submit" class="btn btn-success">Impor</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    
+
     <!-- import button -->
     <!-- <button class="col px-0 text-start ms-2" type="button">
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#excelModal">
             <span>Import Excel</span>
         </a>
     </button> -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Import Excel</button>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createGuruModal">Tambah Guru</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Impor</button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createGuruModal">Tambah</button>
 
     <!-- Import Form -->
     <!-- <form action="{{ route('guru.import') }}" method="POST" enctype="multipart/form-data">
@@ -61,6 +63,7 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
+                <th>No</th>
                 <th>Nama</th>
                 <th>NIP</th>
                 <th>Jabatan</th>
@@ -73,6 +76,7 @@
         <tbody>
             @foreach($gurus as $guru)
             <tr>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $guru->nama }}</td>
                 <td>{{ $guru->nip }}</td>
                 <td>{{ $guru->jabatan }}</td>
