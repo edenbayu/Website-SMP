@@ -46,12 +46,6 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ route('kelas.index') }}" class="sidebar-link">
-                            <i class="fa-solid fa-users"></i>
-                            Kelas & Ekstrakurikuler
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#biografi" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-database"></i>
                             Master Database
@@ -67,6 +61,18 @@
                                 <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{route('account.index')}}" class="sidebar-link">
+                            <i class="fa-solid fa-user"></i>
+                            Akun
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{ route('kelas.index') }}" class="sidebar-link">
+                            <i class="fa-solid fa-users"></i>
+                            Kelas & Ekstrakurikuler
+                        </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#mapel" data-bs-toggle="collapse" aria-expanded="false">
@@ -94,12 +100,6 @@
                             Ekstrakulikuler
                         </a>
                     </li> -->
-                    <li class="sidebar-item">
-                        <a href="{{route('account.index')}}" class="sidebar-link">
-                            <i class="fa-solid fa-user"></i>
-                            Akun
-                        </a>
-                    </li>
                 </ul>
                 @endrole
 
