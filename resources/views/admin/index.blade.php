@@ -58,9 +58,9 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th>No</th>
+                <th class="text-start">No</th>
                 <th>Nama</th>
-                <th>NIP</th>
+                <th class="text-start">NIP</th>
                 <!-- <th>Jabatan</th> -->
                 <th>Jenis Kelamin</th>
                 <th>Pendidikan</th>
@@ -72,9 +72,9 @@
         <tbody>
             @foreach($admin as $a)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td class="text-start">{{ $loop->iteration }}</td>
                 <td>{{ $a->nama }}</td>
-                <td>{{ $a->nip }}</td>
+                <td class="text-start">{{ $a->nip }}</td>
                 <!-- <td>{{ $a->jabatan}}</td> -->
                 <td>{{ $a->jenis_kelamin }}</td>
                 <td>{{ $a->pendidikan }}</td>

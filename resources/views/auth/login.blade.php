@@ -50,7 +50,7 @@
 </head>
 
 <body>
-    @if ($errors->any())
+    <!-- @if ($errors->any())
     <div style="color: red;">
         <ul>
             @foreach ($errors->all() as $error)
@@ -58,7 +58,7 @@
             @endforeach
         </ul>
     </div>
-    @endif
+    @endif -->
 
     <div class="login-container">
         <div class="logo-section">
@@ -68,12 +68,23 @@
         </div>
         <div class="form-section">
             <p class="intro">Selamat Datang!</p>
-            <p style="margin-bottom: 30px">Masukkan NIP/NIS dan Password untuk masuk.</p>
+            <p style="margin-bottom: 30px">Masukkan Username dan Password untuk masuk.</p>
+
+            @if ($errors->any())
+            <div style="color: red;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                <label for="username">Username</label>
-                <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan Username" required>
+                    <label for="username">Username</label>
+                    <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan Username" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>

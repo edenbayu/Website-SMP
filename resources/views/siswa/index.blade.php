@@ -55,7 +55,7 @@
                 <th class="text-start">No</th>
                 <th class="text-start">Nama</th>
                 <th class="text-start">NISN</th>
-                <th>NIS</th>
+                <th class="text-start">NIS</th>
                 <th class="text-start">Jenis Kelamin</th>
                 <!-- <th>Alamat</th> -->
                 <th>Aksi</th>
@@ -67,7 +67,7 @@
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $siswa->nama }}</td>
                 <td class="text-start">{{ $siswa->nisn }}</td>
-                <td>{{ $siswa->nis }}</td>
+                <td class="text-start">{{ $siswa->nis }}</td>
                 <td class="text-start">{{ $siswa->jenis_kelamin }}</td>
                 <!-- <td>{{ $siswa->alamat_lengkap }}</td> -->
                 <td>

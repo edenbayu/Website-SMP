@@ -1,6 +1,6 @@
 <!-- resources/views/semesters/create-modal.blade.php -->
 <div class="modal fade" id="createSemesterModal" tabindex="-1" aria-labelledby="createSemesterModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createSemesterModalLabel">Create Semester</h5>
@@ -32,7 +32,7 @@
                             <option value="0">Tidak Aktif</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
         </div>

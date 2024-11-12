@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
 <div class="container-fluid mt-3">
-<div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body">
             <h2 class="m-0">Kelas & Ekstrakurikuler</h2>
         </div>
@@ -262,7 +262,6 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="rombongan_belajar" class="form-label">Nama Ekstrakulikuler</label>
-                            <select name="rombongan_belajar" id=""></select>
                             <input type="text" name="rombongan_belajar" class="form-control" required>
                         </div>
                         <div class="mb-3">
