@@ -124,9 +124,9 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('TP')->controller(SillabusController::class)->group(function () {
             Route::get('/{mapelId}/cp/{cpId}', 'bukaTP')->name('bukaTP');
-            Route::post('/{mapelId}/cp/{cpId}/store','storeTP')->name('storeTP');
-            Route::post('/{mapelId}/cp/{cpId}/{tpId}/update', 'updateTP')->name('updateTP');
-            Route::delete('/{mapelId}/cp/{cpId}/{tpId}/delete', 'deleteTP')->name('deleteTP');
+            Route::post('/{mapelId}/cp/{cpId}/store','storeTP')->name('silabus.storeTP');
+            Route::post('/{mapelId}/cp/{cpId}/{tpId}/update', 'updateTP')->name('silabus.updateTP');
+            Route::delete('/{mapelId}/cp/{cpId}/{tpId}/delete', 'deleteTP')->name('silabus.deleteTP');
         });
 
     });
@@ -136,6 +136,11 @@ Route::middleware('auth')->group(function () {
 Route::get('', function () {
     return view('auth.login');
 });
+
+//Route unntuk reset password
+Route::get('/forgot-password', function(){
+    return view('auth.forgot-password');
+})->middleware('guest')->name('password.request');
 
 
 Route::post('/select-semester', [SemesterSelectionController::class, 'selectSemester'])->name('select.semester');

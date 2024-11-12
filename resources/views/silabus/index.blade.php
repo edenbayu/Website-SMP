@@ -31,6 +31,12 @@
                     <td>{{ $cp->nama }}</td>
                     <td>{{ $cp->keterangan }}</td>
                     <td>
+                        <!-- Buat TP Button -->
+                        <form action="{{ route('bukaTP', ['mapelId' => $mapelId, 'cpId' => $cp->id]) }}" method="GET" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Buat TP
+                            </button>
+                        </form>
                         <!-- Update Button -->
                         <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}">
                             Ubah
