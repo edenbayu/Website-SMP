@@ -4,8 +4,8 @@
     @role('Admin')
     <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
-        <div class="card-body">
-            <h2 class="m-0 text-center">Selamat Datang di SIAKAD, Admin!</h2>
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, Admin!</h2>
         </div>
     </div>
 

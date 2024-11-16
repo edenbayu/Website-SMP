@@ -4,8 +4,8 @@
 @section('content')
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
-        <div class="card-body">
-            <h2 class="m-0">Kelas & Ekstrakurikuler</h2>
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Kelas & Ekstrakurikuler</h2>
         </div>
     </div>
 
@@ -59,8 +59,8 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th>No</th>
-                <th>Kelas</th>
+                <th class="text-center">No</th>
+                <th class="text-start">Kelas</th>
                 <th>Rombongan Belajar</th>
                 <th>Wali Kelas / Pendamping</th>
                 <th>Semester</th>
@@ -70,8 +70,8 @@
         <tbody>
             @foreach($kelas as $k)
             <tr>
-                <td>{{$loop->iteration}}</td>
-                <td>{{ $k->kelas }}</td>
+                <td class="text-center">{{$loop->iteration}}</td>
+                <td class="text-start">{{ $k->kelas }}</td>
                 <td>{{ $k->rombongan_belajar }}</td>
                 <td>{{ $k->guru->nama ?? 'N/A' }}</td>
                 <td>{{ $k->semester->semester . " | " . $k->semester->tahun_ajaran }}</td>
@@ -80,7 +80,7 @@
                     <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info">Lihat</a>
 
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}">Edit</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}">Ubah</button>
 
                     <!-- Edit Class Modal -->
                     @if ($k->kelas != 'Ekskul')
@@ -91,7 +91,7 @@
                                     @csrf
                                     @method('POST') <!-- Use PUT for updates as per REST conventions -->
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="editKelasModalLabel">Edit Kelas - {{ $k->rombongan_belajar }}</h5>
+                                        <h5 class="modal-title" id="editKelasModalLabel">Ubah Kelas - {{ $k->rombongan_belajar }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -127,7 +127,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
                                     </div>
                                 </form>
                             </div>
@@ -141,7 +141,7 @@
                                     @csrf
                                     @method('POST') <!-- Use PUT for updates as per REST conventions -->
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="editEkstraModalLabel">Edit Ekstra - {{ $k->rombongan_belajar }}</h5>
+                                        <h5 class="modal-title" id="editEkstraModalLabel">Ubah Ekstra - {{ $k->rombongan_belajar }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -189,7 +189,7 @@
                     <!-- Delete Class Button -->
                     <form action="{{ route('kelas.hapus', ['kelasId' => $k->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
                         @csrf
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
                     </form>
                 </td>
             </tr>

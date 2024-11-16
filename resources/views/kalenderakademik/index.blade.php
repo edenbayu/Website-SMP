@@ -91,7 +91,7 @@
                     <input type="number" id="tipe_kegiatan" name="tipe_kegiatan" required>
                 </div>
                 <button type="submit">Save</button>
-                <button type="button" id="deleteEvent" style="display: none;">Delete</button>
+                <button type="button" id="deleteEvent" style="display: none;">Hapus</button>
             </form>
         </div>
         <div class="modal-overlay" id="modalOverlay"></div>

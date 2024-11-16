@@ -4,8 +4,8 @@
 @section('content')
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
-        <div class="card-body">
-            <h2 class="m-0">Pendidik</h2>
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Pendidik</h2>
         </div>
     </div>
     @if(session('success'))
@@ -70,7 +70,7 @@
                 <th>Pendidikan</th>
                 <th>Pangkat</th>
                 <th>Aksi</th>
-                <th>Generate Akun</th>
+                <th>Akun</th>
             </tr>
         </thead>
         <tbody>
@@ -84,18 +84,18 @@
                 <td>{{ $guru->pangkat_golongan }}</td>
                 <td>
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}">Edit</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}">Ubah</button>
                     <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
                     </form>
                 </td>
                 <td>
                     @if(empty($guru->id_user))
                     <!-- Button to open the generate user modal -->
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $guru->id }}">
-                        Generate User
+                        Buat
                     </button>
                     @else
                     <span>User ID: {{ $guru->id_user }}</span>

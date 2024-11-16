@@ -5,8 +5,8 @@
 
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
-        <div class="card-body">
-            <h2 class="m-0">Semester</h2>
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Semester</h2>
         </div>
     </div>
 
@@ -26,8 +26,8 @@
                 <th>Semester</th>
                 <th>Tahun Ajaran</th>
                 <th>Status</th>
-                <th class="text-start">Start Date</th>
-                <th class="text-start">End Date</th>
+                <th class="text-start">Tanggal Dimulai</th>
+                <th class="text-start">Tanggal Berakhir</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -42,13 +42,13 @@
                 <td class="text-start">{{ $semester->end }}</td>
                 <td>
                     <!-- Trigger Button for the Edit Modal -->
-                    <button class="btn btn-warning px-4" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}">Edit</button>
+                    <button class="btn btn-warning px-4" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}" style="width:5 rem">Ubah</button>
 
                     <!-- Delete Button -->
                     <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger px-3">Hapus</button>
+                        <button type="submit" class="btn btn-danger px-3" style="width:5 rem">Hapus</button>
                     </form>
                 </td>
             </tr>

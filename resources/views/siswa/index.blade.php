@@ -14,8 +14,8 @@
 @section('content')
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
-        <div class="card-body">
-            <h2 class="m-0">Peserta Didik</h2>
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Peserta Didik</h2>
         </div>
     </div>
 
@@ -73,15 +73,15 @@
                 <td>
                     <!-- Edit Button to trigger modal -->
                     <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}">
-                        Details
+                        Ubah
                     </button>
 
                     <!-- Delete Form -->
                     <form action="{{ route('siswa.delete', $siswa->id) }}" method="POST" class="d-inline delete-form" id="deleteForm-{{ $siswa->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger delete-button" data-siswa-id="{{ $siswa->id }}" aria-label="Delete Siswa">
-                            Delete
+                        <button type="submit" class="btn btn-danger delete-button" data-siswa-id="{{ $siswa->id }}" aria-label="Hapus Siswa">
+                            Hapus
                         </button>
                     </form>
 
@@ -101,8 +101,8 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editSiswaModalLabel-{{ $siswa->id }}">Edit Data Siswa</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <h5 class="modal-title" id="editSiswaModalLabel-{{ $siswa->id }}">Ubah Data Siswa</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -177,8 +177,8 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update Siswa</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="width: 6rem">Tutup</button>
+                                    <button type="submit" class="btn btn-primary" style="width: 6rem">Simpan</button>
                                 </div>
                             </form>
                         </div>

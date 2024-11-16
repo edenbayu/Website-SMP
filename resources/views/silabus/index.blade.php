@@ -33,14 +33,14 @@
                     <td>
                         <!-- Update Button -->
                         <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}">
-                            Edit
+                            Ubah
                         </button>
 
                         <!-- Delete Form -->
                         <form action="{{ route('silabus.deleteCP', [$mapelId, $cp->id]) }}" method="POST" style="display: inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Hapus</button>
                         </form>
                     </td>
                 </tr>

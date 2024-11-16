@@ -25,7 +25,7 @@
                     <form action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
                     </form>
                 </td>
             </tr>

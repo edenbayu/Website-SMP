@@ -1,10 +1,10 @@
-<!-- Edit Admin Modal -->
+<!-- Ubah Admin Modal -->
 <div class="modal fade" id="editAdminModal-{{ $a->id }}" tabindex="-1" aria-labelledby="editAdminModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editAdminModalLabel">Edit Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="editAdminModalLabel">Ubah Data</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -79,8 +79,8 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update Data</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="width: 6rem">Tutup</button>
+                    <button type="submit" class="btn btn-primary" style="width: 6rem">Simpan</button>
                 </div>
             </form>
         </div>
