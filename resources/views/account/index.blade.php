@@ -5,8 +5,8 @@
 
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
-        <div class="card-body">
-            <h2 class="m-0">Daftar Akun</h2>
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6" style="color: #EBF4F6">Daftar Akun</h2>
         </div>
     </div>
 
@@ -15,8 +15,8 @@
             <tr>
                 <th class="text-start">ID</th>
                 <th>Nama</th>
-                <th>Username</th>
-                <th>Passowrd</th>
+                <th>Nama Pengguna</th>
+                <th>Kata Sandi</th>
                 <th>Role</th>
                 <th>Aksi</th>
             </tr>
@@ -30,7 +30,7 @@
                 <td>{{$account->password}}</td>
                 <td>{{ $account->getRoleNames()->implode(', ') }}</td>
                 <td>
-                    <a href="{{ route('account.edit', $account->id) }}" class="btn btn-warning px-4">Edit</a>
+                    <a href="{{ route('account.edit', $account->id) }}" class="btn btn-warning px-4">Ubah</a>
 
                     <form action="{{ route('account.destroy', $account->id) }}" method="POST" style="display:inline;">
                         @csrf

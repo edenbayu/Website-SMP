@@ -31,14 +31,14 @@
                     <td>
                         {{-- Edit Button --}}
                         <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editTPModal{{ $tp->id }}">
-                            Edit
+                            Ubah
                         </button>
                         
                         {{-- Delete Button --}}
                         <form action="{{ route('silabus.deleteTP', [$mapelId, $cpId, $tp->id]) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this TP?')">Delete</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this TP?')">Hapus</button>
                         </form>
                     </td>
                 </tr>
@@ -93,7 +93,7 @@
                         @csrf
                         @method('PUT')
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editTPModalLabel{{ $tp->id }}">Edit TP</h5>
+                            <h5 class="modal-title" id="editTPModalLabel{{ $tp->id }}">Ubah TP</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">

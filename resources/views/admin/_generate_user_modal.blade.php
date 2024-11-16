@@ -1,10 +1,10 @@
 @foreach($admin as $a)
-    <!-- Generate User Modal for each Admin -->
+    <!-- Buat Modal for each Admin -->
     <div class="modal fade" id="generateUserModal-{{ $a->id }}" tabindex="-1" aria-labelledby="generateUserModalLabel-{{ $a->id }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="generateUserModalLabel-{{ $a->id }}">Generate User for {{ $a->nama }}</h5>
+                    <h5 class="modal-title" id="generateUserModalLabel-{{ $a->id }}">Buat for {{ $a->nama }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

@@ -1,4 +1,4 @@
-<!-- Edit Semester Modal for this specific semester -->
+<!-- Ubah Semester Modal for this specific semester -->
 <div class="modal fade" id="editSemesterModal-{{ $semester->id }}" tabindex="-1" aria-labelledby="editSemesterModalLabel-{{ $semester->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -7,7 +7,7 @@
                 @method('PUT')
                 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editSemesterModalLabel-{{ $semester->id }}">Edit Semester</h5>
+                    <h5 class="modal-title" id="editSemesterModalLabel-{{ $semester->id }}">Ubah Semester</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 

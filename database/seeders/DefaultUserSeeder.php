@@ -24,7 +24,7 @@ class DefaultUserSeeder extends Seeder
 
         // Creating Admin User
         $wali_kelas = User::create([
-            'name' => 'Citam',
+            'name' => 'wali',
             'username' => 'walikelas',
             'password' => 'walikelas'
         ]);
@@ -32,7 +32,7 @@ class DefaultUserSeeder extends Seeder
 
         // Creating Product Manager User
         $guru= User::create([
-            'name' => 'Bayu', 
+            'name' => 'guru', 
             'username' => 'guru',
             'password' => 'guru'
         ]);

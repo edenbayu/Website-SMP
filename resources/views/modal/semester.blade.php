@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createSemesterModalLabel">Create Semester</h5>
+                <h5 class="modal-title" id="createSemesterModalLabel">Tambah Semester</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -18,11 +18,11 @@
                         <input type="text" class="form-control" id="tahun_ajaran" name="tahun_ajaran" required>
                     </div>
                     <div class="mb-3">
-                        <label for="start" class="form-label">Start Date</label>
+                        <label for="start" class="form-label">Tanggal Dimulai</label>
                         <input type="date" class="form-control" id="start" name="start" required>
                     </div>
                     <div class="mb-3">
-                        <label for="end" class="form-label">End Date</label>
+                        <label for="end" class="form-label">Tanggal Berakhir</label>
                         <input type="date" class="form-control" id="end" name="end" required>
                     </div>
                     <div class="mb-3">
