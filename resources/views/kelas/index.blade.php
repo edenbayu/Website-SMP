@@ -297,10 +297,18 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
     <script>
-        var table = new DataTable('#example', {
-            language: {
-                url: "{{asset('style/js/bahasa.json')}}",
-            },
+        $(document).ready(function() {
+            // Cek apakah DataTable sudah diinisialisasi
+            if ($.fn.DataTable.isDataTable('#example')) {
+                $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+            }
+
+            // Inisialisasi DataTable dengan opsi
+            $('#example').DataTable({
+                language: {
+                    url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+                }
+            });
         });
     </script>
 </div>
