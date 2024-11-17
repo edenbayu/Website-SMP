@@ -138,7 +138,7 @@
                         <ul id="penilaian" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listRombel as $mapel)
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
+                                <a href="{{ route('penilaian.index', ['kelasId' => $mapel->kelas_id]) }}" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -236,7 +236,25 @@
     <!-- <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script> -->
     <!-- <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script> -->
     <script>
-        new DataTable('#example');
+        var table = new DataTable('#example', {
+            language: {
+                decimal: ",",
+                thousands: ".",
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ masukan",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                infoEmpty: "Tidak ada data tersedia",
+                infoFiltered: "(difilter dari total _MAX_ entri)",
+                loadingRecords: "Sedang memuat...",
+                zeroRecords: "Tidak ditemukan data yang sesuai",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "Berikutnya",
+                    previous: "Sebelumnya"
+                },
+            },
+        });
     </script>
 </body>
 

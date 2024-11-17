@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Topik Pembelajaran (TP) for {{ $cps->nama }} - {{ $mapelId }}</h2>
+    <h2>{{$mapel->nama}} - Kelas {{ $mapel->kelas }}</h2>
     
     {{-- Display Success Message --}}
     @if(session('success'))
@@ -11,12 +11,18 @@
         </div>
     @endif
 
+    {{-- Button to Trigger Create TP Modal --}}
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTPModal">
+        Create New TP
+    </button>
+
     {{-- List TP --}}
-    <h4>List of Topik Pembelajaran (TP)</h4>
+    <h4>CP {{$cpId}} - {{$cps->nama}}</h4>
+    <h5>{{$cps->keterangan}}</h5>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>No</th>
+                <th>ID</th>
                 <th>Nama TP</th>
                 <th>Keterangan</th>
                 <th>Actions</th>
@@ -25,7 +31,7 @@
         <tbody>
             @forelse($tps as $index => $tp)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <td>{{$cps->id}}.{{ $tp->id }}</td>
                     <td>{{ $tp->nama }}</td>
                     <td>{{ $tp->keterangan }}</td>
                     <td>
@@ -49,11 +55,6 @@
             @endforelse
         </tbody>
     </table>
-
-    {{-- Button to Trigger Create TP Modal --}}
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTPModal">
-        Create New TP
-    </button>
 
     {{-- Create TP Modal --}}
     <div class="modal fade" id="createTPModal" tabindex="-1" aria-labelledby="createTPModalLabel" aria-hidden="true">
@@ -91,7 +92,7 @@
                 <div class="modal-content">
                     <form action="{{ route('silabus.updateTP', [$mapelId, $cpId, $tp->id]) }}" method="POST">
                         @csrf
-                        @method('PUT')
+                        @method('POST')
                         <div class="modal-header">
                             <h5 class="modal-title" id="editTPModalLabel{{ $tp->id }}">Ubah TP</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

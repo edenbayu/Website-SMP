@@ -75,8 +75,9 @@ class SillabusController extends Controller
     {
         $tps = TP::where('cp_id', $cpId)->get(); // Add `->get()` to retrieve the collection
         $cps = CP::findOrFail($cpId);
+        $mapel = Mapel::findOrFail($mapelId); 
 
-        return view('silabus.buka', compact('tps', 'cps', 'mapelId', 'cpId')); // Pass additional IDs if needed
+        return view('silabus.buka', compact('tps', 'cps', 'mapelId', 'cpId', 'mapel')); // Pass additional IDs if needed
     }
 
     // Store TP under a CP

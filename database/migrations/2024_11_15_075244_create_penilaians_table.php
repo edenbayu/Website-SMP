@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('c_p_s', function (Blueprint $table) {
+        Schema::create('penilaians', function (Blueprint $table) {
             $table->id();
-            $table->integer('nomor');
-            $table->string('nama');
+            $table->enum('tipe', ['Tugas', 'UH', 'STS', 'SAS']);
+            $table->string('judul');
+            $table->integer('kktp');
             $table->string('keterangan');
-            $table->foreignId('mapel_id')->constrained('mapels')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('tp_id')->nullable()->constrained('t_p_s')->onDelete('set null');
             $table->timestamps();
-        });
+        }); 
     }
 
     /**
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('c_p_s');
+        Schema::dropIfExists('penilaians');
     }
 };

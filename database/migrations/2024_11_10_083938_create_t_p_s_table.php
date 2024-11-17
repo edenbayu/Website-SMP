@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('t_p_s', function (Blueprint $table) {
             $table->id();
+            $table->integer('nomor');
             $table->string('nama');
             $table->string('keterangan');
             $table->foreignId('cp_id')->constrained('c_p_s')->onDelete('cascade')->onUpdate('cascade');

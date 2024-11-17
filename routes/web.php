@@ -14,6 +14,7 @@ use App\Http\Controllers\MapelController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SemesterSelectionController;
 use App\Http\Controllers\SillabusController;
+use App\Http\Controllers\PenilaianController;
 
 
 // Group routes for LoginController using Route::controller
@@ -127,6 +128,13 @@ Route::middleware('auth')->group(function () {
             Route::post('/{mapelId}/cp/{cpId}/store','storeTP')->name('silabus.storeTP');
             Route::post('/{mapelId}/cp/{cpId}/{tpId}/update', 'updateTP')->name('silabus.updateTP');
             Route::delete('/{mapelId}/cp/{cpId}/{tpId}/delete', 'deleteTP')->name('silabus.deleteTP');
+        });
+
+        Route::prefix('Penilaian/{kelasId}')->controller(PenilaianController::class)->group(function () {
+            Route::get('/', 'index')->name('penilaian.index');
+            Route::post('/store', 'storePenilaian')->name('penilaian.store');
+            Route::put('/{penilaianId}/update', 'updatePenilaian')->name('penilaian.update');
+            Route::delete('/{penilaianId}/delete', 'deletePenilaian')->name('penilaian.delete');
         });
 
     });

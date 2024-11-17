@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Silabus for {{ $mapel->nama }} Kelas {{ $mapel->kelas }}</h1>
+    <h1>{{ $mapel->nama }} Kelas {{ $mapel->kelas }}</h1>
 
     <!-- Success Message -->
     @if (session('success'))
@@ -20,7 +20,8 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Nama CP</th>
+                <th>CP</th>
+                <th>Topik</th>
                 <th>Keterangan</th>
                 <th>Actions</th>
             </tr>
@@ -28,6 +29,7 @@
         <tbody>
             @foreach($cps as $cp)
                 <tr>
+                    <td>{{ $cp->nomor}}</td>
                     <td>{{ $cp->nama }}</td>
                     <td>{{ $cp->keterangan }}</td>
                     <td>
