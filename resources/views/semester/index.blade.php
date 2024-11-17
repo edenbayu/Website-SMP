@@ -11,7 +11,7 @@
     </div>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createSemesterModal">
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createSemesterModal" style="width: 6rem">
         Tambah
     </button>
 
@@ -42,13 +42,13 @@
                 <td class="text-start">{{ $semester->end }}</td>
                 <td>
                     <!-- Trigger Button for the Edit Modal -->
-                    <button class="btn btn-warning px-4" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}" style="width:5 rem">Ubah</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}" style="width: 5rem">Ubah</button>
 
                     <!-- Delete Button -->
                     <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger px-3" style="width:5 rem">Hapus</button>
+                        <button type="submit" class="btn btn-danger" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
             </tr>
@@ -63,6 +63,11 @@
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
 <script>
-    new DataTable('#example');
+    var table = new DataTable('#example', {
+        language: {
+            url: "{{asset('style/js/bahasa.json')}}",
+        },
+    });
 </script>
+
 @endsection

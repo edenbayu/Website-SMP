@@ -59,7 +59,7 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th class="text-center">No</th>
+                <th class="text-start">No</th>
                 <th class="text-start">Kelas</th>
                 <th>Rombongan Belajar</th>
                 <th>Wali Kelas / Pendamping</th>
@@ -70,17 +70,17 @@
         <tbody>
             @foreach($kelas as $k)
             <tr>
-                <td class="text-center">{{$loop->iteration}}</td>
+                <td class="text-start">{{$loop->iteration}}</td>
                 <td class="text-start">{{ $k->kelas }}</td>
                 <td>{{ $k->rombongan_belajar }}</td>
                 <td>{{ $k->guru->nama ?? 'N/A' }}</td>
                 <td>{{ $k->semester->semester . " | " . $k->semester->tahun_ajaran }}</td>
                 <td>
                     <!-- View Students Button -->
-                    <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info">Lihat</a>
+                    <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info" style="width: 5rem">Lihat</a>
 
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}">Ubah</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}" style="width: 5rem">Ubah</button>
 
                     <!-- Edit Class Modal -->
                     @if ($k->kelas != 'Ekskul')
@@ -189,7 +189,7 @@
                     <!-- Delete Class Button -->
                     <form action="{{ route('kelas.hapus', ['kelasId' => $k->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
                         @csrf
-                        <button type="submit" class="btn btn-danger">Hapus</button>
+                        <button type="submit" class="btn btn-danger" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
             </tr>
@@ -297,7 +297,11 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
     <script>
-        new DataTable('#example');
+        var table = new DataTable('#example', {
+            language: {
+                url: "{{asset('style/js/bahasa.json')}}",
+            },
+        });
     </script>
 </div>
 @endsection

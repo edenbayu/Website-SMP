@@ -48,8 +48,8 @@
     </form> -->
 
     <!-- import button -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Impor</button>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah</button>
+    <button class="btn btn-primary mb-3 px-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
+    <button class="btn btn-success mb-3 px-2" data-bs-toggle="modal" data-bs-target="#createAdminModal" style="width: 6rem">Tambah</button>
 
     <!-- Add Admin Button -->
     <!-- <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah Data</button> -->
@@ -81,21 +81,21 @@
                 <td>{{ $a->pangkat_golongan }}</td>
                 <td>
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}">Ubah</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}" style="width: 5rem">Ubah</button>
                     <form action="{{ route('admin.destroy', $a->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Hapus</button>
+                        <button type="submit" class="btn btn-danger" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
                 <td>
                     @if(empty($a->id_user))
                     <!-- Button to open the generate user modal -->
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $a->id }}">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $a->id }}" style="width: 5rem">
                         Buat
                     </button>
                     @else
-                    <span>User ID: {{ $a->id_user }}</span>
+                    <span> User ID: {{ $a->id_user }}</span>
                     @endif
                 </td>
             </tr>
@@ -108,9 +108,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-    <!-- <script>
-        new DataTable('#example');
-    </script> -->
+    <script>
+        var table = new DataTable('#example', {
+            language: {
+                url: "{{asset('style/js/bahasa.json')}}",
+            },
+        });
+    </script>
 
     <!-- Include Modals -->
     @include('admin._create_modal')

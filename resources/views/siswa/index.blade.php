@@ -44,7 +44,7 @@
     <!-- Import Button -->
     <div class="row">
         <div class="col-3">
-            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Impor</button>
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
         </div>
     </div>
 
@@ -59,6 +59,7 @@
                 <th class="text-start">Jenis Kelamin</th>
                 <!-- <th>Alamat</th> -->
                 <th>Aksi</th>
+                <th>Akun</th>
             </tr>
         </thead>
         <tbody>
@@ -72,7 +73,7 @@
                 <!-- <td>{{ $siswa->alamat_lengkap }}</td> -->
                 <td>
                     <!-- Edit Button to trigger modal -->
-                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}">
+                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}" style="width: 5rem">
                         Ubah
                     </button>
 
@@ -80,16 +81,17 @@
                     <form action="{{ route('siswa.delete', $siswa->id) }}" method="POST" class="d-inline delete-form" id="deleteForm-{{ $siswa->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger delete-button" data-siswa-id="{{ $siswa->id }}" aria-label="Hapus Siswa">
+                        <button type="submit" class="btn btn-danger delete-button" data-siswa-id="{{ $siswa->id }}" aria-label="Hapus Siswa" style="width: 5rem">
                             Hapus
                         </button>
                     </form>
-
+                </td>
+                <td>
                     <!-- Generate Single User Form -->
                     @if(empty($siswa->id_user))
                     <form action="{{ route('siswa.generateUser', $siswa->id) }}" method="POST" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn btn-primary ">Buat Akun</button>
+                        <button type="submit" class="btn btn-primary" style="width: 5rem">Buat</button>
                     </form>
                     @else
                     <span>User ID: {{ $siswa->id_user }}</span>
@@ -194,7 +196,11 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
     <script>
-        new DataTable('#example');
+        var table = new DataTable('#example', {
+            language: {
+                url: "{{asset('style/js/bahasa.json')}}",
+            },
+        });
     </script>
 </div>
 @endsection

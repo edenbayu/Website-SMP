@@ -30,11 +30,11 @@
                 <td>{{$account->password}}</td>
                 <td>{{ $account->getRoleNames()->implode(', ') }}</td>
                 <td>
-                    <a href="{{ route('account.edit', $account->id) }}" class="btn btn-warning px-4">Ubah</a>
+                    <a href="{{ route('account.edit', $account->id) }}" class="btn btn-warning" style="width: 5rem">Ubah</a>
 
                     <form action="{{ route('account.destroy', $account->id) }}" method="POST" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn btn-danger px-3" onclick="return confirm('Are you sure?')">Hapus</button>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
             </tr>
@@ -47,7 +47,11 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
     <script>
-        new DataTable('#example');
+        var table = new DataTable('#example', {
+            language: {
+                url: "{{asset('style/js/bahasa.json')}}",
+            },
+        });
     </script>
 </div>
 @endsection

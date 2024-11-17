@@ -15,22 +15,22 @@
                 <select name="semester_id" id="semester_id" class="form-control">
                     <option value="">Select Semester</option>
                     @foreach($semesters as $semester)
-                        <option value="{{ $semester->id }}" {{ request('semester_id') == $semester->id ? 'selected' : '' }}>
-                            {{ $semester->semester }} | {{ $semester->tahun_ajaran }} {{ $semester->status == 1 ? "(Aktif)" : "" }}
-                        </option>
+                    <option value="{{ $semester->id }}" {{ request('semester_id') == $semester->id ? 'selected' : '' }}>
+                        {{ $semester->semester }} | {{ $semester->tahun_ajaran }} {{ $semester->status == 1 ? "(Aktif)" : "" }}
+                    </option>
                     @endforeach
                 </select>
             </div>
 
             <!-- Class Filter -->
             <div class="col-md-4">
-                <label for="mapel">Mapel:</labyel>
+                <label for="mapel">Mapel:</label>
                 <select name="mapel" id="mapel" class="form-control">
                     <option value="">Select Mapel</option>
                     @foreach($listMapel as $mapel)
-                        <option value="{{ $mapel->nama }}" {{ request('mapels') == $mapel->nama ? 'selected' : '' }}>
-                            {{ $mapel->nama }}
-                        </option>
+                    <option value="{{ $mapel->nama }}" {{ request('mapels') == $mapel->nama ? 'selected' : '' }}>
+                        {{ $mapel->nama }}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -51,9 +51,9 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th class="text-start">ID</th>
                 <th>Nama</th>
-                <th>Kelas</th>
+                <th class="text-start">Kelas</th>
                 <th>Guru</th>
                 <th>Rombel</th>
                 <th>Semester</th>
@@ -63,9 +63,9 @@
         <tbody>
             @foreach ($mapels as $mapel)
             <tr>
-                <td>{{ $mapel->id }}</td>
+                <td class="text-start">{{ $mapel->id }}</td>
                 <td>{{ $mapel->nama }}</td>
-                <td>{{ $mapel->kelas }}</td>
+                <td class="text-start">{{ $mapel->kelas }}</td>
                 <td>{{ $mapel->guru->nama }}</td>
                 @if ($mapel->kelas != 'Ekskul')
                 <td>
@@ -82,14 +82,14 @@
                     <form action="{{ route('mapel.delete', $mapel->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                        <button type="submit" class="btn btn-danger" style="width: 5rem">Hapus</button>
                     </form>
 
                     <!-- Button to open Assign Kelas Modal -->
                     @if ($mapel->kelas != 'Ekskul')
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#assignKelasModal-{{ $mapel->id }}">
-                            Tambah Kelas
-                        </button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#assignKelasModal-{{ $mapel->id }}">
+                        Tambah Kelas
+                    </button>
                     @endif
 
                     <!-- Modal for Assign Kelas -->
@@ -131,7 +131,11 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
     <script>
-        new DataTable('#example');
+        var table = new DataTable('#example', {
+            language: {
+                url: "{{asset('style/js/bahasa.json')}}",
+            },
+        });
     </script>
 
 </div>

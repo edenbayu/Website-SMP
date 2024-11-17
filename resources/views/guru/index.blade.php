@@ -44,8 +44,8 @@
             <span>Import Excel</span>
         </a>
     </button> -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal">Impor</button>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createGuruModal">Tambah</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createGuruModal" style="width: 6rem">Tambah</button>
 
     <!-- Import Form -->
     <!-- <form action="{{ route('guru.import') }}" method="POST" enctype="multipart/form-data">
@@ -84,11 +84,11 @@
                 <td>{{ $guru->pangkat_golongan }}</td>
                 <td>
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}">Ubah</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}" style="width: 5rem">Ubah</button>
                     <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Hapus</button>
+                        <button type="submit" class="btn btn-danger" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
                 <td>
@@ -116,7 +116,11 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
     <script>
-        new DataTable('#example');
+        var table = new DataTable('#example', {
+            language: {
+                url: "{{asset('style/js/bahasa.json')}}",
+            },
+        });
     </script>
 </div>
 @endsection
