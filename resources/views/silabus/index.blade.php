@@ -66,6 +66,13 @@
                                 @method('POST')
                                 <div class="modal-body">
                                     <div class="form-group">
+                                        <label for="nomor">ID CP:</label>
+                                        <input type="text" name="nomor" id="nomor" class="form-control" required>
+                                        @error('nomor')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label for="nama">Nama CP:</label>
                                         <input type="text" name="nama" id="nama" class="form-control" value="{{ $cp->nama }}" required>
                                         @error('nama')
@@ -103,6 +110,13 @@
                 <form action="{{ route('silabus.storeCP', $mapelId) }}" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nomor">ID CP:</label>
+                            <input type="text" name="nomor" id="nomor" class="form-control" required>
+                            @error('nomor')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                         <div class="form-group">
                             <label for="nama">Nama CP:</label>
                             <input type="text" name="nama" id="nama" class="form-control" required>

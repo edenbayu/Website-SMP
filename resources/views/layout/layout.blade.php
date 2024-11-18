@@ -151,7 +151,7 @@
                         <ul id="ekstrakulikuler" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listEkskul as $ekskul)
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">{{$ekskul->nama}}</a>
+                                <a href="{{ route('penilaian.ekskul', $ekskul->id) }}" class="sidebar-link">{{$ekskul->nama}}</a>
                             </li>
                             @endforeach
                         </ul>

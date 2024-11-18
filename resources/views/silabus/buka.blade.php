@@ -31,7 +31,7 @@
         <tbody>
             @forelse($tps as $index => $tp)
                 <tr>
-                    <td>{{$cps->id}}.{{ $tp->id }}</td>
+                    <td>{{$cps->nomor}}.{{ $tp->nomor }}</td>
                     <td>{{ $tp->nama }}</td>
                     <td>{{ $tp->keterangan }}</td>
                     <td>
@@ -68,6 +68,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="nomor">ID TP:</label>
+                            <input type="text" name="nomor" id="nomor" class="form-control" required>
+                            @error('nomor')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label for="nama">Nama TP:</label>
                             <input type="text" name="nama" id="nama" class="form-control" required>
                         </div>
@@ -98,6 +105,13 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <div class="form-group">
+                                <label for="nomor">ID TP:</label>
+                                <input type="text" name="nomor" id="nomor" class="form-control" required>
+                                @error('nomor')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                             <div class="form-group">
                                 <label for="nama">Nama TP:</label>
                                 <input type="text" name="nama" id="nama" class="form-control" value="{{ $tp->nama }}" required>

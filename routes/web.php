@@ -136,6 +136,13 @@ Route::middleware('auth')->group(function () {
             Route::put('/{penilaianId}/update', 'updatePenilaian')->name('penilaian.update');
             Route::delete('/{penilaianId}/delete', 'deletePenilaian')->name('penilaian.delete');
             Route::get('/buka/{penilaianId}','bukaPenilaian')->name('penilaian.buka');
+            Route::put('/update', 'updatePenilaianSiswaBatch')->name('penilaian.updateBatch');
+            Route::get('/buku-nilai', 'bukuNilai')->name('penilaian.bukuNilai');
+        });
+
+        Route::prefix('Penilaian/Ekskul/{mapelId}')->controller(PenilaianController::class)->group(function () {
+            Route::get('/',  'penilaianEkskul')->name('penilaian.ekskul');
+            Route::put('/penilaian/ekskul/{mapelId}/update', 'updateAllPenilaianEkskul')->name('penilaian.ekskul.update.all');
         });
 
     });

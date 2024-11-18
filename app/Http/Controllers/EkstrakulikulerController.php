@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Modal\Kelas;
+use App\Models\Kelas;
+use App\Models\PenilaianEkskul;
 
 class EkstrakulikulerController extends Controller
 {
@@ -103,12 +104,13 @@ class EkstrakulikulerController extends Controller
         return view('kelas.buka', [
             'kelas' => $kelas,
             'siswas' => $availableSiswa,
-            'daftar_siswa' => $siswas
+            'daftar_siswa' => $siswas,
+            'ekskulId' => $ekskulId
         ]);
     }
 
     // Add a student to a class
-    public function addStudentToClass(Request $request, $kelasId)
+    public function addStudentToClass(Request $request, $kelasId, $ekskulId)
     {
         $request->validate([
             'id_siswa' => 'required|exists:siswas,id',
@@ -124,6 +126,12 @@ class EkstrakulikulerController extends Controller
 
         // Attach the student to the class using the pivot table
         $kelas->siswas()->syncWithoutDetaching($request->id_siswa);
+
+        $penilaian = PenilaianEkskul::create([
+            'nilai' => null,
+            'mapel_id' => $ekskulId,
+            'siswa_id' => $request->id_siswa
+        ]);
 
         return redirect()->back()->with('success', 'Siswa berhasil ditambahkan ke kelas.');
     }

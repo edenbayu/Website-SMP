@@ -11,6 +11,9 @@
 
     <!-- Create Penilaian Button -->
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Add Penilaian</button>
+    <a href="{{ route('penilaian.bukuNilai', ['kelasId' => $kelasId]) }}" class="btn btn-primary">
+        View Buku Nilai
+    </a>
     <!-- @foreach ($penilaians as $p)
     <p>{{ $p->withpenilaian_siswa}}</p>
     @endforeach -->
@@ -37,7 +40,7 @@
                 <td>{{ $penilaian->tipe }}</td>
                 <td>{{ $penilaian->kktp }}</td>
                 <td>{{ $penilaian->penilaian_siswa->where('status', '=', 1)->count()}}/{{ $penilaian->penilaian_siswa->count()}}</td>
-                <td>{{ $penilaian->tp->cp->id}}.{{ $penilaian->tp_id}}</td>
+                <td>{{ $penilaian->tp->cp->id}}.{{ $penilaian->tp_id}}</td> 
                 <td>
                     <a href="{{ route('penilaian.buka', ['kelasId' => $kelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian

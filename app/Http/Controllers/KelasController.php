@@ -7,6 +7,7 @@ use App\Models\Guru;
 use App\Models\Siswa;
 use App\Models\Semester;
 use App\Models\Mapel;
+use App\Models\PenilaianEkskul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -239,6 +240,14 @@ class KelasController extends Controller
         // Attach the student to the class using the pivot table
         $kelas->siswas()->syncWithoutDetaching($request->id_siswa);
 
+        if ($kelas->kelas === 'Ekskul'){
+            $mapel = $kelas->mapel->first();
+            $penilaian = PenilaianEkskul::create([
+                'nilai' => null,
+                'siswa_id' => $request->id_siswa,
+                'mapel_id' => $mapel->id
+            ]);
+        }
         return redirect()->back()->with('success', 'Siswa berhasil ditambahkan ke kelas.');
     }
 

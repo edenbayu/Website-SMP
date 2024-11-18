@@ -22,11 +22,13 @@ class SillabusController extends Controller
     public function storeCP(Request $request, $mapelId)
     {
         $request->validate([
+            'nomor'=>  'required|integer',
             'nama' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255'
         ]);
     
         $cp = CP::create([
+            'nomor'=>  $request->nomor,
             'nama' => $request->nama,
             'keterangan' => $request->keterangan,
             'mapel_id' => $mapelId,
@@ -39,6 +41,7 @@ class SillabusController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
+            'nomor'=>  'required|integer',
             'nama' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255'
         ]);
@@ -47,6 +50,7 @@ class SillabusController extends Controller
         $cp = CP::findOrFail($cpId);
 
         // Update the CP record
+        $cp->nomor = $request->input('nomor');
         $cp->nama = $request->input('nama');
         $cp->keterangan = $request->input('keterangan');
         $cp->save();
@@ -84,11 +88,13 @@ class SillabusController extends Controller
     public function storeTP(Request $request, $mapelId, $cpId)
     {
         $request->validate([
+            'nomor'=>  'required|integer',
             'nama' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255'
         ]);
     
         TP::create([
+            'nomor'=>  $request->nomor,
             'nama' => $request->nama,
             'keterangan' => $request->keterangan,
             'cp_id' => $cpId,
@@ -101,11 +107,13 @@ class SillabusController extends Controller
     public function updateTP(Request $request, $mapelId, $cpId, $tpId)
     {
         $request->validate([
+            'nomor'=>  'required|integer',
             'nama' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255'
         ]);
     
         $tp = TP::findOrFail($tpId);
+        $tp->nomor = $request->input('nomor');
         $tp->nama = $request->input('nama');
         $tp->keterangan = $request->input('keterangan');
         $tp->save();

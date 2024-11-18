@@ -8,6 +8,7 @@ class TP extends Model
 {
     protected $fillable = [
         'nama',
+        'nomor',
         'keterangan',
         'cp_id'
     ];

@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CP extends Model
+class KomentarCK extends Model
 {
     protected $fillable = [
-        'nama',
-        'nomor',
-        'keterangan',
-        'mapel_id'
+        'komentar_tengah_semester',
+        'komentar_akhir_semester',
+        'mapel_id',
     ];
 
+    /**
+     * Define the relationship with the Mapel model.
+     */
     public function mapel()
     {
         return $this->belongsTo(Mapel::class, 'mapel_id');

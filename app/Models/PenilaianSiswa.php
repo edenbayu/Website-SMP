@@ -35,7 +35,7 @@ class PenilaianSiswa extends Model
      */
     public function penilaian()
     {
-        return $this->belongsTo(Penilaian::class);
+        return $this->belongsTo(Penilaian::class, 'penilaian_id');
     }
 
     /**
