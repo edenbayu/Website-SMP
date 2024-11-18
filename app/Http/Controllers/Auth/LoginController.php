@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -27,7 +28,7 @@ class LoginController extends Controller
         $user = User::where('username', $request->username)->first();
 
         // Check apakah user ada dan password sesuai (tanpa hashing)
-        if ($user && $user->password === $request->password) {
+        if ($user && Hash::check($request->password, $user->password)) {
             // Log in user secara manual ke dalam session Auth
             Auth::login($user);
             // Redirect ke home dengan pesan sukses

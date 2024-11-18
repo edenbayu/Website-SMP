@@ -135,6 +135,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/store', 'storePenilaian')->name('penilaian.store');
             Route::put('/{penilaianId}/update', 'updatePenilaian')->name('penilaian.update');
             Route::delete('/{penilaianId}/delete', 'deletePenilaian')->name('penilaian.delete');
+            Route::get('/buka/{penilaianId}','bukaPenilaian')->name('penilaian.buka');
         });
 
     });

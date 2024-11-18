@@ -34,6 +34,7 @@ class AccountController extends Controller
     
         // Update the user's basic info
         $account->name = $request->input('name');
+        $account->email = $request->input('email');
         $account->username = $request->input('username');
         $account->password = $request->input('password'); // Not hashed
         $account->save();

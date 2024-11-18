@@ -11,7 +11,9 @@
 
     <!-- Create Penilaian Button -->
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Add Penilaian</button>
-
+    <!-- @foreach ($penilaians as $p)
+    <p>{{ $p->withpenilaian_siswa}}</p>
+    @endforeach -->
     <!-- Penilaian List -->
     <table class="table table-bordered">
         <thead>
@@ -34,9 +36,12 @@
                 <td>{{ $penilaian->judul }}</td>
                 <td>{{ $penilaian->tipe }}</td>
                 <td>{{ $penilaian->kktp }}</td>
-                <td>{{ collect($penilaian->penilaian_siswa)->where('status', 1)->count()}}/{{ $penilaian->penilaian_siswa->count()}}</td>
+                <td>{{ $penilaian->penilaian_siswa->where('status', '=', 1)->count()}}/{{ $penilaian->penilaian_siswa->count()}}</td>
                 <td>{{ $penilaian->tp->cp->id}}.{{ $penilaian->tp_id}}</td>
                 <td>
+                    <a href="{{ route('penilaian.buka', ['kelasId' => $kelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
+                        Buka Penilaian
+                    </a>
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}">Edit</button>
                     <form action="{{ route('penilaian.delete', [$kelas->id, $penilaian->id]) }}" method="POST" class="d-inline">
                         @csrf

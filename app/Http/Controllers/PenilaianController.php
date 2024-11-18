@@ -6,12 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Penilaian;
 use App\Models\TP;
+use App\Models\Siswa;
+use App\Models\PenilaianSiswa;
 
 class PenilaianController extends Controller
 {
     public function index($kelasId)
     {
-
+        
+        $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+        ->where('kelas_siswa.kelas_id', $kelasId)
+        ->get();
+        
         $penilaians = Penilaian::join('t_p_s as b', 'b.id', '=', 'penilaians.tp_id')
         ->join('c_p_s as c', 'c.id', '=', 'b.cp_id')
         ->join('mapel_kelas as d', 'd.mapel_id', '=', 'c.mapel_id')
@@ -30,7 +36,7 @@ class PenilaianController extends Controller
         ->where('kelas.id', $kelasId)
         ->get();
     
-        return view('penilaian.index', compact('penilaians', 'kelasId', 'kelas', 'tpOptions'));
+        return view('penilaian.index', compact('penilaians', 'kelasId', 'kelas', 'tpOptions', 'get_siswa_class_data'));
     }
 
     public function storePenilaian(Request $request, $kelasId)
@@ -40,19 +46,37 @@ class PenilaianController extends Controller
             'judul' => 'required|string|max:255',
             'kktp' => 'required|integer',
             'keterangan' => 'required|string|max:255',
-            'tp_id' => 'required'
+            'tp_id' => 'required',
         ]);
     
-        $penilaians = Penilaian::create([
+        // Create the Penilaian
+        $penilaian = Penilaian::create([
             'tipe' => $request->tipe,
             'judul' => $request->judul,
             'kktp' => $request->kktp,
             'keterangan' => $request->keterangan,
             'tp_id' => $request->tp_id,
         ]);
+
+        $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+        ->where('kelas_siswa.kelas_id', $kelasId)
+        ->get();
+    
+        // Create PenilaianSiswa records
+        foreach ($get_siswa_class_data as $siswa) {
+            PenilaianSiswa::create([
+                'status' => 0, // Default status
+                'nilai' => null,
+                'remedial' => null,
+                'nilai_akhir' => null,
+                'penilaian_id' => $penilaian->id,
+                'siswa_id' => $siswa->id,
+            ]);
+        }
     
         return redirect()->route('penilaian.index', $kelasId)->with('success', 'Penilaian created successfully!');
     }
+    
     
     public function updatePenilaian(Request $request, $kelasId, $penilaianId)
     {
@@ -93,4 +117,13 @@ class PenilaianController extends Controller
     }
 
     // End of Penilaian's function codes //
+
+    public function bukaPenilaian($kelasId, $penilaianId){
+        $penilaian_siswas = PenilaianSiswa::join('siswas', 'siswas.id', '=', 'penilaian_siswa.siswa_id')
+        ->where('penilaian_id', $penilaianId)
+        ->select('penilaian_siswa.id','penilaian_siswa.status', 'penilaian_siswa.nilai', 'penilaian_siswa.remedial', 'penilaian_siswa.nilai_akhir', 'penilaian_siswa.penilaian_id', 'penilaian_siswa.siswa_id', 'siswas.nama')
+        ->get();
+
+        return view('penilaian.buka', compact('penilaian_siswas'));
+    }
 }

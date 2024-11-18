@@ -16,7 +16,8 @@ class DefaultUserSeeder extends Seeder
     {
         // Creating Super Admin User
         $admin = User::create([
-            'name' => 'Satya', 
+            'name' => 'Satya',
+            'email' => 'satya@gmail.com',
             'username' => 'admin',
             'password' => 'admin'
         ]);
@@ -25,6 +26,7 @@ class DefaultUserSeeder extends Seeder
         // Creating Admin User
         $wali_kelas = User::create([
             'name' => 'wali',
+            'email' => 'wali@gmail.com',
             'username' => 'walikelas',
             'password' => 'walikelas'
         ]);
@@ -32,7 +34,8 @@ class DefaultUserSeeder extends Seeder
 
         // Creating Product Manager User
         $guru= User::create([
-            'name' => 'guru', 
+            'name' => 'guru',
+            'email' => 'guru@gmail.com', 
             'username' => 'guru',
             'password' => 'guru'
         ]);
@@ -40,7 +43,8 @@ class DefaultUserSeeder extends Seeder
 
         // Creating Application User
         $user = User::create([
-            'name' => 'Safaat', 
+            'name' => 'Safaat',
+            'email' => 'safaat@gmail.com', 
             'username' => 'siswa',
             'password' => 'siswa'
         ]);

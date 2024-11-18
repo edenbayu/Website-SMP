@@ -24,6 +24,6 @@ class Penilaian extends Model
 
     public function penilaian_siswa()
     {
-        return $this->belongsToMany(Siswa::class, 'penilaian_siswa');
+        return $this->hasMany(PenilaianSiswa::class);
     }
 }
