@@ -49,17 +49,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .footer {
-            padding: 5px 0; /* Reduces vertical padding */
-            background-color: #00BFFF; /* Optional: Set background color */
-            text-align: center; /* Centers the text */
+            padding: 5px 0;
+            /* Reduces vertical padding */
+            background-color: #00BFFF;
+            /* Optional: Set background color */
+            text-align: center;
+            /* Centers the text */
         }
-        
+
         .footer p {
-            margin: 0; /* Removes extra margin around paragraph */
-            font-size: 12px; /* Adjust font size as needed */
-            color: #ffffff; /* Optional: Adjust text color */
+            margin: 0;
+            /* Removes extra margin around paragraph */
+            font-size: 12px;
+            /* Adjust font size as needed */
+            color: #ffffff;
+            /* Optional: Adjust text color */
         }
-        </style>
+    </style>
 </head>
 
 <body>

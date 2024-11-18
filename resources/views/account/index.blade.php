@@ -16,7 +16,7 @@
                 <th class="text-start">ID</th>
                 <th>Nama</th>
                 <th>Nama Pengguna</th>
-                <th>Kata Sandi</th>
+                <th>Email</th>
                 <th>Role</th>
                 <th>Aksi</th>
             </tr>
@@ -27,7 +27,7 @@
                 <td class="text-start">{{$account->id}}</td>
                 <td>{{$account->name}}</td>
                 <td>{{$account->username}}</td>
-                <td>{{$account->password}}</td>
+                <td>{{$account->email}}</td>
                 <td>{{ $account->getRoleNames()->implode(', ') }}</td>
                 <td>
                     <a href="{{ route('account.edit', $account->id) }}" class="btn btn-warning" style="width: 5rem">Ubah</a>
