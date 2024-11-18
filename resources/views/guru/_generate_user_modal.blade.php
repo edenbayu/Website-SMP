@@ -11,6 +11,10 @@
                     <form action="{{ route('guru.generateUser', $guru->id) }}" method="POST">
                         @csrf
                         <div class="mb-3">
+                            <label for="email-{{ $guru->id }}" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email-{{ $guru->id }}" name="email" value="{{ $guru->email }}" required>
+                        </div>
+                        <div class="mb-3">
                             <label for="username-{{ $guru->id }}" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username-{{ $guru->id }}" name="username" value="{{ $guru->nip }}" required>
                         </div>

@@ -81,12 +81,14 @@ class AdminController extends Controller
         $admin = Admin::findOrFail($adminId);
 
         $request->validate([
+            'email' => 'required|email',
             'username' => 'required|string|unique:users,username',
             'password' => 'required|string',
         ]);
 
         $user = User::create([
             'name' => $admin->nama,
+            'email' => $request->email,
             'username' => $request->username,
             'password' => $request->password
         ]);

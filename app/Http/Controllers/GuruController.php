@@ -81,13 +81,15 @@ class GuruController extends Controller
         $request->validate([
             'username' => 'required|string|unique:users,username',
             'password' => 'required|string',
+            'email' => 'required|email',
             'role' => 'required|string'
         ]);
 
         $user = User::create([
             'name' => $guru->nama,
             'username' => $request->username,
-            'password' => $request->password
+            'password' => $request->password,
+            'email' => $request->email,
         ]);
         
         $user->assignRole($request->role);
