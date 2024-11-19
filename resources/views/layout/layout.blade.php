@@ -142,10 +142,10 @@
                             </li>
                             @endforeach
                         </ul>
-                    </li> 
+                    </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#ekstrakulikuler" data-bs-toggle="collapse" aria-expanded="false">
-                            <i class="fa-solid fa-person-chalkboard"></i>
+                            <i class="fa-solid fa-person-walking"></i>
                             Ekstrakulikuler
                         </a>
                         <ul id="ekstrakulikuler" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -157,11 +157,11 @@
                         </ul>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-target="#mata-pelajaran" data-bs-toggle="collapse" aria-expanded="false">
-                            <i class="fa-solid fa-person-chalkboard"></i>
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#komentar-ck" data-bs-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-comment"></i>
                             Komentar CK
                         </a>
-                        <ul id="mata-pelajaran" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <ul id="komentar-ck" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listMataPelajaran as $mapel)
                             <li class="sidebar-item">
                                 <a href="{{ route('komentar.index', ['mapelId' => $mapel->id]) }}" class="sidebar-link">
@@ -193,7 +193,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @role('Guru')
-                <form action="{{ route('select.semester') }}" method="POST">
+                <form action="{{ route('select.semester') }}" method="POST" class="m-0">
                     @csrf
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
