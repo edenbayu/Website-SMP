@@ -45,13 +45,13 @@
         </div>
     </form>
 
-    @if(session('success'))
+    <!-- @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
+    @endif -->
 
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createKelasModal">Tambah Kelas</button>
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createEkstrakulikulerModal">Tambah Ekstrakurikuler</button>
@@ -189,7 +189,7 @@
                     <!-- Delete Class Button -->
                     <form action="{{ route('kelas.hapus', ['kelasId' => $k->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
                         @csrf
-                        <button type="submit" class="btn btn-danger" style="width: 5rem">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
             </tr>
@@ -291,25 +291,76 @@
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Cek apakah DataTable sudah diinisialisasi
-            if ($.fn.DataTable.isDataTable('#example')) {
-                $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+@if(session('success'))
+<!-- success alert -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+@if(session('error'))
+<!-- error alert -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Gagal!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cek apakah DataTable sudah diinisialisasi
+        if ($.fn.DataTable.isDataTable('#example')) {
+            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+        }
+
+        // Inisialisasi DataTable dengan opsi
+        $('#example').DataTable({
+            language: {
+                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
             }
-
-            // Inisialisasi DataTable dengan opsi
-            $('#example').DataTable({
-                language: {
-                    url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+        });
+    });
+</script>
+<script>
+    document.querySelectorAll('.deleteAlert').forEach(function(button, index) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Apakah Anda Yakin?",
+                text: "Data Akan Dihapus Permanen dari Basis Data!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                // Jika konfirmasi "Ya, Hapus!" diklik
+                if (result.isConfirmed) {
+                    // Mengirim formulir untuk menghapus data
+                    event.target.closest('form').submit();
                 }
             });
         });
-    </script>
-</div>
+    });
+</script>
 @endsection
