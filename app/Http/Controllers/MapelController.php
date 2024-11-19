@@ -7,6 +7,7 @@ use App\Models\Guru;
 use App\Models\Semester;
 use App\Models\Mapel;
 use App\Models\Kelas;
+use App\Models\KomentarCK;
 use Illuminate\Support\Facades\DB;
 
 class MapelController extends Controller
@@ -78,11 +79,17 @@ class MapelController extends Controller
         ]);
        
         // Create a new Mata Pelajaran (Mapel) using the validated data
-        Mapel::create([
+        $mapel = Mapel::create([
             'nama' => $request->nama,
             'kelas' => $request->kelas,
             'guru_id' => $request->guru_id,
             'semester_id' => $request->semester_id,
+        ]);
+
+        $komentarCK = KomentarCK::create([
+            'komentar_tengah_semester' => null,
+            'komentar_akhir_semester' => null,
+            'mapel_id' => $mapel->id
         ]);
 
         return redirect()->route('mapel.index')->with('success', 'Mata Pelajaran created successfully!'); // Redirect with success message

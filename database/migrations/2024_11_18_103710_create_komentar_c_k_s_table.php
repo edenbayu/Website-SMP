@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('komentar_c_k_s', function (Blueprint $table) {
             $table->id();
-            $table->string('komentar_tengah_semester');
-            $table->string('komentar_akhir_semester');
+            $table->string('komentar_tengah_semester')->nullable();
+            $table->string('komentar_akhir_semester')->nullable();
             $table->foreignId('mapel_id')->constrained('mapels')->onDelete('cascade');
             $table->timestamps();
         });

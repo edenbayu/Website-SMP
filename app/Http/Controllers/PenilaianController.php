@@ -120,9 +120,8 @@ class PenilaianController extends Controller
 
     // End of Penilaian's function codes //
 
-    public function bukaPenilaian($kelasId, $penilaianId){
-
-
+    public function bukaPenilaian($kelasId, $penilaianId)
+    {
         $penilaian_siswas = PenilaianSiswa::join('siswas', 'siswas.id', '=', 'penilaian_siswa.siswa_id')
         ->where('penilaian_id', $penilaianId)
         ->select('penilaian_siswa.id','penilaian_siswa.status', 'penilaian_siswa.nilai', 'penilaian_siswa.remedial', 'penilaian_siswa.nilai_akhir', 'penilaian_siswa.penilaian_id', 'penilaian_siswa.siswa_id', 'siswas.nama')
@@ -137,7 +136,6 @@ class PenilaianController extends Controller
 
         foreach ($penilaianData as $penilaianSiswaId => $data) {
             $penilaian = PenilaianSiswa::find($penilaianSiswaId); // Get the PenilaianSiswa record
-
             if ($penilaian) {
                 // Update values
                 $penilaian->nilai = $data['nilai'] ?? null;
@@ -194,7 +192,7 @@ class PenilaianController extends Controller
         return view('penilaian.bukuNilai', compact('datas'));
     }
     
-    public function penilaianEkskul($mapelId)
+    public function penilaianEkskul(Request $request, $mapelId)
     {
         // Fetch all penilaianEkskul records related to the specified mapel
         $penilaianEkskuls = PenilaianEkskul::where('mapel_id', $mapelId)->get();
@@ -204,19 +202,21 @@ class PenilaianController extends Controller
     
     public function updateAllPenilaianEkskul(Request $request, $mapelId)
     {
-        $request->validate([
-            'nilai.*' => 'nullable|numeric|min:0|max:100', // Validate all input values
-        ]);
-    
-        foreach ($request->input('nilai', []) as $penilaianEkskulId => $nilai) {
-            $penilaianEkskul = PenilaianEkskul::find($penilaianEkskulId);
-            if ($penilaianEkskul) {
-                $penilaianEkskul->nilai = $nilai;
-                $penilaianEkskul->save();
+        
+        $data = $request->input('nilai', []);
+
+        foreach ($data as $penilaianEkskulId => $dataEkskul) {
+            $penilaian = PenilaianEkskul::find($penilaianEkskulId);
+
+            if ($penilaian) {
+                // Update values
+                $penilaian->nilai = $dataEkskul['nilai'] ?? null;
             }
+
+            $penilaian->save();
         }
-    
-        return redirect()->route('penilaian.ekskul', $mapelId)
+        
+        return redirect()->back()
                          ->with('success', 'All penilaian updated successfully!');
-    }   
+    }       
 }

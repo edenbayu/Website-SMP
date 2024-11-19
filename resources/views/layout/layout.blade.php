@@ -142,7 +142,7 @@
                             </li>
                             @endforeach
                         </ul>
-                    </li>
+                    </li> 
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#ekstrakulikuler" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-person-chalkboard"></i>
@@ -157,10 +157,19 @@
                         </ul>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="fa-solid fa-square-poll-vertical"></i>
-                            P5BK
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#mata-pelajaran" data-bs-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-person-chalkboard"></i>
+                            Komentar CK
                         </a>
+                        <ul id="mata-pelajaran" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            @foreach($listMataPelajaran as $mapel)
+                            <li class="sidebar-item">
+                                <a href="{{ route('komentar.index', ['mapelId' => $mapel->id]) }}" class="sidebar-link">
+                                    {{ $mapel->nama }} Kelas {{ $mapel->kelas }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link">

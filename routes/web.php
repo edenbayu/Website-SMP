@@ -15,7 +15,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SemesterSelectionController;
 use App\Http\Controllers\SillabusController;
 use App\Http\Controllers\PenilaianController;
-
+use App\Http\Controllers\KomentarController;
 
 // Group routes for LoginController using Route::controller
 Route::controller(LoginController::class)->group(function () {
@@ -142,7 +142,12 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('Penilaian/Ekskul/{mapelId}')->controller(PenilaianController::class)->group(function () {
             Route::get('/',  'penilaianEkskul')->name('penilaian.ekskul');
-            Route::put('/penilaian/ekskul/{mapelId}/update', 'updateAllPenilaianEkskul')->name('penilaian.ekskul.update.all');
+            Route::post('/update', 'updateAllPenilaianEkskul')->name('penilaian.ekskul.update.all');
+        });
+
+        Route::prefix('Komentar/{mapelId}')->controller(KomentarController::class)->group(function () {
+            Route::get('/', 'index')->name('komentar.index');
+            Route::post('/update', 'updateKomentar')->name('komentar.update');
         });
 
     });

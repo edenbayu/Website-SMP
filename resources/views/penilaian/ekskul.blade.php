@@ -10,9 +10,9 @@
         </div>
     @endif
 
-    <form action="{{ route('penilaian.ekskul.update.all', $mapelId) }}" method="POST">
+    <form action="{{ route('penilaian.ekskul.update.all', ['mapelId' => $mapelId]) }}" method="POST">
         @csrf
-        @method('PUT')
+        @method('POST')
 
         <table class="table table-bordered">
             <thead>
@@ -25,10 +25,10 @@
             <tbody>
                 @forelse($penilaianEkskuls as $penilaianEkskul)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $penilaianEkskul->id }}</td>
                         <td>{{ $penilaianEkskul->siswa->nama }}</td>
                         <td>
-                            <input type="number" name="nilai[{{ $penilaianEkskul->id }}]" class="form-control" value="{{ old('nilai.' . $penilaianEkskul->id, $penilaianEkskul->nilai) }}" min="0" max="100">
+                            <input type="number" name="nilai[{{ $penilaianEkskul->id }}][nilai]" class="form-control" value="{{ old("nilai.{$penilaianEkskul->id}.nilai", $penilaianEkskul->nilai) }}" min="0" max="100">
                         </td>
                     </tr>
                 @empty

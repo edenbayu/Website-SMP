@@ -241,11 +241,10 @@ class KelasController extends Controller
         $kelas->siswas()->syncWithoutDetaching($request->id_siswa);
 
         if ($kelas->kelas === 'Ekskul'){
-            $mapel = $kelas->mapel->first();
             $penilaian = PenilaianEkskul::create([
                 'nilai' => null,
                 'siswa_id' => $request->id_siswa,
-                'mapel_id' => $mapel->id
+                'mapel_id' => $kelas->id
             ]);
         }
         return redirect()->back()->with('success', 'Siswa berhasil ditambahkan ke kelas.');
