@@ -13,36 +13,29 @@ return new class extends Migration
     {
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
-            $table->string('no_pendaftaran')->unique(); // Corrected unique method call
-            $table->integer('no_un')->nullable(); // Marked as nullable
-            $table->integer('no_peserta')->nullable(); // Marked as nullable
-            $table->integer('nisn')->nullable(); // Marked as nullable
-            $table->integer('nis')->nullable();
-            $table->integer('no_formulir')->nullable(); // Marked as nullable
-            $table->string('nama')->nullable(); // Marked as nullable
-            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable(); // Marked as nullable
-            $table->string('tempat_lahir')->nullable(); // Marked as nullable
-            $table->date('tanggal_lahir')->nullable(); // Marked as nullable
-            $table->string('alamat_lengkap')->nullable(); // Marked as nullable
-            $table->string('provinsi')->nullable(); // Marked as nullable
-            $table->string('kota_kabupaten')->nullable(); // Marked as nullable
-            $table->string('kecamatan')->nullable(); // Marked as nullable
-            $table->string('kelurahan')->nullable(); // Marked as nullable
-            $table->integer('no_rw')->nullable(); // Marked as nullable
-            $table->integer('no_rt')->nullable(); // Marked as nullable
-            $table->float('lintang')->nullable(); // Marked as nullable
-            $table->float('bujur')->nullable(); // Marked as nullable
-            $table->string('asal_sekolah')->nullable(); // Marked as nullable
-            $table->integer('npsn_asal_sekolah')->nullable(); // Marked as nullable
-            $table->string('status_kelulusan')->nullable(); // Marked as nullable
-            $table->integer('tahun_kelulusan')->nullable(); // Marked as nullable
-            $table->string('kapasitas')->nullable(); // Marked as nullable
-            $table->string('radius')->nullable(); // Marked as nullable
-            $table->string('usia')->nullable(); // Marked as nullable
-            $table->string('waktu_pengajuan')->nullable(); // Marked as nullable
-            $table->string('lokasi_pendaftaran')->nullable(); // Marked as nullable
-            $table->string('lapor_diri')->nullable(); // Marked as nullable
-            $table->string('pilihan_1')->nullable(); // Marked as nullable
+            $table->string('nama');
+            $table->string('nis')->nullable();
+            $table->string('nisn')->nullable();
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable();
+            $table->string('agama')->nullable();
+            $table->string('status_keluarga')->nullable();
+            $table->integer('anak_ke')->nullable();
+            $table->string('alamat_lengkap')->nullable();
+            $table->string('no_telepon_rumah')->nullable();
+            $table->string('asal_sekolah')->nullable();
+            $table->date('tanggal_diterima')->nullable();
+            $table->string('jalur_penerimaan')->nullable();
+            $table->string('nama_ayah')->nullable();
+            $table->string('pekerjaan_ayah')->nullable();
+            $table->string('nama_ibu')->nullable();
+            $table->string('pekerjaan_ibu')->nullable();
+            $table->string('alamat_ortu')->nullable();
+            $table->string('no_telp_ortu')->nullable();
+            $table->string('nama_wali')->nullable();
+            $table->string('alamat_wali')->nullable();
+            $table->string('pekerjaan_wali')->nullable();
             $table->string('angkatan')->nullable();
             $table->foreignId('id_user')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();

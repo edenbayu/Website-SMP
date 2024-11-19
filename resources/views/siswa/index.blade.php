@@ -111,73 +111,103 @@
                             <form action="{{ route('siswa.update', $siswa->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-
                                 <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="no_pendaftaran">No Pendaftaran</label>
-                                        <input type="text" name="no_pendaftaran" id="no_pendaftaran" class="form-control" value="{{ old('no_pendaftaran', $siswa->no_pendaftaran) }}" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="no_un">No UN</label>
-                                        <input type="text" name="no_un" id="no_un" class="form-control" value="{{ old('no_un', $siswa->no_un) }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="no_peserta">No Peserta</label>
-                                        <input type="text" name="no_peserta" id="no_peserta" class="form-control" value="{{ old('no_peserta', $siswa->no_peserta) }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="nisn">NISN</label>
-                                        <input type="text" name="nisn" id="nisn" class="form-control" value="{{ old('nisn', $siswa->nisn) }}">
-                                    </div>
-
                                     <div class="form-group">
                                         <label for="nama">Nama</label>
                                         <input type="text" name="nama" id="nama" class="form-control" value="{{ old('nama', $siswa->nama) }}">
                                     </div>
-
                                     <div class="form-group">
-                                        <label for="jenis_kelamin">Jenis Kelamin</label>
-                                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
-                                            <option value="" {{ $siswa->jenis_kelamin == '' ? 'selected' : '' }}>Pilih</option>
-                                            <option value="Laki-laki" {{ $siswa->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                            <option value="Perempuan" {{ $siswa->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                                        </select>
+                                        <label for="nis">NIS</label>
+                                        <input type="text" name="nis" id="nis" class="form-control" value="{{ old('nis', $siswa->nis) }}">
                                     </div>
-
+                                    <div class="form-group">
+                                        <label for="nisn">NISN</label>
+                                        <input type="text" name="nisn" id="nisn" class="form-control" value="{{ old('nisn', $siswa->nisn) }}">
+                                    </div>
                                     <div class="form-group">
                                         <label for="tempat_lahir">Tempat Lahir</label>
                                         <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" value="{{ old('tempat_lahir', $siswa->tempat_lahir) }}">
                                     </div>
-
                                     <div class="form-group">
-                                        <label for="tanggal_lahir">Tanggal Lahir</label>
-                                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $siswa->tanggal_lahir) }}">
+                                        <label for="jenis_kelamin">Jenis Kelamin</label>
+                                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                                            <option value="Laki-laki" {{ $siswa->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                            <option value="Perempuan" {{ $siswa->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                        </select>
                                     </div>
-
-                                    <!-- Add similar form groups for each remaining field as per validation rules -->
-
+                                    <div class="form-group">
+                                        <label for="agama">Agama</label>
+                                        <input type="text" name="agama" id="agama" class="form-control" value="{{ old('agama', $siswa->agama) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="status_keluarga">Status Keluarga</label>
+                                        <input type="text" name="status_keluarga" id="status_keluarga" class="form-control" value="{{ old('status_keluarga', $siswa->status_keluarga) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="anak_ke">Anak Ke</label>
+                                        <input type="number" name="anak_ke" id="anak_ke" class="form-control" value="{{ old('anak_ke', $siswa->anak_ke) }}">
+                                    </div>
                                     <div class="form-group">
                                         <label for="alamat_lengkap">Alamat Lengkap</label>
                                         <textarea name="alamat_lengkap" id="alamat_lengkap" class="form-control">{{ old('alamat_lengkap', $siswa->alamat_lengkap) }}</textarea>
                                     </div>
-
                                     <div class="form-group">
-                                        <label for="provinsi">Provinsi</label>
-                                        <input type="text" name="provinsi" id="provinsi" class="form-control" value="{{ old('provinsi', $siswa->provinsi) }}">
+                                        <label for="no_telepon_rumah">No Telepon Rumah</label>
+                                        <input type="text" name="no_telepon_rumah" id="no_telepon_rumah" class="form-control" value="{{ old('no_telepon_rumah', $siswa->no_telepon_rumah) }}">
                                     </div>
-
                                     <div class="form-group">
-                                        <label for="kota_kabupaten">Kota/Kabupaten</label>
-                                        <input type="text" name="kota_kabupaten" id="kota_kabupaten" class="form-control" value="{{ old('kota_kabupaten', $siswa->kota_kabupaten) }}">
+                                        <label for="asal_sekolah">Asal Sekolah</label>
+                                        <input type="text" name="asal_sekolah" id="asal_sekolah" class="form-control" value="{{ old('asal_sekolah', $siswa->asal_sekolah) }}">
                                     </div>
-
-                                    <!-- Add similar form fields for other attributes -->
-
+                                    <div class="form-group">
+                                        <label for="tanggal_diterima">Tanggal Diterima</label>
+                                        <input type="date" name="tanggal_diterima" id="tanggal_diterima" class="form-control" value="{{ old('tanggal_diterima', $siswa->tanggal_diterima) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jalur_penerimaan">Jalur Penerimaan</label>
+                                        <input type="text" name="jalur_penerimaan" id="jalur_penerimaan" class="form-control" value="{{ old('jalur_penerimaan', $siswa->jalur_penerimaan) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama_ayah">Nama Ayah</label>
+                                        <input type="text" name="nama_ayah" id="nama_ayah" class="form-control" value="{{ old('nama_ayah', $siswa->nama_ayah) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pekerjaan_ayah">Pekerjaan Ayah</label>
+                                        <input type="text" name="pekerjaan_ayah" id="pekerjaan_ayah" class="form-control" value="{{ old('pekerjaan_ayah', $siswa->pekerjaan_ayah) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama_ibu">Nama Ibu</label>
+                                        <input type="text" name="nama_ibu" id="nama_ibu" class="form-control" value="{{ old('nama_ibu', $siswa->nama_ibu) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pekerjaan_ibu">Pekerjaan Ibu</label>
+                                        <input type="text" name="pekerjaan_ibu" id="pekerjaan_ibu" class="form-control" value="{{ old('pekerjaan_ibu', $siswa->pekerjaan_ibu) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="alamat_ortu">Alamat Orang Tua</label>
+                                        <textarea name="alamat_ortu" id="alamat_ortu" class="form-control">{{ old('alamat_ortu', $siswa->alamat_ortu) }}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="no_telp_ortu">No Telepon Orang Tua</label>
+                                        <input type="text" name="no_telp_ortu" id="no_telp_ortu" class="form-control" value="{{ old('no_telp_ortu', $siswa->no_telp_ortu) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama_wali">Nama Wali</label>
+                                        <input type="text" name="nama_wali" id="nama_wali" class="form-control" value="{{ old('nama_wali', $siswa->nama_wali) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pekerjaan_wali">Pekerjaan Wali</label>
+                                        <input type="text" name="pekerjaan_wali" id="pekerjaan_wali" class="form-control" value="{{ old('pekerjaan_wali', $siswa->pekerjaan_wali) }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="alamat_wali">Alamat Wali</label>
+                                        <textarea name="alamat_wali" id="alamat_wali" class="form-control">{{ old('alamat_wali', $siswa->alamat_wali) }}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="angkatan">Angkatan</label>
+                                        <input type="number" name="angkatan" id="angkatan" class="form-control" value="{{ old('angkatan', $siswa->angkatan) }}">
+                                    </div>
                                 </div>
-
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="width: 6rem">Tutup</button>
                                     <button type="submit" class="btn btn-primary" style="width: 6rem">Simpan</button>

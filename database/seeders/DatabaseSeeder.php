@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             KalenderAkademikSeeder::class,
             SemesterSeeder::class,
             WeekSeeder::class,
+            SiswaSeeder::class,
         ]);
     }
 }
