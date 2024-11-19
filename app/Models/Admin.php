@@ -14,6 +14,7 @@ class Admin extends Model
         'jenis_kelamin',
         'agama',
         'alamat',
+        'jabatan',
         'status',
         'pangkat_golongan',
         'pendidikan',

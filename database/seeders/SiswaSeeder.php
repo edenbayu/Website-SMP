@@ -15,7 +15,7 @@ class SiswaSeeder extends Seeder
         DB::table('siswas')->insert([
             [
                 'nama' => 'Budi Santoso',
-                'nis' => '123456',
+                'nis' => null,
                 'nisn' => '987654321',
                 'tempat_lahir' => 'Semarang',
                 'tanggal_lahir' => '2010-01-15',
@@ -44,7 +44,7 @@ class SiswaSeeder extends Seeder
             ],
             [
                 'nama' => 'Siti Nurhaliza',
-                'nis' => '654321',
+                'nis' => null,
                 'nisn' => '123456789',
                 'tempat_lahir' => 'Yogyakarta',
                 'tanggal_lahir' => '2011-03-20',

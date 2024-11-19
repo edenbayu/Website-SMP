@@ -61,7 +61,10 @@
                         <label for="alamat">Alamat</label>
                         <input type="text" name="alamat" id="alamat" class="form-control" value="{{ old('alamat', $a->alamat) }}">
                     </div>
-
+                    <div class="mb-3">
+                        <label for="jabatan">Jabatan</label>
+                        <input type="text" name="jabatan" id="jabatan" class="form-control" value="{{ old('jabatan', $a->jabatan) }}">
+                    </div>
                     <div class="form-group">
                         <label for="status">Status</label>
                         <input type="text" name="status" id="status" class="form-control" value="{{ old('status', $a->status) }}">

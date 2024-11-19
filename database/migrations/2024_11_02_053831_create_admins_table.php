@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable();
             $table->string('agama')->nullable();
             $table->string('alamat')->nullable();
+            $table->string('jabatan')->nullable();
             $table->string('status')->nullable();
             $table->string('pangkat_golongan')->nullable();
             $table->string('pendidikan')->nullable();
