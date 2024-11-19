@@ -3,8 +3,10 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
 <div class="container-fluid mt-3">
-    <div class="mb-3">
-        <h1>Mata Pelajaran</h1>
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Mata Pelajaran</h2>
+        </div>
     </div>
 
     <form action="{{ route('mapel.index') }}" method="GET" class="mb-4">
@@ -51,7 +53,7 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th class="text-start">ID</th>
+                <th class="text-start">No</th>
                 <th>Nama</th>
                 <th class="text-start">Kelas</th>
                 <th>Guru</th>
@@ -63,7 +65,7 @@
         <tbody>
             @foreach ($mapels as $mapel)
             <tr>
-                <td class="text-start">{{ $mapel->id }}</td>
+                <td class="text-start">{{ $loop->iteration }}</td>
                 <td>{{ $mapel->nama }}</td>
                 <td class="text-start">{{ $mapel->kelas }}</td>
                 <td>{{ $mapel->guru->nama }}</td>

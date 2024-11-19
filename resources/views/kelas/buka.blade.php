@@ -1,84 +1,119 @@
 @extends('layout.layout')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
-<h1>Data Kelas: {{ $kelas->rombongan_belajar }}</h1>
-<h3>Daftar Siswa</h3>
-
-<!-- Form to filter based on Angkatan -->
-<form action="{{ route('kelas.buka', ['kelasId' => $kelas->id]) }}" method="GET">
-    <div class="form-group">
-        <label for="angkatan">Select Angkatan:</label>
-        <select name="angkatan" id="angkatan" class="form-control">
-            <option value="">-- Select Angkatan --</option>
-            @foreach($angkatan as $year)
-                <option value="{{ $year }}" {{ request('angkatan') == $year ? 'selected' : '' }}>
-                    {{ $year }}
-                </option>
-            @endforeach
-        </select>
+<div class="container-fluid mt-3">
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Data Kelas: {{ $kelas->rombongan_belajar }}</h2>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Filter</button>
-</form>
 
-<!-- Add Student Modal Trigger -->
-<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal-{{ $kelas->id }}">Tambah Siswa</button>
+    <!-- Form to filter based on Angkatan -->
+    <form action="{{ route('kelas.buka', ['kelasId' => $kelas->id]) }}" method="GET">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="angkatan">Select Angkatan:</label>
+                <select name="angkatan" id="angkatan" class="form-control">
+                    <option value="">-- Select Angkatan --</option>
+                    @foreach($angkatan as $year)
+                    <option value="{{ $year }}" {{ request('angkatan') == $year ? 'selected' : '' }}>
+                        {{ $year }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
 
-<!-- Auto Assign Student Button -->
-<form action="{{ route('kelas.autoAdd', ['kelasId' => $kelas->id, 'angkatan' => request('angkatan')]) }}" method="POST" style="display:inline;">
-    @csrf
-    <button type="submit" class="btn btn-primary">Auto Assign Students</button>
-</form>
+            <div class="col-md-4 align-self-end">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
 
-<table>
-    <thead>
-        <tr>
-            <th>Nama Siswa</th>
-            <th>NISN</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($daftar_siswa as $siswa)
-        <tr>
-            <td>{{ $siswa->nama }}</td>
-            <td>{{ $siswa->nisn }}</td>
-            <td>
-                <form action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
+    <!-- Add Student Modal Trigger -->
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addStudentModal-{{ $kelas->id }}">Tambah</button>
+
+    <!-- Auto Assign Student Button -->
+    <form action="{{ route('kelas.autoAdd', ['kelasId' => $kelas->id, 'angkatan' => request('angkatan')]) }}" method="POST" style="display:inline;">
+        @csrf
+        <button type="submit" class="btn btn-primary mb-3">Auto Assign Students</button>
+    </form>
+
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-start">No</th>
+                <th>Nama Siswa</th>
+                <th class="text-start">NISN</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($daftar_siswa as $siswa)
+            <tr>
+                <td class="text-start">{{ $loop->iteration }}</td>
+                <td>{{ $siswa->nama }}</td>
+                <td class="text-start">{{ $siswa->nisn }}</td>
+                <td>
+                    <form action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addStudentModal-{{ $kelas->id }}" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('kelas.addStudent', $kelas->id) }}" method="POST">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Hapus</button>
-                </form>
-            </td>            
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<!-- Add Student Modal -->
-<div class="modal fade" id="addStudentModal-{{ $kelas->id }}" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('kelas.addStudent', $kelas->id) }}" method="POST">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addStudentModalLabel">Tambah Siswa ke {{ $kelas->rombongan_belajar }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="id_siswa" class="form-label">Pilih Siswa</label>
-                        <select name="id_siswa" class="form-select" required>
-                            <option value="">Pilih Siswa</option>
-                            @foreach($siswas as $siswa)
-                            <option value="{{ $siswa->id }}">{{ $siswa->nama }}</option>
-                            @endforeach
-                        </select>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addStudentModalLabel">Tambah Siswa ke {{ $kelas->rombongan_belajar }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Tambah Siswa</button>
-                </div>
-            </form>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="id_siswa" class="form-label">Pilih Siswa</label>
+                            <select name="id_siswa" class="form-select" required>
+                                <option value="">Pilih Siswa</option>
+                                @foreach($siswas as $siswa)
+                                <option value="{{ $siswa->id }}">{{ $siswa->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Tambah Siswa</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cek apakah DataTable sudah diinisialisasi
+        if ($.fn.DataTable.isDataTable('#example')) {
+            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+        }
+
+        // Inisialisasi DataTable dengan opsi
+        $('#example').DataTable({
+            language: {
+                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+            }
+        });
+    });
+</script>
+
 @endsection
