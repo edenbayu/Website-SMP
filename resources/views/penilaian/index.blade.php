@@ -1,55 +1,62 @@
 @extends('layout.layout')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
-<div class="container mt-5">
-    <h1>Penilaian {{ $kelas->rombongan_belajar }}</h1>
+<div class="container-fluid mt-3">
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Penilaian {{ $kelas->rombongan_belajar }}</h2>
+        </div>
+    </div>
 
     <!-- Success Message -->
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+    <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     <!-- Create Penilaian Button -->
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Add Penilaian</button>
-    <a href="{{ route('penilaian.bukuNilai', ['kelasId' => $kelasId]) }}" class="btn btn-primary">
-        View Buku Nilai
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Tambah Penilaian</button>
+    <a href="{{ route('penilaian.bukuNilai', ['kelasId' => $kelasId]) }}" class="btn btn-primary mb-3">
+        Lihat Buku Nilai
     </a>
+
     <!-- @foreach ($penilaians as $p)
     <p>{{ $p->withpenilaian_siswa}}</p>
     @endforeach -->
     <!-- Penilaian List -->
-    <table class="table table-bordered">
+
+    <table id="example" class="table table-striped" style="width:100%">
         <thead>
-        <tr>
-            <th>No</th>
-            <th>Tanggal</th>
-            <th>Judul</th>
-            <th>Tipe</th>
-            <th>KKTp</th>
-            <th>Status</th>
-            <th>TP</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th class="text-start">No</th>
+                <th>Tanggal</th>
+                <th>Judul</th>
+                <th>Tipe</th>
+                <th class="text-start">KKTp</th>
+                <th>Status</th>
+                <th class="text-start">TP</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach ($penilaians as $penilaian)
+            @foreach ($penilaians as $penilaian)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td class="text-start">{{ $loop->iteration }}</td>
                 <td>{{ $penilaian->created_at}}</td>
                 <td>{{ $penilaian->judul }}</td>
                 <td>{{ $penilaian->tipe }}</td>
-                <td>{{ $penilaian->kktp }}</td>
+                <td class="text-start">{{ $penilaian->kktp }}</td>
                 <td>{{ $penilaian->penilaian_siswa->where('status', '=', 1)->count()}}/{{ $penilaian->penilaian_siswa->count()}}</td>
-                <td>{{ $penilaian->tp->cp->id}}.{{ $penilaian->tp_id}}</td> 
+                <td class="text-start">{{ $penilaian->tp->cp->id}}.{{ $penilaian->tp_id}}</td>
                 <td>
                     <a href="{{ route('penilaian.buka', ['kelasId' => $kelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian
                     </a>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}">Edit</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}" style="width: 5rem">Edit</button>
                     <form action="{{ route('penilaian.delete', [$kelas->id, $penilaian->id]) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                        <button class="btn btn-danger" onclick="return confirm('Are you sure?')" style="width: 5rem">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -87,7 +94,7 @@
                                     <select class="form-select" id="tp_id" name="tp_id" required>
                                         <option value="">Select TP</option>
                                         @foreach ($tpOptions as $tp)
-                                            <option value="{{ $tp->id }}">{{ $tp->nama }}</option>
+                                        <option value="{{ $tp->id }}">{{ $tp->nama }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -99,7 +106,7 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+            @endforeach
         </tbody>
     </table>
 
@@ -118,10 +125,10 @@
                             <label for="tipe" class="form-label">Tipe</label>
                             <select class="form-select" id="tipe" name="tipe" required>
                                 <option value="">Pilih Tipe</option>
-                                    <option value="Tugas">Tugas</option>
-                                    <option value="UH">UH</option>
-                                    <option value="STS">STS</option>
-                                    <option value="SAS">SAS</option>
+                                <option value="Tugas">Tugas</option>
+                                <option value="UH">UH</option>
+                                <option value="STS">STS</option>
+                                <option value="SAS">SAS</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -141,7 +148,7 @@
                             <select class="form-select" id="tp_id" name="tp_id" required>
                                 <option value="">Select TP</option>
                                 @foreach ($tpOptions as $tp)
-                                    <option value="{{ $tp->id }}">{{$tp->cp->id}}.{{ $tp->id}} | {{ $tp->nama }}</option>
+                                <option value="{{ $tp->id }}">{{$tp->cp->id}}.{{ $tp->id}} | {{ $tp->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -154,4 +161,24 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cek apakah DataTable sudah diinisialisasi
+        if ($.fn.DataTable.isDataTable('#example')) {
+            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+        }
+
+        // Inisialisasi DataTable dengan opsi
+        $('#example').DataTable({
+            language: {
+                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+            }
+        });
+    });
+</script>
 @endsection

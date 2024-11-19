@@ -196,7 +196,7 @@
                 <form action="{{ route('select.semester') }}" method="POST">
                     @csrf
                     <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Pilih Semester
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-start">
