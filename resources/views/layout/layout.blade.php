@@ -197,7 +197,11 @@
                     @csrf
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
+                            @if (is_null($selectedSemester))
+                                Pilih Semester
+                            @else
+                                {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
+                            @endif
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-start">
                             @foreach($semesters as $semester)
