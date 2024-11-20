@@ -8,12 +8,6 @@
         </div>
     </div>
 
-    @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-    @elseif(session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-
     <!-- Form to update comments -->
     <form action="{{ route('komentar.update', $mapelId) }}" method="POST">
         @csrf
@@ -37,4 +31,34 @@
         <button type="submit" class="btn btn-primary">Update Komentar</button>
     </form>
 </div>
+
+<!-- success alert -->
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+
+<!-- error alert -->
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Gagal!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
 @endsection

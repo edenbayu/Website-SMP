@@ -46,7 +46,7 @@
                     <form action="{{ route('silabus.deleteCP', [$mapelId, $cp->id]) }}" method="POST" style="display: inline-block;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" style="width: 5.5rem;" class="btn btn-danger" onclick="return confirm('Are you sure?')">Hapus</button>
+                        <button type="submit" style="width: 5.5rem;" class="btn btn-danger deleteAlert">Hapus</button>
                     </form>
                 </td>
             </tr>

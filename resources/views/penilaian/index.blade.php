@@ -9,11 +9,6 @@
         </div>
     </div>
 
-    <!-- Success Message -->
-    @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     <!-- Create Penilaian Button -->
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Tambah Penilaian</button>
     <a href="{{ route('penilaian.bukuNilai', ['kelasId' => $kelasId]) }}" class="btn btn-primary mb-3">
@@ -52,11 +47,11 @@
                     <a href="{{ route('penilaian.buka', ['kelasId' => $kelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian
                     </a>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}" style="width: 5rem">Edit</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}" style="width: 5rem">Edit</button>
                     <form action="{{ route('penilaian.delete', [$kelas->id, $penilaian->id]) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger" onclick="return confirm('Are you sure?')" style="width: 5rem">Delete</button>
+                        <button class="btn btn-danger deleteAlert" style="width: 5rem">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -162,6 +157,36 @@
     </div>
 </div>
 
+
+<!-- success alert -->
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+
+<!-- error alert -->
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Gagal!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
@@ -178,6 +203,29 @@
             language: {
                 url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
             }
+        });
+    });
+</script>
+<script>
+    document.querySelectorAll('.deleteAlert').forEach(function(button, index) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Apakah Anda Yakin?",
+                text: "Data Akan Dihapus Permanen dari Basis Data!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                // Jika konfirmasi "Ya, Hapus!" diklik
+                if (result.isConfirmed) {
+                    // Mengirim formulir untuk menghapus data
+                    event.target.closest('form').submit();
+                }
+            });
         });
     });
 </script>

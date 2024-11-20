@@ -8,22 +8,6 @@
             <h2 class="m-0" style="color: #EBF4F6">Detail Penilaian Siswa</h2>
         </div>
     </div>
-    
-    @if(session('success'))
-    <div class="alert alert-success mt-3">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if($errors->any())
-    <div class="alert alert-danger mt-3">
-        <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
 
     <form action="{{ route('penilaian.updateBatch', ['kelasId' => $kelasId]) }}" method="POST">
         <button type="submit" class="btn btn-primary mb-3">Update Penilaian</button>
@@ -70,6 +54,35 @@
     </form>
 </div>
 
+<!-- success alert -->
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+
+<!-- error alert -->
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Gagal!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
