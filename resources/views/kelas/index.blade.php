@@ -293,38 +293,42 @@
     </div>
 </div>
 
-@if(session('success'))
 <!-- success alert -->
+@if(session('success'))
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         Swal.fire({
             title: "Berhasil!",
             text: "{{ session('success') }}",
             icon: "success",
-            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
             showConfirmButton: false
         });
     });
 </script>
 @endif
-@if(session('error'))
+
 <!-- error alert -->
+@if(session('error'))
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         Swal.fire({
             title: "Gagal!",
             text: "{{ session('error') }}",
             icon: "error",
-            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
             showConfirmButton: false
         });
     });
 </script>
 @endif
+
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+
+<!-- script datatable -->
 <script>
     $(document).ready(function() {
         // Cek apakah DataTable sudah diinisialisasi
@@ -340,6 +344,8 @@
         });
     });
 </script>
+
+<!-- konfirmasi sweetalert -->
 <script>
     document.querySelectorAll('.deleteAlert').forEach(function(button, index) {
         button.addEventListener('click', function(event) {
