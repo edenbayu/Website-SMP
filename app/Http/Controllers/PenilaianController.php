@@ -192,15 +192,15 @@ class PenilaianController extends Controller
         return view('penilaian.bukuNilai', compact('datas'));
     }
     
-    public function penilaianEkskul(Request $request, $mapelId)
+    public function penilaianEkskul(Request $request, $kelasId)
     {
         // Fetch all penilaianEkskul records related to the specified mapel
-        $penilaianEkskuls = PenilaianEkskul::where('mapel_id', $mapelId)->get();
+        $penilaianEkskuls = PenilaianEkskul::where('kelas_id', $kelasId)->get();
     
-        return view('penilaian.ekskul', compact('penilaianEkskuls', 'mapelId'));
+        return view('penilaian.ekskul', compact('penilaianEkskuls', 'kelasId'));
     }
     
-    public function updateAllPenilaianEkskul(Request $request, $mapelId)
+    public function updateAllPenilaianEkskul(Request $request, $kelasId)
     {
         
         $data = $request->input('nilai', []);

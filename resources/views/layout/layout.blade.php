@@ -151,7 +151,7 @@
                         <ul id="ekstrakulikuler" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listEkskul as $ekskul)
                             <li class="sidebar-item">
-                                <a href="{{ route('penilaian.ekskul', $ekskul->id) }}" class="sidebar-link">{{$ekskul->nama}}</a>
+                                <a href="{{ route('penilaian.ekskul', $ekskul->kelas_id) }}" class="sidebar-link">{{$ekskul->nama}}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -197,7 +197,7 @@
                     @csrf
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pilih Semester
+                            {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-start">
                             @foreach($semesters as $semester)

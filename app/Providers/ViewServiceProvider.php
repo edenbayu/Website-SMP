@@ -25,7 +25,9 @@ class ViewServiceProvider extends ServiceProvider
                 $semesterId = $request->input('semester_id'); // Fallback to request if not in session
             }
 
-            $semesterDeatil = Semester::find($semesterId);
+            $selectedSemester = Semester::select('semesters.semester', 'semesters.tahun_ajaran')
+            ->where('semesters.id', $semesterId)
+            ->first();
 
             // Fetch all semesters and other mapel data
             $semesters = Semester::all();
@@ -56,10 +58,11 @@ class ViewServiceProvider extends ServiceProvider
                                 ->get();
 
                 // Query for Ekskul mapels
-                $listEkskul = Mapel::select('mapels.id', 'mapels.nama', 'mapels.kelas')
+                $listEkskul = Mapel::select('mapels.id as mapel_id', 'mapels.nama', 'mapels.kelas', 'kelas.id as kelas_id')
                     ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                     ->join('users', 'users.id', '=', 'gurus.id_user')
                     ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
+                    ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
                     ->join('semesters', 'semesters.id', '=', 'mapels.semester_id')
                     ->where('mapels.kelas', '=', 'Ekskul')
                     ->where('users.id', $user->id)
@@ -75,6 +78,7 @@ class ViewServiceProvider extends ServiceProvider
             // Share semester data with the view
             $view->with('semesters', $semesters);
             $view->with('selectedSemesterId', $semesterId);
+            $view->with('selectedSemester', $selectedSemester);
         });
     }
 

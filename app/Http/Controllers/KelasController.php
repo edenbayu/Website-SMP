@@ -230,12 +230,6 @@ class KelasController extends Controller
         // Find the class
         $kelas = Kelas::findOrFail($kelasId);
 
-        $getMapelId = Kelas::join('mapel_kelas', 'mapel_kelas.kelas_id', '=', 'kelas.id')
-            ->join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
-            ->select('mapels.id')
-            ->where('kelas.id', $kelasId)
-            ->first();
-
         // Check if the class already has 30 students
         if ($kelas->siswas()->count() >= 30) {
             return redirect()->back()->with('error', 'Kelas sudah penuh. Maksimal 30 siswa.');
@@ -248,7 +242,7 @@ class KelasController extends Controller
             $penilaian = PenilaianEkskul::create([
                 'nilai' => null,
                 'siswa_id' => $request->id_siswa,
-                'mapel_id' => $getMapelId->id
+                'kelas_id' => $kelasId
             ]);
         }
         return redirect()->back()->with('success', 'Siswa berhasil ditambahkan ke kelas.');

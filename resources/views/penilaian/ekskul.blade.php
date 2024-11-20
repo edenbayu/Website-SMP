@@ -19,7 +19,7 @@
         <button type="submit" class="btn btn-primary">Save Changes</button>
     </div>
 
-    <form action="{{ route('penilaian.ekskul.update.all', ['mapelId' => $mapelId]) }}" method="POST">
+    <form action="{{ route('penilaian.ekskul.update.all', ['kelasId' => $kelasId]) }}" method="POST">
         @csrf
         @method('POST')
 

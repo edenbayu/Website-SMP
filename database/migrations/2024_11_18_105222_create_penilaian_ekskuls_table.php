@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('penilaian_ekskuls', function (Blueprint $table) {
             $table->id();
             $table->float('nilai')->nullable();
-            $table->foreignId('mapel_id')->constrained('mapels')->onDelete('cascade');
+            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
             $table->foreignId('siswa_id')->constrained('siswas')->onDelete('cascade');
             $table->timestamps();
         });

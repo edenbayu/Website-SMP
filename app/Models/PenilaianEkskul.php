@@ -9,7 +9,7 @@ class PenilaianEkskul extends Model
     protected $table = 'penilaian_ekskuls';
     protected $fillable = [
         'nilai',
-        'mapel_id',
+        'kelas_id',
         'siswa_id',
     ];
 

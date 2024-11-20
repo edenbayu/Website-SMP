@@ -140,7 +140,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/buku-nilai', 'bukuNilai')->name('penilaian.bukuNilai');
         });
 
-        Route::prefix('Penilaian/Ekskul/{mapelId}')->controller(PenilaianController::class)->group(function () {
+        Route::prefix('Penilaian/Ekskul/{kelasId}')->controller(PenilaianController::class)->group(function () {
             Route::get('/',  'penilaianEkskul')->name('penilaian.ekskul');
             Route::post('/update', 'updateAllPenilaianEkskul')->name('penilaian.ekskul.update.all');
         });
