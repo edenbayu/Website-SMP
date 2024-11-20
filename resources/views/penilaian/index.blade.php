@@ -143,7 +143,7 @@
                             <select class="form-select" id="tp_id" name="tp_id" required>
                                 <option value="">Select TP</option>
                                 @foreach ($tpOptions as $tp)
-                                <option value="{{ $tp->id }}">{{$tp->cp->id}}.{{ $tp->id}} | {{ $tp->nama }}</option>
+                                <option value="{{ $tp->id }}">{{$tp->cp->nomor}}.{{ $tp->nomor}} | {{ $tp->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
