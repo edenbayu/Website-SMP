@@ -58,7 +58,7 @@
                     <form action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert">Hapus</button>
                     </form>
                 </td>
             </tr>
@@ -96,6 +96,36 @@
     </div>
 </div>
 
+
+<!-- success alert -->
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+
+<!-- error alert -->
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Gagal!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
@@ -112,6 +142,29 @@
             language: {
                 url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
             }
+        });
+    });
+</script>
+<script>
+    document.querySelectorAll('.deleteAlert').forEach(function(button, index) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Apakah Anda Yakin?",
+                text: "Data Akan Dihapus Permanen dari Basis Data!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                // Jika konfirmasi "Ya, Hapus!" diklik
+                if (result.isConfirmed) {
+                    // Mengirim formulir untuk menghapus data
+                    event.target.closest('form').submit();
+                }
+            });
         });
     });
 </script>

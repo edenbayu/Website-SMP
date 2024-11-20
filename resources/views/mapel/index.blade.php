@@ -84,7 +84,7 @@
                     <form action="{{ route('mapel.delete', $mapel->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger" style="width: 5rem">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
                     </form>
 
                     <!-- Button to open Assign Kelas Modal -->
@@ -128,75 +128,129 @@
         </tbody>
     </table>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Cek apakah DataTable sudah diinisialisasi
-            if ($.fn.DataTable.isDataTable('#example')) {
-                $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
-            }
-
-            // Inisialisasi DataTable dengan opsi
-            $('#example').DataTable({
-                language: {
-                    url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
-                }
-            });
-        });
-    </script>
-
-</div>
-
-<!-- Modal for Create Mapel -->
-<div class="modal fade" id="createMapelModal" tabindex="-1" aria-labelledby="createMapelModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createMapelModalLabel">Tambah Mata Pelajaran Baru</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal for Create Mapel -->
+    <div class="modal fade" id="createMapelModal" tabindex="-1" aria-labelledby="createMapelModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createMapelModalLabel">Tambah Mata Pelajaran Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('mapel.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama Mata Pelajaran</label>
+                            <input type="text" class="form-control" name="nama" id="nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="kelas" class="form-label">Kelas</label>
+                            <select name="kelas" id="guru_id" class="form-select" required>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guru_id" class="form-label">Pilih Guru</label>
+                            <select name="guru_id" id="guru_id" class="form-select" required>
+                                @foreach ($gurus as $guru)
+                                <option value="{{ $guru->id }}">{{ $guru->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="semester_id" class="form-label">Pilih Semester</label>
+                            <select name="semester_id" id="semester_id" class="form-select" required>
+                                @foreach ($semesters as $semester)
+                                <option value="{{ $semester->id }}">{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Tambah Mata Pelajaran</button>
+                    </div>
+                </form>
             </div>
-            <form action="{{ route('mapel.store') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nama" class="form-label">Nama Mata Pelajaran</label>
-                        <input type="text" class="form-control" name="nama" id="nama" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="kelas" class="form-label">Kelas</label>
-                        <select name="kelas" id="guru_id" class="form-select" required>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="guru_id" class="form-label">Pilih Guru</label>
-                        <select name="guru_id" id="guru_id" class="form-select" required>
-                            @foreach ($gurus as $guru)
-                            <option value="{{ $guru->id }}">{{ $guru->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="semester_id" class="form-label">Pilih Semester</label>
-                        <select name="semester_id" id="semester_id" class="form-select" required>
-                            @foreach ($semesters as $semester)
-                            <option value="{{ $semester->id }}">{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Tambah Mata Pelajaran</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
+
+<!-- success alert -->
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+
+<!-- error alert -->
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: "Gagal!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cek apakah DataTable sudah diinisialisasi
+        if ($.fn.DataTable.isDataTable('#example')) {
+            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+        }
+
+        // Inisialisasi DataTable dengan opsi
+        $('#example').DataTable({
+            language: {
+                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+            }
+        });
+    });
+</script>
+<script>
+    document.querySelectorAll('.deleteAlert').forEach(function(button, index) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Apakah Anda Yakin?",
+                text: "Data Akan Dihapus Permanen dari Basis Data!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                // Jika konfirmasi "Ya, Hapus!" diklik
+                if (result.isConfirmed) {
+                    // Mengirim formulir untuk menghapus data
+                    event.target.closest('form').submit();
+                }
+            });
+        });
+    });
+</script>
+
+
 
 @endsection
