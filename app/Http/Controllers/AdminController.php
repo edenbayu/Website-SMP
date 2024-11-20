@@ -98,6 +98,6 @@ class AdminController extends Controller
         $user->assignRole('Admin');
         $admin->id_user = $user->id;
         $admin->save();
-        return redirect()->route('guru.index')->with('success', 'Berhasil membuat akun guru baru.');
+        return redirect()->route('admin.index')->with('success', 'Berhasil membuat akun baru.');
     }
 }

@@ -9,8 +9,8 @@
         </div>
         <div class="card-body rounded-bottom" style="background-color: #37B7C3;">
             {{-- List TP --}}
-            <h4 class="mb-2" style="color: #EBF4F6">CP {{$cpId}} - {{$cps->nama}}</h4>
-            <h5 class="mb-2" style="color: #EBF4F6">{{$cps->keterangan}}</h5>
+            <h4 class="mb-2" style="color: #EBF4F6">CP {{$cpId}} - {{$cps->nama}} | {{$cps->keterangan}}</h4>
+            {{-- <h5 class="mb-2" style="color: #EBF4F6">{{$cps->keterangan}}</h5> --}}
         </div>
     </div>
 

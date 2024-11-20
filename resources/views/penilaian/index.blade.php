@@ -42,7 +42,7 @@
                 <td>{{ $penilaian->tipe }}</td>
                 <td class="text-start">{{ $penilaian->kktp }}</td>
                 <td>{{ $penilaian->penilaian_siswa->where('status', '=', 1)->count()}}/{{ $penilaian->penilaian_siswa->count()}}</td>
-                <td class="text-start">{{ $penilaian->tp->cp->id}}.{{ $penilaian->tp_id}}</td>
+                <td class="text-start">{{ $penilaian->tp->cp->nomor}}.{{ $penilaian->tp->nomor}}</td>
                 <td>
                     <a href="{{ route('penilaian.buka', ['kelasId' => $kelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian
@@ -143,7 +143,7 @@
                             <select class="form-select" id="tp_id" name="tp_id" required>
                                 <option value="">Select TP</option>
                                 @foreach ($tpOptions as $tp)
-                                <option value="{{ $tp->id }}">{{$tp->cp->nomor}}.{{ $tp->nomor}} | {{ $tp->nama }}</option>
+                                <option value="{{ $tp->id }}">{{$tp->cp->nomor}}.{{$tp->nomor}} | {{ $tp->nama }}</option>
                                 @endforeach
                             </select>
                         </div>

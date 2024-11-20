@@ -31,7 +31,7 @@ class PenilaianController extends Controller
         $kelas = Kelas::findOrFail($kelasId);
         
         //opsi untuk memilih TP saat membuka create modal
-        $tpOptions = TP::select('t_p_s.id', 't_p_s.nama', 't_p_s.cp_id')
+        $tpOptions = TP::select('t_p_s.id', 't_p_s.nama', 't_p_s.nomor', 't_p_s.cp_id')
         ->join('c_p_s', 'c_p_s.id', '=', 't_p_s.cp_id')
         ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'c_p_s.mapel_id')
         ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
@@ -142,10 +142,15 @@ class PenilaianController extends Controller
                 $penilaian->remedial = $data['remedial'] ?? null;
 
                 // Access kktp from the related Penilaian model
-                $kkm = $penilaian->penilaian->kktp; // Assuming `penilaian()` relationship is defined in PenilaianSiswa model
+                $kkm = $penilaian->penilaian->kktp; // Assuming penilaian() relationship is defined in PenilaianSiswa model
                 
                 if($penilaian->nilai > $kkm && !is_null($penilaian->remedial)) {
-                    $penilaian->nilai_akhir = ($penilaian->nilai + $penilaian->remedial)/2;
+                    if ($penilaian->remedial > $penilaian->nilai){
+                        $penilaian->nilai_akhir = ($penilaian->nilai + $penilaian->remedial)/2;
+                    }
+                    else {
+                        $penilaian->nilai_akhir = $penilaian->nilai;
+                    }
                 } elseif($penilaian->nilai < $kkm && !is_null($penilaian->remedial)){
                     if ($penilaian->remedial > $kkm){
                         $penilaian->nilai_akhir = $kkm;
