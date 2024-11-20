@@ -66,7 +66,7 @@ class SiswaSeeder extends Seeder
                 'nama_wali' => null,
                 'alamat_wali' => null,
                 'pekerjaan_wali' => null,
-                'angkatan' => '1',
+                'angkatan' => '1in',
                 'id_user' => null,
                 'created_at' => now(),
                 'updated_at' => now(),

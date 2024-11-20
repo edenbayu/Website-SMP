@@ -25,6 +25,8 @@ class ViewServiceProvider extends ServiceProvider
                 $semesterId = $request->input('semester_id'); // Fallback to request if not in session
             }
 
+            $semesterDeatil = Semester::find($semesterId);
+
             // Fetch all semesters and other mapel data
             $semesters = Semester::all();
 
