@@ -16,6 +16,7 @@ use App\Http\Controllers\SemesterSelectionController;
 use App\Http\Controllers\SillabusController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\PesertaDidikController;
 
 // Group routes for LoginController using Route::controller
 Route::controller(LoginController::class)->group(function () {
@@ -114,7 +115,7 @@ Route::middleware('auth')->group(function () {
 
     //disini kita protect Routesnya Guru yak!
 
-    Route::middleware('role:Guru')->group(function () {
+    Route::middleware('role:Guru|Wali Kelas')->group(function () {
 
         Route::prefix('CP')->controller(SillabusController::class)->group(function () {
             Route::get('/{mapelId}', 'index')->name('silabus.index');
@@ -140,7 +141,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/buku-nilai', 'bukuNilai')->name('penilaian.bukuNilai');
         });
 
-        Route::prefix('Penilaian/Ekskul/{kelasId}')->controller(PenilaianController::class)->group(function () {
+        Route::prefix('Penilaian/Ekskul/{kelasId}/{mapelId}')->controller(PenilaianController::class)->group(function () {
             Route::get('/',  'penilaianEkskul')->name('penilaian.ekskul');
             Route::post('/update', 'updateAllPenilaianEkskul')->name('penilaian.ekskul.update.all');
         });
@@ -150,6 +151,13 @@ Route::middleware('auth')->group(function () {
             Route::post('/update', 'updateKomentar')->name('komentar.update');
         });
 
+    });
+
+    Route::middleware('role:Wali Kelas')->group(function () {
+
+        Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
+            Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
+        });
     });
 });
 

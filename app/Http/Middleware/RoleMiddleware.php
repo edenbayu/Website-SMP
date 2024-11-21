@@ -18,6 +18,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, ...$roles)
     {
+        dd($role, auth()->user()->getRoleNames());
         if (!Auth::check() || !Auth::user()->hasAnyRole($roles)) {
             return redirect()->route('home')->with('error', 'You do not have permission to access this page.');
         }

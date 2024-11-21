@@ -71,6 +71,27 @@ class HomeController extends Controller
             ));
         }
 
+        else if ($user->hasRole('Wali Kelas')){
+
+            $semesterAktif = Semester::select('semester', 'tahun_ajaran')
+                                ->where('status', 1)
+                                ->get();
+
+            $kepalaSekolah = Guru::select('nama')
+                    ->where('jabatan', 'Kepala Sekolah')
+                    ->get();
+
+            $operator = Guru::select('nama', 'jabatan')
+                ->where('id_user', $user->id)
+                ->get();
+
+            return view('home', compact(
+                'semesterAktif',
+                'kepalaSekolah',
+                'operator',
+            ));
+        }
+
         // Redirect if user is not an Admin
         return redirect()->route('home')->with('error', 'Access Denied');
     }

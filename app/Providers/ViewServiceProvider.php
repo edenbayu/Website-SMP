@@ -33,7 +33,7 @@ class ViewServiceProvider extends ServiceProvider
             $semesters = Semester::all();
 
             // If the user is a 'Guru', fetch the mapel data for the selected semester
-            if ($user && $user->hasRole('Guru')) {
+            if ($user && $user->hasRole('Guru|Wali Kelas')) {
                 $listMataPelajaran = Mapel::select('mapels.id', 'mapels.nama', 'mapels.kelas')
                     ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                     ->join('users', 'users.id', '=', 'gurus.id_user')

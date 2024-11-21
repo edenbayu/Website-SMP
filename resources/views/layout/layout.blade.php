@@ -103,7 +103,7 @@
                 </ul>
                 @endrole
 
-                @role('Guru')
+                @role('Guru|Wali Kelas')
                 <!-- Guru -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-header">
@@ -151,7 +151,7 @@
                         <ul id="ekstrakulikuler" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listEkskul as $ekskul)
                             <li class="sidebar-item">
-                                <a href="{{ route('penilaian.ekskul', $ekskul->kelas_id) }}" class="sidebar-link">{{$ekskul->nama}}</a>
+                                <a href="{{ route('penilaian.ekskul', [$ekskul->kelas_id, $ekskul->mapel_id]) }}" class="sidebar-link">{{$ekskul->nama}}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -183,8 +183,18 @@
                             Kalender Akademik
                         </a>
                     </li>
-                </ul>
                 @endrole
+                @role('Wali Kelas')
+                    <li class="sidebar-item">
+                        <a href="{{ route('pesertadidik.index',  $selectedSemesterId)}}" class="sidebar-link">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            Peserta Didik
+                        </a>
+                    </li>
+                @endrole
+                </ul>
+
+
             </div>
         </aside>
         <div class="main">
@@ -192,7 +202,7 @@
                 <button class="btn" id="sidebar-toggle" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                @role('Guru')
+                @role('Guru|Wali Kelas')
                 <form action="{{ route('select.semester') }}" method="POST" class="m-0">
                     @csrf
                     <div class="dropdown">

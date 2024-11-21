@@ -10,7 +10,7 @@
     </div>
 
 
-    <form action="{{ route('penilaian.ekskul.update.all', ['kelasId' => $kelasId]) }}" method="POST">
+    <form action="{{ route('penilaian.ekskul.update.all', ['kelasId' => $kelasId, $mapelId]) }}" method="POST">
         @csrf
         @method('POST')
 

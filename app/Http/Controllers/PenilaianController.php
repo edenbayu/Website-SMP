@@ -178,7 +178,7 @@ class PenilaianController extends Controller
 
         return redirect()->back()->with('success', 'Penilaian updated successfully!');
     }
-
+    
     public function bukuNilai($kelasId, $mapelId)
     {
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
@@ -201,15 +201,15 @@ class PenilaianController extends Controller
         return view('penilaian.bukuNilai', compact('datas'));
     }
     
-    public function penilaianEkskul(Request $request, $kelasId)
+    public function penilaianEkskul(Request $request, $kelasId, $mapelId)
     {
         // Fetch all penilaianEkskul records related to the specified mapel
         $penilaianEkskuls = PenilaianEkskul::where('kelas_id', $kelasId)->get();
     
-        return view('penilaian.ekskul', compact('penilaianEkskuls', 'kelasId'));
+        return view('penilaian.ekskul', compact('penilaianEkskuls', 'kelasId', 'mapelId'));
     }
     
-    public function updateAllPenilaianEkskul(Request $request, $kelasId)
+    public function updateAllPenilaianEkskul(Request $request, $kelasId, $mapelId)
     {
         
         $data = $request->input('nilai', []);

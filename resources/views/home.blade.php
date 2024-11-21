@@ -133,7 +133,18 @@
                 <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, Guru!</h2>
             </div>
         </div>
+    @endrole
 
+    @role('Wali Kelas')
+    <div class="container-fluid mt-3">
+        <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+            <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+                <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, Wali Kelas!</h2>
+            </div>
+        </div>
+    @endrole
+
+    @role('Guru|Wali Kelas')
         <div class="row">
             <!-- Main Dashboard -->
             <div class="col-6">
@@ -164,17 +175,7 @@
     </div>
     @endrole
 
-    @role('Wali Kelas')
-    <p>I am Wali Kelas</p>
-    @endrole
-
     @role('Siswa')
     <p>I am Siswa</p>
     @endrole
-
-    <!-- Logout Form -->
-    <!-- <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit">Logout</button>
-    </form> -->
     @endsection
