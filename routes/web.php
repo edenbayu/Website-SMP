@@ -130,7 +130,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{mapelId}/cp/{cpId}/{tpId}/delete', 'deleteTP')->name('silabus.deleteTP');
         });
 
-        Route::prefix('Penilaian/{kelasId}')->controller(PenilaianController::class)->group(function () {
+        Route::prefix('Penilaian/{kelasId}/{mapelId}')->controller(PenilaianController::class)->group(function () {
             Route::get('/', 'index')->name('penilaian.index');
             Route::post('/store', 'storePenilaian')->name('penilaian.store');
             Route::put('/{penilaianId}/update', 'updatePenilaian')->name('penilaian.update');

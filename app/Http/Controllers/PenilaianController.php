@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class PenilaianController extends Controller
 {
-    public function index($kelasId)
+    public function index($kelasId, $mapelId)
     {
         
         $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
@@ -24,7 +24,9 @@ class PenilaianController extends Controller
         ->join('c_p_s as c', 'c.id', '=', 'b.cp_id')
         ->join('mapel_kelas as d', 'd.mapel_id', '=', 'c.mapel_id')
         ->join('kelas as e', 'e.id', '=', 'd.kelas_id')
+        ->join('mapels as f', 'f.id', '=', 'd.mapel_id')
         ->where('e.id', $kelasId)
+        ->where('f.id', $mapelId)
         ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan', 'penilaians.tp_id')
         ->get();
 
@@ -35,13 +37,15 @@ class PenilaianController extends Controller
         ->join('c_p_s', 'c_p_s.id', '=', 't_p_s.cp_id')
         ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'c_p_s.mapel_id')
         ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
+        ->join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
         ->where('kelas.id', $kelasId)
+        ->where('mapels.id', $mapelId)
         ->get();
     
-        return view('penilaian.index', compact('penilaians', 'kelasId', 'kelas', 'tpOptions', 'get_siswa_class_data'));
+        return view('penilaian.index', compact('penilaians', 'kelasId', 'kelas', 'tpOptions', 'get_siswa_class_data', 'mapelId'));
     }
 
-    public function storePenilaian(Request $request, $kelasId)
+    public function storePenilaian(Request $request, $kelasId, $mapelId)
     {
         $request->validate([
             'tipe' => 'required|string|max:255',
@@ -76,11 +80,11 @@ class PenilaianController extends Controller
             ]);
         }
     
-        return redirect()->route('penilaian.index', $kelasId)->with('success', 'Penilaian created successfully!');
+        return redirect()->route('penilaian.index', [$kelasId, $mapelId])->with('success', 'Penilaian created successfully!');
     }
     
     
-    public function updatePenilaian(Request $request, $kelasId, $penilaianId)
+    public function updatePenilaian(Request $request, $kelasId, $penilaianId, $mapelId)
     {
         // Validate the incoming request data
         $request->validate([
@@ -103,10 +107,10 @@ class PenilaianController extends Controller
         $penilaian->save();
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$kelasId])->with('success', 'Penilaian berhasil diperbarui.');
+        return redirect()->route('penilaian.index', [$kelasId, $mapelId])->with('success', 'Penilaian berhasil diperbarui.');
     }
 
-    public function deletePenilaian($kelasId, $penilaianId)
+    public function deletePenilaian($kelasId, $penilaianId, $mapelId)
     {
         // Find the CP record by its ID
         $penilaian = Penilaian::findOrFail($penilaianId);
@@ -115,12 +119,12 @@ class PenilaianController extends Controller
         $penilaian->delete();
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$kelasId])->with('success', 'Penilaian berhasil dihapus.');
+        return redirect()->route('penilaian.index', [$kelasId, $mapelId])->with('success', 'Penilaian berhasil dihapus.');
     }
 
     // End of Penilaian's function codes //
 
-    public function bukaPenilaian($kelasId, $penilaianId)
+    public function bukaPenilaian($kelasId, $penilaianId, $mapelId)
     {
         $penilaian_siswas = PenilaianSiswa::join('siswas', 'siswas.id', '=', 'penilaian_siswa.siswa_id')
         ->where('penilaian_id', $penilaianId)
@@ -175,7 +179,7 @@ class PenilaianController extends Controller
         return redirect()->back()->with('success', 'Penilaian updated successfully!');
     }
 
-    public function bukuNilai($kelasId)
+    public function bukuNilai($kelasId, $mapelId)
     {
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
             ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')

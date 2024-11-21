@@ -45,7 +45,7 @@ class ViewServiceProvider extends ServiceProvider
                     ->distinct()
                     ->get();
 
-                $listRombel = Mapel::select('mapels.id', 'kelas.id as kelas_id', 'mapels.nama', 'kelas.rombongan_belajar')
+                $listRombel = Mapel::select('mapels.id as mapel_id', 'kelas.id as kelas_id', 'mapels.nama', 'kelas.rombongan_belajar')
                                 ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                                 ->join('users', 'users.id', '=', 'gurus.id_user')
                                 ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')

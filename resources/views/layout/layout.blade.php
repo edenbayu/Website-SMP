@@ -138,7 +138,7 @@
                         <ul id="penilaian" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listRombel as $mapel)
                             <li class="sidebar-item">
-                                <a href="{{ route('penilaian.index', ['kelasId' => $mapel->kelas_id]) }}" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
+                                <a href="{{ route('penilaian.index', ['kelasId' => $mapel->kelas_id, 'mapelId' => $mapel->mapel_id]) }}" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
                             </li>
                             @endforeach
                         </ul>

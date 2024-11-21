@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <form action="{{ route('penilaian.updateBatch', ['kelasId' => $kelasId]) }}" method="POST">
+    <form action="{{ route('penilaian.updateBatch', ['kelasId' => $kelasId, '$mapelId']) }}" method="POST">
         <button type="submit" class="btn btn-primary mb-3">Update Penilaian</button>
         @csrf
         @method('PUT')
