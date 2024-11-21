@@ -36,7 +36,7 @@
                 <td class="text-start">{{ $tp->keterangan }}</td>
                 <td class="text-start">
                     {{-- Edit Button --}}
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editTPModal{{ $tp->id }}">
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editTPModal{{ $tp->id }}" style="width: 5.5rem;">
                         Ubah
                     </button>
 
@@ -44,7 +44,7 @@
                     <form action="{{ route('silabus.deleteTP', [$mapelId, $cpId, $tp->id]) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5.5rem;">Hapus</button>
                     </form>
                 </td>
             </tr>

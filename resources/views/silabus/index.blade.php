@@ -32,18 +32,18 @@
                 <td>{{ $cp->keterangan }}</td>
                 <td>
                     <!-- Buat TP Button -->
-                    <form action="{{ route('bukaTP', ['mapelId' => $mapelId, 'cpId' => $cp->id]) }}" method="GET" style="display: inline;">
+                    <form action="{{ route('bukaTP', ['mapelId' => $mapelId, 'cpId' => $cp->id]) }}" method="GET" style="display: inline;" class="m-0">
                         <button type="submit" style="width: 5.5rem;" class="btn btn-primary">
                             Buat TP
                         </button>
                     </form>
                     <!-- Update Button -->
-                    <button type="button" style="width: 5.5rem;" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}">
+                    <button type="button" style="width: 5.5rem;" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}" class="m-0">
                         Ubah
                     </button>
 
                     <!-- Delete Form -->
-                    <form action="{{ route('silabus.deleteCP', [$mapelId, $cp->id]) }}" method="POST" style="display: inline-block;">
+                    <form action="{{ route('silabus.deleteCP', [$mapelId, $cp->id]) }}" method="POST" style="display: inline-block;" class="m-0">
                         @csrf
                         @method('DELETE')
                         <button type="submit" style="width: 5.5rem;" class="btn btn-danger deleteAlert">Hapus</button>
