@@ -159,6 +159,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
             Route::get('/legerNilai/{kelasId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
             Route::get('/generate-rapot', 'generateRapotPDF')->name('pesertadidik.generateRapot');
+            Route::get('/attendanceIndex/{semesterId}', 'attendanceIndex')->name('pesertadidik.attendanceIndex');
+            Route::get('/{semesterId}/get-attendance', 'getAttendance')->name('pesertadidik.getAttendance');
+            Route::post('/pesertadidik/{semesterId}/update-attendance',  'updateAttendance')->name('pesertadidik.updateAttendance');
+            Route::post('/attendance', 'storeAttendance')->name('pesertadidik.storeAttendance');
         });
     });
 });

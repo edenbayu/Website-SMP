@@ -192,6 +192,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="{{ route('pesertadidik.attendanceIndex', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            Absensi
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#legerNilai" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-person-chalkboard"></i>
                             Leger Nilai

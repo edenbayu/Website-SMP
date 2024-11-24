@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
 use App\Models\PenilaianSiswa;
+use App\Models\AbsensiSiswa;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
@@ -30,6 +32,92 @@ class PesertaDidikController extends Controller
 
         return view('walikelas.index', compact('pesertadidiks'));
     }
+
+    // Display student attendance for a specific semester
+    public function attendanceIndex($semesterId)
+    {
+        $user = Auth::user();
+
+        // Get students for the specified semester
+        $pesertadidiks = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+            ->join('kelas', 'kelas.id', '=', 'kelas_siswa.kelas_id')
+            ->join('semesters', 'semesters.id', '=', 'kelas.id_semester')
+            ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
+            ->join('users', 'users.id', '=', 'gurus.id_user')
+            ->where('users.id', $user->id)
+            ->where('semesters.id', $semesterId)
+            ->where('kelas.kelas', '!=', 'Ekskul')
+            ->select('siswas.id', 'siswas.nama', 'kelas.rombongan_belajar')
+            ->get();
+
+        // Get attendance records for the current date
+        $attendanceRecords = AbsensiSiswa::whereIn('id_siswa', $pesertadidiks->pluck('id'))
+            ->whereDate('date', Carbon::today()) // Adjust to any date as necessary
+            ->get();
+
+        // dd($pesertadidiks);
+        // Map attendance status by student ID
+        $attendance = [];
+        foreach ($attendanceRecords as $record) {
+            $attendance[$record->id_siswa] = $record->status;
+        }
+
+        return view('walikelas.attendance', compact('pesertadidiks', 'attendance', 'semesterId'));
+    }
+
+    // Store the attendance for students
+    public function storeAttendance(Request $request)
+    {
+        $request->validate([
+            'attendance' => 'required|array',
+            'date' => 'required|date',
+        ]);
+
+        foreach ($request->attendance as $siswaId => $status) {
+            // Check if attendance already exists for the given student and date
+            $attendance = AbsensiSiswa::updateOrCreate(
+                ['id_siswa' => $siswaId, 'date' => $request->date],
+                ['status' => $status]
+            );
+        }
+
+        return redirect()->route('pesertadidik.attendanceIndex', ['semesterId' => $request->semester_id])
+            ->with('success', 'Attendance has been saved successfully.');
+    }
+
+    public function getAttendance($semesterId, Request $request)
+    {
+        $date = $request->date;
+
+        $attendance = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+            ->join('kelas', 'kelas.id', '=', 'kelas_siswa.kelas_id')
+            ->leftJoin('absensi_siswas', function ($join) use ($date) {
+                $join->on('absensi_siswas.id_siswa', '=', 'siswas.id')
+                    ->where('absensi_siswas.date', '=', $date);
+            })
+            ->where('kelas.id_semester', $semesterId)
+            ->select('siswas.id', 'siswas.nama', 'kelas.rombongan_belajar', 'absensi_siswas.status')
+            ->get();
+
+        return response()->json(['attendance' => $attendance]);
+    }
+
+    public function updateAttendance($semesterId, Request $request)
+    {
+        $attendance = AbsensiSiswa::updateOrCreate(
+            [
+                'id_siswa' => $request->student_id,
+                'date' => $request->date
+            ],
+            [
+                'status' => $request->status,
+                'semester_id' => $semesterId
+            ]
+        );
+
+        return response()->json(['message' => 'Attendance updated successfully.']);
+    }
+
 
     public function bukaLegerNilai($kelasId)
     {
