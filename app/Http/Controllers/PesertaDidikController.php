@@ -192,6 +192,6 @@ class PesertaDidikController extends Controller
     public function generateRapotPDF()
     {
         $pdf = PDF::loadHTML('<h1>Hello World</h1>');
-        return $pdf->download('test.pdf');
+        return $pdf->stream('test.pdf');
     }
 }
