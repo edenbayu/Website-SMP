@@ -92,6 +92,11 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <form action="{{ route('pesertadidik.generateRapot') }}" method="GET" class="m-0" target="blank">
+                                <button type="submit" class="btn btn-primary">
+                                    Download Rapot
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

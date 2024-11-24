@@ -10,11 +10,6 @@
         </div>
     </div>
 
-    <form action="{{ route('pesertadidik.generateRapot') }}" method="GET" class="m-0">
-        <button type="submit" class="btn btn-primary mb-3">
-            Download Rapot PDF
-        </button>
-    </form>
     @if($pesertadidiks->isEmpty())
     <p>No students found for this semester.</p>
     @else
