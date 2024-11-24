@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
 use App\Models\PenilaianSiswa;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class PesertaDidikController extends Controller
 {
@@ -80,5 +81,29 @@ class PesertaDidikController extends Controller
         }
 
         return view('walikelas.legerNilai', ['datas' => $result]);
+    }
+
+    public function bukaRapot($kelasId)
+    {
+        $user = Auth::user();
+
+        $pesertadidiks = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+        ->join('kelas', 'kelas.id', '=', 'kelas_siswa.kelas_id')
+        ->join('semesters', 'semesters.id', '=', 'kelas.id_semester')
+        ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
+        ->join('users', 'users.id', '=', 'gurus.id_user')
+        ->where('users.id', $user->id)
+        ->where('semesters.id', $semesterId)
+        ->where('kelas.kelas', '!=', 'Ekskul')
+        ->select('siswas.*', 'kelas.rombongan_belajar')
+        ->get();
+
+        return view('walikelas.index', compact('pesertadidiks'));
+    }
+
+    public function generateRapotPDF()
+    {
+        $pdf = PDF::loadHTML('<h1>Hello World</h1>');
+        return $pdf->download('test.pdf');
     }
 }

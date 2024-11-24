@@ -1,6 +1,10 @@
 @extends('layout.layout') <!-- Or another layout you are using -->
 
 @section('content')
+  <!-- Button to download rapot -->
+    <form action="{{ route('pesertadidik.generateRapot') }}" method="GET">
+        <button type="submit">Download Rapot PDF</button>
+    </form>
     <div class="container">
         <h1>Daftar Peserta Didik</h1>
 

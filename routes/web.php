@@ -158,6 +158,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
             Route::get('/legerNilai/{kelasId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
+            Route::get('/generate-rapot', 'generateRapotPDF')->name('pesertadidik.generateRapot');
         });
     });
 });
