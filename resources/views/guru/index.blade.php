@@ -91,7 +91,7 @@
                 <td>
                     @if(empty($guru->id_user))
                     <!-- Button to open the generate user modal -->
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $guru->id }}">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $guru->id }} "style="width: 5rem" >
                         Buat
                     </button>
                     @else

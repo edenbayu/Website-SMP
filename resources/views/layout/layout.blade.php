@@ -183,23 +183,28 @@
                             Kalender Akademik
                         </a>
                     </li>
-                @endrole
-                @role('Wali Kelas')
+                    @endrole
+
+                    <!-- Wali Kelas -->
+                    @role('Wali Kelas')
+                    <li class="sidebar-header">
+                        Wali Kelas
+                    </li>
                     <li class="sidebar-item">
                         <a href="{{ route('pesertadidik.index',  ['semesterId' => $selectedSemesterId ?? 'default'])}}" class="sidebar-link">
-                            <i class="fa-solid fa-calendar-days"></i>
+                            <i class="fa-solid fa-graduation-cap"></i>
                             Peserta Didik
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="{{ route('pesertadidik.attendanceIndex', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
-                            <i class="fa-solid fa-calendar-days"></i>
+                            <i class="fa-solid fa-address-book"></i>
                             Absensi
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#legerNilai" data-bs-toggle="collapse" aria-expanded="false">
-                            <i class="fa-solid fa-person-chalkboard"></i>
+                            <i class="fa-solid fa-star"></i>
                             Leger Nilai
                         </a>
                         <ul id="legerNilai" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -212,7 +217,7 @@
                             @endforeach
                         </ul>
                     </li>
-                @endrole
+                    @endrole
                 </ul>
 
 
@@ -229,9 +234,9 @@
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             @if (is_null($selectedSemester))
-                                Pilih Semester
+                            Pilih Semester
                             @else
-                                {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
+                            {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
                             @endif
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-start">

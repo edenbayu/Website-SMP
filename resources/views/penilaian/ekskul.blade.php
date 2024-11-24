@@ -34,11 +34,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="row mb-3 justify-content-end">
-            <div class="col-2">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-        </div>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>
 </div>
 
