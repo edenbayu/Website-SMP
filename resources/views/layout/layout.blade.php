@@ -138,7 +138,7 @@
                         <ul id="penilaian" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listRombel as $mapel)
                             <li class="sidebar-item">
-                                <a href="{{ route('penilaian.index', ['kelasId' => $mapel->kelas_id, 'mapelId' => $mapel->mapel_id]) }}" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
+                                <a href="{{ route('penilaian.index', ['mapelKelasId' => $mapel->mapel_kelas_id]) }}" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -186,10 +186,25 @@
                 @endrole
                 @role('Wali Kelas')
                     <li class="sidebar-item">
-                        <a href="{{ route('pesertadidik.index',  $selectedSemesterId)}}" class="sidebar-link">
+                        <a href="{{ route('pesertadidik.index',  ['semesterId' => $selectedSemesterId ?? 'default'])}}" class="sidebar-link">
                             <i class="fa-solid fa-calendar-days"></i>
                             Peserta Didik
                         </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#legerNilai" data-bs-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-person-chalkboard"></i>
+                            Leger Nilai
+                        </a>
+                        <ul id="legerNilai" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            @foreach($listKelas as $kelas)
+                            <li class="sidebar-item">
+                                <a href="{{route('pesertadidik.legerNilai', $kelas->id)}}" class="sidebar-link">
+                                    Kelas {{ $kelas->rombongan_belajar }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
                     </li>
                 @endrole
                 </ul>

@@ -9,43 +9,55 @@ use App\Models\TP;
 use App\Models\Siswa;
 use App\Models\PenilaianSiswa;
 use App\Models\PenilaianEkskul;
+use App\Models\MapelKelas;
 use Illuminate\Support\Facades\DB;
 
 class PenilaianController extends Controller
 {
-    public function index($kelasId, $mapelId)
+    public function index($mapelKelasId)
     {
-        
-        $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
-        ->where('kelas_siswa.kelas_id', $kelasId)
-        ->get();
-        
-        $penilaians = Penilaian::join('t_p_s as b', 'b.id', '=', 'penilaians.tp_id')
-        ->join('c_p_s as c', 'c.id', '=', 'b.cp_id')
-        ->join('mapel_kelas as d', 'd.mapel_id', '=', 'c.mapel_id')
-        ->join('kelas as e', 'e.id', '=', 'd.kelas_id')
-        ->join('mapels as f', 'f.id', '=', 'd.mapel_id')
-        ->where('e.id', $kelasId)
-        ->where('f.id', $mapelId)
-        ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan', 'penilaians.tp_id')
-        ->get();
-
-        $kelas = Kelas::findOrFail($kelasId);
-        
-        //opsi untuk memilih TP saat membuka create modal
-        $tpOptions = TP::select('t_p_s.id', 't_p_s.nama', 't_p_s.nomor', 't_p_s.cp_id')
-        ->join('c_p_s', 'c_p_s.id', '=', 't_p_s.cp_id')
-        ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'c_p_s.mapel_id')
-        ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
-        ->join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
-        ->where('kelas.id', $kelasId)
-        ->where('mapels.id', $mapelId)
-        ->get();
+        // Find the MapelKelas record or fail gracefully if it doesn't exist
+        $mapelKelas = MapelKelas::findOrFail($mapelKelasId);
     
-        return view('penilaian.index', compact('penilaians', 'kelasId', 'kelas', 'tpOptions', 'get_siswa_class_data', 'mapelId'));
+        // Get Siswa data for the specific class
+        $getSiswaClassData = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+            ->where('kelas_siswa.kelas_id', $mapelKelas->kelas_id)
+            ->get();
+    
+        // Get Penilaian data based on the provided MapelKelas ID
+        $penilaians = Penilaian::join('t_p_s as b', 'b.id', '=', 'penilaians.tp_id')
+            ->join('c_p_s as c', 'c.id', '=', 'b.cp_id')
+            ->join('mapel_kelas as d', 'd.mapel_id', '=', 'c.mapel_id')
+            ->where('d.id', $mapelKelasId)
+            ->where('penilaians.kelas_id', $mapelKelas->kelas_id)
+            ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan', 'penilaians.tp_id')
+            ->get();
+    
+        // Get the Kelas record related to the MapelKelas
+        $kelas = Kelas::findOrFail($mapelKelas->kelas_id);
+    
+        // Options for TP, based on the provided MapelKelas ID
+        $tpOptions = TP::select('t_p_s.id', 't_p_s.nama', 't_p_s.nomor', 't_p_s.cp_id')
+            ->join('c_p_s', 'c_p_s.id', '=', 't_p_s.cp_id')
+            ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'c_p_s.mapel_id')
+            ->where('mapel_kelas.id', $mapelKelasId)
+            ->get();
+        
+        // dd($penilaians);
+    
+        // Return the view with the necessary data
+        return view('penilaian.index', [
+            'penilaians' => $penilaians,
+            'kelas' => $kelas,
+            'tpOptions' => $tpOptions,
+            'getSiswaClassData' => $getSiswaClassData,
+            'mapelKelasId' => $mapelKelasId,
+            'mapelId' => $mapelKelas->mapel_id, // Ensure mapel_id exists in MapelKelas
+        ]);
     }
+    
 
-    public function storePenilaian(Request $request, $kelasId, $mapelId)
+    public function storePenilaian(Request $request, $mapelKelasId)
     {
         $request->validate([
             'tipe' => 'required|string|max:255',
@@ -54,7 +66,9 @@ class PenilaianController extends Controller
             'keterangan' => 'required|string|max:255',
             'tp_id' => 'required',
         ]);
-    
+
+        $mapelkelas = MapelKelas::find($mapelKelasId);
+
         // Create the Penilaian
         $penilaian = Penilaian::create([
             'tipe' => $request->tipe,
@@ -62,10 +76,11 @@ class PenilaianController extends Controller
             'kktp' => $request->kktp,
             'keterangan' => $request->keterangan,
             'tp_id' => $request->tp_id,
+            'kelas_id' => $mapelkelas->kelas_id
         ]);
 
         $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
-        ->where('kelas_siswa.kelas_id', $kelasId)
+        ->where('kelas_siswa.kelas_id', $mapelkelas->kelas_id)
         ->get();
     
         // Create PenilaianSiswa records
@@ -80,11 +95,11 @@ class PenilaianController extends Controller
             ]);
         }
     
-        return redirect()->route('penilaian.index', [$kelasId, $mapelId])->with('success', 'Penilaian created successfully!');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian created successfully!');
     }
     
     
-    public function updatePenilaian(Request $request, $kelasId, $penilaianId, $mapelId)
+    public function updatePenilaian(Request $request, $mapelKelasId, $penilaianId)
     {
         // Validate the incoming request data
         $request->validate([
@@ -107,10 +122,10 @@ class PenilaianController extends Controller
         $penilaian->save();
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$kelasId, $mapelId])->with('success', 'Penilaian berhasil diperbarui.');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil diperbarui.');
     }
 
-    public function deletePenilaian($kelasId, $penilaianId, $mapelId)
+    public function deletePenilaian($mapelKelasId, $penilaianId)
     {
         // Find the CP record by its ID
         $penilaian = Penilaian::findOrFail($penilaianId);
@@ -119,22 +134,22 @@ class PenilaianController extends Controller
         $penilaian->delete();
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$kelasId, $mapelId])->with('success', 'Penilaian berhasil dihapus.');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil dihapus.');
     }
 
     // End of Penilaian's function codes //
 
-    public function bukaPenilaian($kelasId, $penilaianId, $mapelId)
+    public function bukaPenilaian($mapelKelasId, $penilaianId)
     {
         $penilaian_siswas = PenilaianSiswa::join('siswas', 'siswas.id', '=', 'penilaian_siswa.siswa_id')
         ->where('penilaian_id', $penilaianId)
         ->select('penilaian_siswa.id','penilaian_siswa.status', 'penilaian_siswa.nilai', 'penilaian_siswa.remedial', 'penilaian_siswa.nilai_akhir', 'penilaian_siswa.penilaian_id', 'penilaian_siswa.siswa_id', 'siswas.nama')
         ->get();
         
-        return view('penilaian.buka', compact('penilaian_siswas', 'kelasId', 'penilaianId'));
+        return view('penilaian.buka', compact('penilaian_siswas', 'mapelKelasId', 'penilaianId'));
     }
 
-    public function updatePenilaianSiswaBatch(Request $request, $kelasId)
+    public function updatePenilaianSiswaBatch(Request $request, $mapelKelasId)
     {
         $penilaianData = $request->input('penilaian', []); // Get penilaian data from the request
 
@@ -179,26 +194,32 @@ class PenilaianController extends Controller
         return redirect()->back()->with('success', 'Penilaian updated successfully!');
     }
     
-    public function bukuNilai($kelasId, $mapelId)
+    public function bukuNilai($mapelKelasId)
     {
+        $mapelKelas = MapelKelas::find($mapelKelasId);
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
-            ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
-            ->join('t_p_s as d', 'd.id', '=', 'b.tp_id')
-            ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
-            ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
-            ->join('kelas as g', 'g.id', '=', 'f.kelas_id')
-            ->where('g.id', $kelasId)
-            ->select(
-                'c.nama',
-                DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) as avg_tugas"),
-                DB::raw("AVG(CASE WHEN b.tipe = 'UH' THEN penilaian_siswa.nilai_akhir END) as avg_uh"),
-                DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) as avg_sas"),
-                DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) as avg_sts")
-            )
-            ->groupBy('c.nama')
-            ->get();
+        ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
+        ->join('t_p_s as d', 'd.id', '=', 'b.tp_id')
+        ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
+        ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
+        ->join('kelas as g', 'g.id', '=', 'f.kelas_id')
+        ->where('f.id', $mapelKelasId)
+        ->where('b.kelas_id', $mapelKelas->kelas_id)
+        ->select(
+            'c.nama',
+            DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) as avg_tugas"),
+            DB::raw("AVG(CASE WHEN b.tipe = 'UH' THEN penilaian_siswa.nilai_akhir END) as avg_uh"),
+            DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) as avg_sas"),
+            DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) as avg_sts")
+        )
+        ->groupBy('c.nama')
+        ->get();    
     
         return view('penilaian.bukuNilai', compact('datas'));
+    }
+
+    public function legerNilai(){
+        
     }
     
     public function penilaianEkskul(Request $request, $kelasId, $mapelId)

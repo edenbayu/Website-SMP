@@ -12,6 +12,7 @@ class Penilaian extends Model
         'kktp',
         'keterangan',
         'tp_id',
+        'kelas_id'
     ];
 
     /**
@@ -20,6 +21,11 @@ class Penilaian extends Model
     public function tp()
     {
         return $this->belongsTo(TP::class, 'tp_id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     public function penilaian_siswa()

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->float('nilai')->nullable();
             $table->float('remedial')->nullable();
             $table->float('nilai_akhir')->nullable();
-            $table->foreignId('penilaian_id')->constrained()->onDelete('cascade'); 
-            $table->foreignId('siswa_id')->constrained()->onDelete('cascade');
+            $table->foreignId('penilaian_id')->constrained('penilaians')->onDelete('cascade');
+            $table->foreignId('siswa_id')->constrained('siswas')->onDelete('cascade');
             $table->timestamps();
         });
     }

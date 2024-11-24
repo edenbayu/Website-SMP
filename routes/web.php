@@ -131,7 +131,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{mapelId}/cp/{cpId}/{tpId}/delete', 'deleteTP')->name('silabus.deleteTP');
         });
 
-        Route::prefix('Penilaian/{kelasId}/{mapelId}')->controller(PenilaianController::class)->group(function () {
+        Route::prefix('Penilaian/{mapelKelasId}')->controller(PenilaianController::class)->group(function () {
             Route::get('/', 'index')->name('penilaian.index');
             Route::post('/store', 'storePenilaian')->name('penilaian.store');
             Route::put('/{penilaianId}/update', 'updatePenilaian')->name('penilaian.update');
@@ -157,6 +157,7 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
+            Route::get('/legerNilai/{kelasId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
         });
     });
 });

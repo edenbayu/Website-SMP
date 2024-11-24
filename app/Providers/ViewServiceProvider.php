@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use App\Model\MapelKelas;
 use App\Models\Mapel;
 use App\Models\User;
 use App\Models\Semester;
@@ -45,7 +46,7 @@ class ViewServiceProvider extends ServiceProvider
                     ->distinct()
                     ->get();
 
-                $listRombel = Mapel::select('mapels.id as mapel_id', 'kelas.id as kelas_id', 'mapels.nama', 'kelas.rombongan_belajar')
+                $listRombel = Mapel::select('mapel_kelas.id as mapel_kelas_id', 'mapels.id as mapel_id', 'kelas.id as kelas_id', 'mapels.nama', 'kelas.rombongan_belajar')
                                 ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                                 ->join('users', 'users.id', '=', 'gurus.id_user')
                                 ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
@@ -69,7 +70,17 @@ class ViewServiceProvider extends ServiceProvider
                     ->where('semesters.id', $semesterId)
                     ->distinct()
                     ->get();
+                
+                $listKelas = Kelas::select('kelas.id', 'kelas.rombongan_belajar')
+                    ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
+                    ->join('users', 'users.id', '=', 'gurus.id_user')
+                    ->join('semesters', 'semesters.id', '=', 'kelas.id_semester')
+                    ->where('users.id', $user->id)
+                    ->where('semesters.id', $semesterId)
+                    ->where('kelas.kelas', '!=', 'Ekskul')
+                    ->get();
 
+                $view->with('listKelas', $listKelas);
                 $view->with('listRombel', $listRombel);
                 $view->with('listMataPelajaran', $listMataPelajaran);
                 $view->with('listEkskul', $listEkskul);

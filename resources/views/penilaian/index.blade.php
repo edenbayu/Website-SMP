@@ -11,7 +11,7 @@
 
     <!-- Create Penilaian Button -->
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Tambah Penilaian</button>
-    <a href="{{ route('penilaian.bukuNilai', ['kelasId' => $kelasId, 'mapelId' => $mapelId]) }}" class="btn btn-primary mb-3">
+    <a href="{{ route('penilaian.bukuNilai', [$mapelKelasId]) }}" class="btn btn-primary mb-3">
         Lihat Buku Nilai
     </a>
 
@@ -44,11 +44,11 @@
                 <td>{{ $penilaian->penilaian_siswa->where('status', '=', 1)->count()}}/{{ $penilaian->penilaian_siswa->count()}}</td>
                 <td class="text-start">{{ $penilaian->tp->cp->nomor}}.{{ $penilaian->tp->nomor}}</td>
                 <td>
-                    <a href="{{ route('penilaian.buka', ['kelasId' => $kelasId, 'penilaianId' => $penilaian->id, 'mapelId' => $mapelId]) }}" class="btn btn-primary">
+                    <a href="{{ route('penilaian.buka', [$mapelKelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian
                     </a>
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}" style="width: 5rem">Edit</button>
-                    <form action="{{ route('penilaian.delete', [$kelas->id, $penilaian->id, $mapelId]) }}" method="POST" class="d-inline">
+                    <form action="{{ route('penilaian.delete', [$mapelKelasId, $penilaian->id]) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger deleteAlert" style="width: 5rem">Delete</button>
@@ -64,7 +64,7 @@
                             <h5 class="modal-title" id="editPenilaianLabel">Edit Penilaian</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{{ route('penilaian.update', [$kelas->id, $penilaian->id, $mapelId]) }}" method="POST">
+                        <form action="{{ route('penilaian.update', [$mapelKelasId, $penilaian->id]) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="modal-body">
@@ -113,7 +113,7 @@
                     <h5 class="modal-title" id="createPenilaianLabel">Add Penilaian</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('penilaian.store', [$kelas->id, $mapelId]) }}" method="POST">
+                <form action="{{ route('penilaian.store', [$mapelKelasId]) }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">

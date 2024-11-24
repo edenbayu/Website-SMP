@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('kktp');
             $table->string('keterangan');
             $table->foreignId('tp_id')->nullable()->constrained('t_p_s')->onDelete('set null');
+            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
             $table->timestamps();
         }); 
     }
