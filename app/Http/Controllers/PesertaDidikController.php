@@ -171,28 +171,55 @@ class PesertaDidikController extends Controller
         return view('walikelas.legerNilai', ['datas' => $result]);
     }
 
-    public function bukaRapot($kelasId)
+    public function generateRapotPDF(Request $request)
     {
-        $user = Auth::user();
+        // Retrieve data from the form submission
+        $data = $request->all();
 
-        $pesertadidiks = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
-        ->join('kelas', 'kelas.id', '=', 'kelas_siswa.kelas_id')
-        ->join('semesters', 'semesters.id', '=', 'kelas.id_semester')
-        ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
-        ->join('users', 'users.id', '=', 'gurus.id_user')
-        ->where('users.id', $user->id)
-        ->where('semesters.id', $semesterId)
-        ->where('kelas.kelas', '!=', 'Ekskul')
-        ->select('siswas.*', 'kelas.rombongan_belajar')
-        ->get();
+        // Extract subjects and grades
+        $subjects = $data['subjects'] ?? [];
+        $studentName = $data['student_name'] ?? 'Unknown Student';
+        $studentId = $data['student_id'] ?? null; // Assuming student_id is passed in the form
 
-        return view('walikelas.index', compact('pesertadidiks'));
+        // Additional form data
+        $komentar = $data['komentar'] ?? '';
+        $prestasi = [
+            'prestasi_1' => $data['prestasi_1'] ?? null,
+            'prestasi_2' => $data['prestasi_2'] ?? null,
+            'prestasi_3' => $data['prestasi_3'] ?? null,
+        ];
+
+        // Fetch extracurricular (ekskul) data from database
+        $ekskulData = DB::table('penilaian_ekskuls as a')
+                        ->join('kelas as b', 'b.id', '=', 'a.kelas_id')
+                        ->join('siswas as c', 'c.id', '=', 'a.siswa_id')
+                        ->where('c.id', $studentId)
+                        ->select('b.rombongan_belajar', 'a.nilai')
+                        ->get();
+
+        // Pass the data to the view for PDF generation
+        $pdf = PDF::loadView('rapot', compact('subjects', 'studentName', 'komentar', 'prestasi', 'ekskulData'));
+
+        // Return the PDF as a download
+        return $pdf->stream("rapot_mid_{$studentName}.pdf");
     }
+    
+    
+    // public function bukaRapot($kelasId)
+    // {
+    //     $user = Auth::user();
 
-    public function generateRapotPDF()
-    {
-        $pdf = PDF::loadHTML('<h1>Hello World</h1>');
-        return $pdf->stream();
-        return $pdf->stream('test.pdf');
-    }
+    //     $pesertadidiks = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+    //     ->join('kelas', 'kelas.id', '=', 'kelas_siswa.kelas_id')
+    //     ->join('semesters', 'semesters.id', '=', 'kelas.id_semester')
+    //     ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
+    //     ->join('users', 'users.id', '=', 'gurus.id_user')
+    //     ->where('users.id', $user->id)
+    //     ->where('semesters.id', $semesterId)
+    //     ->where('kelas.kelas', '!=', 'Ekskul')
+    //     ->select('siswas.*', 'kelas.rombongan_belajar')
+    //     ->get();
+
+    //     return view('walikelas.index', compact('pesertadidiks'));
+    // }
 }

@@ -82,20 +82,48 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            @foreach ($subjects as $subject)
-                            <div class="mb-3">
-                                <label for="subject-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
-                                <input type="text" class="form-control" id="subject-{{ $loop->index }}"
-                                    value="{{ $data[$subject] ?? 0 }}" readonly>
-                            </div>
-                            @endforeach
+                            <form action="{{ route('pesertadidik.generateRapot') }}" method="POST" class="m-0" target="blank">
+                                @csrf
+                                <!-- Pass student name as hidden field -->
+                                <input type="hidden" name="student_name" value="{{ $data['nama'] }}">
+
+                                <!-- Loop through subjects and pass them with grades -->
+                                @foreach ($subjects as $subject)
+                                <input type="hidden" name="subjects[{{ $subject }}]" value="{{ $data[$subject] ?? 0 }}">
+                                @endforeach
+
+                                @foreach ($subjects as $subject)
+                                <div class="mb-3">
+                                    <label for="subject-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
+                                    <input type="text" class="form-control" id="subject-{{ $loop->index }}"
+                                        value="{{ $data[$subject] ?? 0 }}" readonly>
+                                </div>
+                                @endforeach
+
+                                <!-- Komentar Text Area (fillable) -->
+                                <div class="mb-3">
+                                    <label for="komentar" class="form-label">Komentar</label>
+                                    <textarea class="form-control" id="komentar" name="komentar" rows="3">{{ old('komentar') }}</textarea>
+                                </div>
+
+                                <!-- Prestasi Fields (nullable, can be filled) -->
+                                <div class="mb-3">
+                                    <label for="prestasi_1" class="form-label">Prestasi 1</label>
+                                    <input type="text" class="form-control" id="prestasi_1" name="prestasi_1" value="{{ old('prestasi_1') }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="prestasi_2" class="form-label">Prestasi 2</label>
+                                    <input type="text" class="form-control" id="prestasi_2" name="prestasi_2" value="{{ old('prestasi_2') }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="prestasi_3" class="form-label">Prestasi 3</label>
+                                    <input type="text" class="form-control" id="prestasi_3" name="prestasi_3" value="{{ old('prestasi_3') }}">
+                                </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <form action="{{ route('pesertadidik.generateRapot') }}" method="GET" class="m-0" target="blank">
-                                <button type="submit" class="btn btn-primary">
-                                    Download Rapot
-                                </button>
+                            <button type="submit" class="btn btn-primary">Download Rapot</button>
                             </form>
                         </div>
                     </div>

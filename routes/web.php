@@ -155,7 +155,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:Wali Kelas')->group(function () {
 
-        Route::get('/generate-rapot', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
+        Route::post('/generate-rapot', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
 
         Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
