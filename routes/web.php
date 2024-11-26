@@ -158,12 +158,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/generate-rapot', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
 
         Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
+            Route::post('/attendance/fetch', 'fetchAttendance')->name('pesertadidik.fetchAttendance');
+            Route::post('/attendance/save', 'saveAttendanceAjax')->name('pesertadidik.saveAttendanceAjax');
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
             Route::get('/legerNilai/{kelasId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
             Route::get('/attendanceIndex/{semesterId}', 'attendanceIndex')->name('pesertadidik.attendanceIndex');
-            Route::get('/{semesterId}/get-attendance', 'getAttendance')->name('pesertadidik.getAttendance');
-            Route::post('/pesertadidik/{semesterId}/update-attendance',  'updateAttendance')->name('pesertadidik.updateAttendance');
-            Route::post('/attendance', 'storeAttendance')->name('pesertadidik.storeAttendance');
+            Route::get('/P5BK/{semesterId}', 'p5bkIndex')->name('p5bk.index');
+            Route::post('fetchP5BK', 'fetchP5BK')->name('p5bk.fetch');
+            Route::post('saveP5BK/{semesterId}', 'saveP5BKAjax')->name('p5bk.save');
         });
     });
 });

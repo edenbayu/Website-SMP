@@ -1,136 +1,155 @@
-@extends('layout.layout') <!-- Extend the main layout -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
-@section('content') <!-- Define the content section -->
+@extends('layout.layout')
+
+@section('content')
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Attendance for Semester: {{ $semesterId }}</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Attendance Management</h2>
         </div>
     </div>
 
-    <form action="{{ route('pesertadidik.storeAttendance') }}" method="POST">
-        @csrf
-        <input type="hidden" name="semester_id" value="{{ $semesterId }}">
-
-        <!-- Date Picker -->
-        <div class="form-group">
-            <div class="row mb-3">
-                <div class="col-3">
-                    <h6 class="m-0"><label for="date">Select Date :</label></h6>
-                    <input
-                        type="date"
-                        name="date"
-                        id="date"
-                        class="form-control"
-                        value="{{ \Carbon\Carbon::today()->toDateString() }}"
-                        required>
-                </div>
-            </div>
+    <!-- Date Selection -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
         </div>
+    </div>
 
-        <table id="example" class="table table-striped" style="width:100%">
+    <!-- Attendance Table -->
+    <div class="table-responsive">
+        <table class="table table-striped" id="attendanceTable">
             <thead>
                 <tr>
-                    <th class="text-start">No</th>
+                    <th>No</th>
                     <th>Student Name</th>
                     <th>Class</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pesertadidiks as $peserta)
-                <tr>
-                    <td class="text-start">{{ $loop->iteration }}</td>
-                    <td>{{ $peserta->nama }}</td>
-                    <td>{{ $peserta->rombongan_belajar }}</td>
-                    <td>
-                        <select name="attendance[{{ $peserta->id }}]" class="form-control form-select" role="button">
-                            <option value="hadir" {{ isset($attendance[$peserta->id]) && $attendance[$peserta->id] == 'hadir' ? 'selected' : '' }}>Hadir</option>
-                            <option value="terlambat" {{ isset($attendance[$peserta->id]) && $attendance[$peserta->id] == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
-                            <option value="ijin" {{ isset($attendance[$peserta->id]) && $attendance[$peserta->id] == 'ijin' ? 'selected' : '' }}>Ijin</option>
-                            <option value="alpha" {{ isset($attendance[$peserta->id]) && $attendance[$peserta->id] == 'alpha' ? 'selected' : '' }}>Alpha</option>
-                            <option value="sakit" {{ isset($attendance[$peserta->id]) && $attendance[$peserta->id] == 'sakit' ? 'selected' : '' }}>Sakit</option>
-                        </select>
-                    </td>
-                </tr>
-                @endforeach
+                <!-- Rows will be populated via AJAX -->
             </tbody>
         </table>
+    </div>
 
-        <button type="submit" class="btn btn-primary">Save Attendance</button>
-    </form>
+    <button id="saveAttendance" class="btn btn-primary mt-3">Save Attendance</button>
 </div>
 
-<!-- success alert -->
-@if(session('success'))
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            title: "Berhasil!",
-            text: "{{ session('success') }}",
-            icon: "success",
-            timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
-            showConfirmButton: false
-        });
-    });
-</script>
-@endif
+<!-- Success and Error Alerts -->
+<div id="alertMessage" class="mt-3" style="display: none;"></div>
 
-<!-- error alert -->
-@if(session('error'))
+<!-- Scripts -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            title: "Gagal!",
-            text: "{{ session('error') }}",
-            icon: "error",
-            timer: 1500, // Waktu dalam milidetik (1500 = 1.5 detik)
-            showConfirmButton: false
-        });
-    });
-</script>
-@endif
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-<script>
-    $(document).ready(function() {
-        // Cek apakah DataTable sudah diinisialisasi
-        if ($.fn.DataTable.isDataTable('#example')) {
-            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.getElementById('date');
+        const saveButton = document.getElementById('saveAttendance');
+        const tableBody = document.querySelector('#attendanceTable tbody');
+        const alertDiv = document.getElementById('alertMessage');
+        const semesterId = {{ $semesterId }}; // Passed from the controller
+
+        function showAlert(message, type = 'success') {
+            alertDiv.style.display = 'block';
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 3000);
         }
 
-        // Inisialisasi DataTable dengan opsi
-        $('#example').DataTable({
-            language: {
-                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+        // Fetch Attendance Data
+        async function fetchAttendance() {
+            const date = dateInput.value;
+
+            if (!date) {
+                showAlert('Please select a date.', 'warning');
+                return;
             }
-        });
-    });
-</script>
-<script>
-    document.querySelectorAll('.deleteAlert').forEach(function(button, index) {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: "Apakah Anda Yakin?",
-                text: "Data Akan Dihapus Permanen dari Basis Data!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, Hapus!",
-                cancelButtonText: "Batal"
-            }).then((result) => {
-                // Jika konfirmasi "Ya, Hapus!" diklik
-                if (result.isConfirmed) {
-                    // Mengirim formulir untuk menghapus data
-                    event.target.closest('form').submit();
+
+            try {
+                const response = await fetch('{{ route("pesertadidik.fetchAttendance") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ semester_id: semesterId, date: date })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Populate Table
+                    tableBody.innerHTML = '';
+                    data.students.forEach((student, index) => {
+                        const status = data.attendance[student.id] || 'alpha'; // Default to "alpha"
+                        const row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${student.nama}</td>
+                                <td>${student.rombongan_belajar}</td>
+                                <td>
+                                    <select name="attendance[${student.id}]" class="form-control form-select">
+                                        <option value="hadir" ${status === 'hadir' ? 'selected' : ''}>Hadir</option>
+                                        <option value="terlambat" ${status === 'terlambat' ? 'selected' : ''}>Terlambat</option>
+                                        <option value="ijin" ${status === 'ijin' ? 'selected' : ''}>Ijin</option>
+                                        <option value="alpha" ${status === 'alpha' ? 'selected' : ''}>Alpha</option>
+                                        <option value="sakit" ${status === 'sakit' ? 'selected' : ''}>Sakit</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        `;
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                } else {
+                    showAlert('Failed to fetch attendance.', 'danger');
                 }
+            } catch (error) {
+                console.error('Error fetching attendance:', error);
+                showAlert('An error occurred while fetching attendance.', 'danger');
+            }
+        }
+
+        // Save Attendance Data
+        async function saveAttendance() {
+            const date = dateInput.value;
+
+            const attendance = {};
+            document.querySelectorAll('#attendanceTable tbody select').forEach(select => {
+                const studentId = select.name.match(/\d+/)[0]; // Extract ID from name
+                attendance[studentId] = select.value;
             });
-        });
+
+            try {
+                const response = await fetch('{{ route("pesertadidik.saveAttendanceAjax") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ semester_id: semesterId, date: date, attendance: attendance })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                } else {
+                    showAlert('Failed to save attendance.', 'danger');
+                }
+            } catch (error) {
+                console.error('Error saving attendance:', error);
+                showAlert('An error occurred while saving attendance.', 'danger');
+            }
+        }
+
+        // Event Listeners
+        dateInput.addEventListener('change', fetchAttendance);
+        saveButton.addEventListener('click', saveAttendance);
+
+        // Initial Fetch
+        fetchAttendance();
     });
 </script>
 @endsection

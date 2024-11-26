@@ -47,7 +47,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($datas as $data)
+            @foreach ($datas as $index => $data)
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $data['nama'] }}</td>
@@ -86,6 +86,8 @@
                                 @csrf
                                 <!-- Pass student name as hidden field -->
                                 <input type="hidden" name="student_name" value="{{ $data['nama'] }}">
+                                <!-- Pass index (as id) as hidden field -->
+                                <input type="hidden" name="student_id" value="{{ $index }}">
 
                                 <!-- Loop through subjects and pass them with grades -->
                                 @foreach ($subjects as $subject)
@@ -95,8 +97,7 @@
                                 @foreach ($subjects as $subject)
                                 <div class="mb-3">
                                     <label for="subject-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
-                                    <input type="text" class="form-control" id="subject-{{ $loop->index }}"
-                                        value="{{ $data[$subject] ?? 0 }}" readonly>
+                                    <input type="text" class="form-control" id="subject-{{ $loop->index }}" value="{{ $data[$subject] ?? 0 }}" readonly>
                                 </div>
                                 @endforeach
 
@@ -142,8 +143,7 @@
                             @foreach ($subjects as $subject)
                             <div class="mb-3">
                                 <label for="subject-semester-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
-                                <input type="text" class="form-control" id="subject-semester-{{ $loop->index }}"
-                                    value="{{ $data[$subject] ?? 0 }}" readonly>
+                                <input type="text" class="form-control" id="subject-semester-{{ $loop->index }}" value="{{ $data[$subject] ?? 0 }}" readonly>
                             </div>
                             @endforeach
                         </div>

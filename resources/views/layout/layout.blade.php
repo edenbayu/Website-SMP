@@ -217,6 +217,12 @@
                             @endforeach
                         </ul>
                     </li>
+                    <li class="sidebar-item">
+                        <a href="{{ route('p5bk.index', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
+                            <i class="fa-solid fa-address-book"></i>
+                            P5BK
+                        </a>
+                    </li>
                     @endrole
                 </ul>
 
