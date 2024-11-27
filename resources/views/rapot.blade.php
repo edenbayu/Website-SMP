@@ -1,138 +1,169 @@
+<!-- style fixed -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapot - {{ $studentName }}</title>
+    <link rel="icon" href="{{asset('style/assets/logo-sekolah.png')}}">
+    <title>Rapot</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        h1, h3 {
-            text-align: center;
-        }
+
         table {
-            width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            width: 100%;
         }
-        table, th, td {
-            border: 1px solid #000;
-        }
-        th, td {
+
+        th,
+        td {
+            border: 1px solid black;
             text-align: left;
             padding: 8px;
         }
+
         th {
-            background-color: #f4f4f4;
-        }
-        footer {
             text-align: center;
-            margin-top: 30px;
-            font-size: 0.9em;
+            background-color: #f2f2f2;
+        }
+
+        .table-title {
+            font-weight: bold;
+            text-align: left;
+            padding: 8px;
+            background-color: #e9e9e9;
+        }
+
+        .no-border {
+            border: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .signature-table td {
+            border: none;
         }
     </style>
 </head>
+
 <body>
-    <h1>Rapot Mid Semester</h1>
-    <h2>{{ $studentName }}</h2>
+    <h2 class="text-center">Laporan Hasil Belajar Peserta Didik</h2>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2">A. Mata Pelajaran</th>
+                <th>Nilai</th>
+                <th>Capaian Kompetensi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($subjects as $subject => $grade)
+            <tr>
+                <td>{{$loop->iteration}}</td>
+                <td>{{ $subject }}</td>
+                <td>{{ $grade }}</td>
+                <td>
+                    Ananda {{$studentName}} telah menguasai
+                    @if (!empty($komentarRapot[$subject]))
+                    {{ implode(', ', $komentarRapot[$subject]) }}
+                    @else
+                    <span></span>
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <!-- Main Table: Subjects, Grades, Comments -->
-    <h3>Subjects, Grades, and Comments</h3>
-    @if (!empty($subjects))
-        <table>
-            <thead>
-                <tr>
-                    <th>Subject</th>
-                    <th>Grade</th>
-                    <th>Comments</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($subjects as $subject => $grade)
-                    <tr>
-                        <td>{{ $subject }}</td>
-                        <td>{{ $grade }}</td>
-                        <td>
-                            Ananda {{$studentName}} telah menguasai
-                            @if (!empty($komentarRapot[$subject]))
-                                {{ implode(', ', $komentarRapot[$subject]) }}
-                            @else
-                                <span></span>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>No subjects available.</p>
-    @endif
+    <h3>B. Ekstrakurikuler</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Kelas</th>
+                <th>Predikat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($ekskulData as $ekskul)
+            <tr>
+                <td>{{$loop->iteration}}</td>
+                <td>{{ $ekskul->rombongan_belajar }}</td>
+                <td>{{ $ekskul->nilai }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <!-- Komentar Section -->
-    <h3>General Comment</h3>
+    <h3>C. Prestasi</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Prestasi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ( $prestasi as $key => $prestasiItem )
+            <tr>
+                <td>{{$loop->iteration}}</td>
+                <td>{{$prestasiItem}}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <h3>D. Ketidakhadiran</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Keterangan</th>
+                <th>Jumlah</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($absensiSummary as $record)
+            <tr>
+                <td>{{ ucfirst($record->status) }}</td>
+                <td>{{ $record->count }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <h3>Catatan Wali Kelas</h3>
     <p>{{ $komentar ?: 'No general comment available.' }}</p>
 
-    <!-- Prestasi Section -->
-    <h3>Achievements (Prestasi)</h3>
-    <ul>
-        @foreach ($prestasi as $key => $prestasiItem)
-            @if ($prestasiItem)
-                <li>{{ ucfirst(str_replace('_', ' ', $key)) }}: {{ $prestasiItem }}</li>
-            @endif
-        @endforeach
-    </ul>
-
-    <!-- Extracurricular Data Section -->
-    <h3>Extracurricular Activities (Ekstrakurikuler)</h3>
-    @if ($ekskulData->isNotEmpty())
-        <table>
-            <thead>
-                <tr>
-                    <th>Class</th>
-                    <th>Activity</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($ekskulData as $ekskul)
-                    <tr>
-                        <td>{{ $ekskul->rombongan_belajar }}</td>
-                        <td>{{ $ekskul->nilai }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>No extracurricular data available.</p>
-    @endif
-
-    <!-- Attendance Summary Section -->
-    <h3>Attendance Summary</h3>
-    @if ($absensiSummary->isNotEmpty())
-        <table>
-            <thead>
-                <tr>
-                    <th>Status</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($absensiSummary as $record)
-                    <tr>
-                        <td>{{ ucfirst($record->status) }}</td>
-                        <td>{{ $record->count }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>No attendance data available.</p>
-    @endif
-
-    <!-- Footer -->
-    <footer>
-        <p>Generated on: {{ now()->format('d M Y, H:i') }}</p>
-    </footer>
+    <table class="signature-table" style="margin-top: 20px; width: 100%;">
+        <tr>
+            <td class="text-center">Orang Tua/Wali:</td>
+            <td class="text-center">Wali Kelas:</td>
+            <td class="text-center">Kepala Sekolah:</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="text-center">aryo</td>
+            <td class="text-center">Tri Prasetyo, S.Pd., M.Pd</td>
+            <td class="text-center">Dr. Drs. Sofwan, M.Pd.</td>
+        </tr>
+    </table>
 </body>
+
 </html>

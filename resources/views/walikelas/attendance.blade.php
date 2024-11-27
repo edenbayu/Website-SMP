@@ -1,5 +1,6 @@
 @extends('layout.layout')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section('content')
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
@@ -15,13 +16,14 @@
             <input type="date" id="date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
         </div>
     </div>
+    <button id="saveAttendance" class="btn btn-primary mb-3">Save Attendance</button>
 
     <!-- Attendance Table -->
-    <div class="table-responsive">
-        <table class="table table-striped" id="attendanceTable">
+    <div class="table-responsive mb-3">
+        <table id="example" class="attendance-table table table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th class="text-start">No</th>
                     <th>Student Name</th>
                     <th>Class</th>
                     <th>Status</th>
@@ -33,7 +35,6 @@
         </table>
     </div>
 
-    <button id="saveAttendance" class="btn btn-primary mt-3">Save Attendance</button>
 </div>
 
 <!-- Success and Error Alerts -->
@@ -44,7 +45,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const dateInput = document.getElementById('date');
         const saveButton = document.getElementById('saveAttendance');
-        const tableBody = document.querySelector('#attendanceTable tbody');
+        const tableBody = document.querySelector('.attendance-table tbody');
         const alertDiv = document.getElementById('alertMessage');
         const semesterId = {{ $semesterId }}; // Passed from the controller
 
@@ -86,7 +87,7 @@
                         const status = data.attendance[student.id] || 'alpha'; // Default to "alpha"
                         const row = `
                             <tr>
-                                <td>${index + 1}</td>
+                                <td class="text-start">${index + 1}</td>
                                 <td>${student.nama}</td>
                                 <td>${student.rombongan_belajar}</td>
                                 <td>
@@ -113,36 +114,53 @@
 
         // Save Attendance Data
         async function saveAttendance() {
-            const date = dateInput.value;
+        const date = dateInput.value;
 
-            const attendance = {};
-            document.querySelectorAll('#attendanceTable tbody select').forEach(select => {
-                const studentId = select.name.match(/\d+/)[0]; // Extract ID from name
-                attendance[studentId] = select.value;
+        const attendance = {};
+        document.querySelectorAll('.attendance-table tbody select').forEach(select => {
+            const studentId = select.name.match(/\d+/)[0]; // Extract ID from name
+            attendance[studentId] = select.value;
+        });
+
+        try {
+            const response = await fetch('{{ route("pesertadidik.saveAttendanceAjax") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ semester_id: semesterId, date: date, attendance: attendance })
             });
 
-            try {
-                const response = await fetch('{{ route("pesertadidik.saveAttendanceAjax") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ semester_id: semesterId, date: date, attendance: attendance })
+            const data = await response.json();
+
+            if (data.success) {
+                // Show success message
+                Swal.fire({
+                    title: "Saved!",
+                    text: data.message || "Attendance has been successfully saved!",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
                 });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showAlert(data.message, 'success');
-                } else {
-                    showAlert('Failed to save attendance.', 'danger');
-                }
-            } catch (error) {
-                console.error('Error saving attendance:', error);
-                showAlert('An error occurred while saving attendance.', 'danger');
+            } else {
+                // Show failure message from the server
+                Swal.fire({
+                    title: "Failed!",
+                    text: data.message || "Failed to save attendance. Please try again.",
+                    icon: "error"
+                });
             }
+        } catch (error) {
+            console.error('Error saving attendance:', error);
+            // Show error alert
+            Swal.fire({
+                title: "Error!",
+                text: "An error occurred while saving attendance. Please try again.",
+                icon: "error"
+            });
         }
+    }
 
         // Event Listeners
         dateInput.addEventListener('change', fetchAttendance);
@@ -152,4 +170,28 @@
         fetchAttendance();
     });
 </script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cek apakah DataTable sudah diinisialisasi
+        if ($.fn.DataTable.isDataTable('#example')) {
+            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+        }
+
+        // Inisialisasi DataTable dengan opsi
+        $('#example').DataTable({
+            scrollY: 440,
+            language: {
+                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+            }
+        });
+    });
+</script>
+
+
+
 @endsection
