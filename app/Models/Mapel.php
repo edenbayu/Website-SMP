@@ -28,4 +28,8 @@ class Mapel extends Model
         return $this->belongsTo(Semester::class);
     }
 
+    public function mapelKelas()
+    {
+        return $this->hasMany(MapelKelas::class);
+    }
 }

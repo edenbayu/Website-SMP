@@ -82,7 +82,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('pesertadidik.generateRapot') }}" method="POST" class="m-0" target="blank">
+                            <form action="{{ route('pesertadidik.generateRapot', $semesterId) }}" method="POST" class="m-0" target="blank">
                                 @csrf
                                 <!-- Pass student name as hidden field -->
                                 <input type="hidden" name="student_name" value="{{ $data['nama'] }}">

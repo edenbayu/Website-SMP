@@ -15,8 +15,6 @@ use PDF;
 
 class PesertaDidikController extends Controller
 {
-
-
     public function index($semesterId)
     {
         $user = Auth::user();
@@ -148,7 +146,7 @@ class PesertaDidikController extends Controller
         ]);
     }
 
-    public function bukaLegerNilai($kelasId)
+    public function bukaLegerNilai($kelasId, $semesterId)
     {
         $user = Auth::user(); // Get the currently logged-in user
     
@@ -197,10 +195,10 @@ class PesertaDidikController extends Controller
             $result[$data->siswa_id][$data->mapel_name] = round($hasil_akhir, 2);
         }
     
-        return view('walikelas.legerNilai', ['datas' => $result]);
+        return view('walikelas.legerNilai', ['datas' => $result ,'semesterId' => $semesterId]);
     }    
 
-    public function generateRapotPDF(Request $request)
+    public function generateRapotPDF(Request $request, $semesterId)
     {
         // Retrieve data from the form submission
         $data = $request->all();
@@ -249,7 +247,9 @@ class PesertaDidikController extends Controller
         $ekskulData = DB::table('penilaian_ekskuls as a')
             ->join('kelas as b', 'b.id', '=', 'a.kelas_id')
             ->join('siswas as c', 'c.id', '=', 'a.siswa_id')
+            ->join('semesters as d', 'd.id', '=', 'b.id_semester')
             ->where('a.siswa_id', $data['student_id'])
+            ->where('d.id', $semesterId)
             ->select('b.rombongan_belajar', 'a.nilai')
             ->get();
     
@@ -259,9 +259,16 @@ class PesertaDidikController extends Controller
             ->selectRaw('status, COUNT(status) as count')
             ->groupBy('status')
             ->get();
+
+        $p5bkData = P5BK::where('semester_id', $semesterId)
+        ->where('siswa_id', $data['student_id'])
+        ->select('dimensi', 'capaian')
+        ->get();
     
         // Pass the data to the view for PDF generation
         $pdf = PDF::loadView('rapot', [
+            'semester_id' => $semesterId,
+            'p5bkData' => $p5bkData,
             'subjects' => $subjects,
             'studentName' => $studentName,
             'komentar' => $komentar,

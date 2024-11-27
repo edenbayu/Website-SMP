@@ -92,6 +92,10 @@ class HomeController extends Controller
             ));
         }
 
+        else{
+            return view('home');
+        }
+
         // Redirect if user is not an Admin
         return redirect()->route('home')->with('error', 'Access Denied');
     }

@@ -76,7 +76,7 @@
             siswaIdInput.value = siswaId;
 
             // Fetch P5BK data via AJAX
-            fetch(`{{ url('/walikelas/fetch-p5bk') }}`, {
+            fetch(`{{ route('p5bk.fetch') }}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@
             // Save P5BK data via AJAX
             const formData = new FormData(form);
 
-            fetch(`{{ url('/walikelas/save-p5bk') }}/{{ $semesterId }}`, {
+            fetch(`{{ route('p5bk.save', ['semesterId' => $semesterId]) }}`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'

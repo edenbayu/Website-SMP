@@ -103,6 +103,46 @@
                 </ul>
                 @endrole
 
+                @role('Siswa')
+                <!-- Admin -->
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Peserta Didik
+                    </li>
+                    <li class="sidebar-item active">
+                        <a href="{{route('home')}}" class="sidebar-link">
+                            <i class="fa-solid fa-list-ul"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{ route('siswapage.absensi') }}" class="sidebar-link">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            Absensi
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{ route('siswapage.bukunilai', $selectedSemesterId) }}" class="sidebar-link">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            Buku Nilai
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            Jadwal Pelajaran
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            Kalender Akademik
+                        </a>
+                    </li>
+                   
+                </ul>
+                @endrole
+
                 @role('Guru|Wali Kelas')
                 <!-- Guru -->
                 <ul class="sidebar-nav">
@@ -210,7 +250,7 @@
                         <ul id="legerNilai" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listKelas as $kelas)
                             <li class="sidebar-item">
-                                <a href="{{route('pesertadidik.legerNilai', $kelas->id)}}" class="sidebar-link">
+                                <a href="{{route('pesertadidik.legerNilai', [$kelas->id, $selectedSemesterId])}}" class="sidebar-link">
                                     Kelas {{ $kelas->rombongan_belajar }}
                                 </a>
                             </li>
@@ -258,6 +298,8 @@
                     </div>
                 </form>
                 @endrole
+
+
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
                         <form action="{{ route('logout') }}" method="POST">

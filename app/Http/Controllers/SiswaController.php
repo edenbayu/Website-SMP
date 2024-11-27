@@ -37,7 +37,7 @@ class SiswaController extends Controller
         $siswa = Siswa::findOrFail($siswaId);
 
         // Generate a random 6-digit password
-        $password = Str::random(6);
+        $password = substr($siswa->nisn, -6);
 
         // Create a new user with the required attributes (no hashing)
         $user = User::create([

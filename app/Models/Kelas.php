@@ -16,11 +16,6 @@ class Kelas extends Model
         'id_semester',   // Foreign key for Semester
     ];
 
-    public function siswas()
-    {
-        return $this->belongsToMany(Siswa::class, 'kelas_siswa');
-    }
-
     public function guru()
     {
         return $this->belongsTo(Guru::class, 'id_guru');
@@ -34,6 +29,11 @@ class Kelas extends Model
     public function mapel()
     {
         return $this->belongsToMany(Kelas::class, 'mapel_kelas');
+    }
+
+    public function kelasSiswa()
+    {
+        return $this->hasMany(KelasSiswa::class);
     }
 }
 

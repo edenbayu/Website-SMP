@@ -17,6 +17,7 @@ use App\Http\Controllers\SillabusController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PesertaDidikController;
+use App\Http\Controllers\HalamanSiswaController;
 
 // Group routes for LoginController using Route::controller
 Route::controller(LoginController::class)->group(function () {
@@ -155,17 +156,27 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:Wali Kelas')->group(function () {
 
-        Route::post('/generate-rapot', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
+        Route::post('/generate-rapot/{semesterId}', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
 
         Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
             Route::post('/attendance/fetch', 'fetchAttendance')->name('pesertadidik.fetchAttendance');
             Route::post('/attendance/save', 'saveAttendanceAjax')->name('pesertadidik.saveAttendanceAjax');
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
-            Route::get('/legerNilai/{kelasId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
+            Route::get('/legerNilai/{kelasId}/{semesterId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
             Route::get('/attendanceIndex/{semesterId}', 'attendanceIndex')->name('pesertadidik.attendanceIndex');
+            Route::get('/save-attendance', 'attendanceIndex')->name('pesertadidik.storeAttendance');
             Route::get('/P5BK/{semesterId}', 'p5bkIndex')->name('p5bk.index');
             Route::post('fetchP5BK', 'fetchP5BK')->name('p5bk.fetch');
             Route::post('save/{semesterId}', 'saveP5BKAjax')->name('p5bk.save');
+        });
+    });
+
+    
+    Route::middleware('role:Siswa')->group(function () {
+        Route::prefix('siswa')->controller(HalamanSiswaController::class)->group(function () {
+            Route::get('/absensi', 'absensi')->name('siswapage.absensi');
+            Route::get('/nilai/{semesterId}', 'bukuNilaiSiswa')->name('siswapage.bukunilai');
+            Route::get('/fetch-buku-nilai','fetchBukuNilai')->name('fetchBukuNilai');
         });
     });
 });

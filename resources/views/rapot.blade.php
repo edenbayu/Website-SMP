@@ -137,6 +137,24 @@
         </tbody>
     </table>
 
+    <h3>E. P5BK</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Dimensi</th>
+                <th>Capaian</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($p5bkData as $data)
+            <tr>
+                <td>{{ ($data->dimensi) }}</td>
+                <td>{{ $data->capaian }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
     <h3>Catatan Wali Kelas</h3>
     <p>{{ $komentar ?: 'No general comment available.' }}</p>
 
