@@ -23,9 +23,8 @@
     <div id="p5bkTable" style="display:none;">
         <form id="p5bkFormData">
             @csrf
-       
             <input type="hidden" name="semester_id" value="{{ $semesterId }}"> <!-- Ensure semester_id is included -->
-            <input type="hidden" name="siswa_id" id="siswa_id" value="{{ $siswa->id }}">
+            <input type="hidden" name="siswa_id" id="siswa_id">
 
             <!-- Table of Dimensions and Capaian -->
             <table class="table table-bordered">
@@ -39,10 +38,10 @@
                 <tbody>
                     @foreach(['iman', 'kebhinekaan', 'mandiri', 'gotong-royong', 'kritis-kreatif'] as $index => $dimensi)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ ucwords(str_replace('-', ' ', $dimensi)) }}</td>
                             <td>
-                                <select name="capaian[{{ $dimensi }}]" class="form-control form-select">
+                                <select name="capaian[{{ $dimensi }}]" class="form-control capaian-select">
                                     <option value="--">--</option>
                                     <option value="MB">MB</option>
                                     <option value="SB">SB</option>
@@ -61,72 +60,64 @@
 </div>
 
 <script>
-    document.getElementById('siswa').addEventListener('change', function () {
-        var siswaId = this.value;
-        if (siswaId) {
-            document.getElementById('siswa_id').value = siswaId;
-            document.getElementById('p5bkTable').style.display = 'block';
+    document.addEventListener('DOMContentLoaded', function() {
+        const siswaDropdown = document.getElementById('siswa');
+        const p5bkTable = document.getElementById('p5bkTable');
+        const siswaIdInput = document.getElementById('siswa_id');
+        const form = document.getElementById('p5bkFormData');
 
-            // Fetch existing P5BK data for the selected student and semester
-            fetchP5BKData(siswaId);
-        } else {
-            document.getElementById('p5bkTable').style.display = 'none';
-        }
-    });
+        siswaDropdown.addEventListener('change', function() {
+            const siswaId = this.value;
+            if (!siswaId) {
+                p5bkTable.style.display = 'none';
+                return;
+            }
 
-    // Fetch existing P5BK data (if any) for the selected student
-    function fetchP5BKData(siswaId) {
-        fetch('{{ route("p5bk.fetch") }}', {  // Ensure the correct route name for fetching P5BK
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                siswa_id: siswaId,
-                semester_id: {{ $semesterId }}
+            siswaIdInput.value = siswaId;
+
+            // Fetch P5BK data via AJAX
+            fetch(`{{ url('/walikelas/fetch-p5bk') }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    semester_id: '{{ $semesterId }}',
+                    siswa_id: siswaId
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                // Populate form fields with existing data
-                data.forEach(item => {
-                    let dimensi = item.dimensi;
-                    let capaianSelect = document.querySelector(`select[name="capaian[${dimensi}]"]`);
-                    if (capaianSelect) {
-                        capaianSelect.value = item.capaian;
-                    }
+            .then(response => response.json())
+            .then(data => {
+                // Populate the form with fetched data
+                document.querySelectorAll('.capaian-select').forEach(select => {
+                    const dimensi = select.name.replace('capaian[', '').replace(']', '');
+                    select.value = data.find(item => item.dimensi === dimensi)?.capaian || '--';
                 });
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching P5BK data:', error);
+
+                p5bkTable.style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
         });
-    }
 
-    document.getElementById('p5bkFormData').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var semesterId = document.querySelector('input[name="semester_id"]').value; // Ensure semesterId is correctly retrieved
-        var siswaId = document.querySelector('input[name="siswa_id"]').value; // Ensure siswaId is correctly retrieved
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-        fetch(`/pesertadidik/saveP5BK/${semesterId}`, {  // Include semesterId in the URL
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+            // Save P5BK data via AJAX
+            const formData = new FormData(form);
+
+            fetch(`{{ url('/walikelas/save-p5bk') }}/{{ $semesterId }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
                 alert(data.message);
-                location.reload();  // Reload the page after successful save
-            } else {
-                alert('Failed to save data');
-            }
-        })
-        .catch(error => {
-            console.error('Error saving P5BK data:', error);
-            alert('An error occurred while saving P5BK data.');
+            })
+            .catch(error => console.error('Error:', error));
         });
     });
 </script>

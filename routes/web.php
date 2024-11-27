@@ -165,7 +165,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/attendanceIndex/{semesterId}', 'attendanceIndex')->name('pesertadidik.attendanceIndex');
             Route::get('/P5BK/{semesterId}', 'p5bkIndex')->name('p5bk.index');
             Route::post('fetchP5BK', 'fetchP5BK')->name('p5bk.fetch');
-            Route::post('saveP5BK/{semesterId}', 'saveP5BKAjax')->name('p5bk.save');
+            Route::post('save/{semesterId}', 'saveP5BKAjax')->name('p5bk.save');
         });
     });
 });
