@@ -49,11 +49,56 @@
         .signature-table td {
             border: none;
         }
+
+        tr.komentar td.text-center {
+            padding: 25px;
+        }
+
+        .rangkasurat {
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table.rangkasurat td {
+            border: none;
+            border-bottom: 5px solid #000;
+        }
+
+        .tengah {
+            text-align: center;
+        }
+
+        .judul {
+            text-decoration: underline;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
     </style>
 </head>
 
 <body>
-    <h2 class="text-center">Laporan Hasil Belajar Peserta Didik</h2>
+
+    <table class="rangkasurat" width="100%">
+        <tr>
+            <td class="tengah">
+                <h2>PEMERINTAH KABUPATEN DEMAK</h2>
+                <h2>DINAS PENDIDIKAN DAN KEBUDAYAAN</h2>
+                <h2>SEKOLAH MENENGAH PERTAMA NEGERI 1 KARANGAWEN</h2>
+                <b>
+                    <span>Jl. Raya Karangawen No: 105 Demak</span>
+                    <span>Telp : 024 – 76719044</span>
+                    <span>Telp : 024 – 76719044</span>
+                    <span>NPSN : 20319344</span>
+                    <span>NSS : 201032102005</span>
+                </b>
+            </td>
+        </tr>
+    </table>
+
+
+    <h2 class="text-center judul">LAPORAN HASIL BELAJAR PESERTA DIDIK</h2>
     <table>
         <thead>
             <tr>
@@ -65,9 +110,9 @@
         <tbody>
             @foreach ($subjects as $subject => $grade)
             <tr>
-                <td>{{$loop->iteration}}</td>
+                <td class="text-center">{{$loop->iteration}}</td>
                 <td>{{ $subject }}</td>
-                <td>{{ $grade }}</td>
+                <td class="text-center">{{ $grade }}</td>
                 <td>
                     Ananda {{$studentName}} telah menguasai
                     @if (!empty($komentarRapot[$subject]))
@@ -85,7 +130,7 @@
     <table>
         <thead>
             <tr>
-                <th>No</th>
+                <th width="10%">No</th>
                 <th>Kelas</th>
                 <th>Predikat</th>
             </tr>
@@ -95,7 +140,7 @@
             <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{ $ekskul->rombongan_belajar }}</td>
-                <td>{{ $ekskul->nilai }}</td>
+                <td class="text-center">{{ $ekskul->nilai }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -105,14 +150,14 @@
     <table>
         <thead>
             <tr>
-                <th>No</th>
+                <th width="10%">No</th>
                 <th>Prestasi</th>
             </tr>
         </thead>
         <tbody>
             @foreach ( $prestasi as $key => $prestasiItem )
             <tr>
-                <td>{{$loop->iteration}}</td>
+                <td class="text-center">{{$loop->iteration}}</td>
                 <td>{{$prestasiItem}}</td>
             </tr>
             @endforeach
@@ -123,7 +168,7 @@
     <table>
         <thead>
             <tr>
-                <th>Keterangan</th>
+                <th width="60%">Keterangan</th>
                 <th>Jumlah</th>
             </tr>
         </thead>
@@ -137,11 +182,11 @@
         </tbody>
     </table>
 
-    <h3>E. P5BK</h3>
+    <h2 class="page-break text-center judul">PROJEK PENGUATAN PROFIL PELAJAR PANCASILA</h2>
     <table>
         <thead>
             <tr>
-                <th>Dimensi</th>
+                <th width="60%">Dimensi</th>
                 <th>Capaian</th>
             </tr>
         </thead>
@@ -156,13 +201,23 @@
     </table>
 
     <h3>Catatan Wali Kelas</h3>
-    <p>{{ $komentar ?: 'No general comment available.' }}</p>
+    <table>
+        <tr class="komentar">
+            <td class="text-center">{{ $komentar ?: 'No general comment available.' }}</td>
+        </tr>
+    </table>
+    <!-- <p>{{ $komentar ?: 'No general comment available.' }}</p> -->
 
-    <table class="signature-table" style="margin-top: 20px; width: 100%;">
+    <table class="signature-table" style="margin-top: 50px; width: 100%;">
         <tr>
-            <td class="text-center">Orang Tua/Wali:</td>
-            <td class="text-center">Wali Kelas:</td>
-            <td class="text-center">Kepala Sekolah:</td>
+            <td></td>
+            <td></td>
+            <td>Demak,..............</td>
+        </tr>
+        <tr>
+            <td class="text-center">Orang Tua/Wali,</td>
+            <td class="text-center">Wali Kelas,</td>
+            <td>Kepala Sekolah,</td>
         </tr>
         <tr>
             <td></td>
@@ -177,7 +232,10 @@
             <td></td>
         </tr>
         <tr>
-            <td class="text-center">aryo</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="text-center">.....................</td>
             <td class="text-center">Tri Prasetyo, S.Pd., M.Pd</td>
             <td class="text-center">Dr. Drs. Sofwan, M.Pd.</td>
         </tr>

@@ -265,6 +265,7 @@ class PesertaDidikController extends Controller
         ->select('dimensi', 'capaian')
         ->get();
     
+        
         // Pass the data to the view for PDF generation
         $pdf = PDF::loadView('rapot', [
             'semester_id' => $semesterId,
