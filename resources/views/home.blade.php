@@ -5,7 +5,9 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, Admin!</h2>
+            @foreach($operator as $op)
+            <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, {{ $op->nama }}!</h2>
+            @endforeach
         </div>
     </div>
 
@@ -43,7 +45,7 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h5 class="card-title mb-3">Total Siswa</h5>
+                                <h5 class="card-title mb-3">Total Peserta Didik</h5>
                                 <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
                             </div>
                             <h5 class="card-text">{{ $totalSiswa }}</h5>
@@ -56,7 +58,7 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h5 class="card-title mb-3">Total Guru</h5>
+                                <h5 class="card-title mb-3">Total Pendidik</h5>
                                 <i class="fa-solid fa-chalkboard-user fa-2xl" style="margin-top: 32px;"></i>
                             </div>
                             <h5 class="card-text">{{ $totalGuru }}</h5>
@@ -66,15 +68,15 @@
             </div>
 
             <div class="row">
-                <!-- Total Kelas Ekskul -->
+                <!-- Total Admin -->
                 <div class="col">
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h5 class="card-title mb-3">Total Kelas Ekskul</h5>
-                                <i class="fa-solid fa-person-walking fa-2xl" style="margin-top: 32px;"></i>
+                                <h5 class="card-title mb-3">Total Tenaga Kependidikan</h5>
+                                <i class="fa-solid fa-user-tie fa-2xl" style="margin-top: 32px;"></i>
                             </div>
-                            <h5 class="card-text">{{ $totalEkskul }}</h5>
+                            <h5 class="card-text">{{ $totalAdmin }}</h5>
                         </div>
                     </div>
                 </div>
@@ -94,6 +96,19 @@
             </div>
 
             <div class="row">
+                <!-- Total Kelas Ekskul -->
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title mb-3">Total Ekstrakurikuler</h5>
+                                <i class="fa-solid fa-person-walking fa-2xl" style="margin-top: 32px;"></i>
+                            </div>
+                            <h5 class="card-text">{{ $totalEkskul }}</h5>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Total Mapel -->
                 <div class="col">
                     <div class="card mb-4">
@@ -107,18 +122,6 @@
                     </div>
                 </div>
 
-                <!-- Total Admin -->
-                <div class="col">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="card-title mb-3">Total Admin</h5>
-                                <i class="fa-solid fa-user-tie fa-2xl" style="margin-top: 32px;"></i>
-                            </div>
-                            <h5 class="card-text">{{ $totalAdmin }}</h5>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -133,49 +136,51 @@
                 <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, Guru!</h2>
             </div>
         </div>
-    @endrole
+        @endrole
 
-    @role('Wali Kelas')
-    <div class="container-fluid mt-3">
-        <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
-            <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-                <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, Wali Kelas!</h2>
+        @role('Wali Kelas')
+        <div class="container-fluid mt-3">
+            <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+                <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+                    @foreach($operator as $op)
+                    <h2 class="m-0 text-center" style="color: #EBF4F6">Selamat Datang di SIAKAD, {{ $op->nama }}!</h2>
+                    @endforeach
+                </div>
             </div>
-        </div>
-    @endrole
+            @endrole
 
-    @role('Guru|Wali Kelas')
-        <div class="row">
-            <!-- Main Dashboard -->
-            <div class="col-6">
-                <div class="card mb-4">
-                    <div class="card-body p-5">
-                        <div class="row justify-content-center mb-4">
-                            <img class="rounded-circle mb-3" style="object-fit: cover; height: 250px; width: auto;" src="{{asset('style/assets/sekolah1.png')}}" alt="sekolah-bro">
-                            <h3 class="text-center" style="color: #1e1e1e; font-size: 1.5rem; font-weight: 600;">SMP Negeri 1 Karangawen</h3>
+            @role('Guru|Wali Kelas')
+            <div class="row">
+                <!-- Main Dashboard -->
+                <div class="col-6">
+                    <div class="card mb-4">
+                        <div class="card-body p-5">
+                            <div class="row justify-content-center mb-4">
+                                <img class="rounded-circle mb-3" style="object-fit: cover; height: 250px; width: auto;" src="{{asset('style/assets/sekolah1.png')}}" alt="sekolah-bro">
+                                <h3 class="text-center" style="color: #1e1e1e; font-size: 1.5rem; font-weight: 600;">SMP Negeri 1 Karangawen</h3>
+                            </div>
+                            <p class="card-text" style="font-size: 1.15rem">Kurikulum : Kurikulum Merdeka</p>
+                            <p class="card-text" style="font-size: 1.15rem">Akreditasi : A</p>
+                            <h5 class="card-title mb-3" style="font-size: 1.15rem">Semester Aktif</h5>
+                            @foreach($semesterAktif as $semester)
+                            <p class="card-text" style="font-size: 1.15rem">Tahun Ajaran: {{ $semester->semester}} | {{$semester->tahun_ajaran}}</p>
+                            @endforeach
+                            <h5 class="card-title mb-3" style="font-size: 1.15rem">Kepala Sekolah</h5>
+                            @foreach($kepalaSekolah as $kepala)
+                            <p class="card-text">{{ $kepala->nama }}</p>
+                            @endforeach
+                            @foreach($operator as $op)
+                            <h5 class="card-title mb-3" style="font-size: 1.15rem">{{$op->jabatan}}</h5>
+                            <p class="card-text">{{ $op->nama }}</p>
+                            @endforeach
                         </div>
-                        <p class="card-text" style="font-size: 1.15rem">Kurikulum : Kurikulum Merdeka</p>
-                        <p class="card-text" style="font-size: 1.15rem">Akreditasi : A</p>
-                        <h5 class="card-title mb-3" style="font-size: 1.15rem">Semester Aktif</h5>
-                        @foreach($semesterAktif as $semester)
-                        <p class="card-text" style="font-size: 1.15rem">Tahun Ajaran: {{ $semester->semester}} | {{$semester->tahun_ajaran}}</p>
-                        @endforeach
-                        <h5 class="card-title mb-3" style="font-size: 1.15rem">Kepala Sekolah</h5>
-                        @foreach($kepalaSekolah as $kepala)
-                        <p class="card-text">{{ $kepala->nama }}</p>
-                        @endforeach
-                        @foreach($operator as $op)
-                        <h5 class="card-title mb-3" style="font-size: 1.15rem">{{$op->jabatan}}</h5>
-                        <p class="card-text">{{ $op->nama }}</p>
-                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    @endrole
+        @endrole
 
-    @role('Siswa')
-    <p>I am Siswa</p>
-    @endrole
-    @endsection
+        @role('Siswa')
+        <p>I am Siswa</p>
+        @endrole
+        @endsection

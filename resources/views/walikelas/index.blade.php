@@ -18,10 +18,10 @@
             <tr>
                 <th class="text-start">No</th>
                 <th class="text-start">Nama</th>
-                <th class="text-start">Rombel</th>
+                <th class="text-start">Rombongan Belajar</th>
                 <th class="text-start">NISN</th>
-                <th class="text-start">NIS</th>
                 <th class="text-start">Jenis Kelamin</th>
+                <th class="text-start">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -31,14 +31,124 @@
                 <td class="text-start">{{ $siswa->nama }}</td>
                 <td class="text-start">{{$siswa->rombongan_belajar}}</th>
                 <td class="text-start">{{ $siswa->nisn }}</td>
-                <td class="text-start">{{ $siswa->nis }}</td>
                 <td class="text-start">{{ $siswa->jenis_kelamin }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}" style="width: 5rem">
+                        Lihat
+                    </button>
+                </td>
+                <!-- Edit Modal for each Siswa -->
+                <div class="modal fade" id="editSiswaModal-{{ $siswa->id }}" tabindex="-1" aria-labelledby="editSiswaModalLabel-{{ $siswa->id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editSiswaModalLabel-{{ $siswa->id }}">Data Peserta Didik</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-3">
+                                    <label for="nama">Nama</label>
+                                    <input readonly type="text" name="nama" id="nama" class="form-control" value="{{ old('nama', $siswa->nama) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="nis">NIS</label>
+                                    <input readonly type="text" name="nis" id="nis" class="form-control" value="{{ old('nis', $siswa->nis) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="nisn">NISN</label>
+                                    <input readonly type="text" name="nisn" id="nisn" class="form-control" value="{{ old('nisn', $siswa->nisn) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="tempat_lahir">Tempat Lahir</label>
+                                    <input readonly type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" value="{{ old('tempat_lahir', $siswa->tempat_lahir) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                                    <input readonly type="text" name="jenis_kelamin" id="jenis_kelamin" class="form-control" value="{{ old('jenis_kelamin', $siswa->jenis_kelamin) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="agama">Agama</label>
+                                    <input readonly type="text" name="agama" id="agama" class="form-control" value="{{ old('agama', $siswa->agama) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="status_keluarga">Status Keluarga</label>
+                                    <input readonly type="text" name="status_keluarga" id="status_keluarga" class="form-control" value="{{ old('status_keluarga', $siswa->status_keluarga) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="anak_ke">Anak Ke</label>
+                                    <input readonly type="number" name="anak_ke" id="anak_ke" class="form-control" value="{{ old('anak_ke', $siswa->anak_ke) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="alamat_lengkap">Alamat Lengkap</label>
+                                    <textarea name="alamat_lengkap" id="alamat_lengkap" class="form-control">{{ old('alamat_lengkap', $siswa->alamat_lengkap) }}</textarea>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="no_telepon_rumah">No Telepon Rumah</label>
+                                    <input readonly type="text" name="no_telepon_rumah" id="no_telepon_rumah" class="form-control" value="{{ old('no_telepon_rumah', $siswa->no_telepon_rumah) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="asal_sekolah">Asal Sekolah</label>
+                                    <input readonly type="text" name="asal_sekolah" id="asal_sekolah" class="form-control" value="{{ old('asal_sekolah', $siswa->asal_sekolah) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="tanggal_diterima">Tanggal Diterima</label>
+                                    <input readonly type="date" name="tanggal_diterima" id="tanggal_diterima" class="form-control" value="{{ old('tanggal_diterima', $siswa->tanggal_diterima) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="jalur_penerimaan">Jalur Penerimaan</label>
+                                    <input readonly type="text" name="jalur_penerimaan" id="jalur_penerimaan" class="form-control" value="{{ old('jalur_penerimaan', $siswa->jalur_penerimaan) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="nama_ayah">Nama Ayah</label>
+                                    <input readonly type="text" name="nama_ayah" id="nama_ayah" class="form-control" value="{{ old('nama_ayah', $siswa->nama_ayah) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="pekerjaan_ayah">Pekerjaan Ayah</label>
+                                    <input readonly type="text" name="pekerjaan_ayah" id="pekerjaan_ayah" class="form-control" value="{{ old('pekerjaan_ayah', $siswa->pekerjaan_ayah) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="nama_ibu">Nama Ibu</label>
+                                    <input readonly type="text" name="nama_ibu" id="nama_ibu" class="form-control" value="{{ old('nama_ibu', $siswa->nama_ibu) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="pekerjaan_ibu">Pekerjaan Ibu</label>
+                                    <input readonly type="text" name="pekerjaan_ibu" id="pekerjaan_ibu" class="form-control" value="{{ old('pekerjaan_ibu', $siswa->pekerjaan_ibu) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="alamat_ortu">Alamat Orang Tua</label>
+                                    <textarea name="alamat_ortu" id="alamat_ortu" class="form-control">{{ old('alamat_ortu', $siswa->alamat_ortu) }}</textarea>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="no_telp_ortu">No Telepon Orang Tua</label>
+                                    <input readonly type="text" name="no_telp_ortu" id="no_telp_ortu" class="form-control" value="{{ old('no_telp_ortu', $siswa->no_telp_ortu) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="nama_wali">Nama Wali</label>
+                                    <input readonly type="text" name="nama_wali" id="nama_wali" class="form-control" value="{{ old('nama_wali', $siswa->nama_wali) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="pekerjaan_wali">Pekerjaan Wali</label>
+                                    <input readonly type="text" name="pekerjaan_wali" id="pekerjaan_wali" class="form-control" value="{{ old('pekerjaan_wali', $siswa->pekerjaan_wali) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="alamat_wali">Alamat Wali</label>
+                                    <textarea name="alamat_wali" id="alamat_wali" class="form-control">{{ old('alamat_wali', $siswa->alamat_wali) }}</textarea>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="angkatan">Angkatan</label>
+                                    <input readonly type="number" name="angkatan" id="angkatan" class="form-control" value="{{ old('angkatan', $siswa->angkatan) }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
             @endforeach
         </tbody>
     </table>
     @endif
 </div>
+
 
 <!-- success alert -->
 @if(session('success'))

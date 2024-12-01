@@ -139,7 +139,6 @@
                             Kalender Akademik
                         </a>
                     </li>
-                   
                 </ul>
                 @endrole
 
@@ -158,13 +157,13 @@
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#mata-pelajaran" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-person-chalkboard"></i>
-                            Mata Pelajaran
+                            Silabus
                         </a>
                         <ul id="mata-pelajaran" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listMataPelajaran as $mapel)
                             <li class="sidebar-item">
                                 <a href="{{ route('silabus.index', ['mapelId' => $mapel->id]) }}" class="sidebar-link">
-                                    {{ $mapel->nama }} Kelas {{ $mapel->kelas }}
+                                    {{ $mapel->nama }} | Kelas {{ $mapel->kelas }}
                                 </a>
                             </li>
                             @endforeach
@@ -178,7 +177,7 @@
                         <ul id="penilaian" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listRombel as $mapel)
                             <li class="sidebar-item">
-                                <a href="{{ route('penilaian.index', ['mapelKelasId' => $mapel->mapel_kelas_id]) }}" class="sidebar-link">{{$mapel->nama}} | {{$mapel->rombongan_belajar}}</a>
+                                <a href="{{ route('penilaian.index', ['mapelKelasId' => $mapel->mapel_kelas_id]) }}" class="sidebar-link">{{$mapel->nama}} | Kelas {{$mapel->rombongan_belajar}}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -186,7 +185,7 @@
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#ekstrakulikuler" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-person-walking"></i>
-                            Ekstrakulikuler
+                            Ekstrakurikuler
                         </a>
                         <ul id="ekstrakulikuler" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             @foreach($listEkskul as $ekskul)
@@ -196,7 +195,7 @@
                             @endforeach
                         </ul>
                     </li>
-                    <li class="sidebar-item">
+                    <!-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#komentar-ck" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-comment"></i>
                             Komentar CK
@@ -210,7 +209,7 @@
                             </li>
                             @endforeach
                         </ul>
-                    </li>
+                    </li> -->
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="fa-solid fa-book-open"></i>
@@ -239,7 +238,7 @@
                     <li class="sidebar-item">
                         <a href="{{ route('pesertadidik.attendanceIndex', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
                             <i class="fa-solid fa-address-book"></i>
-                            Absensi
+                            Presensi
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -260,7 +259,7 @@
                     <li class="sidebar-item">
                         <a href="{{ route('p5bk.index', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
                             <i class="fa-solid fa-address-book"></i>
-                            P5BK
+                            P5
                         </a>
                     </li>
                     @endrole

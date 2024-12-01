@@ -21,6 +21,11 @@ class PenilaianEkskul extends Model
         return $this->belongsTo(Penilaian::class, 'mapel_id');
     }
 
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
+    }
+    
     /**
      * Define the relationship with the Siswa model.
      */

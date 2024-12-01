@@ -5,7 +5,7 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-header" style="background-color: #088395;">
-            <h2 class="m-0" style="color: #EBF4F6">{{$mapel->nama}} - Kelas {{ $mapel->kelas }}</h2>
+            <h2 class="m-0" style="color: #EBF4F6">{{$mapel->nama}} Kelas {{ $mapel->kelas }}</h2>
         </div>
         <div class="card-body rounded-bottom" style="background-color: #37B7C3;">
             {{-- List TP --}}
@@ -19,13 +19,34 @@
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createTPModal">
         Tambah TP
     </button>
+
+    <!-- modal Informasi -->
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoTPModal">
+        Informasi
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoTPModal" tabindex="-1" aria-labelledby="infoModalTP" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Informasi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>TP : Tujuan Pembelajaran</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th class="text-start">ID</th>
-                <th class="text-start">Nama TP</th>
+                <th class="text-start">TP</th>
+                <th class="text-start">Topik</th>
                 <th class="text-start">Keterangan</th>
-                <th class="text-start">Actions</th>
+                <th class="text-start">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -59,29 +80,29 @@
                 <form action="{{ route('silabus.storeTP', [$mapelId, $cpId]) }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="createTPModalLabel">Create New TP</h5>
+                        <h5 class="modal-title" id="createTPModalLabel">Tambah TP Baru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <label for="nomor">ID TP:</label>
+                            <label for="nomor">TP</label>
                             <input type="text" name="nomor" id="nomor" class="form-control" required>
                             @error('nomor')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group mb-3">
-                            <label for="nama">Nama TP:</label>
+                            <label for="nama">Topik</label>
                             <input type="text" name="nama" id="nama" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="keterangan">Keterangan:</label>
+                            <label for="keterangan">Keterangan</label>
                             <input type="text" name="keterangan" id="keterangan" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save TP</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -97,29 +118,29 @@
                     @csrf
                     @method('POST')
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editTPModalLabel{{ $tp->id }}">Ubah TP</h5>
+                        <h5 class="modal-title" id="editTPModalLabel{{ $tp->id }}">Perbarui TP</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <label for="nomor">ID TP:</label>
+                            <label for="nomor">TP</label>
                             <input type="text" name="nomor" id="nomor" class="form-control" required>
                             @error('nomor')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group mb-3">
-                            <label for="nama">Nama TP:</label>
+                            <label for="nama">Topik</label>
                             <input type="text" name="nama" id="nama" class="form-control" value="{{ $tp->nama }}" required>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="keterangan">Keterangan:</label>
+                            <label for="keterangan">Keterangan</label>
                             <input type="text" name="keterangan" id="keterangan" class="form-control" value="{{ $tp->keterangan }}" required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update TP</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ubah</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>

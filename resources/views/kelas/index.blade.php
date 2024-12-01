@@ -204,7 +204,7 @@
                 <form action="{{ route('kelas.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="createKelasModalLabel">Buat Kelas Baru</h5>
+                        <h5 class="modal-title" id="createKelasModalLabel">Tambah Kelas Baru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -241,7 +241,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Simpan Kelas</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -256,7 +256,7 @@
                 <form action="{{ route('kelas.storeEkskul') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="createEkstrakulikulerModalLabel">Buat Ekstrakulikuler Baru</h5>
+                        <h5 class="modal-title" id="createEkstrakulikulerModalLabel">Tambah Ekstrakulikuler Baru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -285,7 +285,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Simpan Kelas</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>

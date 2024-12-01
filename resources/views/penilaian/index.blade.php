@@ -5,15 +5,36 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Penilaian {{ $kelas->rombongan_belajar }}</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Penilaian | Kelas {{ $kelas->rombongan_belajar }}</h2>
         </div>
     </div>
 
     <!-- Create Penilaian Button -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Tambah Penilaian</button>
-    <a href="{{ route('penilaian.bukuNilai', [$mapelKelasId]) }}" class="btn btn-primary mb-3">
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Tambah Penilaian</button>
+    <a href="{{ route('penilaian.bukuNilai', [$mapelKelasId]) }}" class="btn btn-warning mb-3">
         Lihat Buku Nilai
     </a>
+
+    <!-- modal Informasi -->
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoPenilaianModal">
+        Informasi
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoPenilaianModal" tabindex="-1" aria-labelledby="infoModalTP" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Informasi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>KKTP : Kriteria Ketercapaian Tujuan Pembelajaran</p>
+                    <p>TP : Tujuan Pembelajaran</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- @foreach ($penilaians as $p)
     <p>{{ $p->withpenilaian_siswa}}</p>
@@ -27,10 +48,10 @@
                 <th>Tanggal</th>
                 <th>Judul</th>
                 <th>Tipe</th>
-                <th class="text-start">KKTp</th>
+                <th class="text-start">KKTP</th>
                 <th>Status</th>
                 <th class="text-start">TP</th>
-                <th>Actions</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -47,11 +68,11 @@
                     <a href="{{ route('penilaian.buka', [$mapelKelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian
                     </a>
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}" style="width: 5rem">Edit</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}" style="width: 5rem">Ubah</button>
                     <form action="{{ route('penilaian.delete', [$mapelKelasId, $penilaian->id]) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger deleteAlert" style="width: 5rem">Delete</button>
+                        <button class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
             </tr>
@@ -61,7 +82,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editPenilaianLabel">Edit Penilaian</h5>
+                            <h5 class="modal-title" id="editPenilaianLabel">Perbarui Penilaian</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form action="{{ route('penilaian.update', [$mapelKelasId, $penilaian->id]) }}" method="POST">
@@ -110,7 +131,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createPenilaianLabel">Add Penilaian</h5>
+                    <h5 class="modal-title" id="createPenilaianLabel">Tambah Penilaian</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('penilaian.store', [$mapelKelasId]) }}" method="POST">
@@ -131,17 +152,17 @@
                             <input type="text" class="form-control" id="judul" name="judul" required>
                         </div>
                         <div class="mb-3">
-                            <label for="kktp" class="form-label">KKTp</label>
+                            <label for="kktp" class="form-label">KKTP</label>
                             <input type="text" class="form-control" id="kktp" name="kktp" required>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan</label>
                             <textarea class="form-control" id="keterangan" name="keterangan" required></textarea>
-                        </div>
+                        </div> -->
                         <div class="mb-3">
                             <label for="tp_id" class="form-label">TP</label>
                             <select class="form-select" id="tp_id" name="tp_id" required>
-                                <option value="">Select TP</option>
+                                <option value="">Pilih TP</option>
                                 @foreach ($tpOptions as $tp)
                                 <option value="{{ $tp->id }}">{{$tp->cp->nomor}}.{{$tp->nomor}} | {{ $tp->nama }}</option>
                                 @endforeach
@@ -149,7 +170,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>

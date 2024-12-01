@@ -44,7 +44,16 @@
                     </div>
                     <div class="mb-3">
                         <label for="agama">Agama</label>
-                        <input type="text" name="agama" class="form-control" maxlength="100">
+                        <select name="agama" class="form-select">
+                            <option value="">Pilih Agama</option>
+                            <option value="">Islam</option>
+                            <option value="">Kristen</option>
+                            <option value="">Katolik</option>
+                            <option value="">Hindu</option>
+                            <option value="">Buddha</option>
+                            <option value="">Konghucu</option>
+                        </select>
+                        <!-- <input type="text" name="agama" class="form-control" maxlength="100"> -->
                     </div>
                     <div class="mb-3">
                         <label for="alamat">Alamat</label>
@@ -56,7 +65,14 @@
                     </div> -->
                     <div class="mb-3">
                         <label for="status">Status</label>
-                        <input type="text" name="status" class="form-control" maxlength="50">
+                        <select name="status" class="form-select">
+                            <option value="">Pilih Status</option>
+                            <option value="">PNS</option>
+                            <option value="">PPPK</option>
+                            <option value="">GTT</option>
+                            <option value="">PTT</option>
+                        </select>
+                        <!-- <input type="text" name="status" class="form-control" maxlength="50"> -->
                     </div>
                     <div class="mb-3">
                         <label for="pangkat_golongan">Pangkat Golongan</label>

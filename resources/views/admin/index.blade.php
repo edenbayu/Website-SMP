@@ -8,17 +8,14 @@
             <h2 class="m-0" style="color: #EBF4F6">Tenaga Kependidikan</h2>
         </div>
     </div>
-    <!-- @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-    @endif -->
 
     <!-- import modal -->
     <div class="modal fade" data-bs-backdrop="static" tabindex="-1" aria-hidden="true" id="excelModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Impor Data Pegawai dari Excel
+                        Impor Data Excel
                     </h5>
                     <button type="button"
                         class="btn-close"
@@ -63,8 +60,8 @@
                 <th class="text-start">NIP</th>
                 <!-- <th>Jabatan</th> -->
                 <th>Jenis Kelamin</th>
+                <th>Status</th>
                 <th>Pendidikan</th>
-                <th>Pangkat</th>
                 <th>Aksi</th>
                 <th>Akun</th>
             </tr>
@@ -77,8 +74,8 @@
                 <td class="text-start">{{ $a->nip }}</td>
                 <!-- <td>{{ $a->jabatan}}</td> -->
                 <td>{{ $a->jenis_kelamin }}</td>
+                <td>{{ $a->status }}</td>
                 <td>{{ $a->pendidikan }}</td>
-                <td>{{ $a->pangkat_golongan }}</td>
                 <td>
                     <!-- Edit Class Modal Trigger -->
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}" style="width: 5rem">Ubah</button>

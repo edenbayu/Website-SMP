@@ -87,7 +87,7 @@
         </div>
         <div class="form-section">
             <p class="intro">Selamat Datang!</p>
-            <p style="margin-bottom: 30px">Masukkan NIP/NISN dan Kata Sandi untuk masuk.</p>
+            <p style="margin-bottom: 30px">Masukkan ID Pengguna dan Kata Sandi untuk masuk.</p>
 
             @if ($errors->any())
             <div style="color: red;">
@@ -102,8 +102,8 @@
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="username">NIP/NISN</label>
-                    <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan NIP/NISN" required>
+                    <label for="username">ID Pengguna</label>
+                    <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan ID Pengguna" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Kata Sandi</label>

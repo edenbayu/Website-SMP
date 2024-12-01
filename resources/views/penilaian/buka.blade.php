@@ -5,12 +5,14 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Detail Penilaian Siswa</h2>
+        @foreach ($penilaians as $penilaian)
+            <h2 class="m-0" style="color: #EBF4F6">{{ $penilaian->tipe }} | {{ $penilaian->judul }}</h2>
+            @endforeach
         </div>
     </div>
 
     <form action="{{ route('penilaian.updateBatch', [$mapelKelasId]) }}" method="POST">
-        <button type="submit" class="btn btn-primary mb-3">Update Penilaian</button>
+        <button type="submit" class="btn btn-primary mb-3">Perbarui Penilaian</button>
         @csrf
         @method('PUT')
         <table id="example" class="table table-striped" style="width:100%">
@@ -18,9 +20,9 @@
                 <tr>
                     <th class="text-start">No</th>
                     <th>Nama</th>
-                    <th class="text-start">KKTp</th>
+                    <th class="text-start">KKTP</th>
                     <th>Nilai</th>
-                    <th>Remedial</th>
+                    <th>Remedial/Pengayaan</th>
                     <th class="text-start">Nilai Akhir</th>
                 </tr>
             </thead>

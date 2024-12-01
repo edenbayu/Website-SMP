@@ -165,6 +165,7 @@ class PesertaDidikController extends Controller
             ->select(
                 'c.id as siswa_id',  // Add siswa_id to the select query
                 'c.nama as siswa_name',
+                'c.nisn as nisn',
                 'g.rombongan_belajar as kelas',
                 'z.nama as mapel_name',
                 DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) AS avg_tugas"),
@@ -172,7 +173,7 @@ class PesertaDidikController extends Controller
                 DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) AS avg_sas"),
                 DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) AS avg_sts")
             )
-            ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar') // Include siswa_id in the groupBy clause
+            ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar', 'c.nisn') // Include siswa_id in the groupBy clause
             ->get();
     
         // Transform the data
@@ -188,6 +189,7 @@ class PesertaDidikController extends Controller
             if (!isset($result[$data->siswa_id])) {
                 $result[$data->siswa_id] = [
                     'nama' => $data->siswa_name,
+                    'nisn' => $data->nisn,
                     'kelas' => $data->kelas,
                 ];
             }

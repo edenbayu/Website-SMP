@@ -5,14 +5,34 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">{{ $mapel->nama }} Kelas {{ $mapel->kelas }}</h2>
+            <h2 class="m-0" style="color: #EBF4F6">{{ $mapel->nama }} | Kelas {{ $mapel->kelas }}</h2>
         </div>
     </div>
 
     <!-- Button to Open Create CP Modal -->
     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createCPModal">
-        Add New CP
+        Tambah CP
     </button>
+
+    <!-- modal Informasi -->
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoCPModal">
+        Informasi
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoCPModal" tabindex="-1" aria-labelledby="infoModalTP" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Informasi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>CP : Capaian Pembelajaran</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Table of CPs -->
     <table id="example" class="table table-striped" style="width:100%">
@@ -21,7 +41,7 @@
                 <th class="text-start">CP</th>
                 <th>Topik</th>
                 <th>Keterangan</th>
-                <th>Actions</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +54,7 @@
                     <!-- Buat TP Button -->
                     <form action="{{ route('bukaTP', ['mapelId' => $mapelId, 'cpId' => $cp->id]) }}" method="GET" style="display: inline;" class="m-0">
                         <button type="submit" style="width: 5.5rem;" class="btn btn-primary">
-                            Buat TP
+                            Lihat TP
                         </button>
                     </form>
                     <!-- Update Button -->
@@ -56,29 +76,29 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="updateCPModalLabel-{{ $cp->id }}">Update CP</h5>
+                            <h5 class="modal-title" id="updateCPModalLabel-{{ $cp->id }}">Perbarui CP</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{{ route('silabus.updateCP', [$mapel->id, $cp->id]) }}" method="POST">
+                        <form action="{{ route('silabus.updateCP', [$mapel->id, $cp->id]) }}" method="POST" class="m-0">
                             @csrf
                             @method('POST')
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="nomor">ID CP:</label>
+                                <div class="form-group mb-3">
+                                    <label for="nomor">CP</label>
                                     <input type="text" name="nomor" id="nomor" class="form-control" required>
                                     @error('nomor')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <div class="form-group">
-                                    <label for="nama">Nama CP:</label>
+                                <div class="form-group mb-3">
+                                    <label for="nama">Topik</label>
                                     <input type="text" name="nama" id="nama" class="form-control" value="{{ $cp->nama }}" required>
                                     @error('nama')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <div class="form-group">
-                                    <label for="keterangan">Keterangan:</label>
+                                <div class="form-group mb-3">
+                                    <label for="keterangan">Keterangan</label>
                                     <input type="text" name="keterangan" id="keterangan" class="form-control" value="{{ $cp->keterangan }}" required>
                                     @error('keterangan')
                                     <small class="text-danger">{{ $message }}</small>
@@ -86,8 +106,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Update CP</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -102,28 +122,28 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createCPModalLabel">Add New CP</h5>
+                    <h5 class="modal-title" id="createCPModalLabel">Tambah CP Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('silabus.storeCP', $mapelId) }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <label for="nomor">ID CP:</label>
+                            <label for="nomor">CP</label>
                             <input type="text" name="nomor" id="nomor" class="form-control" required>
                             @error('nomor')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group mb-3">
-                            <label for="nama">Nama CP:</label>
+                            <label for="nama">Topik</label>
                             <input type="text" name="nama" id="nama" class="form-control" required>
                             @error('nama')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group mb-3">
-                            <label for="keterangan">Keterangan:</label>
+                            <label for="keterangan">Keterangan</label>
                             <input type="text" name="keterangan" id="keterangan" class="form-control" required>
                             @error('keterangan')
                             <small class="text-danger">{{ $message }}</small>

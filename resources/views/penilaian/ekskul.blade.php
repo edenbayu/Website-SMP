@@ -5,10 +5,13 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Penilaian Ekskul</h2>
+            @foreach ($penilaianEkskuls as $p )
+            <h2 class="m-0" style="color: #EBF4F6">Penilaian | {{$p->kelas->rombongan_belajar}}</h2>
+            @endforeach
         </div>
     </div>
 
+    <button type="submit" class="btn btn-primary mb-3">Perbarui Penilaian</button>
 
     <form action="{{ route('penilaian.ekskul.update.all', ['kelasId' => $kelasId, $mapelId]) }}" method="POST">
         @csrf
@@ -17,16 +20,18 @@
         <table id="example" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th class="text-start col-1">No</th>
-                    <th>Nama Siswa</th>
+                    <th class="text-start" width="5%">No</th>
+                    <th>Nama</th>
+                    <th class="text-start">NISN</th>
                     <th>Nilai</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($penilaianEkskuls as $penilaianEkskul)
                 <tr>
-                    <td class="text-start col-1">{{$loop->iteration}}</td>
+                    <td class="text-start">{{$loop->iteration}}</td>
                     <td>{{ $penilaianEkskul->siswa->nama }}</td>
+                    <td class="text-start">{{ $penilaianEkskul->siswa->nisn }}</td>
                     <td>
                         <input type="number" name="nilai[{{ $penilaianEkskul->id }}][nilai]" class="form-control" value="{{ old("nilai.{$penilaianEkskul->id}.nilai", $penilaianEkskul->nilai) }}" min="0" max="100">
                     </td>
@@ -34,7 +39,6 @@
                 @endforeach
             </tbody>
         </table>
-        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>
 </div>
 

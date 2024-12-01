@@ -25,25 +25,19 @@
     <table id="example" class="table table-striped stripe row-border order-column" style="width:100%">
         <thead>
             <tr>
-                <th class="text-start">No</th>
+                <th class="text-start" width="5%">No</th>
                 <th class="text-start">Nama</th>
-                <th>Nama</th>
-                <th>Nama</th>
-                <th>Nama</th>
-                <th>Nama</th>
-                <th>Nama</th>
-                <th>Nama</th>
-                <th>Nama</th>
+                <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
                 @php
                 $subjects = collect($datas)->flatMap(function ($row) {
                 return array_keys((array)$row);
-                })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas']));
+                })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas','nisn']));
                 @endphp
                 @foreach ($subjects as $subject)
                 <th class="text-start">{{ $subject }}</th>
                 @endforeach
-                <th>Generate Rapot</th>
+                <th>Buat Rapor</th>
             </tr>
         </thead>
         <tbody>
@@ -51,24 +45,18 @@
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $data['nama'] }}</td>
-                <td>{{ $data['nama'] }}</td>
-                <td>{{ $data['nama'] }}</td>
-                <td>{{ $data['nama'] }}</td>
-                <td>{{ $data['nama'] }}</td>
-                <td>{{ $data['nama'] }}</td>
-                <td>{{ $data['nama'] }}</td>
-                <td>{{ $data['nama'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['kelas'] }}</td>
                 @foreach ($subjects as $subject)
                 <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach
                 <td class="text-start">
                     <!-- Modal Trigger Buttons -->
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}">
-                        Buat Rapot Mid
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}" style="width:10.5rem">
+                        Tengah Semester
                     </button>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotSemester{{ $loop->index }}">
-                        Buat Rapot Semester
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotSemester{{ $loop->index }}" style="width:10.5rem">
+                        Akhir Semester
                     </button>
                 </td>
             </tr>
@@ -123,8 +111,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Download Rapot</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Unduh Rapor</button>
                             </form>
                         </div>
                     </div>

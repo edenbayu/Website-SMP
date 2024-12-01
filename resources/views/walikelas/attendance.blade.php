@@ -5,18 +5,18 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Attendance Management</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Presensi</h2>
         </div>
     </div>
 
     <!-- Date Selection -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label for="date">Select Date:</label>
+            <label for="date">Pilih Tanggal:</label>
             <input type="date" id="date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
         </div>
     </div>
-    <button id="saveAttendance" class="btn btn-primary mb-3">Save Attendance</button>
+    <button id="saveAttendance" class="btn btn-primary mb-3">Simpan Presensi</button>
 
     <!-- Attendance Table -->
     <div class="table-responsive mb-3">
@@ -24,8 +24,8 @@
             <thead>
                 <tr>
                     <th class="text-start">No</th>
-                    <th>Student Name</th>
-                    <th>Class</th>
+                    <th>Nama</th>
+                    <th>Rombongan Belajar</th>
                     <th>Status</th>
                 </tr>
             </thead>

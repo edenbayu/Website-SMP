@@ -5,13 +5,12 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Data Ekskul: {{ $kelas->rombongan_belajar }}</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Ekstrakurikuler {{ $kelas->rombongan_belajar }}</h2>
         </div>
     </div>
-    <h3>Daftar Siswa</h3>
 
     <!-- Add Student Modal Trigger -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addEkskulModal-{{ $kelas->id }}">Tambah Siswa</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEkskulModal-{{ $kelas->id }}">Tambah</button>
 
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
@@ -47,14 +46,14 @@
                 <form action="{{ route('kelas.addStudent', $kelas->id) }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addEkskulModalLabel">Tambah Siswa ke {{ $kelas->rombongan_belajar }}</h5>
+                        <h5 class="modal-title" id="addEkskulModalLabel">Tambah Peserta Didik ke {{ $kelas->rombongan_belajar }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="id_siswa" class="form-label">Pilih Siswa</label>
+                            <label for="id_siswa" class="form-label">Pilih Peserta Didik</label>
                             <select name="id_siswa" class="form-select selectpicker" data-live-search="true" required>
-                                <option value="">Pilih Siswa</option>
+                                <option value="">Pilih Peserta Didik</option>
                                 @foreach($siswas as $siswa)
                                 <option value="{{ $siswa->id }}">{{ $siswa->nama }}</option>
                                 @endforeach
@@ -62,7 +61,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Tambah Siswa</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
                     </div>
                 </form>
             </div>

@@ -22,13 +22,13 @@
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th class="text-start">No</th>
+                <th class="text-start" style="width: 4%;">No</th>
                 <th>Semester</th>
                 <th>Tahun Ajaran</th>
                 <th>Status</th>
                 <th class="text-start">Tanggal Dimulai</th>
                 <th class="text-start">Tanggal Berakhir</th>
-                <th>Aksi</th>
+                <th class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@
                 <td>{{ $semester->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
                 <td class="text-start">{{ $semester->start }}</td>
                 <td class="text-start">{{ $semester->end }}</td>
-                <td>
+                <td class="text-center">
                     <!-- Trigger Button for the Edit Modal -->
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}" style="width: 5rem">Ubah</button>
 

@@ -5,7 +5,7 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Data Kelas: {{ $kelas->rombongan_belajar }}</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Kelas {{ $kelas->rombongan_belajar }}</h2>
         </div>
     </div>
 
@@ -13,7 +13,7 @@
     <form action="{{ route('kelas.buka', ['kelasId' => $kelas->id]) }}" method="GET">
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="angkatan">Select Angkatan:</label>
+                <label for="angkatan">Pilih Angkatan:</label>
                 <select name="angkatan" id="angkatan" class="form-control">
                     <option value="">-- Select Angkatan --</option>
                     @foreach($angkatan as $year)
@@ -36,13 +36,13 @@
     <!-- Auto Assign Student Button -->
     <form action="{{ route('kelas.autoAdd', ['kelasId' => $kelas->id, 'angkatan' => request('angkatan')]) }}" method="POST" style="display:inline;">
         @csrf
-        <button type="submit" class="btn btn-primary mb-3">Auto Assign Students</button>
+        <button type="submit" class="btn btn-primary mb-3">Penempatan Peserta Didik Otomatis</button>
     </form>
 
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th class="text-start">No</th>
+                <th class="text-start" width="4%">No</th>
                 <th>Nama Siswa</th>
                 <th class="text-start">NISN</th>
                 <th>Aksi</th>
