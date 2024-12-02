@@ -12,7 +12,14 @@
     <script src="https://kit.fontawesome.com/9d2abd8931.js" crossorigin="anonymous"></script>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css"> -->
-
+    @stack('style')
+    <style>
+        .avatar {
+            object-fit: cover !important; /* Memastikan gambar memenuhi kotak tanpa distorsi */
+            object-position: center top !important; /* Fokuskan pada bagian atas gambar */
+        }
+    </style>
+    
 </head>
 
 <body>
@@ -33,7 +40,7 @@
                     <li class="sidebar-header">
                         Tenaga Kependidikan
                     </li>
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item">
                         <a href="{{route('home')}}" class="sidebar-link">
                             <i class="fa-solid fa-list-ul"></i>
                             Dashboard
@@ -109,7 +116,7 @@
                     <li class="sidebar-header">
                         Peserta Didik
                     </li>
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item">
                         <a href="{{route('home')}}" class="sidebar-link">
                             <i class="fa-solid fa-list-ul"></i>
                             Dashboard
@@ -148,7 +155,7 @@
                     <li class="sidebar-header">
                         Guru
                     </li>
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item">
                         <a href="{{ route('home')}}" class="sidebar-link">
                             <i class="fa-solid fa-list-ul"></i>
                             Dashboard
@@ -301,19 +308,25 @@
 
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button class="btn btn-danger me-3" type="submit">Logout</button>
-                        </form>
+                        <p style="padding: 10px 15px">{{ auth()->user()->name }}</p>
                         <li class="nav-item dropdown">
+                            
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                                <img src="{{asset("style/assets/profile.png")}}" class="avatar img-fluid rounded-circle" alt="foto profil">
+                                {{-- <img src="{{asset("style/assets/profile.png")}}" class="avatar img-fluid rounded-circle" alt="foto profil"> --}}
+                                @if (auth()->user()->picture)
+                                    <img src="data:image/jpeg;base64,{{ base64_encode(auth()->user()->picture) }}"  class="avatar rounded-circle" alt="Profile Picture">
+                                @else
+                                    <img src="{{ asset('style/assets/default_picture.jpg') }}" class="avatar rounded-circle" alt="Default Profile Picture">
+                                @endif
                             </a>
-                            <!-- <div class="dropdown-menu dropdown-menu-end">
-                                <a href="#" class="dropdown-item">Profile</a>
-                                <a href="#" class="dropdown-item">Setting</a>
-                                <a href="#" class="dropdown-item">Logout</a>
-                            </div> -->
+                            
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a href={{ route('profile') }} class="dropdown-item">Profil</a>
+                                <form action={{ route('logout') }} method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">Keluar</button>
+                                </form>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -324,7 +337,7 @@
         </div>
     </div>
 
-
+    @stack('script')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('style/js/layout.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -353,6 +366,8 @@
             },
         });
     </script> -->
+
+    
 </body>
 
 </html>

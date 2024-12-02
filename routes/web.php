@@ -18,17 +18,26 @@ use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PesertaDidikController;
 use App\Http\Controllers\HalamanSiswaController;
+use App\Http\Controllers\UserController;
 
 // Group routes for LoginController using Route::controller
-Route::controller(LoginController::class)->group(function () {
+Route::middleware('guest')->controller(LoginController::class)->group(function () {
     Route::get('login', 'showLoginForm')->name('login');
     Route::post('login', 'login');
+    Route::get('', function () {
+        return view('auth.login');
+    });
 });
 
 // Group routes that require 'auth' middleware
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::post('/profile/update_picture', [UserController::class, 'update_picture'])->name('update_picture');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/logout', function () {
+        return redirect('/');
+    });
 
     //Ini untuk nge-protect routes biar khusus cuma diakses sama Admin
     Route::middleware('role:Admin')->group(function () {
@@ -182,9 +191,6 @@ Route::middleware('auth')->group(function () {
 });
 
 // Default route redirect to login page
-Route::get('', function () {
-    return view('auth.login');
-});
 
 //Route unntuk reset password
 Route::get('/forgot-password', function(){

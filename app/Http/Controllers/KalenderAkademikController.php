@@ -1,11 +1,11 @@
 <?php
-  
+
 namespace App\Http\Controllers;
-  
+
 use Illuminate\Http\Request;
 use App\Models\KalenderAkademik;
 use Illuminate\Http\JsonResponse;
-  
+
 class KalenderAkademikController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class KalenderAkademikController extends Controller
     {
         return view('kalenderakademik.index');
     }
- 
+
     public function listEvent(Request $request)
     {
         $start = $request->start ? date('Y-m-d', strtotime($request->start)) : now()->startOfMonth()->toDateString();
