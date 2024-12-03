@@ -87,7 +87,7 @@
         </div>
         <div class="form-section">
             <p class="intro">Selamat Datang!</p>
-            <p style="margin-bottom: 30px">Masukkan ID Pengguna dan Kata Sandi untuk masuk.</p>
+            <p style="margin-bottom: 30px">Masukkan Nama Pengguna dan Kata Sandi untuk masuk.</p>
 
             @if ($errors->any())
             <div style="color: red;">
@@ -102,7 +102,7 @@
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="username">ID Pengguna</label>
+                    <label for="username">Nama Pengguna</label>
                     <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan ID Pengguna" required>
                 </div>
                 <div class="form-group">
@@ -116,7 +116,7 @@
                 <div class="col-md-6 offset-md-4">
                     <div class="checkbox">
                         <label>
-                            <a href="{{ route('forget.password.get') }}">Reset Password</a>
+                            <a href="{{ route('forget.password.get') }}">Lupa Kata Sandi</a>
                         </label>
                     </div>
                 </div>
