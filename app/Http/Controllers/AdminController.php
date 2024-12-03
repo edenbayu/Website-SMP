@@ -95,6 +95,11 @@ class AdminController extends Controller
             'password' => $request->password
         ]);
         
+        Mail::send('email.akun', ['username' => $request->username, 'password' => $request->password], function($message) use($request) {
+            $message->to("$request->email");
+            $message->subject('Akun SMP anda telah dibuat!');
+        });  
+
         $user->assignRole('Admin');
         $admin->id_user = $user->id;
         $admin->save();
