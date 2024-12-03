@@ -15,7 +15,7 @@ class UserController extends Controller
 
         if ($user->hasRole('Guru') || $user->hasRole('Wali Kelas')) {
             $data = Guru::where('id_user', $user->id)->first();
-        } else if ($user->hasRole('Admin')) {
+        } else if ($user->hasRole('Admin') || $user->hasRole('Super Admin')) {
             $data = Admin::where('id_user', $user->id)->first();
         } else if ($user->hasRole('Siswa')) {
             $data = Siswa::where('id_user', $user->id)->first();
