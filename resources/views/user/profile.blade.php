@@ -134,44 +134,46 @@
                     <p><strong>Alamat</strong> : {{ $data->alamat }}</p>
                 @endrole
                 
-                @role('Admin')
-                    <p><strong>NIP</strong> : {{ $data->nip  }}</p>
-                    <p><strong>Jabatan</strong> : {{ $data->jabatan  }}</p>
-                    <p><strong>Status</strong> : {{ $data->status  }}</p>
-                    <p><strong>Pangkat Golongan</strong> : {{ $data->pangkat_golongan ?? '-' }}</p>
-                    <p><strong>Pendidikan</strong> : {{ $data->pendidikan  }}</p>
-                    <p><strong>Tempat Lahir</strong> : {{ $data->tempat_lahir  }}</p>
-                    <p><strong>Tanggal Lahir</strong> : {{ $data->tanggal_lahir  }}</p>
-                    <p><strong>Jenis Kelamin</strong> : {{ $data->jenis_kelamin  }}</p>
-                    <p><strong>Agama</strong> : {{ $data->agama  }}</p>
-                    <p><strong>Alamat</strong> : {{ $data->alamat  }}</p>
-                @endrole
-            
-                @role('Siswa')
-                    <p><strong>NIS</strong> : {{ $data->nis }}</p>
-                    <p><strong>NISN</strong> : {{ $data->nisn }}</p>
-                    <p><strong>Tempat Lahir</strong> : {{ $data->tempat_lahir }}</p>
-                    <p><strong>Tanggal Lahir</strong> : {{ $data->tanggal_lahir }}</p>
-                    <p><strong>Jenis Kelamin</strong> : {{ $data->jenis_kelamin }}</p>
-                    <p><strong>Agama</strong> : {{ $data->agama }}</p>
-                    <p><strong>Status Keluarga</strong> : {{ $data->status_keluarga}}</p>
-                    <p><strong>Anak Ke</strong> : {{ $data->anak_ke }}</p>
-                    <p><strong>Alamat Lengkap</strong> : {{ $data->alamat_lengkap }}</p>
-                    <p><strong>No Telepon Rumah</strong> : {{ $data->no_telepon_rumah }}</p>
-                    <p><strong>Asal Sekolah</strong> : {{ $data->asal_sekolah }}</p>
-                    <p><strong>Tanggal Diterima</strong> : {{ $data->tanggal_diterima }}</p>
-                    <p><strong>Jalur Penerimaan</strong> : {{ $data->jalur_penerimaan }}</p>
-                    <p><strong>Nama Ayah</strong> : {{ $data->nama_ayah }}</p>
-                    <p><strong>Pekerjaan Ayah</strong> : {{ $data->pekerjaan_ayah }}</p>
-                    <p><strong>Nama Ibu</strong> : {{ $data->nama_ibu }}</p>
-                    <p><strong>Pekerjaan Ibu</strong> : {{ $data->pekerjaan_ibu }}</p>
-                    <p><strong>Alamat Ortu</strong> : {{ $data->alamat_ortu }}</p>
-                    <p><strong>No Telepon Ortu</strong> : {{ $data->no_telp_ortu }}</p>
-                    <p><strong>Nama Wali</strong> : {{ $data->nama_wali ?? '-' }}</p>
-                    <p><strong>Alamat Wali</strong> : {{ $data->alamat_wali ?? '-' }}</p>
-                    <p><strong>Pekerjaan Wali</strong> : {{ $data->pekerjaan_wali ?? '-' }}</p>
-                    <p><strong>Angkatan</strong> : {{ $data->angkatan  }}</p>
-                @endrole
+                @if(isset($data))
+                    @role('Admin')
+                        <p><strong>NIP</strong> : {{ $data->nip  }}</p>
+                        <p><strong>Jabatan</strong> : {{ $data->jabatan  }}</p>
+                        <p><strong>Status</strong> : {{ $data->status  }}</p>
+                        <p><strong>Pangkat Golongan</strong> : {{ $data->pangkat_golongan ?? '-' }}</p>
+                        <p><strong>Pendidikan</strong> : {{ $data->pendidikan  }}</p>
+                        <p><strong>Tempat Lahir</strong> : {{ $data->tempat_lahir  }}</p>
+                        <p><strong>Tanggal Lahir</strong> : {{ $data->tanggal_lahir  }}</p>
+                        <p><strong>Jenis Kelamin</strong> : {{ $data->jenis_kelamin  }}</p>
+                        <p><strong>Agama</strong> : {{ $data->agama  }}</p>
+                        <p><strong>Alamat</strong> : {{ $data->alamat  }}</p>
+                    @endrole
+                
+                    @role('Siswa')
+                        <p><strong>NIS</strong> : {{ $data->nis }}</p>
+                        <p><strong>NISN</strong> : {{ $data->nisn }}</p>
+                        <p><strong>Tempat Lahir</strong> : {{ $data->tempat_lahir }}</p>
+                        <p><strong>Tanggal Lahir</strong> : {{ $data->tanggal_lahir }}</p>
+                        <p><strong>Jenis Kelamin</strong> : {{ $data->jenis_kelamin }}</p>
+                        <p><strong>Agama</strong> : {{ $data->agama }}</p>
+                        <p><strong>Status Keluarga</strong> : {{ $data->status_keluarga}}</p>
+                        <p><strong>Anak Ke</strong> : {{ $data->anak_ke }}</p>
+                        <p><strong>Alamat Lengkap</strong> : {{ $data->alamat_lengkap }}</p>
+                        <p><strong>No Telepon Rumah</strong> : {{ $data->no_telepon_rumah }}</p>
+                        <p><strong>Asal Sekolah</strong> : {{ $data->asal_sekolah }}</p>
+                        <p><strong>Tanggal Diterima</strong> : {{ $data->tanggal_diterima }}</p>
+                        <p><strong>Jalur Penerimaan</strong> : {{ $data->jalur_penerimaan }}</p>
+                        <p><strong>Nama Ayah</strong> : {{ $data->nama_ayah }}</p>
+                        <p><strong>Pekerjaan Ayah</strong> : {{ $data->pekerjaan_ayah }}</p>
+                        <p><strong>Nama Ibu</strong> : {{ $data->nama_ibu }}</p>
+                        <p><strong>Pekerjaan Ibu</strong> : {{ $data->pekerjaan_ibu }}</p>
+                        <p><strong>Alamat Ortu</strong> : {{ $data->alamat_ortu }}</p>
+                        <p><strong>No Telepon Ortu</strong> : {{ $data->no_telp_ortu }}</p>
+                        <p><strong>Nama Wali</strong> : {{ $data->nama_wali ?? '-' }}</p>
+                        <p><strong>Alamat Wali</strong> : {{ $data->alamat_wali ?? '-' }}</p>
+                        <p><strong>Pekerjaan Wali</strong> : {{ $data->pekerjaan_wali ?? '-' }}</p>
+                        <p><strong>Angkatan</strong> : {{ $data->angkatan  }}</p>
+                    @endrole
+                @endif
             </div>
         </div>
     </div>    
