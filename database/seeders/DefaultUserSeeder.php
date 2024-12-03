@@ -17,7 +17,7 @@ class DefaultUserSeeder extends Seeder
         // Creating Super Admin User
         $superadmin = User::create([
             'name' => 'Satya',
-            'email' => 'satyagraha@gmail.com',
+            'email' => 'gilan.lan8@gmail.com',
             'username' => 'superadmin',
             'password' => 'superadmin'
         ]);
