@@ -22,15 +22,16 @@ class HomeController extends Controller
         $user = Auth::user();
 
         // Check if user is an Admin
-        if ($user->hasRole('Admin')) {
+        if ($user->hasRole(['Admin', 'Super Admin'])) {
+
             // Retrieve data only if user is an Admin
             $semesterAktif = Semester::select('semester', 'tahun_ajaran')
-                                     ->where('status', 1)
-                                     ->get();
+                ->where('status', 1)
+                ->get();
 
             $kepalaSekolah = Guru::select('nama')
-                                 ->where('jabatan', 'Kepala Sekolah')
-                                 ->get();
+                ->where('jabatan', 'Kepala Sekolah')
+                ->get();
 
             $totalSiswa = Siswa::count();
             $totalGuru = Guru::count();
@@ -40,25 +41,29 @@ class HomeController extends Controller
             $totalAdmin = Admin::count();
 
             $operator = Admin::select('nama')
-                             ->where('id_user', $user->id)
-                             ->get();
+                ->where('id_user', $user->id)
+                ->get();
 
             return view('home', compact(
-                'semesterAktif', 'kepalaSekolah', 'operator', 
-                'totalSiswa', 'totalGuru', 'totalEkskul', 
-                'totalMapel', 'totalAdmin', 'totalKelas'
+                'semesterAktif',
+                'kepalaSekolah',
+                'operator',
+                'totalSiswa',
+                'totalGuru',
+                'totalEkskul',
+                'totalMapel',
+                'totalAdmin',
+                'totalKelas'
             ));
-        }
-
-        else if ($user->hasRole('Guru')){
+        } else if ($user->hasRole('Guru')) {
 
             $semesterAktif = Semester::select('semester', 'tahun_ajaran')
-                                ->where('status', 1)
-                                ->get();
+                ->where('status', 1)
+                ->get();
 
             $kepalaSekolah = Guru::select('nama')
-                    ->where('jabatan', 'Kepala Sekolah')
-                    ->get();
+                ->where('jabatan', 'Kepala Sekolah')
+                ->get();
 
             $operator = Guru::select('nama', 'jabatan')
                 ->where('id_user', $user->id)
@@ -69,17 +74,15 @@ class HomeController extends Controller
                 'kepalaSekolah',
                 'operator',
             ));
-        }
-
-        else if ($user->hasRole('Wali Kelas')){
+        } else if ($user->hasRole('Wali Kelas')) {
 
             $semesterAktif = Semester::select('semester', 'tahun_ajaran')
-                                ->where('status', 1)
-                                ->get();
+                ->where('status', 1)
+                ->get();
 
             $kepalaSekolah = Guru::select('nama')
-                    ->where('jabatan', 'Kepala Sekolah')
-                    ->get();
+                ->where('jabatan', 'Kepala Sekolah')
+                ->get();
 
             $operator = Guru::select('nama', 'jabatan')
                 ->where('id_user', $user->id)
@@ -90,9 +93,7 @@ class HomeController extends Controller
                 'kepalaSekolah',
                 'operator',
             ));
-        }
-
-        else{
+        } else {
             return view('home');
         }
 

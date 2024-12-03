@@ -1,7 +1,7 @@
 @extends('layout/layout')
 @section('content')
 <!-- Admin Dashboard -->
-@role('Admin')
+@role('Admin|Super Admin')
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
@@ -184,7 +184,7 @@
         <p>I am Siswa</p>
         @endrole
 
-        @role('Super Admin')
+        <!-- @role('Super Admin')
         <p>I am Super Admin</p>
-        @endrole
+        @endrole -->
         @endsection
