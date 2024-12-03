@@ -77,10 +77,10 @@
                         <!-- <input type="text" name="status" id="status" class="form-control" value="{{ old('status', $a->status) }}"> -->
                     </div>
 
-                    {{-- <div class="form-group mb-3">
+                    <div class="form-group mb-3">
                         <label for="pangkat_golongan">Pangkat Golongan</label>
                         <input type="text" name="pangkat_golongan" id="pangkat_golongan" class="form-control" value="{{ old('pangkat_golongan', $a->pangkat_golongan) }}">
-                    </div> --}}
+                    </div>
 
                     <div class="form-group mb-3">
                         <label for="pendidikan">Pendidikan</label>

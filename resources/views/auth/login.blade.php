@@ -103,7 +103,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="username">Nama Pengguna</label>
-                    <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan ID Pengguna" required>
+                    <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan Nama Pengguna" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Kata Sandi</label>

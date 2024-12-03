@@ -81,6 +81,8 @@
                     </div>
                 </div>
 
+                @endrole
+                @role('Admin')
                 <!-- Total Kelas -->
                 <div class="col">
                     <div class="card mb-4">
