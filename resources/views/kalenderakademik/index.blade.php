@@ -77,142 +77,48 @@
 
         <div id='calendar'></div>
 
-        <!-- Modal for Create/Edit Event -->
-        <div class="modal" id="eventModal" tabindex="-1"  aria-hidden="true">
-            
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="" method="POST">
-                        @csrf
-                        @method('PUT')
-                        
-                        <div class="modal-header">
-                            <h2 id="modalTitle">Add Event</h2>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        
-                        <div class="modal-body">
-                            <!-- Semester Input -->
-                            <div class="mb-3">
-                                <label for="semester" class="form-label">Semester</label>
-                                {{-- <input type="text" class="form-control" id="semester" name="semester" value="{{ $semester->semester }}" required> --}}
-                            </div>
-        
-                            <!-- Tahun Ajaran Input -->
-                            <div class="mb-3">
-                                <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
-                                {{-- <input type="text" class="form-control" id="tahun_ajaran" name="tahun_ajaran" value="{{ $semester->tahun_ajaran }}" required> --}}
-                            </div>
-        
-                            <!-- Status Input -->
-                            <div class="mb-3">
-                                <label for="status" class="form-label">Status</label>
-                                <select class="form-select" id="status" name="status" required>
-                                    {{-- <option value="1" {{ $semester->status == 1 ? 'selected' : '' }}>Aktif</option>
-                                    <option value="0" {{ $semester->status == 0 ? 'selected' : '' }}>Tidak Aktif</option> --}}
-                                </select>
-                            </div>
-        
-                            <!-- Start Date Input -->
-                            <div class="mb-3">
-                                <label for="start" class="form-label">Start Date</label>
-                                {{-- <input type="date" class="form-control" id="start" name="start" value="{{ $semester->start }}" required> --}}
-                            </div>
-        
-                            <!-- End Date Input -->
-                            <div class="mb-3">
-                                <label for="end" class="form-label">End Date</label>
-                                {{-- <input type="date" class="form-control" id="end" name="end" value="{{ $semester->end }}" required> --}}
-                            </div>
-                        </div>
-                        
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <form id="eventForm">
-                <input type="hidden" id="eventId">
-                <div>
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" required>
-                </div>
-                <div>
-                    <label for="start">Start Date:</label>
-                    <input type="date" id="start" name="start" required>
-                </div>
-                <div>
-                    <label for="end">End Date:</label>
-                    <input type="date" id="end" name="end" required>
-                </div>
-                <div>
-                    <label for="tipe_kegiatan">Tipe Kegiatan:</label>
-                    <input type="number" id="tipe_kegiatan" name="tipe_kegiatan" required>
-                </div>
-                <button type="submit">Save</button>
-                <button type="button" id="deleteEvent" style="display: none;">Hapus</button>
-            </form>
-        </div>
-        <div class="modal-overlay" id="modalOverlay"></div>
+        <!-- Modal for Create/Edit Event -->        
         <div class="modal" id="editSemesterModal" tabindex="-1" aria-labelledby="editSemesterModalLabel-" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="" method="POST">
-                        @csrf
-                        @method('PUT')
-                        
+                    <form id="eventForm">
+                        <input type="hidden" id="eventId">
+
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editSemesterModalLabel-">Ubah Semester</h5>
+                            <h5 class="modal-title" id="modalTitle">Judul</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        
                         <div class="modal-body">
-                            <!-- Semester Input -->
                             <div class="mb-3">
-                                <label for="semester" class="form-label">Semester</label>
-                                {{-- <input type="text" class="form-control" id="semester" name="semester" value="{{ $semester->semester }}" required> --}}
+                                <label for="title" class="form-label">Judul Kegiatan:</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
                             </div>
-        
-                            <!-- Tahun Ajaran Input -->
+
                             <div class="mb-3">
-                                <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
-                                {{-- <input type="text" class="form-control" id="tahun_ajaran" name="tahun_ajaran" value="{{ $semester->tahun_ajaran }}" required> --}}
+                                <label for="start" class="form-label">Tanggal Mulai:</label>
+                                <input type="date" class="form-control" id="start" name="start" required>
                             </div>
-        
-                            <!-- Status Input -->
                             <div class="mb-3">
-                                <label for="status" class="form-label">Status</label>
-                                <select class="form-select" id="status" name="status" required>
-                                    {{-- <option value="1" {{ $semester->status == 1 ? 'selected' : '' }}>Aktif</option>
-                                    <option value="0" {{ $semester->status == 0 ? 'selected' : '' }}>Tidak Aktif</option> --}}
-                                </select>
+                                <label for="end" class="form-label">Tanggal Selesai:</label>
+                                <input type="date" class="form-control" id="end" name="end" required>
                             </div>
-        
-                            <!-- Start Date Input -->
                             <div class="mb-3">
-                                <label for="start" class="form-label">Start Date</label>
-                                {{-- <input type="date" class="form-control" id="start" name="start" value="{{ $semester->start }}" required> --}}
-                            </div>
-        
-                            <!-- End Date Input -->
-                            <div class="mb-3">
-                                <label for="end" class="form-label">End Date</label>
-                                {{-- <input type="date" class="form-control" id="end" name="end" value="{{ $semester->end }}" required> --}}
+                                <label for="tipe_kegiatan" class="form-label">Tipe Kegiatan:</label>
+                                <input type="number" class="form-control" id="tipe_kegiatan" name="tipe_kegiatan" min="1" max="3" value="1" required>
                             </div>
                         </div>
-                        
+
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeButton">Tutup</button>
+                            <button type="button" class="btn btn-danger" id="deleteEvent" style="display: none;">Hapus</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal" style="width: 5rem">Ubah</button>
+        <button class="btn btn-warning" id="modalButton" data-bs-toggle="modal" data-bs-target="#editSemesterModal" style="width: 5rem; display: none;">Ubah</button>
 
     </div>
 
@@ -228,7 +134,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var modal = document.getElementById('eventModal');
-            var modalOverlay = document.getElementById('modalOverlay');
+            // var modalOverlay = document.getElementById('modalOverlay');
             var form = document.getElementById('eventForm');
             var deleteButton = document.getElementById('deleteEvent');
 
@@ -266,7 +172,8 @@
                     document.getElementById('title').value = info.event.title;
                     document.getElementById('start').value = info.event.startStr;
                     document.getElementById('end').value = info.event.endStr;
-                    document.getElementById('tipe_kegiatan').value = info.event.extendedProps.tipe_kegiatan;
+                    document.getElementById('tipe_kegiatan').value = info.event.tipe_kegiatan;
+                    console.log(info.event.extendedProps);
                 },
                 eventDrop: function(info) {
                     // Update event when dragged
@@ -295,9 +202,10 @@
                 deleteEvent(id);
             });
 
-            modalOverlay.addEventListener('click', closeModal);
+            // modalOverlay.addEventListener('click', closeModal);
 
             function openModal(title, event = null) {
+                document.getElementById('modalButton').click();
                 document.getElementById('modalTitle').textContent = title;
                 if (event) {
                     deleteButton.style.display = 'block';
@@ -306,13 +214,14 @@
                     document.getElementById('eventId').value = '';
                     deleteButton.style.display = 'none';
                 }
-                modal.classList.add('active');
-                modalOverlay.classList.add('active');
+                // modal.classList.add('active');
+                // modalOverlay.classList.add('active');
             }
 
             function closeModal() {
-                modal.classList.remove('active');
-                modalOverlay.classList.remove('active');
+                document.getElementById('closeButton').click();
+                // modal.classList.remove('active');
+                // modalOverlay.classList.remove('active');
             }
 
             function createEvent() {
@@ -410,3 +319,4 @@
         });
     </script>
 @endpush
+

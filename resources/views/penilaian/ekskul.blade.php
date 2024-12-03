@@ -10,7 +10,8 @@
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
             @foreach ($penilaianEkskuls as $p )
-            <h2 class="m-0" style="color: #EBF4F6">Penilaian | {{$p->kelas->rombongan_belajar}}</h2>
+                <h2 class="m-0" style="color: #EBF4F6">Penilaian | {{$p->kelas->rombongan_belajar}}</h2>
+                @break
             @endforeach
         </div>
     </div>

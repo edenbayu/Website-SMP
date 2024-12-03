@@ -7,6 +7,7 @@ use App\Models\Guru;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class AccountController extends Controller
@@ -39,7 +40,7 @@ class AccountController extends Controller
         $account->name = $request->input('name');
         $account->email = $request->input('email');
         $account->username = $request->input('username');
-        $account->password = $request->input('password'); // Not hashed
+        $account->password = Hash::make($request->input('password')); // Not hashed
         $account->save();
     
         // Update the user's role

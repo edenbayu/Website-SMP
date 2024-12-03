@@ -24,6 +24,12 @@
             <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $account->name) }}" required>
         </div>
 
+        <!-- Email Input -->
+        <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" class="form-control" value="{{ old('email', $account->email) }}" required>
+        </div>
+
         <!-- Username Input -->
         <div class="form-group mb-3">
             <label for="username">Username</label>
@@ -32,8 +38,8 @@
 
         <!-- Password Input -->
         <div class="form-group mb-3">
-            <label for="password">Password</label>
-            <input type="text" name="password" id="password" class="form-control" value="{{ old('password', $account->password) }}" required>
+            <label for="password">New Password</label>
+            <input type="text" name="password" id="password" class="form-control" placeholder="Masukkan kata sandi baru" required>
         </div>
 
         <!-- Role Selection Dropdown -->
