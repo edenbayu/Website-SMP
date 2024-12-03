@@ -15,13 +15,21 @@ class DefaultUserSeeder extends Seeder
     public function run(): void
     {
         // Creating Super Admin User
-        $admin = User::create([
+        $superadmin = User::create([
             'name' => 'Satya',
-            'email' => 'satya@gmail.com',
+            'email' => 'satyagraha@gmail.com',
+            'username' => 'superadmin',
+            'password' => 'superadmin'
+        ]);
+        $superadmin->assignRole('Super Admin');
+
+        $superadmin = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
             'username' => 'admin',
             'password' => 'admin'
         ]);
-        $admin->assignRole('Admin');
+        $superadmin->assignRole('Admin');
 
         // Creating Admin User
         $wali_kelas = User::create([

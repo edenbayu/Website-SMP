@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Mail; 
 
 class GuruController extends Controller 
 {
@@ -91,6 +92,11 @@ class GuruController extends Controller
             'password' => $request->password,
             'email' => $request->email,
         ]);
+
+        Mail::send('email.akun', ['username' => $request->username, 'password' => $request->password], function($message) use($request) {
+            $message->to("$request->email");
+            $message->subject('Akun SMP anda telah dibuat!');
+        });  
         
         $user->assignRole($request->role);
         $guru->id_user = $user->id;

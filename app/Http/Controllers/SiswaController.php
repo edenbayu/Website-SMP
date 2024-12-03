@@ -42,7 +42,7 @@ class SiswaController extends Controller
         // Create a new user with the required attributes (no hashing)
         $user = User::create([
             'name' => $siswa->nama,  // Use 'name' to match the database field
-            'email' => 'siswa@gmail.com',
+            'email' => $siswa->nisn.'@gmail.com',
             'username' => $siswa->nisn,
             'password' => $password,  // Directly assign password without hashing
         ]);

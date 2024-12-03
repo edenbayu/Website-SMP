@@ -1,36 +1,79 @@
 @extends('layout.layout')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @section ('content')
-<!-- Form to select a Mapel -->
-<select id="mapelSelect">
-    <option value="">Select Mapel</option>
-    @foreach ($mapels as $mapel)
+<div class="container-fluid mt-3">
+    <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+        <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+            <h2 class="m-0" style="color: #EBF4F6">Peserta Didik</h2>
+        </div>
+    </div>
+    <!-- Form to select a Mapel -->
+    <select class="form-select mb-3" id="mapelSelect">
+        <option value="">Pilih Mata Pelajaran</option>
+        @foreach ($mapels as $mapel)
         <option value="{{ $mapel->nama }}">{{ $mapel->nama }}</option>
-    @endforeach
-</select>
-
-<!-- Display Average Scores -->
-<div>
-    <h3>Average Tugas: <span id="nilaiAkhirTugas"></span></h3>
-    <h3>Average UH: <span id="nilaiAkhirUH"></span></h3>
+        @endforeach
+    </select>
+    
+    <!-- Display Average Scores -->
+    <div class="row justify-content-evenly">
+        <div class="col">
+            <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+                <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+                    <h3 class="text-center m-0" style="color: #EBF4F6">Rata-rata Tugas : <span id="nilaiAkhirTugas"></span></h3>
+                </div>
+            </div>
+            <!-- <h3>Average Tugas: <span id="nilaiAkhirTugas"></span></h3> -->
+        </div>
+        <div class="col">
+            <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
+                <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
+                    <h3 class="text-center m-0" style="color: #EBF4F6">Rata-rata UH : <span id="nilaiAkhirUH"></span></h3>
+                </div>
+            </div>
+            <!-- <h3>Average UH: <span id="nilaiAkhirUH"></span></h3> -->
+        </div>
+    </div>
+    
+    <!-- Table to display Penilaian details -->
+    <table id="example" class="penilaian-table table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Judul</th>
+                <th>Tipe</th>
+                <th>TP</th>
+                <th>Nilai</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- This will be populated dynamically by AJAX -->
+        </tbody>
+    </table>
 </div>
 
-<!-- Table to display Penilaian details -->
-<table id="penilaianTable">
-    <thead>
-        <tr>
-            <th>Judul</th>
-            <th>Tipe</th>
-            <th>TP</th>
-            <th>Nilai</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- This will be populated dynamically by AJAX -->
-    </tbody>
-</table>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cek apakah DataTable sudah diinisialisasi
+        if ($.fn.DataTable.isDataTable('#example')) {
+            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+        }
 
+        // Inisialisasi DataTable dengan opsi
+        $('#example').DataTable({
+            language: {
+                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+            }
+        });
+    });
+</script>
 <!-- Add AJAX script to fetch data dynamically -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script>
     $(document).ready(function() {
         $('#mapelSelect').change(function() {
@@ -47,12 +90,16 @@
                         $('#nilaiAkhirUH').text(response.nilaiAkhirUH);
 
                         // Populate the table with penilaian data
-                        var penilaianTableBody = $('#penilaianTable tbody');
-                        penilaianTableBody.empty();  // Clear the existing table rows
+                        var penilaianTableBody = $('.penilaian-table tbody');
+                        penilaianTableBody.empty(); // Clear the existing table rows
+
+                        // Menambahkan variabel counter untuk menghitung iterasi
+                        var counter = 1;
 
                         response.penilaians.forEach(function(item) {
                             penilaianTableBody.append(`
                                 <tr>
+                                    <td>${counter}</td>
                                     <td>${item.judul}</td>
                                     <td>${item.tipe}</td>
                                     <td>${item.nomor_cp}.${item.nomor_tp}</td>

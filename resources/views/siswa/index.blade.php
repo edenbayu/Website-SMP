@@ -1,13 +1,5 @@
 @extends('layout.layout')
 
-<!-- @section('success')
-@if(session('success'))
-<div class="alert alert-success" role="alert">
-    {{ session('success') }}
-</div>
-@endif
-@endsection -->
-
 @push('style')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">

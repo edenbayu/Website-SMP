@@ -19,6 +19,7 @@ use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PesertaDidikController;
 use App\Http\Controllers\HalamanSiswaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 // Group routes for LoginController using Route::controller
 Route::middleware('guest')->controller(LoginController::class)->group(function () {
@@ -40,7 +41,8 @@ Route::middleware('auth')->group(function () {
     });
 
     //Ini untuk nge-protect routes biar khusus cuma diakses sama Admin
-    Route::middleware('role:Admin')->group(function () {
+
+    Route::middleware('role:Admin|Super Admin')->group(function () {
 
         // Account CRUD routes
         Route::prefix('accounts')->controller(AccountController::class)->group(function () {
@@ -80,7 +82,9 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{id}', 'destroy')->name('admin.destroy');              
             Route::post('/{guruId}/generate-user', 'generateUser')->name('admin.generateUser'); 
         });
+    });
 
+    Route::middleware('role:Admin')->group(function () {
         Route::prefix('kelas')->controller(KelasController::class)->group(function () {
             Route::get('/', 'index')->name('kelas.index');
             Route::get('/create', 'create')->name('kelas.create');
@@ -193,9 +197,10 @@ Route::middleware('auth')->group(function () {
 // Default route redirect to login page
 
 //Route unntuk reset password
-Route::get('/forgot-password', function(){
-    return view('auth.forgot-password');
-})->middleware('guest')->name('password.request');
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 
 Route::post('/select-semester', [SemesterSelectionController::class, 'selectSemester'])->name('select.semester');
