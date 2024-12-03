@@ -21,7 +21,11 @@ class UserController extends Controller
             $data = Siswa::where('id_user', $user->id)->first();
         }
 
-        return view('user.profile', ['data' => $data]);
+        if ($data) {
+            return view('user.profile', ['data' => $data]);
+        } else {
+            return view('user.profile');
+        }
     }
 
     public function update_picture(Request $request) {
