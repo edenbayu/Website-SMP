@@ -117,13 +117,13 @@
                     </li>
                     <li class="sidebar-item">
                         <a href="{{ route('siswapage.absensi') }}" class="sidebar-link">
-                            <i class="fa-solid fa-chart-simple"></i>
+                            <i class="fa-solid fa-address-book"></i>
                             Absensi
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="{{ route('siswapage.bukunilai', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
-                            <i class="fa-solid fa-chart-simple"></i>
+                            <i class="fa-solid fa-star"></i>
                             Buku Nilai
                         </a>
                     </li>
