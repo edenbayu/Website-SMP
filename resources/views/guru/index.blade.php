@@ -66,7 +66,9 @@
                 <th>Jabatan</th>
                 <th>Pendidikan</th>
                 <th>Pangkat</th>
+                @role('Admin')
                 <th>Aksi</th>
+                @endrole
                 <th>Akun</th>
             </tr>
         </thead>
@@ -79,6 +81,7 @@
                 <td>{{ $guru->jabatan }}</td>
                 <td>{{ $guru->pendidikan }}</td>
                 <td>{{ $guru->pangkat_golongan }}</td>
+                @role('Admin')
                 <td>
                     <!-- Edit Class Modal Trigger -->
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}" style="width: 5rem">Ubah</button>
@@ -88,6 +91,7 @@
                         <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
+                @endrole
                 <td>
                     @if(empty($guru->id_user))
                     <!-- Button to open the generate user modal -->

@@ -62,7 +62,9 @@
                 <th>Jenis Kelamin</th>
                 <th>Status</th>
                 <th>Pendidikan</th>
+                @role('Super Admin')
                 <th>Aksi</th>
+                @endrole
                 <th>Akun</th>
             </tr>
         </thead>
@@ -76,6 +78,7 @@
                 <td>{{ $a->jenis_kelamin }}</td>
                 <td>{{ $a->status }}</td>
                 <td>{{ $a->pendidikan }}</td>
+                @role('Super Admin')
                 <td>
                     <!-- Edit Class Modal Trigger -->
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}" style="width: 5rem">Ubah</button>
@@ -85,6 +88,7 @@
                         <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
+                @endrole
                 <td>
                     @if(empty($a->id_user))
                     <!-- Button to open the generate user modal -->

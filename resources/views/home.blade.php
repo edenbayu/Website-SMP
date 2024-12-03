@@ -183,4 +183,8 @@
         @role('Siswa')
         <p>I am Siswa</p>
         @endrole
+
+        @role('Super Admin')
+        <p>I am Super Admin</p>
+        @endrole
         @endsection

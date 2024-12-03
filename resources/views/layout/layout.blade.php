@@ -27,6 +27,39 @@
                         SMP Negeri 1 Karangawen
                     </a>
                 </div>
+
+                @role('Super Admin')
+                <!-- Super Admin -->
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Super Admin
+                    </li>
+                    <li class="sidebar-item active">
+                        <a href="{{route('home')}}" class="sidebar-link">
+                            <i class="fa-solid fa-list-ul"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#biografi" data-bs-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-database"></i>
+                            Master Database
+                        </a>
+                        <ul id="biografi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="{{route('admin.index')}}" class="sidebar-link">Tenaga Kependidikan</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{route('guru.index')}} " class="sidebar-link">Pendidik</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                @endrole
+
                 @role('Admin')
                 <!-- Admin -->
                 <ul class="sidebar-nav">
