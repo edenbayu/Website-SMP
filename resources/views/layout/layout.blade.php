@@ -64,6 +64,12 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="sidebar-item">
+                        <a href="{{route('account.index')}}" class="sidebar-link">
+                            <i class="fa-solid fa-user"></i>
+                            Akun
+                        </a>
+                    </li>
                 </ul>
                 @endrole
 
@@ -101,12 +107,6 @@
                                 <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="{{route('account.index')}}" class="sidebar-link">
-                            <i class="fa-solid fa-user"></i>
-                            Akun
-                        </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="{{ route('kelas.index') }}" class="sidebar-link">

@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Mail;
 
 class AdminController extends Controller 
 {

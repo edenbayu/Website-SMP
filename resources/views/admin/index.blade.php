@@ -68,8 +68,8 @@
                 <th>Pendidikan</th>
                 @role('Super Admin')
                 <th>Aksi</th>
-                @endrole
                 <th>Akun</th>
+                @endrole
             </tr>
         </thead>
         <tbody>
@@ -92,7 +92,6 @@
                         <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
                     </form>
                 </td>
-                @endrole
                 <td>
                     @if(empty($a->id_user))
                     <!-- Button to open the generate user modal -->
@@ -103,6 +102,7 @@
                     <span> User ID: {{ $a->id_user }}</span>
                     @endif
                 </td>
+                @endrole
             </tr>
             @include('admin.update')
             @endforeach
