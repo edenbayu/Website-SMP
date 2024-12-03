@@ -61,9 +61,9 @@
             <tr>
                 <th class="text-start">No</th>
                 <th>Nama</th>
-                <th class="text-start">NIP</th>
-                <!-- <th>Jabatan</th> -->
+                <th class="text-start">Kode Pegawai</th>
                 <th>Jenis Kelamin</th>
+                <th>Jabatan</th>
                 <th>Status</th>
                 <th>Pendidikan</th>
                 <th>Aksi</th>
@@ -76,8 +76,8 @@
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td>{{ $a->nama }}</td>
                 <td class="text-start">{{ $a->nip }}</td>
-                <!-- <td>{{ $a->jabatan}}</td> -->
                 <td>{{ $a->jenis_kelamin }}</td>
+                <td>{{ $a->jabatan}}</td>
                 <td>{{ $a->status }}</td>
                 <td>{{ $a->pendidikan }}</td>
                 <td>
@@ -112,7 +112,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('script')
     @if(session('success'))
     <!-- success alert -->
     <script>

@@ -12,7 +12,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="email-{{ $a->id }}" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email-{{ $a->id }}" name="email" value="example@email.com" required>
+                            <input type="text" class="form-control" id="email-{{ $a->id }}" name="email" placeholder="example@email.com" required>
                         </div>
                         <div class="mb-3">
                             <label for="username-{{ $a->id }}" class="form-label">Username</label>

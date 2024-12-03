@@ -67,6 +67,7 @@
                 <th class="text-start">No</th>
                 <th>Nama</th>
                 <th class="text-start">NIP</th>
+                <th>Jenis Kelamin</th>
                 <th>Jabatan</th>
                 <th>Pendidikan</th>
                 <th>Pangkat</th>
@@ -80,6 +81,7 @@
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td>{{ $guru->nama }}</td>
                 <td class="text-start">{{ $guru->nip }}</td>
+                <td>{{ $guru->jenis_kelamin }}</td>
                 <td>{{ $guru->jabatan }}</td>
                 <td>{{ $guru->pendidikan }}</td>
                 <td>{{ $guru->pangkat_golongan }}</td>

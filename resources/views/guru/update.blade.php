@@ -34,8 +34,7 @@
 
                     <div class="form-group mb-3">
                         <label for="jenis_kelamin">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
-                            <option value="" {{ $guru->jenis_kelamin == '' ? 'selected' : '' }}>Pilih</option>
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-select">
                             <option value="Laki-laki" {{ $guru->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ $guru->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                         </select>
@@ -43,7 +42,26 @@
 
                     <div class="form-group mb-3">
                         <label for="agama">Agama</label>
-                        <input type="text" name="agama" id="agama" class="form-control" value="{{ old('agama', $guru->agama) }}">
+                        <select name="agama" class="form-select">
+                            <option value="Islam" {{ old('agama', $guru->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            <option value="Kristen" {{ old('agama', $guru->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                            <option value="Katolik" {{ old('agama', $guru->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                            <option value="Hindu" {{ old('agama', $guru->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                            <option value="Buddha" {{ old('agama', $guru->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                            <option value="Konghucu" {{ old('agama', $guru->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                            <option value="Islam" {{ old('agama', $guru->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            <option value="Kristen" {{ old('agama', $guru->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                            <option value="Katolik" {{ old('agama', $guru->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                            <option value="Hindu" {{ old('agama', $guru->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                            <option value="Buddha" {{ old('agama', $guru->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                            <option value="Konghucu" {{ old('agama', $guru->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                            <option value="Islam" {{ old('agama', $guru->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            <option value="Kristen" {{ old('agama', $guru->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                            <option value="Katolik" {{ old('agama', $guru->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                            <option value="Hindu" {{ old('agama', $guru->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                            <option value="Buddha" {{ old('agama', $guru->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                            <option value="Konghucu" {{ old('agama', $guru->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                        </select>
                     </div>
 
                     <div class="form-group mb-3">
@@ -58,12 +76,25 @@
 
                     <div class="form-group mb-3">
                         <label for="status">Status</label>
-                        <input type="text" name="status" id="status" class="form-control" value="{{ old('status', $guru->status) }}">
+                        <select name="status" class="form-select">
+                            <option value="PNS" {{ old('jenis_pegawai', $guru->status) == 'PNS' ? 'selected' : '' }}>PNS</option>
+                            <option value="PPPK" {{ old('status', $guru->status) == 'PPPK' ? 'selected' : '' }}>PPPK</option>
+                        </select>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="pangkat_golongan">Pangkat Golongan</label>
-                        <input type="text" name="pangkat_golongan" id="pangkat_golongan" class="form-control" value="{{ old('pangkat_golongan', $guru->pangkat_golongan) }}">
+                        <select name="pangkat_golongan" class="form-select">
+                            <option value="III/a" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/a' ? 'selected' : '' }}>III/a</option>
+                            <option value="III/b" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/b' ? 'selected' : '' }}>III/b</option>
+                            <option value="III/c" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/c' ? 'selected' : '' }}>III/c</option>
+                            <option value="III/d" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/d' ? 'selected' : '' }}>III/d</option>
+                            <option value="IV/a" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/a' ? 'selected' : '' }}>IV/a</option>
+                            <option value="IV/b" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/b' ? 'selected' : '' }}>IV/b</option>
+                            <option value="IV/c" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/c' ? 'selected' : '' }}>IV/c</option>
+                            <option value="IV/d" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/d' ? 'selected' : '' }}>IV/d</option>
+                            <option value="IV/e" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/e' ? 'selected' : '' }}>IV/e</option>
+                        </select>
                     </div>
 
                     <div class="form-group mb-3">

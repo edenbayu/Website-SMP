@@ -21,15 +21,14 @@
                         <input type="text" name="nip" id="nip" class="form-control" value="{{ old('nip', $a->nip) }}">
                     </div>
 
-                    <!-- <div class="form-group mb-3">
+                    <div class="form-group mb-3">
                         <label for="nip">Jabatan</label>
-                        <select name="jabatan">
-                            <option value="Kepala Sekolah">Kepala Sekolah</option>
-                            <option value="Administrasi">Administrasi</option>
-                            <option value="Satpam">Satpam</option>
-                            <option value="Tenaga Kebersihan">Tenaga Kebersihan</option>
+                        <select name="jabatan" class="form-select"> 
+                            <option value="Tata Usaha" {{ old('jabatan', $a->jabatan) == 'Tata Usaha' ? 'selected' : '' }}>Tata Usaha</option>
+                            <option value="Tenaga Kebersihan" {{ old('jabatan', $a->jabatan) == 'Tenaga Kebersihan' ? 'selected' : '' }}>Tenaga Kebersihan</option>
+                            <option value="Tenaga Keamanan" {{ old('jabatan', $a->jabatan) == 'Tenaga Keamanan' ? 'selected' : '' }}>Tenaga Keamanan</option>
                         </select>
-                    </div> -->
+                    </div>
 
                     <div class="form-group mb-3">
                         <label for="tempat_lahir">Tempat Lahir</label>
@@ -43,7 +42,7 @@
 
                     <div class="form-group mb-3">
                         <label for="jenis_kelamin">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-select">
                             <option value="" {{ $a->jenis_kelamin == '' ? 'selected' : '' }}>Pilih</option>
                             <option value="Laki-laki" {{ $a->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ $a->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
@@ -53,41 +52,35 @@
                     <div class="form-group mb-3">
                         <label for="agama">Agama</label>
                         <select name="agama" class="form-select">
-                            <option value="">Pilih Agama</option>
-                            <option value="">Islam</option>
-                            <option value="">Kristen</option>
-                            <option value="">Katolik</option>
-                            <option value="">Hindu</option>
-                            <option value="">Buddha</option>
-                            <option value="">Konghucu</option>
+                            <option value="Islam" {{ old('agama', $a->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            <option value="Kristen" {{ old('agama', $a->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                            <option value="Katolik" {{ old('agama', $a->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                            <option value="Hindu" {{ old('agama', $a->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                            <option value="Buddha" {{ old('agama', $a->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                            <option value="Konghucu" {{ old('agama', $a->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
                         </select>
-                        <!-- <input type="text" name="agama" id="agama" class="form-control" value="{{ old('agama', $a->agama) }}"> -->
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="alamat">Alamat</label>
                         <input type="text" name="alamat" id="alamat" class="form-control" value="{{ old('alamat', $a->alamat) }}">
                     </div>
-                    <!-- <div class="mb-3">
-                        <label for="jabatan">Jabatan</label>
-                        <input type="text" name="jabatan" id="jabatan" class="form-control" value="{{ old('jabatan', $a->jabatan) }}">
-                    </div> -->
+
                     <div class="form-group mb-3">
                         <label for="status">Status</label>
                         <select name="status" class="form-select">
-                            <option value="">Pilih Status</option>
-                            <option value="">PNS</option>
-                            <option value="">PPPK</option>
-                            <option value="">GTT</option>
-                            <option value="">PTT</option>
+                            <option value="PNS" {{ old('jenis_pegawai', $a->status) == 'PNS' ? 'selected' : '' }}>PNS</option>
+                            <option value="PPPK" {{ old('status', $a->status) == 'PPPK' ? 'selected' : '' }}>PPPK</option>
+                            <option value="GTT" {{ old('status', $a->status) == 'GTT' ? 'selected' : '' }}>GTT</option>
+                            <option value="PTT" {{ old('status', $a->status) == 'PTT' ? 'selected' : '' }}>PTT</option>
                         </select>
                         <!-- <input type="text" name="status" id="status" class="form-control" value="{{ old('status', $a->status) }}"> -->
                     </div>
 
-                    <div class="form-group mb-3">
+                    {{-- <div class="form-group mb-3">
                         <label for="pangkat_golongan">Pangkat Golongan</label>
                         <input type="text" name="pangkat_golongan" id="pangkat_golongan" class="form-control" value="{{ old('pangkat_golongan', $a->pangkat_golongan) }}">
-                    </div>
+                    </div> --}}
 
                     <div class="form-group mb-3">
                         <label for="pendidikan">Pendidikan</label>
