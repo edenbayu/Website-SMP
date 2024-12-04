@@ -82,7 +82,7 @@
                 </div>
 
                 @role('Super Admin')
-                    <h4 style="margin-top: 10px">Meonggg</h4>    
+                    <h4 style="margin-top: 10px">Super Admin</h4>    
                 @endrole
 
                 @role('Guru')

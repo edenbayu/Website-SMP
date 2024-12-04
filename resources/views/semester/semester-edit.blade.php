@@ -35,20 +35,20 @@
 
                     <!-- Start Date Input -->
                     <div class="mb-3">
-                        <label for="start{{ $semester->id }}" class="form-label">Start Date</label>
+                        <label for="start{{ $semester->id }}" class="form-label">Tanggal Dimulai</label>
                         <input type="date" class="form-control" id="start{{ $semester->id }}" name="start" value="{{ $semester->start }}" required>
                     </div>
 
                     <!-- End Date Input -->
                     <div class="mb-3">
-                        <label for="end{{ $semester->id }}" class="form-label">End Date</label>
+                        <label for="end{{ $semester->id }}" class="form-label">Tanggal Berakhir</label>
                         <input type="date" class="form-control" id="end{{ $semester->id }}" name="end" value="{{ $semester->end }}" required>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style='width: 5.5rem;'>Tutup</button>
+                    <button type="submit" class="btn btn-primary" style='width: 5.5rem;'>Simpan</button>
                 </div>
             </form>
         </div>

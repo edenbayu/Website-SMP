@@ -30,15 +30,15 @@
 <body>
     <div class="email-container">
         <h2>Halo {{ $username }},</h2>
-        <p>Selamat! Akun SMP Anda telah berhasil dibuat. Berikut adalah informasi akun Anda:</p>
+        <p>Selamat! Akun SIAKAD Anda telah berhasil dibuat. Berikut adalah informasi akun Anda:</p>
         
-        <p><strong>Username:</strong> {{ $username }}</p>
-        <p><strong>Password:</strong> {{ $password }}</p>
+        <p><strong>Nama Pengguna:</strong> {{ $username }}</p>
+        <p><strong>Kata Sandi:</strong> {{ $password }}</p>
         
-        <p>Silakan gunakan informasi ini untuk masuk ke akun Anda dan mulai mengakses layanan kami.</p>
+        <p>Silakan gunakan informasi ini untuk masuk ke akun Anda dan mulai mengakses layanan SIAKAD.</p>
 
         <div class="footer">
-            <p>Jika Anda mengalami masalah, jangan ragu untuk menghubungi kami.</p>
+            <p>Jika Anda mengalami masalah, hubungi Admin Sekolah.</p>
             <p>Terima kasih!</p>
         </div>
     </div>

@@ -46,7 +46,7 @@
 
                 <div class="col-12">
                   <div class="d-grid my-3">
-                    <button class="btn btn-primary btn-lg" type="submit">{{ __('Kirim Link ke Email') }}</button>
+                    <button class="btn btn-primary btn-lg rounded-pill" type="submit" >{{ __('Kirim Link ke Email') }}</button>
                   </div>
                 </div>
 

@@ -100,10 +100,11 @@
                                 <td>
                                     <select name="attendance[${student.id}]" class="form-control form-select">
                                         <option value="hadir" ${status === 'hadir' ? 'selected' : ''}>Hadir</option>
-                                        <option value="terlambat" ${status === 'terlambat' ? 'selected' : ''}>Terlambat</option>
-                                        <option value="ijin" ${status === 'ijin' ? 'selected' : ''}>Ijin</option>
-                                        <option value="alpha" ${status === 'alpha' ? 'selected' : ''}>Alpha</option>
+                                        <option value="izin" ${status === 'izin' ? 'selected' : ''}>Izin</option>
                                         <option value="sakit" ${status === 'sakit' ? 'selected' : ''}>Sakit</option>
+                                        <option value="terlambat" ${status === 'terlambat' ? 'selected' : ''}>Terlambat</option>
+                                        <option value="alpa" ${status === 'alpa' ? 'selected' : ''}>Alpa</option>
+                                        
                                     </select>
                                 </td>
                             </tr>

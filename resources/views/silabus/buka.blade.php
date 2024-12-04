@@ -38,6 +38,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <p>CP : Capaian Pembelajaran</p>
                     <p>TP : Tujuan Pembelajaran</p>
                 </div>
             </div>
@@ -128,7 +129,7 @@
                     <div class="modal-body">
                         <div class="form-group mb-3">
                             <label for="nomor">TP</label>
-                            <input type="text" name="nomor" id="nomor" class="form-control" required>
+                            <input type="text" name="nomor" id="nomor" class="form-control" value="{{ $tp->nomor }}" required>
                             @error('nomor')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror

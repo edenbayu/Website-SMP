@@ -30,10 +30,10 @@
                     @foreach($kepalaSekolah as $kepala)
                     <p class="card-text">{{ $kepala->nama }}</p>
                     @endforeach
-                    <h5 class="card-title mb-3" style="font-size: 1.15rem;">Operator Admin</h5>
+                    {{-- <h5 class="card-title mb-3" style="font-size: 1.15rem;">Operator Admin</h5>
                     @foreach($operator as $op)
                     <p class="card-text">{{ $op->nama }}</p>
-                    @endforeach
+                    @endforeach --}}
                 </div>
             </div>
         </div>
@@ -171,10 +171,10 @@
                             @foreach($kepalaSekolah as $kepala)
                             <p class="card-text">{{ $kepala->nama }}</p>
                             @endforeach
-                            @foreach($operator as $op)
+                            {{-- @foreach($operator as $op)
                             <h5 class="card-title mb-3" style="font-size: 1.15rem">{{$op->jabatan}}</h5>
                             <p class="card-text">{{ $op->nama }}</p>
-                            @endforeach
+                            @endforeach --}}
                         </div>
                     </div>
                 </div>

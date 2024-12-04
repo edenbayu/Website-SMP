@@ -14,9 +14,9 @@
     </div>
 
     <!-- Create Penilaian Button -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Tambah Penilaian</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createPenilaianModal">Tambah</button>
     <a href="{{ route('penilaian.bukuNilai', [$mapelKelasId]) }}" class="btn btn-warning mb-3">
-        Lihat Buku Nilai
+        Buku Nilai
     </a>
 
     <!-- modal Informasi -->
@@ -35,6 +35,9 @@
                 <div class="modal-body">
                     <p>KKTP : Kriteria Ketercapaian Tujuan Pembelajaran</p>
                     <p>TP : Tujuan Pembelajaran</p>
+                    <p>UH : Ulangan Harian</p>
+                    <p>STS : Sumatif Tengah Semester</p>
+                    <p>SAS : Sumatif Akhir Semester</p>
                 </div>
             </div>
         </div>
@@ -102,7 +105,7 @@
                                     <input type="text" class="form-control" id="judul{{ $penilaian->id }}" name="judul" value="{{ $penilaian->judul }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="kktp{{ $penilaian->id }}" class="form-label">KKTp</label>
+                                    <label for="kktp{{ $penilaian->id }}" class="form-label">KKTP</label>
                                     <input type="text" class="form-control" id="kktp{{ $penilaian->id }}" name="kktp" value="{{ $penilaian->kktp }}" required>
                                 </div>
                                 <div class="mb-3">
@@ -120,7 +123,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">Update</button>
+                                <button type="submit" class="btn btn-success">Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -159,10 +162,10 @@
                             <label for="kktp" class="form-label">KKTP</label>
                             <input type="text" class="form-control" id="kktp" name="kktp" required>
                         </div>
-                        <!-- <div class="mb-3">
+                        <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan</label>
                             <textarea class="form-control" id="keterangan" name="keterangan" required></textarea>
-                        </div> -->
+                        </div>
                         <div class="mb-3">
                             <label for="tp_id" class="form-label">TP</label>
                             <select class="form-select" id="tp_id" name="tp_id" required>

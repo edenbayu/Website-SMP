@@ -110,10 +110,10 @@
                                         <label for="nama">Nama</label>
                                         <input type="text" name="nama" id="nama" class="form-control" value="{{ old('nama', $siswa->nama) }}">
                                     </div>
-                                    <div class="form-group mb-3">
+                                    {{-- <div class="form-group mb-3">
                                         <label for="nis">NIS</label>
                                         <input type="text" name="nis" id="nis" class="form-control" value="{{ old('nis', $siswa->nis) }}">
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group mb-3">
                                         <label for="nisn">NISN</label>
                                         <input type="text" name="nisn" id="nisn" class="form-control" value="{{ old('nisn', $siswa->nisn) }}">

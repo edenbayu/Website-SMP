@@ -15,6 +15,29 @@
         </div>
     </div>
 
+    <!-- modal Informasi -->
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoBukuNilaiModal">
+        Informasi
+    </button>
+
+    <!-- Modal Informasi -->
+    <div class="modal fade" id="infoBukuNilaiModal" tabindex="-1" aria-labelledby="infoModalTP" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Informasi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>NISN : Nomor Induk Siswa Nasional</p>
+                    <p>UH : Ulangan Harian</p>
+                    <p>STS : Sumatif Tengah Semester</p>
+                    <p>SAS : Sumatif Akhir Semester</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>

@@ -90,16 +90,16 @@
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="title" class="form-label">Judul Kegiatan:</label>
+                                <label for="title" class="form-label">Judul Kegiatan</label>
                                 <input type="text" class="form-control" id="title" name="title" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="start" class="form-label">Tanggal Mulai:</label>
+                                <label for="start" class="form-label">Tanggal Mulai</label>
                                 <input type="date" class="form-control" id="start" name="start" required>
                             </div>
                             <div class="mb-3">
-                                <label for="end" class="form-label">Tanggal Selesai:</label>
+                                <label for="end" class="form-label">Tanggal Selesai</label>
                                 <input type="date" class="form-control" id="end" name="end" required>
                             </div>
                             <div class="mb-3">
@@ -161,7 +161,7 @@
                 },
                 select: function(info) {
                     // Open modal for creating a new event
-                    openModal('Add Event');
+                    openModal('Tambah Kegiatan');
                     document.getElementById('start').value = info.startStr;
                     document.getElementById('end').value = info.endStr;
                 },

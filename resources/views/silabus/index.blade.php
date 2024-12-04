@@ -33,6 +33,7 @@
                 </div>
                 <div class="modal-body">
                     <p>CP : Capaian Pembelajaran</p>
+                    <p>TP : Tujuan Pembelajaran</p>
                 </div>
             </div>
         </div>
@@ -58,7 +59,7 @@
                     <!-- Buat TP Button -->
                     <form action="{{ route('bukaTP', ['mapelId' => $mapelId, 'cpId' => $cp->id]) }}" method="GET" style="display: inline;" class="m-0">
                         <button type="submit" style="width: 5.5rem;" class="btn btn-primary">
-                            Lihat TP
+                            Buka TP
                         </button>
                     </form>
                     <!-- Update Button -->
@@ -89,7 +90,7 @@
                             <div class="modal-body">
                                 <div class="form-group mb-3">
                                     <label for="nomor">CP</label>
-                                    <input type="text" name="nomor" id="nomor" class="form-control" required>
+                                    <input type="text" name="nomor" id="nomor" class="form-control" value="{{ $cp->nomor }}" required>
                                     @error('nomor')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -155,8 +156,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add CP</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>

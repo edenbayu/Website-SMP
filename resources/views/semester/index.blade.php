@@ -26,9 +26,9 @@
             <thead>
                 <tr>
                     <th class="text-start" style="width: 4%;">No</th>
-                    <th>Semester</th>
-                    <th>Tahun Ajaran</th>
-                    <th>Status</th>
+                    <th class="text-start">Semester</th>
+                    <th class="text-start">Tahun Ajaran</th>
+                    <th class="text-start">Status</th>
                     <th class="text-start">Tanggal Dimulai</th>
                     <th class="text-start">Tanggal Berakhir</th>
                     <th class="text-center">Aksi</th>
@@ -38,9 +38,9 @@
                 @foreach($semesters as $semester)
                 <tr>
                     <td class="text-start">{{ $loop->iteration }}</td>
-                    <td>{{ $semester->semester }}</td>
-                    <td>{{ $semester->tahun_ajaran }}</td>
-                    <td>{{ $semester->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
+                    <td class="text-start">{{ $semester->semester }}</td>
+                    <td class="text-start">{{ $semester->tahun_ajaran }}</td>
+                    <td class="text-start">{{ $semester->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
                     <td class="text-start">{{ $semester->start }}</td>
                     <td class="text-start">{{ $semester->end }}</td>
                     <td class="text-center">

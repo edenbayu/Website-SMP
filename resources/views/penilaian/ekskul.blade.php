@@ -16,9 +16,28 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary mb-3">Perbarui Penilaian</button>
+    <!-- modal Informasi -->
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoPenilaianModal">
+        Informasi
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoPenilaianModal" tabindex="-1" aria-labelledby="infoModalTP" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Informasi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>NISN : Nomor Induk Siswa Nasional</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <form action="{{ route('penilaian.ekskul.update.all', ['kelasId' => $kelasId, $mapelId]) }}" method="POST">
+        <button type="submit" class="btn btn-primary mb-3">Perbarui Penilaian</button>
         @csrf
         @method('POST')
 
@@ -45,6 +64,7 @@
             </tbody>
         </table>
     </form>
+
 </div>
 @endsection
 
