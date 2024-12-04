@@ -21,9 +21,13 @@
         </div>
     </div>
     <button id="saveAttendance" class="btn btn-primary mb-3">Simpan Presensi</button>
-    <a href="{{ route('pesertadidik.bukuAbsen', $semesterId) }}">
-        <button type="button">Buku Absen</button>
-    </a>
+
+    <!-- buku absensi -->
+    <button class="btn btn-warning mb-3">
+        <a href="{{ route('pesertadidik.bukuAbsen', $semesterId) }}" class="text-decoration-none text-black">
+            Buku Absen
+        </a>
+    </button>
 
     <!-- Attendance Table -->
     <div class="table-responsive mb-3">
