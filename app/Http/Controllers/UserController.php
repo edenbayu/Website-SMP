@@ -7,6 +7,8 @@ use App\Models\Guru;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -30,26 +32,29 @@ class UserController extends Controller
 
     public function update_picture(Request $request) {
         $user = auth()->user();
-    
-        // Validate the image (with max size 5 MB)
         $request->validate([
             'image' => 'required|image|mimes:png,jpeg,jpg|max:5120', // Maximum size 5 MB
         ]);
     
-        // Handle file upload
         if ($request->hasFile('image')) {
-            // Get the image file
             $image = $request->file('image');
     
-            // Get the file's contents as binary data
             $imageData = file_get_contents($image->getRealPath());
     
-            // Update the user record with the binary image data
             User::where('id', $user->id)->update(['picture' => $imageData]);
         }
     
-        // Redirect back to the profile page (or another page)
         return redirect()->route('profile')->with('success', 'Picture updated successfully.');
     }
-    
+
+    public function update_password(Request $request) {
+        $new_password = $request->input('new_password');
+
+        $account = User::findOrFail(auth()->user()->id);
+        $account->password = Hash::make($new_password);
+        $account->save();
+
+        Auth::logout(); // Logout pengguna dari session auth
+        return redirect()->route('login');
+    }
 }

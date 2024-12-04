@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::post('/profile/update_picture', [UserController::class, 'update_picture'])->name('update_picture');
+    Route::post('/profile/update_password', [UserController::class, 'update_password'])->name('update_password');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/logout', function () {
         return redirect('/');

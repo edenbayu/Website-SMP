@@ -104,7 +104,7 @@
             <div class="col">
                 <p><strong>Nama Pengguna</strong> : {{ auth()->user()->username }}</p>
                 <p><strong>Email</strong> : {{ auth()->user()->email }}</p>
-                <form action="{{ route('update_picture') }}" method="POST" style="display: flex; align-items: center;">
+                <form action="{{ route('update_password') }}" method="POST" style="display: flex; align-items: center;">
                     @csrf
                     <p><strong>Kata Sandi</strong> : 
                         <input type="text" name="new_password" style="height: 25px; border-radius: 5px; width: 250px;" required placeholder="Masukkan kata sandi baru"/>
