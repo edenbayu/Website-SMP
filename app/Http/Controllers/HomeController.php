@@ -40,9 +40,14 @@ class HomeController extends Controller
             $totalMapel = Mapel::count();
             $totalAdmin = Admin::count();
 
-            $operator = Admin::select('nama')
-                ->where('id_user', $user->id)
+            $operator = Guru::select('nama')
+                ->where('jabatan', "Operator")
                 ->get();
+            $operator = $operator->concat(
+                Admin::select('nama')
+                    ->where('jabatan', "Operator")
+                    ->get()
+            );
 
             return view('home', compact(
                 'semesterAktif',
@@ -65,9 +70,14 @@ class HomeController extends Controller
                 ->where('jabatan', 'Kepala Sekolah')
                 ->get();
 
-            $operator = Guru::select('nama', 'jabatan')
-                ->where('id_user', $user->id)
+            $operator = Guru::select('nama')
+                ->where('jabatan', "Operator")
                 ->get();
+            $operator = $operator->concat(
+                Admin::select('nama')
+                    ->where('jabatan', "Operator")
+                    ->get()
+            );
 
             return view('home', compact(
                 'semesterAktif',
@@ -84,9 +94,14 @@ class HomeController extends Controller
                 ->where('jabatan', 'Kepala Sekolah')
                 ->get();
 
-            $operator = Guru::select('nama', 'jabatan')
-                ->where('id_user', $user->id)
+            $operator = Guru::select('nama')
+                ->where('jabatan', "Operator")
                 ->get();
+            $operator = $operator->concat(
+                Admin::select('nama')
+                    ->where('jabatan', "Operator")
+                    ->get()
+            );
 
             return view('home', compact(
                 'semesterAktif',
