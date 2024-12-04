@@ -41,27 +41,6 @@
                 @foreach ($subjects as $subject)
                 <th class="text-start">{{ $subject }}</th>
                 @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
                 <th>Buat Rapor</th>
             </tr>
         </thead>
@@ -72,27 +51,6 @@
                 <td class="text-start">{{ $data['nama'] }}</td>
                 <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['kelas'] }}</td>
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
                 @foreach ($subjects as $subject)
                 <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach

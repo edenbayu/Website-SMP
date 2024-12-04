@@ -97,6 +97,51 @@
         </tr>
     </table>
 
+    <!-- Data Siswa -->
+    <table class="signature-table" style="margin-top: 15px;">
+        <tr>
+            <td>
+                Nama
+            </td>
+            <td>
+                : Muhammad Ibnu Harist Afandy
+            </td>
+            <td>
+                Kelas
+            </td>
+            <td>
+                : VIII ( Delapan ) - B
+            </td>
+        </tr>
+        <tr>
+            <td>
+                NISN
+            </td>
+            <td>
+                : 0108162828
+            </td>
+            <td>
+                Semester
+            </td>
+            <td>
+                : 2 (Dua)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Nama Sekolah
+            </td>
+            <td>
+                : SMP Negeri 1 Karangawen
+            </td>
+            <td>
+                Tahun Ajaran
+            </td>
+            <td>
+                : 2024/2025
+            </td>
+        </tr>
+    </table>
 
     <h2 class="text-center judul">LAPORAN HASIL BELAJAR PESERTA DIDIK</h2>
     <table>
