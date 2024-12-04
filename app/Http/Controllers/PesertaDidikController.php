@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
+use App\Models\Guru;
 use App\Models\Semester;
 use App\Models\Kelas;
 use App\Models\PenilaianSiswa;
@@ -204,6 +205,8 @@ class PesertaDidikController extends Controller
 
     public function generateRapotPDF(Request $request, $semesterId)
     {
+        $user = Auth::user();
+        
         // Retrieve data from the form submission
         $data = $request->all();
     
@@ -278,11 +281,16 @@ class PesertaDidikController extends Controller
         ->where('siswa_id', $data['student_id'])
         ->select('dimensi', 'capaian')
         ->get();
-    
+
+        $namaWali = Guru::join('users', 'users.id', '=', 'gurus.id_user')
+            ->where('users.id', $user->id)
+            ->value('gurus.nama');
+
         $semesterData = Semester::find($semesterId);
 
         // Pass the data to the view for PDF generation
         $pdf = PDF::loadView('rapot', [
+            'namaWali' => $namaWali,
             'nisn' => $siswaData->nisn,
             'semester' => $semesterData->semester,
             'tahunAjaran' => $semesterData->tahun_ajaran,

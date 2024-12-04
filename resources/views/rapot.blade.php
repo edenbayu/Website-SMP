@@ -281,7 +281,7 @@
         </tr>
         <tr>
             <td class="text-center">.....................</td>
-            <td class="text-center">Tri Prasetyo, S.Pd., M.Pd</td>
+            <td class="text-center">{{$namaWali}}</td>
             <td class="text-center">Dr. Drs. Sofwan, M.Pd.</td>
         </tr>
     </table>
