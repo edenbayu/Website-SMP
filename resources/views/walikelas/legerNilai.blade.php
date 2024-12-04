@@ -3,8 +3,8 @@
 @push('style')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.4/css/fixedColumns.dataTables.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"> --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.4/css/fixedColumns.dataTables.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
 <style>
     th,
     td {
@@ -29,8 +29,15 @@
     <table id="example" class="table table-striped stripe row-border order-column" style="width:100%">
         <thead>
             <tr>
-                <th class="text-start" width="5%">No</th>
+                <th class="text-start">No</th>
                 <th class="text-start">Nama</th>
+                <th class="text-start">NISN</th>
+                <th class="text-start">NISN</th>
+                <th class="text-start">NISN</th>
+                <th class="text-start">NISN</th>
+                <th class="text-start">NISN</th>
+                <th class="text-start">NISN</th>
+                <th class="text-start">NISN</th>
                 <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
                 @php
@@ -49,6 +56,13 @@
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $data['nama'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
+                <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['kelas'] }}</td>
                 @foreach ($subjects as $subject)
@@ -182,10 +196,13 @@
     });
 </script>
 @endif
+
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/fixedColumns.dataTables.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/dataTables.fixedColumns.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -200,6 +217,7 @@
                 start: 2,
                 end: 1
             },
+            paging:false,
             scrollCollapse: true,
             scrollX: true,
             scrollY: 500,
