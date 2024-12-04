@@ -57,17 +57,6 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Peserta Didik</h5>
-                                        <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
-                                    </div>
-                                    <h5 class="card-text">{{ $totalSiswa }}</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
                                         <h5 class="card-title mb-3">Total Pendidik</h5>
                                         <i class="fa-solid fa-chalkboard-user fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
@@ -79,13 +68,37 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Tenaga Kependidikan</h5>
+                                        <h5 class="card-title mb-3">Total Admin</h5>
+                                        <i class="fa-solid fa-user-pen fa-2xl" style="margin-top: 32px;"></i>
+                                    </div>
+                                    <h5 class="card-text">{{ $totalOperator }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title mb-3">Total Tenaga<br>Kependidikan</h5>
                                         <i class="fa-solid fa-user-tie fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalAdmin }}</h5>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title mb-3">Total Peserta<br>Didik</h5>
+                                        <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
+                                    </div>
+                                    <h5 class="card-text">{{ $totalSiswa }}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        @role('Admin')
                         <div class="col-6">
                             <div class="card mb-4">
                                 <div class="card-body">
@@ -98,20 +111,6 @@
                             </div>
                         </div>
 
-                        <!-- Total Kelas Ekskul -->
-                        <div class="col-6">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Ekstrakurikuler</h5>
-                                        <i class="fa-solid fa-person-walking fa-2xl" style="margin-top: 32px;"></i>
-                                    </div>
-                                    <h5 class="card-text">{{ $totalEkskul }}</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Total Mapel -->
                         <div class="col-6">
                             <div class="card mb-4">
                                 <div class="card-body">
@@ -123,14 +122,27 @@
                                 </div>
                             </div>
                         </div>
-                    @endrole
 
-                    @role('Guru')
                         <div class="col-6">
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Capaian Pembelajaran</h5>
+                                        <h5 class="card-title mb-3">Total Ekstrakurikuler</h5>
+                                        <i class="fa-solid fa-person-swimming fa-2xl" style="margin-top: 32px;"></i>
+                                    </div>
+                                    <h5 class="card-text">{{ $totalEkskul }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        @endrole
+                    @endrole
+
+                    @role('Guru|Wali Kelas')
+                        <div class="col-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title mb-3">Total Capaian<br>Pembelajaran</h5>
                                         <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalCP }}</h5>
@@ -141,7 +153,7 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Tujuan Pembelajaran</h5>
+                                        <h5 class="card-title mb-3">Total Tujuan<br>Pembelajaran</h5>
                                         <i class="fa-solid fa-chalkboard-user fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalTP }}</h5>
@@ -152,8 +164,8 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Tugas</h5>
-                                        <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
+                                        <h5 class="card-title mb-3">Total Tugas<br>Siswa</h5>
+                                        <i class="fa-solid fa-book fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalTugas }}</h5>
                                 </div>
@@ -163,8 +175,8 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Ulangan Harian</h5>
-                                        <i class="fa-solid fa-chalkboard-user fa-2xl" style="margin-top: 32px;"></i>
+                                        <h5 class="card-title mb-3">Total Ulangan<br>Harian</h5>
+                                        <i class="fa-solid fa-calendar-check fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalUH }}</h5>
                                 </div>
@@ -174,8 +186,8 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Sumatif Tengah Semester</h5>
-                                        <i class="fa-solid fa-chalkboard-user fa-2xl" style="margin-top: 32px;"></i>
+                                        <h5 class="card-title mb-3">Total Sumatif<br>Tengah Semester</h5>
+                                        <i class="fa-solid fa-check fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalSTS }}</h5>
                                 </div>
@@ -185,8 +197,8 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Sumatif Akhir Semester</h5>
-                                        <i class="fa-solid fa-chalkboard-user fa-2xl" style="margin-top: 32px;"></i>
+                                        <h5 class="card-title mb-3">Total Sumatif<br>Akhir Semester</h5>
+                                        <i class="fa-solid fa-check-double fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalSAS }}</h5>
                                 </div>
@@ -199,7 +211,7 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="card-title mb-3">Total Siswa Perwalian</h5>
-                                        <i class="fa-solid fa-chalkboard-user fa-2xl" style="margin-top: 32px;"></i>
+                                        <i class="fa-solid fa-hands-holding-child fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     {{-- <h5 class="card-text">{{ $totalGuru }}</h5> --}}
                                 </div>

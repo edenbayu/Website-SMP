@@ -52,6 +52,8 @@ class HomeController extends Controller
                     ->get()
             );
 
+            $totalOperator = $operator->count();
+
             return view('home', compact(
                 'semesterAktif',
                 'kepalaSekolah',
@@ -61,7 +63,8 @@ class HomeController extends Controller
                 'totalEkskul',
                 'totalMapel',
                 'totalAdmin',
-                'totalKelas'
+                'totalKelas',
+                'totalOperator',
             ));
         } else if ($user->hasRole('Guru')) {
 
