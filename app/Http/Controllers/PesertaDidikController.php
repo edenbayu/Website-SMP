@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
+use App\Models\Semester;
+use App\Models\Kelas;
 use App\Models\PenilaianSiswa;
 use App\Models\AbsensiSiswa;
 use App\Models\Penilaian;
@@ -254,7 +256,17 @@ class PesertaDidikController extends Controller
             ->where('d.id', $semesterId)
             ->select('b.rombongan_belajar', 'a.nilai')
             ->get();
-    
+        
+        $rombelData = Kelas::join('kelas_siswa', 'kelas.id', '=', 'kelas_siswa.kelas_id')
+            ->join('siswas', 'siswas.id', '=', 'kelas_siswa.siswa_id')
+            ->join('semesters', 'kelas.id_semester', '=', 'semesters.id')
+            ->where('siswas.id', $data['student_id'])
+            ->where('kelas.kelas', '!=', 'Ekskul')
+            ->where('semesters.id', $semesterId)
+            ->value('rombongan_belajar');
+
+        $siswaData = Siswa::find($data['student_id']);
+
         // Fetch attendance summary for the student
         $absensiSummary = AbsensiSiswa::where('id_siswa', $data['student_id'])
             ->where('status', '!=', 'hadir')
@@ -267,9 +279,14 @@ class PesertaDidikController extends Controller
         ->select('dimensi', 'capaian')
         ->get();
     
-        
+        $semesterData = Semester::find($semesterId);
+
         // Pass the data to the view for PDF generation
         $pdf = PDF::loadView('rapot', [
+            'nisn' => $siswaData->nisn,
+            'semester' => $semesterData->semester,
+            'tahunAjaran' => $semesterData->tahun_ajaran,
+            'rombelData' => $rombelData,
             'semester_id' => $semesterId,
             'p5bkData' => $p5bkData,
             'subjects' => $subjects,
