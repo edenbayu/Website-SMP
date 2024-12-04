@@ -227,7 +227,7 @@
                                         <h5 class="card-title mb-3">Total Siswa Perwalian</h5>
                                         <i class="fa-solid fa-hands-holding-child fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
-                                    {{-- <h5 class="card-text">{{ $totalGuru }}</h5> --}}
+                                    <h5 class="card-text">{{ $totalPerwalian }}</h5>
                                 </div>
                             </div>
                         </div>

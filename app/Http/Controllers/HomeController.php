@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\KelasSiswa;
 use App\Models\User;
 use App\Models\Semester;
 use App\Models\Guru;
@@ -204,8 +205,15 @@ class HomeController extends Controller
                 ->where('penilaians.tipe', 'SAS')
                 ->where('users.id', $user->id)
                 ->count();
+            
+            $totalPerwalian = KelasSiswa::join('kelas as b', 'kelas_siswa.kelas_id', '=', 'b.id')
+                ->join('gurus as c', 'c.id', '=', 'b.id_guru')
+                ->join('users as d', 'd.id', '=', 'c.id_user')
+                ->where('d.id', $user->id)
+                ->count();
 
             return view('home', compact(
+                'totalPerwalian',
                 'totalCP',
                 'totalTP',
                 'totalTugas',
