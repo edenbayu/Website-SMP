@@ -206,7 +206,7 @@ class PesertaDidikController extends Controller
     public function generateRapotPDF(Request $request, $semesterId)
     {
         $user = Auth::user();
-        
+
         // Retrieve data from the form submission
         $data = $request->all();
     
@@ -378,5 +378,32 @@ class PesertaDidikController extends Controller
             'success' => true,
             'message' => 'P5BK data saved successfully.',
         ]);
-    }         
+    }
+    
+    public function bukuAbsen($semesterId)
+    {
+        $user = Auth::user();
+        $students = DB::table('absensi_siswas as a')
+            ->join('siswas as b', 'b.id', '=', 'a.id_siswa')
+            ->join('kelas_siswa as c', 'c.siswa_id', '=', 'b.id')
+            ->join('kelas as d', 'd.id', '=', 'c.kelas_id')
+            ->join('gurus as f', 'f.id', '=', 'd.id_guru')
+            ->join('users as g', 'g.id', '=', 'f.id_user')
+            ->join('semesters as h', 'h.id', '=', 'd.id_semester')
+            ->where('g.id', $user->id)
+            ->where('h.id', $semesterId)
+            ->select(
+                'b.nama',
+                'b.nisn',
+                DB::raw("COUNT(CASE WHEN a.status = 'hadir' THEN 1 END) AS count_hadir"),
+                DB::raw("COUNT(CASE WHEN a.status = 'terlambat' THEN 1 END) AS count_terlambat"),
+                DB::raw("COUNT(CASE WHEN a.status = 'ijin' THEN 1 END) AS count_ijin"),
+                DB::raw("COUNT(CASE WHEN a.status = 'alpha' THEN 1 END) AS count_alpha"),
+                DB::raw("COUNT(CASE WHEN a.status = 'sakit' THEN 1 END) AS count_sakit")
+            )
+            ->groupBy('b.nama', 'b.nisn')
+            ->get();
+    
+        return view('walikelas.bukuAbsen', compact('students'));
+    }
 }

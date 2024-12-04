@@ -175,6 +175,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
             Route::post('/attendance/fetch', 'fetchAttendance')->name('pesertadidik.fetchAttendance');
             Route::post('/attendance/save', 'saveAttendanceAjax')->name('pesertadidik.saveAttendanceAjax');
+            Route::get('/bukuAbsen/{semesterId}', 'bukuAbsen')->name('pesertadidik.bukuAbsen');
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
             Route::get('/legerNilai/{kelasId}/{semesterId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
             Route::get('/attendanceIndex/{semesterId}', 'attendanceIndex')->name('pesertadidik.attendanceIndex');
