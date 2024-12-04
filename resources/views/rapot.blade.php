@@ -104,13 +104,13 @@
                 Nama
             </td>
             <td>
-                : Muhammad Ibnu Harist Afandy
+                : {{$studentName}}
             </td>
             <td>
                 Kelas
             </td>
             <td>
-                : VIII ( Delapan ) - B
+                : {{$rombelData}}
             </td>
         </tr>
         <tr>
@@ -118,13 +118,13 @@
                 NISN
             </td>
             <td>
-                : 0108162828
+                : {{$nisn}}
             </td>
             <td>
                 Semester
             </td>
             <td>
-                : 2 (Dua)
+                : {{ substr($semester, -1) }}
             </td>
         </tr>
         <tr>
@@ -138,7 +138,7 @@
                 Tahun Ajaran
             </td>
             <td>
-                : 2024/2025
+                : {{$tahunAjaran}}
             </td>
         </tr>
     </table>
