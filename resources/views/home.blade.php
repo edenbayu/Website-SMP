@@ -145,7 +145,15 @@
                 @endrole
             </div>
         </div>
-        
+
+        <h1>Lemparan Data</h1>
+        <p>{{$totalCP}} ini CP</p>
+        <p>{{$totalTP}} ini TP</p>
+        <p>{{$totalTugas}} ini Tugas</p>
+        <p>{{$totalUH}} ini UH</p>
+        <p>{{$totalSTS}} ini STS</p>
+        <p>{{$totalSAS}} ini SAS</p>
+
         <div class="row">
             <!-- Main Dashboard -->
             <div class="col-6">
