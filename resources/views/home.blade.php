@@ -1,4 +1,14 @@
 @extends('layout/layout')
+
+@push('style')
+    <style>
+        .text-content {
+            margin-bottom: 0px;
+            font-size: 1.1rem;
+        }
+    </style>
+@endpush
+
 @section('content')
 
 <!-- Different Content for Other Roles -->
@@ -30,22 +40,26 @@
                             <img class="rounded-circle mb-3" style="object-fit: cover; height: 250px; width: auto;" src="{{asset('style/assets/sekolah1.png')}}" alt="sekolah-bro">
                             <h3 class="text-center" style="color: #1e1e1e; font-size: 1.5rem; font-weight: 600;">SMP Negeri 1 Karangawen</h3>
                         </div>
-                        <p class="card-text" style="font-size: 1.15rem">Kurikulum : Kurikulum Merdeka</p>
-                        <p class="card-text" style="font-size: 1.15rem">Akreditasi : A</p>
-                        <h5 class="card-title mb-3" style="font-size: 1.15rem">Semester Aktif</h5>
+                        <p class="card-text text-content" style="font-size: 1.15rem">Kurikulum : Kurikulum Merdeka</p>
+                        <p class="card-text text-content" style="font-size: 1.15rem">Akreditasi : A</p>
+                        <h5 class="card-title mt-4" style="font-size: 1.15rem">Semester Aktif</h5>
                         @foreach($semesterAktif as $semester)
-                        <p class="card-text" style="font-size: 1.15rem">Tahun Ajaran : {{ $semester->semester}} | {{$semester->tahun_ajaran}}</p>
+                        <p class="card-text text-content" style="font-size: 1.15rem">Tahun Ajaran : {{ $semester->semester}} | {{$semester->tahun_ajaran}}</p>
                         @endforeach
-                        <h5 class="card-title mb-3" style="font-size: 1.15rem">Kepala Sekolah</h5>
+                        <h5 class="card-title mt-3" style="font-size: 1.15rem">Kepala Sekolah</h5>
                         @foreach($kepalaSekolah as $kepala)
-                        <p class="card-text">{{ $kepala->nama }}</p>
+                        <p class="card-text text-content ml-2">{{ $kepala->nama }}</p>
                         @endforeach
-                        <h5 class="card-title mb-3" style="font-size: 1.15rem">Admin</h5>
-                        @forelse($operator as $op)
-                        <p class="card-text">{{ $op->nama }}</p>
-                        @empty
-                        <p class="card-text">-</p>
-                        @endforelse
+                        <h5 class="card-title mt-3" style="font-size: 1.15rem">Admin</h5>
+                        @if($operator->isNotEmpty())
+                            <ul style="padding-left: 0rem;">
+                                @foreach($operator as $op)
+                                    <li style="font-size: 1.1rem">- {{ $op->nama }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="card-text text-content">-</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -164,7 +178,7 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Tugas<br>Siswa</h5>
+                                        <h5 class="card-title mb-3">Total Tugas<br>Peserta Didik</h5>
                                         <i class="fa-solid fa-book fa-2xl" style="margin-top: 32px;"></i>
                                     </div>
                                     <h5 class="card-text">{{ $totalTugas }}</h5>
