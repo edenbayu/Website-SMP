@@ -57,7 +57,7 @@
                                 <a href="{{route('admin.index')}}" class="sidebar-link">Tenaga Kependidikan</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('guru.index')}} " class="sidebar-link">Pendidik</a>
+                                <a href="{{route('guru.index')}}" class="sidebar-link">Pendidik</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
@@ -101,7 +101,7 @@
                                 <a href="{{route('admin.index')}}" class="sidebar-link">Tenaga Kependidikan</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('guru.index')}} " class="sidebar-link">Pendidik</a>
+                                <a href="{{route('guru.index')}}" class="sidebar-link">Pendidik</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
@@ -124,7 +124,7 @@
                                 <a href="{{route('mapel.index')}}" class="sidebar-link">Mengelola Mata Pelajaran</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('kalendermapel.index')}} " class="sidebar-link">Jadwal Mata Pelajaran</a>
+                                <a href="{{route('kalendermapel.index')}}" class="sidebar-link">Jadwal Mata Pelajaran</a>
                             </li>
                         </ul>
                     </li>

@@ -17,10 +17,12 @@ function setActiveLink() {
 
         // Hapus kelas 'active' dari semua item awalnya
         link.closest('li.sidebar-item').classList.remove('active');
-
+        
         // Jika path link cocok dengan path tersimpan, tambahkan kelas 'active'
         if (window.location.href === linkPath) {
             link.closest('li.sidebar-item').classList.add('active');
+            console.log(linkPath);
+        console.log(window.location.href);
 
             // Jika link ini berada di dalam dropdown, buka dropdown tersebut
             const dropdown = link.closest('.sidebar-dropdown');
@@ -80,7 +82,7 @@ document.querySelectorAll('.sidebar-nav li.sidebar-item a').forEach(function(lin
         //     }
         // });
 
-
+        
         // Tambahkan kelas 'active' ke item yang diklik
         this.closest('li.sidebar-item').classList.add('active');
 
