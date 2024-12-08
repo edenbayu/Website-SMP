@@ -19,7 +19,7 @@ function setActiveLink() {
         link.closest('li.sidebar-item').classList.remove('active');
 
         // Jika path link cocok dengan path tersimpan, tambahkan kelas 'active'
-        if (savedPath === linkPath) {
+        if (window.location.href === linkPath) {
             link.closest('li.sidebar-item').classList.add('active');
 
             // Jika link ini berada di dalam dropdown, buka dropdown tersebut
@@ -80,7 +80,7 @@ document.querySelectorAll('.sidebar-nav li.sidebar-item a').forEach(function(lin
         //     }
         // });
 
-        
+
         // Tambahkan kelas 'active' ke item yang diklik
         this.closest('li.sidebar-item').classList.add('active');
 
