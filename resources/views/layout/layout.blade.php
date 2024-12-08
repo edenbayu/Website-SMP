@@ -91,7 +91,7 @@
                             Semester
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item list-except">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#biografi" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-database"></i>
                             Master Database
@@ -114,7 +114,7 @@
                             Kelas & Ekstrakurikuler
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item list-except">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#mapel" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-book-open"></i>
                             Mata Pelajaran
