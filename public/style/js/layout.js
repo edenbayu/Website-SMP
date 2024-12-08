@@ -57,26 +57,28 @@ document.querySelectorAll('.sidebar-nav li.sidebar-item a').forEach(function(lin
             localStorage.setItem('activeSidebarLink', this.getAttribute('href'));
         }
 
-        if (this.closest('.list-except') && this.closest('.list-except').classList.contains('active')) {
-            document.querySelectorAll('.sidebar-nav li.sidebar-item.active')
-            .forEach(function(activeItem) {
-                if (!activeItem.classList.contains('list-except')) {
+        if (!this.parentElement.classList.contains('active')) {
+            if (this.closest('.list-except') && this.closest('.list-except').classList.contains('active')) {
+                document.querySelectorAll('.sidebar-nav li.sidebar-item.active')
+                .forEach(function(activeItem) {
+                    if (!activeItem.classList.contains('list-except')) {
+                        activeItem.classList.remove('active');
+                    }
+                });
+            } else {
+                document.querySelectorAll('.sidebar-nav li.sidebar-item.active')
+                .forEach(function(activeItem) {
                     activeItem.classList.remove('active');
-                }
-            });
-        } else {
-            document.querySelectorAll('.sidebar-nav li.sidebar-item.active')
-            .forEach(function(activeItem) {
-                activeItem.classList.remove('active');
-            });
+                });
+            }
         }
         // Hapus kelas 'active' dari semua item di sidebar
-        document.querySelectorAll('.sidebar-nav li.sidebar-item.active')
-        .forEach(function(activeItem) {
-            if (!activeItem.classList.contains('list-except')) {
-                activeItem.classList.remove('active');
-            }
-        });
+        // document.querySelectorAll('.sidebar-nav li.sidebar-item.active')
+        // .forEach(function(activeItem) {
+        //     if (!activeItem.classList.contains('list-except')) {
+        //         activeItem.classList.remove('active');
+        //     }
+        // });
 
         // Tambahkan kelas 'active' ke item yang diklik
         this.closest('li.sidebar-item').classList.add('active');

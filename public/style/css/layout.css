@@ -145,7 +145,7 @@ a.sidebar-link i {
     /* width: 95%; */
 }
 
-.sidebar-nav li.sidebar-item.list-except.active {
+.sidebar-nav li.sidebar-item.list-except.active:not(:has(.collapsed)) {
     padding-bottom: 5px;
 }
 
