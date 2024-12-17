@@ -57,7 +57,7 @@
                                 <a href="{{route('admin.index')}}" class="sidebar-link">Tenaga Kependidikan</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('guru.index')}} " class="sidebar-link">Pendidik</a>
+                                <a href="{{route('guru.index')}}" class="sidebar-link">Pendidik</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
@@ -91,7 +91,7 @@
                             Semester
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item list-except">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#biografi" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-database"></i>
                             Master Database
@@ -101,7 +101,7 @@
                                 <a href="{{route('admin.index')}}" class="sidebar-link">Tenaga Kependidikan</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('guru.index')}} " class="sidebar-link">Pendidik</a>
+                                <a href="{{route('guru.index')}}" class="sidebar-link">Pendidik</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="{{route('siswa.index')}}" class="sidebar-link">Peserta Didik</a>
@@ -114,7 +114,7 @@
                             Kelas & Ekstrakurikuler
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item list-except">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#mapel" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-book-open"></i>
                             Mata Pelajaran
@@ -123,9 +123,9 @@
                             <li class="sidebar-item">
                                 <a href="{{route('mapel.index')}}" class="sidebar-link">Mengelola Mata Pelajaran</a>
                             </li>
-                            {{-- <li class="sidebar-item">
+                            <li class="sidebar-item">
                                 <a href="{{route('kalendermapel.index')}} " class="sidebar-link">Jadwal Mata Pelajaran</a>
-                            </li> --}}
+                            </li>
                         </ul>
                     </li>
                     <li class="sidebar-item">
