@@ -77,7 +77,7 @@
                 <!-- Admin -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-header">
-                        Tenaga Kependidikan
+                        Admin
                     </li>
                     <li class="sidebar-item">
                         <a href="{{route('home')}}" class="sidebar-link">
@@ -123,9 +123,9 @@
                             <li class="sidebar-item">
                                 <a href="{{route('mapel.index')}}" class="sidebar-link">Mengelola Mata Pelajaran</a>
                             </li>
-                            <li class="sidebar-item">
+                            {{-- <li class="sidebar-item">
                                 <a href="{{route('kalendermapel.index')}} " class="sidebar-link">Jadwal Mata Pelajaran</a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <li class="sidebar-item">
@@ -167,12 +167,12 @@
                             Buku Nilai
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="fa-solid fa-chart-simple"></i>
                             Jadwal Pelajaran
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="fa-solid fa-chart-simple"></i>
@@ -250,12 +250,12 @@
                             @endforeach
                         </ul>
                     </li> -->
-                    <li class="sidebar-item">
+                    {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="fa-solid fa-book-open"></i>
                             Jadwal Pelajaran
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="fa-solid fa-calendar-days"></i>
@@ -282,6 +282,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="{{ route('p5bk.index', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
+                            <i class="fa-solid fa-address-book"></i>
+                            P5
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#legerNilai" data-bs-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-star"></i>
                             Leger Nilai
@@ -295,12 +301,6 @@
                             </li>
                             @endforeach
                         </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="{{ route('p5bk.index', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
-                            <i class="fa-solid fa-address-book"></i>
-                            P5
-                        </a>
                     </li>
                     @endrole
                 </ul>

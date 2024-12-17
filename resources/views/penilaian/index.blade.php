@@ -52,7 +52,7 @@
         <thead>
             <tr>
                 <th class="text-start">No</th>
-                <th>Tanggal</th>
+                {{-- <th>Tanggal</th> --}}
                 <th>Judul</th>
                 <th>Tipe</th>
                 <th class="text-start">KKTP</th>
@@ -65,7 +65,7 @@
             @foreach ($penilaians as $penilaian)
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
-                <td>{{ $penilaian->created_at}}</td>
+                {{-- <td>{{ $penilaian->created_at}}</td> --}}
                 <td>{{ $penilaian->judul }}</td>
                 <td>{{ $penilaian->tipe }}</td>
                 <td class="text-start">{{ $penilaian->kktp }}</td>

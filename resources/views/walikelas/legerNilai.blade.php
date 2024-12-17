@@ -32,19 +32,27 @@
                 <th class="text-start">No</th>
                 <th class="text-start">Nama</th>
                 <th class="text-start">NISN</th>
-                <th class="text-start">NISN</th>
-                <th class="text-start">NISN</th>
-                <th class="text-start">NISN</th>
-                <th class="text-start">NISN</th>
-                <th class="text-start">NISN</th>
-                <th class="text-start">NISN</th>
-                <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
                 @php
                 $subjects = collect($datas)->flatMap(function ($row) {
                 return array_keys((array)$row);
                 })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas','nisn']));
                 @endphp
+                @foreach ($subjects as $subject)
+                <th class="text-start">{{ $subject }}</th>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <th class="text-start">{{ $subject }}</th>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <th class="text-start">{{ $subject }}</th>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <th class="text-start">{{ $subject }}</th>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <th class="text-start">{{ $subject }}</th>
+                @endforeach
                 @foreach ($subjects as $subject)
                 <th class="text-start">{{ $subject }}</th>
                 @endforeach
@@ -57,14 +65,22 @@
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $data['nama'] }}</td>
                 <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['kelas'] }}</td>
+                @foreach ($subjects as $subject)
+                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                @endforeach
+                @foreach ($subjects as $subject)
+                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                @endforeach
                 @foreach ($subjects as $subject)
                 <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach
