@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AdminExport;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Imports\AdminImport;
@@ -29,6 +30,10 @@ class AdminController extends Controller
         Excel::import(new AdminImport, $request->file('file'));
 
         return redirect()->route('admin.index')->with('success', 'File berhasil diimport!');
+    }
+
+    public function export() {
+        return Excel::download(new AdminExport, 'admin.xlsx', );
     }
 
     public function create(Request $request)

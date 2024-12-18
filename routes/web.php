@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('staffs')->controller(AdminController::class)->group(function() {
             Route::get('/', 'index')->name('admin.index');                         
             Route::post('/import', 'import')->name('admin.import');                
+            Route::get('/export', 'export')->name('admin.export');                
             Route::post('/create', 'create')->name('admin.create');                              
             Route::put('/{id}/update', 'update')->name('admin.update');           
             Route::delete('/{id}', 'destroy')->name('admin.destroy');              
