@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'Excel' => Maatwebsite\Excel\Facades\Excel::class,
             'auth' => \App\Http\Middleware\Authentication::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'check_role' => \App\Http\Middleware\CheckActiveRole::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'PDF' => Barryvdh\DomPDF\Facade::class,

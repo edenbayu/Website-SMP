@@ -16,46 +16,46 @@ class DefaultUserSeeder extends Seeder
     {
         // Creating Super Admin User
         $superadmin = User::create([
-            'name' => 'Satya',
+            'name' => 'Satyagraha Pakarti Gemilang',
             'email' => 'gilan.lan8@gmail.com',
-            'username' => 'superadmin',
-            'password' => 'superadmin'
+            'username' => 'satyagraha',
+            'password' => 'satyagraha'
         ]);
-        $superadmin->assignRole('Super Admin');
+        $superadmin->assignRole(['Super Admin', 'Admin', 'Guru', 'Wali Kelas']);
 
-        $superadmin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'username' => 'admin',
-            'password' => 'admin'
-        ]);
-        $superadmin->assignRole('Admin');
+        // $superadmin = User::create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@gmail.com',
+        //     'username' => 'admin',
+        //     'password' => 'admin'
+        // ]);
+        // $superadmin->assignRole('Admin');
 
-        // Creating Admin User
-        $wali_kelas = User::create([
-            'name' => 'wali',
-            'email' => 'wali@gmail.com',
-            'username' => 'walikelas',
-            'password' => 'walikelas'
-        ]);
-        $wali_kelas->assignRole('Wali Kelas');
+        // // Creating Admin User
+        // $wali_kelas = User::create([
+        //     'name' => 'wali',
+        //     'email' => 'wali@gmail.com',
+        //     'username' => 'walikelas',
+        //     'password' => 'walikelas'
+        // ]);
+        // $wali_kelas->assignRole('Wali Kelas');
 
-        // Creating Product Manager User
-        $guru= User::create([
-            'name' => 'guru',
-            'email' => 'guru@gmail.com', 
-            'username' => 'guru',
-            'password' => 'guru'
-        ]);
-        $guru->assignRole('Guru');
+        // // Creating Product Manager User
+        // $guru= User::create([
+        //     'name' => 'guru',
+        //     'email' => 'guru@gmail.com', 
+        //     'username' => 'guru',
+        //     'password' => 'guru'
+        // ]);
+        // $guru->assignRole('Guru');
 
-        // Creating Application User
-        $user = User::create([
-            'name' => 'Safaat',
-            'email' => 'safaat@gmail.com', 
-            'username' => 'siswa',
-            'password' => 'siswa'
-        ]);
-        $user->assignRole('Siswa');
+        // // Creating Application User
+        // $user = User::create([
+        //     'name' => 'Safaat',
+        //     'email' => 'safaat@gmail.com', 
+        //     'username' => 'siswa',
+        //     'password' => 'siswa'
+        // ]);
+        // $user->assignRole('Siswa');
     }
 }

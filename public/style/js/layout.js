@@ -100,9 +100,10 @@ document.querySelectorAll('.sidebar-nav li.sidebar-item a').forEach(function(lin
 // Saat halaman dimuat, panggil fungsi untuk menetapkan link aktif
 window.addEventListener('load', setActiveLink);
 
-
-
-
-//tabel
+document.querySelectorAll('.sidebar-nav li.sidebar-item.list-except ul').forEach(ul => {
+    if (ul.children.length > 0) {
+        ul.classList.add('has-children');
+    }
+});
 
 

@@ -104,7 +104,7 @@ a.sidebar-link i {
     padding: 2px;
     position: absolute;
     right: 1.5rem;
-    top: 1.4rem;
+    top: 1.1rem;
     transform: rotate(-135deg);
     transition: all .2s ease-out;
 }
@@ -145,7 +145,7 @@ a.sidebar-link i {
     /* width: 95%; */
 }
 
-.sidebar-nav li.sidebar-item.list-except.active:not(:has(.collapsed)) {
+.sidebar-nav li.sidebar-item.list-except.active:not(:has(.collapsed)) ul.has-children {
     padding-bottom: 5px;
 }
 

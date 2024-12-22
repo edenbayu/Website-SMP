@@ -1,41 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-
-<body>
-    <h1>Login</h1>
-
-    @if ($errors->any())
-    <div style="color: red;">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
-    <form action="{{ route('login') }}" method="POST">
-        @csrf
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-
-        <button type="submit">Login</button>
-    </form>
-</body>
-
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,6 +8,7 @@
     <link rel="icon" href="{{asset('style/assets/logo-sekolah.png')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('style/css/login_style.css') }}">
+    <script src="https://kit.fontawesome.com/9d2abd8931.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .footer {
@@ -69,16 +32,6 @@
 </head>
 
 <body>
-    <!-- @if ($errors->any())
-    <div style="color: red;">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif -->
-
     <div class="login-container">
         <div class="logo-section">
             <img src="{{asset('style/assets/logo-sekolah.png')}}" alt="Logo">
@@ -87,10 +40,10 @@
         </div>
         <div class="form-section">
             <p class="intro">Selamat Datang!</p>
-            <p style="margin-bottom: 30px">Masukkan Nama Pengguna dan Kata Sandi untuk masuk.</p>
+            <p style="margin-bottom: 10px;">Masukkan Nama Pengguna dan Kata Sandi untuk masuk.</p>
 
             @if ($errors->any())
-            <div style="color: red;">
+            <div style="color: red; font-size: 14px;">
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -101,7 +54,7 @@
 
             <form action="{{ route('login') }}" method="POST">
                 @csrf
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 10px;">
                     <label for="username">Nama Pengguna</label>
                     <input class="form-control" type="text" id="username" name="username" placeholder="Masukkan Nama Pengguna" required>
                 </div>

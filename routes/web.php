@@ -23,23 +23,25 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 
 // Group routes for LoginController using Route::controller
 Route::middleware('guest')->controller(LoginController::class)->group(function () {
+    Route::get('/', 'showLoginForm')->name('root');
     Route::get('login', 'showLoginForm')->name('login');
-    Route::post('login', 'login');
-    Route::get('', function () {
-        return view('auth.login');
-    });
+    Route::post('login', 'login')->name('post_login');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('role', [LoginController::class, 'select_role'])->name('role');
+    Route::post('role', [LoginController::class, 'set_role'])->name('post_role');
 });
 
 // Group routes that require 'auth' middleware
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check_role'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::post('/profile/update_picture', [UserController::class, 'update_picture'])->name('update_picture');
     Route::post('/profile/update_password', [UserController::class, 'update_password'])->name('update_password');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::get('/logout', function () {
-        return redirect('/');
-    });
+
+    
 
     //Ini untuk nge-protect routes biar khusus cuma diakses sama Admin
 

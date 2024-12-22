@@ -6,22 +6,21 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RoleMiddleware
+class CheckActiveRole
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  array  $roles
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, ...$roles)
+    public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || !Auth::user()->hasAnyRole($roles)) {
-            return redirect()->route('home')->with('error', 'You do not have permission to access this page.');
+        // auth()->user()->syncRoles(['Admin', 'Guru', 'Wali Kelas']);
+        if (!(session('active_role') && in_array(session('active_role'), Auth::user()->getRoleNames()->toArray()))) {
+            return redirect()->route('role');
         }
-
         return $next($request);
     }
 }
