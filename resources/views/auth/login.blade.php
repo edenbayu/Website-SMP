@@ -65,7 +65,7 @@
                 <button type="submit">Masuk</button>
             </form>
 
-            <div class="form-group row">
+            <div style='--bs-gutter-x: 0rem !important;' class="form-group row">
                 <div class="col-md-6 offset-md-4">
                     <div class="checkbox">
                         <label>

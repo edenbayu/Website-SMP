@@ -15,11 +15,11 @@
                             <input type="text" class="form-control" id="email-{{ $a->id }}" name="email" placeholder="example@email.com" required>
                         </div>
                         <div class="mb-3">
-                            <label for="username-{{ $a->id }}" class="form-label">Username</label>
+                            <label for="username-{{ $a->id }}" class="form-label">Nama Pengguna</label>
                             <input type="text" class="form-control" id="username-{{ $a->id }}" name="username" value="{{ $a->nip }}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password-{{ $a->id }}" class="form-label">Password</label>
+                            <label for="password-{{ $a->id }}" class="form-label">Kata Sandi</label>
                             <input type="text" class="form-control" id="password-{{ $a->id }}" name="password" value="{{ Str::random(6) }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Generate</button>
