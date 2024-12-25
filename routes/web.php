@@ -59,6 +59,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
         Route::prefix('siswas')->controller(SiswaController::class)->group(function () {
             Route::get('/', 'index')->name('siswa.index');
             Route::post('/import', 'import')->name('siswa.import');
+            Route::get('/export', 'export')->name('siswa.export');
             Route::get('/import', 'showImportForm')->name('siswa.showImportForm');
             Route::post('/{id}/generate-user', 'generateUser')->name('siswa.generateUser');
             Route::put('/update/{siswaId}', 'update')->name('siswa.update');
