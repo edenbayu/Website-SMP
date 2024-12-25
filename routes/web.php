@@ -67,7 +67,8 @@ Route::middleware('auth')->group(function () {
         // Guru data routes
         Route::prefix('guru')->controller(GuruController::class)->group(function() {
             Route::get('/', 'index')->name('guru.index');                         
-            Route::post('/import', 'import')->name('guru.import');                
+            Route::post('/import', 'import')->name('guru.import');
+            Route::get('/export', 'export')->name('guru.export');                
             Route::post('/create', 'create')->name('guru.create');                              
             Route::put('/{id}/update', 'update')->name('guru.update');           
             Route::delete('/{id}', 'destroy')->name('guru.destroy');              

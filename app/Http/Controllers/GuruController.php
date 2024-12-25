@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GuruExport;
 use App\Models\Guru;
 use Illuminate\Http\Request;
 use App\Imports\GuruImport;
@@ -25,6 +26,10 @@ class GuruController extends Controller
         Excel::import(new GuruImport, $request->file('file'));
 
         return redirect()->route('guru.index')->with('success', 'File berhasil diimport!');
+    }
+
+    public function export() {
+        return Excel::download(new GuruExport, 'guru.xlsx');
     }
 
     public function create(Request $request)
