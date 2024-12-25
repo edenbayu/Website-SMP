@@ -34,7 +34,7 @@ class ViewServiceProvider extends ServiceProvider
             $semesters = Semester::all();
 
             // If the user is a 'Guru', fetch the mapel data for the selected semester
-            if ($user && $user->hasRole('Guru|Wali Kelas')) {
+            if ($user && $user->hasRole(['Guru', 'Wali Kelas'])) {
                 $listMataPelajaran = Mapel::select('mapels.id', 'mapels.nama', 'mapels.kelas')
                     ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                     ->join('users', 'users.id', '=', 'gurus.id_user')
@@ -57,6 +57,7 @@ class ViewServiceProvider extends ServiceProvider
                                 ->where('users.id', $user->id)
                                 ->distinct()
                                 ->get();
+
 
                 // Query for Ekskul mapels
                 $listEkskul = Mapel::select('mapels.id as mapel_id', 'mapels.nama', 'mapels.kelas', 'kelas.id as kelas_id')

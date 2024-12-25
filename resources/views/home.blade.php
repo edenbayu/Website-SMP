@@ -10,7 +10,6 @@
 @endpush
 
 @section('content')
-
 <!-- Different Content for Other Roles -->
 @role('Guru|Wali Kelas|Admin|Super Admin')
     <div class="container-fluid mt-3">
@@ -113,41 +112,41 @@
                         </div>
 
                         @role('Admin')
-                        <div class="col-6">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Kelas</h5>
-                                        <i class="fa-solid fa-door-open fa-2xl" style="margin-top: 32px;"></i>
+                            <div class="col-6">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-3">Total Kelas</h5>
+                                            <i class="fa-solid fa-door-open fa-2xl" style="margin-top: 32px;"></i>
+                                        </div>
+                                        <h5 class="card-text">{{ $totalKelas }}</h5>
                                     </div>
-                                    <h5 class="card-text">{{ $totalKelas }}</h5>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-6">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Mata Pelajaran</h5>
-                                        <i class="fa-solid fa-book-open fa-2xl" style="margin-top: 32px;"></i>
+                            <div class="col-6">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-3">Total Mata Pelajaran</h5>
+                                            <i class="fa-solid fa-book-open fa-2xl" style="margin-top: 32px;"></i>
+                                        </div>
+                                        <h5 class="card-text">{{ $totalMapel }}</h5>
                                     </div>
-                                    <h5 class="card-text">{{ $totalMapel }}</h5>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-6">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Ekstrakurikuler</h5>
-                                        <i class="fa-solid fa-person-swimming fa-2xl" style="margin-top: 32px;"></i>
+                            <div class="col-6">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-3">Total Ekstrakurikuler</h5>
+                                            <i class="fa-solid fa-person-swimming fa-2xl" style="margin-top: 32px;"></i>
+                                        </div>
+                                        <h5 class="card-text">{{ $totalEkskul }}</h5>
                                     </div>
-                                    <h5 class="card-text">{{ $totalEkskul }}</h5>
                                 </div>
                             </div>
-                        </div>
                         @endrole
                     @endrole
 
@@ -220,17 +219,17 @@
                         </div>
 
                         @role('Wali Kelas')
-                        <div class="col-6">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title mb-3">Total Siswa Perwalian</h5>
-                                        <i class="fa-solid fa-hands-holding-child fa-2xl" style="margin-top: 32px;"></i>
+                            <div class="col-6">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-3">Total Siswa Perwalian</h5>
+                                            <i class="fa-solid fa-hands-holding-child fa-2xl" style="margin-top: 32px;"></i>
+                                        </div>
+                                        <h5 class="card-text">{{ $totalPerwalian }}</h5>
                                     </div>
-                                    <h5 class="card-text">{{ $totalPerwalian }}</h5>
                                 </div>
                             </div>
-                        </div>
                         @endrole
                     @endrole
                 </div>

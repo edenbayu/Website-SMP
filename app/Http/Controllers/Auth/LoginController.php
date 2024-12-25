@@ -31,20 +31,46 @@ class LoginController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             // Log in user secara manual ke dalam session Auth
             Auth::login($user);
-            // Redirect ke home dengan pesan sukses
-            return redirect('/home')->with([
-                'success' => 'Login Berhasil',
-                'role' => $user->getRoleNames()->first(),
-            ]);
+            $user_roles = Auth::user()->getRoleNames()->toArray();
+            if (count($user_roles) > 1) {
+                return redirect()->route('role');
+            } else {
+                session(['active_role' => $user_roles[0]]);
+                return redirect()->route('home');
+            }
         }
 
         // Jika username atau password salah
         return back()->withErrors(['invalid_credentials' => 'Either username or password is invalid.']);
     }
 
+    public function select_role()
+    {        
+        $user_roles = Auth::user()->getRoleNames()->toArray();
+        $user_roles = ['Super Admin', 'Admin', 'Guru', 'Wali Kelas'];
+        if (count($user_roles) > 1) {
+            return view('auth.role', [
+                'roles' => $user_roles,
+            ]);
+        } else {
+            session(['active_role' => $user_roles[0]]);
+            return redirect()->route('home');
+        }
+    }
+
+    public function set_role(Request $request)
+    {
+        $user_roles = Auth::user()->getRoleNames()->toArray();
+        if (in_array($request->role, $user_roles)) {
+            session(['active_role' => $request->role]);
+            return redirect()->route('home');
+        } else return redirect()->route('role');
+    }
+
     public function logout()
     {
         Auth::logout(); // Logout pengguna dari session auth
+        session()->flush();
         return redirect()->route('login');
     }
 }
