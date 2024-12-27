@@ -144,10 +144,12 @@
     </table>
 
     <h2 class="text-center judul">LAPORAN HASIL BELAJAR PESERTA DIDIK</h2>
+    <h3>A. Mata Pelajaran</h3>
     <table>
         <thead>
             <tr>
-                <th colspan="2">A. Mata Pelajaran</th>
+                <th>No.</th>
+                <th>Mata Pelajaran</th>
                 <th>Nilai</th>
                 <th>Capaian Kompetensi</th>
             </tr>
@@ -175,7 +177,7 @@
     <table>
         <thead>
             <tr>
-                <th width="10%">No</th>
+                <th width="10%">No.</th>
                 <th>Kelas</th>
                 <th>Predikat</th>
             </tr>
@@ -183,7 +185,7 @@
         <tbody>
             @foreach ($ekskulData as $ekskul)
             <tr>
-                <td>{{$loop->iteration}}</td>
+                <td class="text-center">{{$loop->iteration}}</td>
                 <td>{{ $ekskul->rombongan_belajar }}</td>
                 <td class="text-center">{{ $ekskul->nilai }}</td>
             </tr>
@@ -248,10 +250,9 @@
     <h3>Catatan Wali Kelas</h3>
     <table>
         <tr class="komentar">
-            <td class="text-center">{{ $komentar ?: 'No general comment available.' }}</td>
+            <td class="text-center">{{ $komentar ?: 'Tidak ada komentar dari wali kelas.' }}</td>
         </tr>
     </table>
-    <!-- <p>{{ $komentar ?: 'No general comment available.' }}</p> -->
 
     <table class="signature-table" style="margin-top: 50px; width: 100%;">
         <tr>

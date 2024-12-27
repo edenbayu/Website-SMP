@@ -24,7 +24,7 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary mb-3">Simpan</button>
+    <button type="submit" id="submitButton" class="btn btn-primary mb-3">Simpan</button>
 
     <!-- P5BK Data Table -->
     <div id="p5bkTable" style="display:none;">
@@ -147,6 +147,11 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
+    });
+</script>
+<script>
+    document.getElementById('submitButton').addEventListener('click', function() {
+        document.getElementById('p5bkFormData').submit();
     });
 </script>
 @endpush
