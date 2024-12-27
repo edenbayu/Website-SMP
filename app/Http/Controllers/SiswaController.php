@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SiswaExport;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use App\Imports\SiswaImport;
@@ -24,6 +25,10 @@ class SiswaController extends Controller
         Excel::import(new SiswaImport, $request->file('file'));
         
         return redirect()->route('siswa.index')->with('success', 'File berhasil diimport!');
+    }
+
+    public function export() {
+        return Excel::download(new SiswaExport, 'siswa.xlsx', );
     }
 
     public function showImportForm()

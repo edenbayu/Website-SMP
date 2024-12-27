@@ -36,11 +36,10 @@
     </div>
 
     <!-- Import Button -->
-    <div class="row">
-        <div class="col-3">
-            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
-        </div>
-    </div>
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
+    <!-- Ekspor Button -->
+    <a target="_blank" href="{{ route('siswa.export') }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
+
 
     <!-- Data Table -->
     <table id="example" class="table table-striped" style="width:100%">

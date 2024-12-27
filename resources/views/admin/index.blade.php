@@ -41,6 +41,7 @@
 
     <!-- import button -->
     <button class="btn btn-primary mb-3 px-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
+    <a target="_blank" href="{{ route('admin.export') }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
     <button class="btn btn-success mb-3 px-2" data-bs-toggle="modal" data-bs-target="#createAdminModal" style="width: 6rem">Tambah</button>
 
     <!-- Add Admin Button -->

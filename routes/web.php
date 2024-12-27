@@ -56,6 +56,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
         Route::prefix('siswas')->controller(SiswaController::class)->group(function () {
             Route::get('/', 'index')->name('siswa.index');
             Route::post('/import', 'import')->name('siswa.import');
+            Route::get('/export', 'export')->name('siswa.export');
             Route::get('/import', 'showImportForm')->name('siswa.showImportForm');
             Route::post('/{id}/generate-user', 'generateUser')->name('siswa.generateUser');
             Route::put('/update/{siswaId}', 'update')->name('siswa.update');
@@ -66,7 +67,8 @@ Route::middleware(['auth', 'check_role'])->group(function () {
         // Guru data routes
         Route::prefix('guru')->controller(GuruController::class)->group(function() {
             Route::get('/', 'index')->name('guru.index');                         
-            Route::post('/import', 'import')->name('guru.import');                
+            Route::post('/import', 'import')->name('guru.import');
+            Route::get('/export', 'export')->name('guru.export');                
             Route::post('/create', 'create')->name('guru.create');                              
             Route::put('/{id}/update', 'update')->name('guru.update');           
             Route::delete('/{id}', 'destroy')->name('guru.destroy');              
@@ -78,6 +80,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
         Route::prefix('staffs')->controller(AdminController::class)->group(function() {
             Route::get('/', 'index')->name('admin.index');                         
             Route::post('/import', 'import')->name('admin.import');                
+            Route::get('/export', 'export')->name('admin.export');                
             Route::post('/create', 'create')->name('admin.create');                              
             Route::put('/{id}/update', 'update')->name('admin.update');           
             Route::delete('/{id}', 'destroy')->name('admin.destroy');              
