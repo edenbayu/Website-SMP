@@ -82,12 +82,13 @@
                 <td>
                     <!-- Generate Single User Form -->
                     @if(empty($siswa->id_user))
-                    <form action="{{ route('siswa.generateUser', $siswa->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-primary" style="width: 5rem">Buat</button>
-                    </form>
+                        <form action="{{ route('siswa.generateUser', $siswa->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-primary" style="width: 5rem">Buat</button>
+                        </form>
                     @else
-                    <span>User ID: {{ $siswa->id_user }}</span>
+                        {{-- <span>User ID: {{ $siswa->id_user }}</span> --}}
+                        <span>Sudah Ada</span>
                     @endif
                 </td>
 
