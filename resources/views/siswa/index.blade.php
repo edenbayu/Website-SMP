@@ -23,8 +23,8 @@
                 </div>
                 <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="my-3">
-                        <input type="file" name="file" class="form-control" required>
+                    <div class="m-3">
+                        <input type="file" name="file" class="form-control" accept=".xlsx" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

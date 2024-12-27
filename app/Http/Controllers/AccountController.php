@@ -35,17 +35,16 @@ class AccountController extends Controller
 
     public function update(Request $request, $id) {
         $account = User::findOrFail($id);
-    
         // Update the user's basic info
         $account->name = $request->input('name');
         $account->email = $request->input('email');
         $account->username = $request->input('username');
-        $account->password = Hash::make($request->input('password')); // hashed
+        if ($request->input('password')) $account->password = Hash::make($request->input('password')); // hashed
         $account->save();
     
         // Update the user's role
-        $account->syncRoles($request->input('role')); // Use syncRoles to replace the current role with the new one
+        $account->syncRoles($request->input('roles')); // Use syncRoles to replace the current role with the new one
     
-        return redirect()->route('account.index')->with('success', 'Account and role updated successfully');
+        return redirect()->route('account.index')->with('success', 'Account and roles updated successfully');
     }
 }

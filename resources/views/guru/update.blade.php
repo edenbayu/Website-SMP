@@ -49,18 +49,6 @@
                             <option value="Hindu" {{ old('agama', $guru->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
                             <option value="Buddha" {{ old('agama', $guru->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
                             <option value="Konghucu" {{ old('agama', $guru->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
-                            <option value="Islam" {{ old('agama', $guru->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
-                            <option value="Kristen" {{ old('agama', $guru->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                            <option value="Katolik" {{ old('agama', $guru->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                            <option value="Hindu" {{ old('agama', $guru->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                            <option value="Buddha" {{ old('agama', $guru->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                            <option value="Konghucu" {{ old('agama', $guru->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
-                            <option value="Islam" {{ old('agama', $guru->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
-                            <option value="Kristen" {{ old('agama', $guru->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                            <option value="Katolik" {{ old('agama', $guru->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                            <option value="Hindu" {{ old('agama', $guru->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                            <option value="Buddha" {{ old('agama', $guru->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                            <option value="Konghucu" {{ old('agama', $guru->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
                         </select>
                     </div>
 
@@ -76,24 +64,36 @@
 
                     <div class="form-group mb-3">
                         <label for="status">Status</label>
-                        <select name="status" class="form-select">
-                            <option value="PNS" {{ old('jenis_pegawai', $guru->status) == 'PNS' ? 'selected' : '' }}>PNS</option>
+                        <select name="status" id="status-option" class="form-select">
+                            <option value="PNS" {{ old('status', $guru->status) == 'PNS' ? 'selected' : '' }}>PNS</option>
                             <option value="PPPK" {{ old('status', $guru->status) == 'PPPK' ? 'selected' : '' }}>PPPK</option>
                         </select>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="pangkat_golongan">Pangkat Golongan</label>
-                        <select name="pangkat_golongan" class="form-select">
-                            <option value="III/a" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/a' ? 'selected' : '' }}>III/a</option>
-                            <option value="III/b" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/b' ? 'selected' : '' }}>III/b</option>
-                            <option value="III/c" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/c' ? 'selected' : '' }}>III/c</option>
-                            <option value="III/d" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/d' ? 'selected' : '' }}>III/d</option>
-                            <option value="IV/a" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/a' ? 'selected' : '' }}>IV/a</option>
-                            <option value="IV/b" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/b' ? 'selected' : '' }}>IV/b</option>
-                            <option value="IV/c" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/c' ? 'selected' : '' }}>IV/c</option>
-                            <option value="IV/d" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/d' ? 'selected' : '' }}>IV/d</option>
-                            <option value="IV/e" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/e' ? 'selected' : '' }}>IV/e</option>
+                        <select name="pangkat_golongan" id="golongan-option" class="form-select">
+                            @if (old('status', $guru->status) == 'PNS')
+                                <option value="III/a" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/a' ? 'selected' : '' }}>III/a</option>
+                                <option value="III/b" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/b' ? 'selected' : '' }}>III/b</option>
+                                <option value="III/c" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/c' ? 'selected' : '' }}>III/c</option>
+                                <option value="III/d" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'III/d' ? 'selected' : '' }}>III/d</option>
+                                <option value="IV/a" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/a' ? 'selected' : '' }}>IV/a</option>
+                                <option value="IV/b" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/b' ? 'selected' : '' }}>IV/b</option>
+                                <option value="IV/c" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/c' ? 'selected' : '' }}>IV/c</option>
+                                <option value="IV/d" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/d' ? 'selected' : '' }}>IV/d</option>
+                                <option value="IV/e" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IV/e' ? 'selected' : '' }}>IV/e</option>
+                            @elseif (old('status', $guru->status) == 'PPPK')
+                                <option value="IX" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'IX' ? 'selected' : '' }}>IX</option>
+                                <option value="X" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'X' ? 'selected' : '' }}>X</option>
+                                <option value="XI" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'XI' ? 'selected' : '' }}>XI</option>
+                                <option value="XII" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'XII' ? 'selected' : '' }}>XII</option>
+                                <option value="XIII" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'XIII' ? 'selected' : '' }}>XIII</option>
+                                <option value="XIV" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'XIV' ? 'selected' : '' }}>XIV</option>
+                                <option value="XV" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'XV' ? 'selected' : '' }}>XV</option>
+                                <option value="XVI" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'XVI' ? 'selected' : '' }}>XVI</option>
+                                <option value="XVII" {{ old('pangkat_golongan', $guru->pangkat_golongan) == 'XVII' ? 'selected' : '' }}>XVII</option>
+                            @endif
                         </select>
                     </div>
 

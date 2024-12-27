@@ -14,7 +14,15 @@ use Mail;
 class GuruController extends Controller 
 {
     public function index(){
-        $gurus = Guru::orderBy('created_at', 'desc')->get();
+        $gurus = Guru::with('user')->orderBy('created_at', 'desc')->get();
+        // foreach ($gurus as $guru) {
+        //     if ($guru->user) {
+        //         $roles = $guru->user->getRoleNames();
+        //     } else {
+        //         // Handle cases where user is null
+        //         $roles = [];
+        //     }
+        // }
         return view('guru.index', compact('gurus'));
     }
 
@@ -76,14 +84,14 @@ class GuruController extends Controller
     }
 
     public function generateUser(Request $request, $guruId)
-    {
+    {   
         $guru = Guru::findOrFail($guruId);
-
+        
         $request->validate([
             'username' => 'required|string|unique:users,username',
             'password' => 'required|string',
             'email' => 'required|email',
-            'role' => 'required|string'
+            'roles' => 'required'
         ]);
 
         $user = User::create([
@@ -96,11 +104,25 @@ class GuruController extends Controller
         Mail::send('email.akun', ['username' => $request->username, 'password' => $request->password], function($message) use($request) {
             $message->to("$request->email");
             $message->subject('Akun SMP anda telah dibuat!');
-        });  
-        
-        $user->assignRole($request->role);
+        });
+
+        $user->syncRoles($request->roles);
         $guru->id_user = $user->id;
         $guru->save();
         return redirect()->route('guru.index')->with('success', 'Berhasil membuat akun guru baru.');
+    }
+
+    public function editRole(Request $request, $guruId)
+    {   
+        $guru = Guru::findOrFail($guruId);
+        
+        $request->validate([
+            'roles' => 'required'
+        ]);
+
+        $user = User::findOrFail($guru->id_user);
+
+        $user->syncRoles($request->roles);
+        return redirect()->route('guru.index')->with('success', 'Berhasil mengedit role.');
     }
 }

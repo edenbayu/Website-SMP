@@ -15,72 +15,73 @@
                     </div>
                     <div class="mb-3">
                         <label for="nip">NIP</label>
-                        <input type="text" name="nip" class="form-control" maxlength="50">
+                        <input type="text" name="nip" class="form-control" maxlength="50" required>
                     </div>
-                    <!-- <div class="mb-3">
-                        <label for="jabatan">Jabatan</label>
-                        <select name="jabatan">
-                            <option value="Kepala Sekolah">Kepala Sekolah</option>
-                            <option value="Administrasi">Administrasi</option>
-                            <option value="Satpam">Satpam</option>
+                    <div class="form-group mb-3">
+                        <label for="nip">Jabatan</label>
+                        <select name="jabatan" class="form-select" required> 
+                            <option value="Tata Usaha">Tata Usaha</option>
                             <option value="Tenaga Kebersihan">Tenaga Kebersihan</option>
+                            <option value="Tenaga Keamanan">Tenaga Keamanan</option>
                         </select>
-                    </div> -->
+                    </div>
                     <div class="mb-3">
                         <label for="tempat_lahir">Tempat Lahir</label>
-                        <input type="text" name="tempat_lahir" class="form-control" maxlength="255">
+                        <input type="text" name="tempat_lahir" class="form-control" maxlength="255" required>
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_lahir">Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" class="form-control">
+                        <input type="date" name="tanggal_lahir" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label for="jenis_kelamin">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" class="form-select">
-                            <option value="">Pilih Jenis Kelamin</option>
+                        <select name="jenis_kelamin" class="form-select" required>
                             <option value="Laki-laki">Laki-laki</option>
                             <option value="Perempuan">Perempuan</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="agama">Agama</label>
-                        <select name="agama" class="form-select">
-                            <option value="">Pilih Agama</option>
-                            <option value="">Islam</option>
-                            <option value="">Kristen</option>
-                            <option value="">Katolik</option>
-                            <option value="">Hindu</option>
-                            <option value="">Buddha</option>
-                            <option value="">Konghucu</option>
+                        <select name="agama" class="form-select" required>
+                            <option value="Islam">Islam</option>
+                            <option value="Kristen">Kristen</option>
+                            <option value="Katolik">Katolik</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Buddha">Buddha</option>
+                            <option value="Konghucu">Konghucu</option>
                         </select>
-                        <!-- <input type="text" name="agama" class="form-control" maxlength="100"> -->
                     </div>
                     <div class="mb-3">
                         <label for="alamat">Alamat</label>
-                        <input type="text" name="alamat" class="form-control" maxlength="255">
+                        <input type="text" name="alamat" class="form-control" maxlength="255" required>
                     </div>
-                    <!-- <div class="mb-3">
-                        <label for="jabatan">Jabatan</label>
-                        <input type="text" name="jabatan" class="form-control" maxlength="255">
-                    </div> -->
                     <div class="mb-3">
                         <label for="status">Status</label>
-                        <select name="status" class="form-select">
-                            <option value="">Pilih Status</option>
-                            <option value="">PNS</option>
-                            <option value="">PPPK</option>
-                            <option value="">GTT</option>
-                            <option value="">PTT</option>
+                        <select name="status" id="status-option" class="form-select" required>
+                            <option value="PNS">PNS</option>
+                            <option value="PPPK">PPPK</option>
+                            <option value="GTT">GTT</option>
+                            <option value="PTT">PTT</option>
                         </select>
-                        <!-- <input type="text" name="status" class="form-control" maxlength="50"> -->
                     </div>
                     <div class="mb-3">
-                        <label for="pangkat_golongan">Pangkat Golongan</label>
-                        <input type="text" name="pangkat_golongan" class="form-control" maxlength="50">
+                        <label for="pangkat_golongan" id="golongan-title">Pangkat Golongan</label>
+                        <input type="hidden" name="pangkat_golongan" id="golongan-hidden" class="form-control" disabled>
+                        <select name="pangkat_golongan" id="golongan-option" class="form-select" required>
+                            <option value="III/a">III/a</option>
+                            <option value="III/b">III/b</option>
+                            <option value="III/c">III/c</option>
+                            <option value="III/d">III/d</option>
+                            <option value="IV/a">IV/a</option>
+                            <option value="IV/b">IV/b</option>
+                            <option value="IV/c">IV/c</option>
+                            <option value="IV/d">IV/d</option>
+                            <option value="IV/e">IV/e</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="pendidikan">Pendidikan</label>
-                        <input type="text" name="pendidikan" class="form-control" maxlength="50">
+                        <input type="text" name="pendidikan" class="form-control" maxlength="50" required>
                     </div>
                 </div>
                 <div class="modal-footer">

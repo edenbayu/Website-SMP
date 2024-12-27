@@ -109,6 +109,7 @@
         <div class="form-section">
             <p class="intro">Select Role</p>
             <p style="margin-bottom: 30px">Pilih role yang ingin Anda gunakan untuk masuk.</p>
+            @if (count($roles) > 0)
             <form id="roleForm" action="{{ route('post_role') }}" method="POST" style="justify-items: center">
                 @csrf
                 <div class="row" style="width: 18rem;">
@@ -136,10 +137,22 @@
                                     </div>
                                 </div>
                             </label>
-                        </div>
+                        </div>                        
                     @endforeach
                 </div>
             </form>
+            @else
+                <div class="row" style="width: 22rem; height: 16rem; align-items: center;">
+                    <div class="col" style="justify-items: center">
+                        <h5 style="text-align: center; color: red;">Akun Anda saat ini tidak memiliki role yang tersedia. Silahkan hubungi admin akun sekolah.</h5>
+                        <form action={{ route('logout') }} method="POST" onsubmit="event.stopPropagation();">
+                            @csrf
+                            <button type="submit" class="btn btn-danger" style="width: 8rem;">Keluar</button>
+                        </form>
+                    </div>
+                </div>
+            @endif
+                
         </div>
     </div>
     <div class="footer">

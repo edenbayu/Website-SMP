@@ -31,6 +31,7 @@ Route::middleware('guest')->controller(LoginController::class)->group(function (
 Route::middleware('auth')->group(function () {
     Route::get('role', [LoginController::class, 'select_role'])->name('role');
     Route::post('role', [LoginController::class, 'set_role'])->name('post_role');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 // Group routes that require 'auth' middleware
@@ -39,12 +40,8 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::post('/profile/update_picture', [UserController::class, 'update_picture'])->name('update_picture');
     Route::post('/profile/update_password', [UserController::class, 'update_password'])->name('update_password');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-    
 
     //Ini untuk nge-protect routes biar khusus cuma diakses sama Admin
-
     Route::middleware('role:Admin|Super Admin')->group(function () {
 
         // Account CRUD routes
@@ -74,6 +71,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::put('/{id}/update', 'update')->name('guru.update');           
             Route::delete('/{id}', 'destroy')->name('guru.destroy');              
             Route::post('/{guruId}/generate-user', 'generateUser')->name('guru.generateUser'); 
+            Route::post('/{guruId}/edit-role', 'editRole')->name('guru.editRole'); 
         });
 
         // Admin data routes
@@ -133,7 +131,6 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     //disini kita protect Routesnya Guru yak!
 
     Route::middleware('role:Guru|Wali Kelas')->group(function () {
-
         Route::prefix('CP')->controller(SillabusController::class)->group(function () {
             Route::get('/{mapelId}', 'index')->name('silabus.index');
             Route::post('/{mapelId}/store', 'storeCP')->name('silabus.storeCP');
@@ -171,7 +168,6 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     });
 
     Route::middleware('role:Wali Kelas')->group(function () {
-
         Route::post('/generate-rapot/{semesterId}', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
 
         Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
@@ -205,6 +201,5 @@ Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPassw
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
-
 
 Route::post('/select-semester', [SemesterSelectionController::class, 'selectSemester'])->name('select.semester');

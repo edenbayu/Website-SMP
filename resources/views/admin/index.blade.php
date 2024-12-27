@@ -19,7 +19,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Impor Data Excel
+                        Impor Data Tenaga Kependidikan dari Excel
                     </h5>
                     <button type="button"
                         class="btn-close"
@@ -27,8 +27,8 @@
                 </div>
                 <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="my-3">
-                        <input type="file" name="file" class="form-control">
+                    <div class="m-3">
+                        <input type="file" name="file" class="form-control" accept=".xlsx" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -38,15 +38,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Import Form -->
-    <!-- <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="mb-3">
-            <input type="file" name="file" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Import</button>
-    </form> -->
 
     <!-- import button -->
     <button class="btn btn-primary mb-3 px-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
@@ -66,10 +57,8 @@
                 <th>Jabatan</th>
                 <th>Status</th>
                 <th>Pendidikan</th>
-                @role('Super Admin')
                 <th>Aksi</th>
                 <th>Akun</th>
-                @endrole
             </tr>
         </thead>
         <tbody>
@@ -80,29 +69,38 @@
                 <td class="text-start">{{ $a->nip }}</td>
                 <td>{{ $a->jenis_kelamin }}</td>
                 <td>{{ $a->jabatan}}</td>
-                <td>{{ $a->status }}</td>
+                <td>{{ (strpos(old('status', $a->status), "TT")) ? $a->status : $a->status.' - '.$a->pangkat_golongan }}</td>
                 <td>{{ $a->pendidikan }}</td>
-                @role('Super Admin')
                 <td>
                     <!-- Edit Class Modal Trigger -->
                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}" style="width: 5rem">Ubah</button>
-                    <form action="{{ route('admin.destroy', $a->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
-                    </form>
+                    @role('Super Admin')
+                        <form action="{{ route('admin.destroy', $a->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
+                        </form>
+                    @endrole
                 </td>
                 <td>
-                    @if(empty($a->id_user))
-                    <!-- Button to open the generate user modal -->
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $a->id }}" style="width: 5rem">
-                        Buat
-                    </button>
-                    @else
-                    <span> User ID: {{ $a->id_user }}</span>
-                    @endif
+                    @role('Super Admin')
+                        @if(empty($a->id_user))
+                            <!-- Button to open the generate user modal -->
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $a->id }}" style="width: 5rem">
+                                Buat
+                            </button>
+                        @else
+                            <span> User ID: {{ $a->id_user }}</span>
+                        @endif
+                    @endrole
+                    @role('Admin')
+                        @if(empty($a->id_user))
+                            Belum Ada
+                        @else
+                            Sudah Ada
+                        @endif
+                    @endrole
                 </td>
-                @endrole
             </tr>
             @include('admin.update')
             @endforeach
@@ -172,5 +170,85 @@
                 });
             });
         });
-    </script>    
+    </script>   
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const statusSelects = document.querySelectorAll('#status-option');
+            const pangkatGolonganSelects = document.querySelectorAll('#golongan-option');
+            const golonganTitles = document.querySelectorAll('#golongan-title');
+            const golonganHiddenElements = document.querySelectorAll('#golongan-hidden'); // Mengambil semua elemen dengan id yang sama
+
+            const optionsPNS = [
+                { value: "III/a", text: "III/a" },
+                { value: "III/b", text: "III/b" },
+                { value: "III/c", text: "III/c" },
+                { value: "III/d", text: "III/d" },
+                { value: "IV/a", text: "IV/a" },
+                { value: "IV/b", text: "IV/b" },
+                { value: "IV/c", text: "IV/c" },
+                { value: "IV/d", text: "IV/d" },
+                { value: "IV/e", text: "IV/e" },
+            ];
+
+            const optionsPPPK = [
+                { value: "IX", text: "IX" },
+                { value: "X", text: "X" },
+                { value: "XI", text: "XI" },
+                { value: "XII", text: "XII" },
+                { value: "XIII", text: "XIII" },
+                { value: "XIV", text: "XIV" },
+                { value: "XV", text: "XV" },
+                { value: "XVI", text: "XVI" },
+                { value: "XVII", text: "XVII" },
+            ];
+
+            statusSelects.forEach((statusSelect, index) => {
+                const pangkatGolonganSelect = pangkatGolonganSelects[index];
+                const golonganTitle = golonganTitles[index];
+                const golonganHiddenElement = golonganHiddenElements[index]; // Ambil elemen yang sesuai berdasarkan indeks
+
+                statusSelect.addEventListener('change', function () {
+                    const selectedStatus = this.value;
+
+                    if (selectedStatus === "PNS" || selectedStatus === "PPPK") {
+                        // Show and enable select and title
+                        pangkatGolonganSelect.hidden = false;
+                        pangkatGolonganSelect.disabled = false;
+                        golonganTitle.hidden = false;
+
+                        // Clear existing options
+                        pangkatGolonganSelect.innerHTML = "";
+
+                        // Populate options based on selected status
+                        const options = selectedStatus === "PNS" ? optionsPNS : optionsPPPK;
+
+                        options.forEach(option => {
+                            const opt = document.createElement('option');
+                            opt.value = option.value;
+                            opt.textContent = option.text;
+                            pangkatGolonganSelect.appendChild(opt);
+                        });
+
+                        // Disable golongan-hidden element
+                        if (golonganHiddenElement) {
+                            golonganHiddenElement.disabled = true;
+                            golonganHiddenElement.value = null; // Reset value to null
+                        }
+                    } else {
+                        // Hide and disable select and title
+                        pangkatGolonganSelect.hidden = true;
+                        pangkatGolonganSelect.disabled = true;
+                        golonganTitle.hidden = true;
+
+                        // Enable golongan-hidden element
+                        if (golonganHiddenElement) {
+                            golonganHiddenElement.disabled = false;
+                        }
+                    }
+                });
+            });
+        });
+
+
+    </script>
 @endpush

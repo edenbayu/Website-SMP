@@ -17,7 +17,6 @@ class CheckActiveRole
      */
     public function handle(Request $request, Closure $next)
     {
-        // auth()->user()->syncRoles(['Admin', 'Guru', 'Wali Kelas']);
         if (!(session('active_role') && in_array(session('active_role'), Auth::user()->getRoleNames()->toArray()))) {
             return redirect()->route('role');
         }

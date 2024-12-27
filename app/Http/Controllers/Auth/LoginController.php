@@ -32,7 +32,7 @@ class LoginController extends Controller
             // Log in user secara manual ke dalam session Auth
             Auth::login($user);
             $user_roles = Auth::user()->getRoleNames()->toArray();
-            if (count($user_roles) > 1) {
+            if (count($user_roles) != 1) {
                 return redirect()->route('role');
             } else {
                 session(['active_role' => $user_roles[0]]);
@@ -47,8 +47,12 @@ class LoginController extends Controller
     public function select_role()
     {        
         $user_roles = Auth::user()->getRoleNames()->toArray();
-        $user_roles = ['Super Admin', 'Admin', 'Guru', 'Wali Kelas'];
-        if (count($user_roles) > 1) {
+        $role_order = ['Super Admin', 'Admin', 'Guru', 'Wali Kelas'];
+        $role_order_map = array_flip($role_order);
+        usort($user_roles, function ($a, $b) use ($role_order_map) {
+            return $role_order_map[$a] - $role_order_map[$b];
+        });
+        if (count($user_roles) != 1) {
             return view('auth.role', [
                 'roles' => $user_roles,
             ]);
