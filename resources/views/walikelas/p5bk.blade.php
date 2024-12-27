@@ -128,7 +128,7 @@
                 .catch(error => console.error('Error:', error));
         });
 
-        form.addEventListener('submit', function(event) {
+        document.getElementById('submitButton').addEventListener('click', function(event) {
             event.preventDefault();
 
             // Save P5BK data via AJAX
@@ -147,11 +147,6 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
-    });
-</script>
-<script>
-    document.getElementById('submitButton').addEventListener('click', function() {
-        document.getElementById('p5bkFormData').submit();
     });
 </script>
 @endpush
