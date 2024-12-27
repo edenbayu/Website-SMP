@@ -16,7 +16,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="username-{{ $a->id }}" class="form-label">Nama Pengguna</label>
-                            <input type="text" class="form-control" id="username-{{ $a->id }}" name="username" value="{{ $a->nip }}" required>
+                            <input type="hidden" class="form-control" id="username-{{ $a->id }}" name="username" value="{{ $a->nip }}" required>
+                            <input type="text" class="form-control" placeholder="{{ $a->nip }}" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="password-{{ $a->id }}" class="form-label">Kata Sandi</label>
