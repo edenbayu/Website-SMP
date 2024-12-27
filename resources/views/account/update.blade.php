@@ -38,7 +38,7 @@
                     <!-- Role Selection Dropdown -->
                     <div class="form-group mb-3">
                         <label for="roles">Role</label>
-                        <select class="role-multiple form-select" name="roles[]" multiple="multiple" required>
+                        <select class="role-multiple form-select" name="roles[]" multiple="multiple">
                             @foreach(["Super Admin", "Admin", "Guru", "Wali Kelas", "Siswa"] as $role)
                                 <option value="{{ $role }}" {{ in_array($role, $account->getRoleNames()->toArray()) ? 'selected' : '' }}>{{ $role }}</option>
                             @endforeach
