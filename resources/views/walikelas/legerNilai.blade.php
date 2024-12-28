@@ -44,7 +44,7 @@
                 @foreach ($subjects as $subject)
                 <th class="text-start">{{ $subject }}</th>
                 @endforeach
-                @foreach ($subjects as $subject)
+                {{-- @foreach ($subjects as $subject)
                 <th class="text-start">{{ $subject }}</th>
                 @endforeach
                 @foreach ($subjects as $subject)
@@ -55,7 +55,7 @@
                 @endforeach
                 @foreach ($subjects as $subject)
                 <th class="text-start">{{ $subject }}</th>
-                @endforeach
+                @endforeach --}}
                 <th>Buat Rapor</th>
             </tr>
         </thead>
@@ -72,7 +72,7 @@
                 @foreach ($subjects as $subject)
                 <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach
-                @foreach ($subjects as $subject)
+                {{-- @foreach ($subjects as $subject)
                 <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach
                 @foreach ($subjects as $subject)
@@ -83,7 +83,7 @@
                 @endforeach
                 @foreach ($subjects as $subject)
                 <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
+                @endforeach --}}
                 <td class="text-start">
                     <!-- Modal Trigger Buttons -->
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}" style="width:10.5rem">
@@ -214,7 +214,7 @@
 @endif
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
 <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/fixedColumns.dataTables.js"></script>
