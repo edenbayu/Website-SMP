@@ -181,11 +181,11 @@ class PenilaianController extends Controller
             ->get();
 
         $penilaian = Penilaian::join('mapel_kelas as d', 'd.mapel_id', '=', 'penilaians.mapel_kelas_id')
-            ->where('d.id', $mapelKelasId)
+            // ->where('d.id', $mapelKelasId)
             ->where('penilaians.id', $penilaianId)
             ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan')
-            ->get();
-
+            ->first();
+            
         return view('penilaian.buka', compact('penilaian_siswas', 'mapelKelasId', 'penilaian'));
     }
 
