@@ -245,7 +245,11 @@
         $('#example').DataTable({
             language: {
                 url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
-            }
+            },
+            columnDefs: [
+                { width: "10%", targets: 6 }, 
+                { width: "30%", targets: 7 }, // Kolom "Aksi"
+            ],
         });
     });
 </script>
