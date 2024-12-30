@@ -1,8 +1,9 @@
 @extends('layout.layout')
 
 @push('style')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">  
 @endpush
 
 @section('content')
@@ -43,17 +44,14 @@
         </div>
     </div>
 
-    <!-- @foreach ($penilaians as $p)
-    <p>{{ $p->withpenilaian_siswa}}</p>
-    @endforeach -->
     <!-- Penilaian List -->
 
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
                 <th class="text-start">No</th>
-                {{-- <th>Tanggal</th> --}}
                 <th>Judul</th>
+                <th>Tanggal</th>
                 <th>Tipe</th>
                 <th class="text-start">KKTP</th>
                 <th>Status</th>
@@ -65,12 +63,12 @@
             @foreach ($penilaians as $penilaian)
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
-                {{-- <td>{{ $penilaian->created_at}}</td> --}}
                 <td>{{ $penilaian->judul }}</td>
+                <td>{{ $penilaian->tanggal }}</td>
                 <td>{{ $penilaian->tipe }}</td>
                 <td class="text-start">{{ $penilaian->kktp }}</td>
                 <td>{{ $penilaian->penilaian_siswa->where('status', '=', 1)->count()}}/{{ $penilaian->penilaian_siswa->count()}}</td>
-                <td class="text-start">{{ $penilaian->tp->cp->nomor}}.{{ $penilaian->tp->nomor}}</td>
+                <td class="text-start">{{ $penilaian->tp_ids }}</td>
                 <td>
                     <a href="{{ route('penilaian.buka', [$mapelKelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian
@@ -98,11 +96,21 @@
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="tipe{{ $penilaian->id }}" class="form-label">Tipe</label>
-                                    <input type="text" class="form-control" id="tipe{{ $penilaian->id }}" name="tipe" value="{{ $penilaian->tipe }}" required>
+                                    {{-- <input type="text" class="form-control" id="tipe{{ $penilaian->id }}" name="tipe" value="{{ $penilaian->tipe }}" required> --}}
+                                    <select class="form-select" id="tipe" name="tipe" required>
+                                        <option value="Tugas" {{ $penilaian->tipe == "Tugas" ? 'selected' : '' }}>Tugas</option>
+                                        <option value="UH" {{ $penilaian->tipe == "UH" ? 'selected' : '' }}>UH</option>
+                                        <option value="STS" {{ $penilaian->tipe == "STS" ? 'selected' : (in_array("STS", $typesExist) ? 'disabled' : '') }}>STS</option>
+                                        <option value="SAS" {{ $penilaian->tipe == "SAS" ? 'selected' : (in_array("SAS", $typesExist) ? 'disabled' : '') }}>SAS</option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="judul{{ $penilaian->id }}" class="form-label">Judul</label>
                                     <input type="text" class="form-control" id="judul{{ $penilaian->id }}" name="judul" value="{{ $penilaian->judul }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tanggal">Tanggal</label>
+                                    <input type="date" name="tanggal" class="form-control" value="{{ $penilaian->tanggal }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="kktp{{ $penilaian->id }}" class="form-label">KKTP</label>
@@ -113,14 +121,14 @@
                                     <textarea class="form-control" id="keterangan{{ $penilaian->id }}" name="keterangan" required>{{ $penilaian->keterangan }}</textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="tp_id" class="form-label">TP</label>
-                                    <select class="form-select" id="tp_id" name="tp_id" required>
-                                        <option value="">Select TP</option>
+                                    <label for="tp_ids" class="form-label">TP</label>
+                                    <select class="tp_id-multiple form-select" name="tp_ids[]" multiple="multiple" required>
                                         @foreach ($tpOptions as $tp)
-                                        <option value="{{ $tp->id }}">{{ $tp->nama }}</option>
+                                            <option value="{{ $tp->id }}" {{ in_array($tp->id, $penilaian->array_tp_ids) ? 'selected' : '' }}>{{ $tp->formatted_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Simpan</button>
@@ -147,16 +155,20 @@
                         <div class="mb-3">
                             <label for="tipe" class="form-label">Tipe</label>
                             <select class="form-select" id="tipe" name="tipe" required>
-                                <option value="">Pilih Tipe</option>
+                                <option value="" disabled selected hidden>Pilih Tipe</option>
                                 <option value="Tugas">Tugas</option>
                                 <option value="UH">UH</option>
-                                <option value="STS">STS</option>
-                                <option value="SAS">SAS</option>
+                                <option value="STS" {{ in_array("STS", $typesExist) ? 'disabled' : '' }}>STS</option>
+                                <option value="SAS" {{ in_array("SAS", $typesExist) ? 'disabled' : '' }}>SAS</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="judul" class="form-label">Judul</label>
                             <input type="text" class="form-control" id="judul" name="judul" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tanggal">Tanggal</label>
+                            <input type="date" name="tanggal" class="form-control" value="" required>
                         </div>
                         <div class="mb-3">
                             <label for="kktp" class="form-label">KKTP</label>
@@ -167,11 +179,10 @@
                             <textarea class="form-control" id="keterangan" name="keterangan" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="tp_id" class="form-label">TP</label>
-                            <select class="form-select" id="tp_id" name="tp_id" required>
-                                <option value="">Pilih TP</option>
+                            <label for="tp_ids" class="form-label">TP</label>
+                            <select class="tp_id-multiple form-select" name="tp_ids[]" multiple="multiple" required>
                                 @foreach ($tpOptions as $tp)
-                                <option value="{{ $tp->id }}">{{$tp->cp->nomor}}.{{$tp->nomor}} | {{ $tp->nama }}</option>
+                                    <option value="{{ $tp->id }}">{{ $tp->formatted_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -222,6 +233,7 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
 <script>
     $(document).ready(function() {
         // Cek apakah DataTable sudah diinisialisasi
@@ -256,6 +268,39 @@
                     // Mengirim formulir untuk menghapus data
                     event.target.closest('form').submit();
                 }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Iterasi melalui setiap modal
+        $('.modal').each(function () {
+            const modal = $(this);
+            const selectElements = modal.find('.tp_id-multiple');
+
+            selectElements.each(function () {
+                const selectElement = $(this); // Referensi elemen <select> saat ini
+
+                // Ambil opsi yang sudah terpilih saat inisialisasi
+                // const nonRemovableValues = selectElement.find('option:selected').map(function () {
+                //     return this.value;
+                // }).get();
+
+                // Inisialisasi Select2 dengan dropdownParent sesuai modal
+                selectElement.select2({
+                    dropdownParent: modal,
+                    width: '100%',
+                    placeholder: "Pilih TP"
+                });
+
+                // Cegah penghapusan opsi yang sudah terpilih
+                // selectElement.on('select2:unselecting', function (e) {
+                //     const value = e.params.args.data.id; // ID dari opsi yang akan dihapus
+                //     if (nonRemovableValues.includes(value)) {
+                //         e.preventDefault(); // Cegah penghapusan
+                //     }
+                // });
             });
         });
     });

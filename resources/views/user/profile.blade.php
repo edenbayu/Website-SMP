@@ -112,6 +112,9 @@
                     </p>
                 </form>
                 <p><strong>Nama</strong> : {{ auth()->user()->name }}</p>
+                @if (isset($data->gelar) && !empty($data->gelar))
+                    <p><strong>Nama dan Gelar</strong> : {{ trim($data->gelar_depan." ".$data->nama."".$data->gelar_belakang) }}</p>
+                @endif
                 @role('Super Admin|Admin|Guru|Wali Kelas')
                     <p><strong>NIP</strong> : {{ $data->nip ?? '-' }}</p>
                     <p><strong>Jabatan</strong> : {{ $data->jabatan ?? '-' }}</p>

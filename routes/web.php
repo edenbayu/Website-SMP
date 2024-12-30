@@ -38,8 +38,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'check_role'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-    Route::post('/profile/update_picture', [UserController::class, 'update_picture'])->name('update_picture');
-    Route::post('/profile/update_password', [UserController::class, 'update_password'])->name('update_password');
+    Route::post('/profile/update-picture', [UserController::class, 'update_picture'])->name('update_picture');
+    Route::post('/profile/update-password', [UserController::class, 'update_password'])->name('update_password');
 
     //Ini untuk nge-protect routes biar khusus cuma diakses sama Admin
     Route::middleware('role:Admin|Super Admin')->group(function () {
@@ -134,21 +134,21 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     //disini kita protect Routesnya Guru yak!
 
     Route::middleware('role:Guru|Wali Kelas')->group(function () {
-        Route::prefix('CP')->controller(SillabusController::class)->group(function () {
+        Route::prefix('cp')->controller(SillabusController::class)->group(function () {
             Route::get('/{mapelId}', 'index')->name('silabus.index');
             Route::post('/{mapelId}/store', 'storeCP')->name('silabus.storeCP');
             Route::post('/{mapelId}/update/{cpId}', 'updateCP')->name('silabus.updateCP');
             Route::delete('/{mapelId}/delete/{cpId}', 'deleteCP')->name('silabus.deleteCP');
         });
 
-        Route::prefix('TP')->controller(SillabusController::class)->group(function () {
+        Route::prefix('tp')->controller(SillabusController::class)->group(function () {
             Route::get('/{mapelId}/cp/{cpId}', 'bukaTP')->name('bukaTP');
             Route::post('/{mapelId}/cp/{cpId}/store','storeTP')->name('silabus.storeTP');
             Route::post('/{mapelId}/cp/{cpId}/{tpId}/update', 'updateTP')->name('silabus.updateTP');
             Route::delete('/{mapelId}/cp/{cpId}/{tpId}/delete', 'deleteTP')->name('silabus.deleteTP');
         });
 
-        Route::prefix('Penilaian/{mapelKelasId}')->controller(PenilaianController::class)->group(function () {
+        Route::prefix('penilaian/{mapelKelasId}')->controller(PenilaianController::class)->group(function () {
             Route::get('/', 'index')->name('penilaian.index');
             Route::post('/store', 'storePenilaian')->name('penilaian.store');
             Route::put('/{penilaianId}/update', 'updatePenilaian')->name('penilaian.update');
@@ -158,12 +158,12 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::get('/buku-nilai', 'bukuNilai')->name('penilaian.bukuNilai');
         });
 
-        Route::prefix('Penilaian/Ekskul/{kelasId}/{mapelId}')->controller(PenilaianController::class)->group(function () {
+        Route::prefix('penilaian/ekskul/{kelasId}/{mapelId}')->controller(PenilaianController::class)->group(function () {
             Route::get('/',  'penilaianEkskul')->name('penilaian.ekskul');
             Route::post('/update', 'updateAllPenilaianEkskul')->name('penilaian.ekskul.update.all');
         });
 
-        Route::prefix('Komentar/{mapelId}')->controller(KomentarController::class)->group(function () {
+        Route::prefix('komentar/{mapelId}')->controller(KomentarController::class)->group(function () {
             Route::get('/', 'index')->name('komentar.index');
             Route::post('/update', 'updateKomentar')->name('komentar.update');
         });
@@ -171,18 +171,18 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     });
 
     Route::middleware('role:Wali Kelas')->group(function () {
-        Route::post('/generate-rapot/{semesterId}', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
+        Route::post('/generate-rapor/{semesterId}', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
 
-        Route::prefix('pesertadidik')->controller(PesertaDidikController::class)->group(function () {
+        Route::prefix('peserta-didik')->controller(PesertaDidikController::class)->group(function () {
             Route::post('/attendance/fetch', 'fetchAttendance')->name('pesertadidik.fetchAttendance');
             Route::post('/attendance/save', 'saveAttendanceAjax')->name('pesertadidik.saveAttendanceAjax');
-            Route::get('/bukuAbsen/{semesterId}', 'bukuAbsen')->name('pesertadidik.bukuAbsen');
+            Route::get('/buku-absen/{semesterId}', 'bukuAbsen')->name('pesertadidik.bukuAbsen');
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
-            Route::get('/legerNilai/{kelasId}/{semesterId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
-            Route::get('/attendanceIndex/{semesterId}', 'attendanceIndex')->name('pesertadidik.attendanceIndex');
+            Route::get('/leger-nilai/{kelasId}/{semesterId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');
+            Route::get('/attendance-index/{semesterId}', 'attendanceIndex')->name('pesertadidik.attendanceIndex');
             Route::get('/save-attendance', 'attendanceIndex')->name('pesertadidik.storeAttendance');
-            Route::get('/P5BK/{semesterId}', 'p5bkIndex')->name('p5bk.index');
-            Route::post('fetchP5BK', 'fetchP5BK')->name('p5bk.fetch');
+            Route::get('/p5bk/{semesterId}', 'p5bkIndex')->name('p5bk.index');
+            Route::post('fetch-p5bk', 'fetchP5BK')->name('p5bk.fetch');
             Route::post('save/{semesterId}', 'saveP5BKAjax')->name('p5bk.save');
         });
     });

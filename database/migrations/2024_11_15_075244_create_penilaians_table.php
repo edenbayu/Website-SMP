@@ -16,9 +16,9 @@ return new class extends Migration
             $table->enum('tipe', ['Tugas', 'UH', 'STS', 'SAS']);
             $table->string('judul');
             $table->integer('kktp');
+            $table->date('tanggal');
             $table->string('keterangan');
-            $table->foreignId('tp_id')->nullable()->constrained('t_p_s')->onDelete('set null');
-            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
+            $table->foreignId('mapel_kelas_id')->constrained('mapel_kelas')->onDelete('cascade');
             $table->timestamps();
         }); 
     }

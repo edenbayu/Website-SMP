@@ -9,27 +9,27 @@ class Penilaian extends Model
     protected $fillable = [
         'tipe',
         'judul',
+        'tanggal',
         'kktp',
         'keterangan',
-        'tp_id',
-        'kelas_id'
+        'mapel_kelas_id'
     ];
 
     /**
      * Get the related TP model.
      */
-    public function tp()
+    public function tps()
     {
-        return $this->belongsTo(TP::class, 'tp_id');
-    }
-
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class, 'kelas_id');
+        return $this->belongsToMany(TP::class, 'penilaian_t_p_s', 'penilaian_id', 'tp_id');
     }
 
     public function penilaian_siswa()
     {
         return $this->hasMany(PenilaianSiswa::class);
+    }
+
+    public function penilaian_tp()
+    {
+        return $this->hasMany(PenilaianTP::class);
     }
 }

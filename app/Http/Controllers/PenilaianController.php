@@ -10,6 +10,7 @@ use App\Models\Siswa;
 use App\Models\PenilaianSiswa;
 use App\Models\PenilaianEkskul;
 use App\Models\MapelKelas;
+use App\Models\PenilaianTP;
 use Illuminate\Support\Facades\DB;
 
 class PenilaianController extends Controller
@@ -24,30 +25,57 @@ class PenilaianController extends Controller
             ->where('kelas_siswa.kelas_id', $mapelKelas->kelas_id)
             ->get();
 
-        // Get Penilaian data based on the provided MapelKelas ID
-        $penilaians = Penilaian::join('t_p_s as b', 'b.id', '=', 'penilaians.tp_id')
-            ->join('c_p_s as c', 'c.id', '=', 'b.cp_id')
-            ->join('mapel_kelas as d', 'd.mapel_id', '=', 'c.mapel_id')
-            ->where('d.id', $mapelKelasId)
-            ->where('penilaians.kelas_id', $mapelKelas->kelas_id)
-            ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan', 'penilaians.tp_id')
-            ->get();
+        $penilaians = Penilaian::join('mapel_kelas as b', 'b.id', '=', 'penilaians.mapel_kelas_id')
+            ->join('penilaian_t_p_s as c', 'c.penilaian_id', '=', 'penilaians.id') // Join ke tabel pivot
+            ->join('t_p_s as t', 't.id', '=', 'c.tp_id') // Join ke tabel t_p_s
+            ->join('c_p_s as cp', 'cp.id', '=', 't.cp_id') // Join ke tabel c_p_s
+            ->where('b.id', $mapelKelasId)
+            ->select(
+                'penilaians.id',
+                'penilaians.tipe',
+                'penilaians.judul',
+                'penilaians.kktp',
+                'penilaians.tanggal',
+                'penilaians.keterangan',
+                DB::raw("GROUP_CONCAT(CONCAT(cp.nomor, '.', t.nomor) ORDER BY cp.nomor ASC, t.nomor ASC SEPARATOR ', ') as tp_ids"), // Gabungkan c_p_s.nomor dan t_p_s.nomor
+                DB::raw("GROUP_CONCAT(c.tp_id ORDER BY cp.nomor ASC, t.nomor ASC) as array_tp_ids_raw") // Gabungkan tp_id dalam urutan yang sama
+            )
+            ->groupBy('penilaians.id') // Grouping
+            ->orderBy('penilaians.tanggal', 'desc') // Urutkan berdasarkan tanggal
+            ->get()
+            ->map(function ($item) {
+                // Ubah string array_tp_ids_raw menjadi array
+                $item->array_tp_ids = explode(',', $item->array_tp_ids_raw);
+                unset($item->array_tp_ids_raw); // Hapus field raw untuk kebersihan data
+                return $item;
+            });
+
+
+        // dd($penilaians);
 
         // Get the Kelas record related to the MapelKelas
         $kelas = Kelas::findOrFail($mapelKelas->kelas_id);
 
         // Options for TP, based on the provided MapelKelas ID
-        $tpOptions = TP::select('t_p_s.id', 't_p_s.nama', 't_p_s.nomor', 't_p_s.cp_id')
-            ->join('c_p_s', 'c_p_s.id', '=', 't_p_s.cp_id')
-            ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'c_p_s.mapel_id')
-            ->where('mapel_kelas.id', $mapelKelasId)
-            ->get();
+        $tpOptions = TP::select(
+            't_p_s.id',
+            DB::raw("CONCAT(c_p_s.nomor, '.', t_p_s.nomor, ' ', t_p_s.nama) as formatted_name") // Format string sesuai kebutuhan
+        )
+        ->join('c_p_s', 'c_p_s.id', '=', 't_p_s.cp_id')
+        ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'c_p_s.mapel_id')
+        ->where('mapel_kelas.id', $mapelKelasId)
+        ->orderBy('c_p_s.nomor') // Urutkan berdasarkan nomor cps
+        ->orderBy('t_p_s.nomor') // Urutkan berdasarkan nomor tps
+        ->get();
+
+        $typesExist = array_unique($penilaians->pluck('tipe')->toArray());
 
         // dd($penilaians);
 
         // Return the view with the necessary data
         return view('penilaian.index', [
             'penilaians' => $penilaians,
+            'typesExist' => $typesExist,
             'kelas' => $kelas,
             'tpOptions' => $tpOptions,
             'getSiswaClassData' => $getSiswaClassData,
@@ -62,9 +90,10 @@ class PenilaianController extends Controller
         $request->validate([
             'tipe' => 'required|string|max:255',
             'judul' => 'required|string|max:255',
+            'tanggal' => 'required',
             'kktp' => 'required|integer',
             'keterangan' => 'required|string|max:255',
-            'tp_id' => 'required',
+            'tp_ids' => 'required',
         ]);
 
         $mapelkelas = MapelKelas::find($mapelKelasId);
@@ -73,11 +102,13 @@ class PenilaianController extends Controller
         $penilaian = Penilaian::create([
             'tipe' => $request->tipe,
             'judul' => $request->judul,
+            'tanggal' => $request->tanggal,
             'kktp' => $request->kktp,
             'keterangan' => $request->keterangan,
-            'tp_id' => $request->tp_id,
-            'kelas_id' => $mapelkelas->kelas_id
+            'mapel_kelas_id' => $mapelKelasId
         ]);
+
+        $penilaian->tps()->sync($request->tp_ids);
 
         $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
             ->where('kelas_siswa.kelas_id', $mapelkelas->kelas_id)
@@ -105,21 +136,24 @@ class PenilaianController extends Controller
         $request->validate([
             'tipe' => 'required|string|max:255',
             'judul' => 'required|string|max:255',
-            'kktp' => 'required|integer|max:2|min:2',
+            'tanggal' => 'required',
+            'kktp' => 'required|integer',
             'keterangan' => 'required|string|max:255',
-            'tp_id' => 'required'
+            'tp_ids' => 'required',
         ]);
-
         // Find the Penilaian record by its ID
         $penilaian = Penilaian::findOrFail($penilaianId);
 
         // Update the Penilaian record
         $penilaian->tipe = $request->input('tipe');
         $penilaian->judul = $request->input('judul');
+        $penilaian->tanggal = $request->input('tanggal');
         $penilaian->kktp = $request->input('kktp');
         $penilaian->keterangan = $request->input('keterangan');
-        $penilaian->tp_id = $request->input('tp_id');
+        $penilaian->mapel_kelas_id = $mapelKelasId;
         $penilaian->save();
+
+        $penilaian->tps()->sync($request->tp_ids);
 
         // Redirect with success message
         return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil diperbarui.');
@@ -146,11 +180,9 @@ class PenilaianController extends Controller
             ->select('penilaian_siswa.id', 'penilaian_siswa.status', 'penilaian_siswa.nilai', 'penilaian_siswa.remedial', 'penilaian_siswa.nilai_akhir', 'penilaian_siswa.penilaian_id', 'penilaian_siswa.siswa_id', 'siswas.nama')
             ->get();
 
-        $penilaians = Penilaian::join('t_p_s as b', 'b.id', '=', 'penilaians.tp_id')
-            ->join('c_p_s as c', 'c.id', '=', 'b.cp_id')
-            ->join('mapel_kelas as d', 'd.mapel_id', '=', 'c.mapel_id')
+        $penilaians = Penilaian::join('mapel_kelas as d', 'd.mapel_id', '=', 'penilaians.mapel_kelas_id')
             ->where('d.id', $mapelKelasId)
-            ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan', 'penilaians.tp_id')
+            ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan')
             ->get();
 
         return view('penilaian.buka', compact('penilaian_siswas', 'mapelKelasId', 'penilaianId', 'penilaians'));
@@ -203,12 +235,8 @@ class PenilaianController extends Controller
         $mapelKelas = MapelKelas::find($mapelKelasId);
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
             ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
-            ->join('t_p_s as d', 'd.id', '=', 'b.tp_id')
-            ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
-            ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
-            ->join('kelas as g', 'g.id', '=', 'f.kelas_id')
-            ->where('f.id', $mapelKelasId)
-            ->where('b.kelas_id', $mapelKelas->kelas_id)
+            ->join('mapel_kelas as f', 'f.mapel_id', '=', 'b.mapel_kelas_id')
+            ->where('f.kelas_id', $mapelKelas->kelas_id)
             ->select(
                 'c.nama',
                 'c.nisn',

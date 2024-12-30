@@ -77,7 +77,7 @@ class MapelController extends Controller
             'guru_id' => 'required|exists:gurus,id', // Ensure 'guru_id' exists in the gurus table
             'semester_id' => 'required|exists:semesters,id', // Ensure 'semester_id' exists in the semesters table
         ]);
-       
+        
         // Create a new Mata Pelajaran (Mapel) using the validated data
         $mapel = Mapel::create([
             'nama' => $request->nama,

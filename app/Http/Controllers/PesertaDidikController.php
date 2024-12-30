@@ -155,7 +155,8 @@ class PesertaDidikController extends Controller
     
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
             ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
-            ->join('t_p_s as d', 'd.id', '=', 'b.tp_id')
+            ->join('penilaian_t_p_s as j', 'j.penilaian_id', '=', 'b.id')
+            ->join('t_p_s as d', 'd.id', '=', 'j.tp_id')
             ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
             ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
             ->join('mapels as z', 'z.id', '=', 'f.mapel_id')
@@ -164,7 +165,6 @@ class PesertaDidikController extends Controller
             ->join('users as i', 'i.id', '=', 'h.id_user')
             ->where('i.id', $user->id) 
             ->where('g.id', $kelasId)
-            ->where('b.kelas_id', $kelasId) 
             ->select(
                 'c.id as siswa_id',  // Add siswa_id to the select query
                 'c.nama as siswa_name',
@@ -229,26 +229,31 @@ class PesertaDidikController extends Controller
         foreach ($subjects as $subject => $grades) {
             $komentarCK = Penilaian::query()
                 ->select('tps.nama')
-                ->join('t_p_s as tps', 'tps.id', '=', 'penilaians.tp_id')
+                ->join('penilaian_t_p_s as a', 'a.penilaian_id', '=', 'penilaians.id')
+                ->join('t_p_s as tps', 'tps.id', '=', 'a.tp_id')
                 ->join('c_p_s as cps', 'cps.id', '=', 'tps.cp_id')
-                ->join('mapels as mapels', 'mapels.id', '=', 'cps.mapel_id')
+                ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+                ->join('mapels as mapels', 'mapels.id', '=', 'mk.mapel_id') // Mapel join dari mapel_kelas
                 ->where('mapels.nama', '=', $subject)
-                ->where(function ($query) {
+                ->where(function ($query) use ($subject) {
                     $query->where('penilaians.tipe', '=', 'STS')
-                        ->orWhere('penilaians.created_at', '<', function ($subquery) {
-                            $subquery->selectRaw('MIN(created_at)')
+                        ->orWhere('penilaians.tanggal', '<', function ($subquery) use ($subject) {
+                            $subquery->selectRaw('MIN(penilaians.tanggal)')
                                 ->from('penilaians')
-                                ->where('tipe', '=', 'STS');
+                                ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+                                ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                                ->where('m.nama', '=', $subject)
+                                ->where('penilaians.tipe', '=', 'STS');
                         });
                 })
-                ->groupBy('tps.id', 'tps.nama')
+                ->groupBy('tps.id', 'tps.nama') // Mengelompokkan berdasarkan kolom 'tps.id' dan 'tps.nama'
                 ->get();
-    
+        
             // Store the retrieved 'nama' values in komentarRapot
             foreach ($komentarCK as $komentarItem) {
                 $komentarRapot[$subject][] = $komentarItem->nama;
             }
-        }
+        }        
     
         // Fetch extracurricular (ekskul) data
         $ekskulData = DB::table('penilaian_ekskuls as a')
@@ -282,15 +287,24 @@ class PesertaDidikController extends Controller
         ->select('dimensi', 'capaian')
         ->get();
 
-        $namaWali = Guru::join('users', 'users.id', '=', 'gurus.id_user')
+        $ttd = [];
+        $guru = Guru::join('users', 'users.id', '=', 'gurus.id_user')
             ->where('users.id', $user->id)
-            ->value('gurus.nama');
+            ->first();
+        $ttd["walikelas"] = trim($guru->gelar_depan." ".$guru->nama."".$guru->gelar_belakang);
+        $ttd["nip_walikelas"] = $guru->nip;
+        $kepsek = Guru::where('jabatan', 'Kepala Sekolah')
+            ->first();
+        $ttd["kepsek"] = trim($kepsek->gelar_depan." ".$kepsek->nama."".$kepsek->gelar_belakang);
+        $ttd["nip_kepsek"] = $kepsek->nip;
 
         $semesterData = Semester::find($semesterId);
 
+        // dd($komentarRapot);
+
         // Pass the data to the view for PDF generation
         $pdf = PDF::loadView('rapot', [
-            'namaWali' => $namaWali,
+            'ttd' => $ttd,
             'nisn' => $siswaData->nisn,
             'semester' => $semesterData->semester,
             'tahunAjaran' => $semesterData->tahun_ajaran,
@@ -307,7 +321,7 @@ class PesertaDidikController extends Controller
         ]);
     
         // Return the PDF as a stream
-        return $pdf->stream("rapot_mid_{$studentName}.pdf");
+        return $pdf->stream("RAPOR TENGAH SEMESTER_".strtoupper($studentName)."_{$siswaData->nisn}.pdf");
     }
 
     // Index function for displaying the form with siswa options

@@ -55,8 +55,12 @@ class GuruController extends Controller
             'pangkat_golongan' => 'nullable|string|max:50',
             'pendidikan' => 'nullable|string|max:50',
         ]);
+        $data = $request->all();
+        $data['gelar'] = trim($data['gelar_depan']) . '|, ' . trim($data['gelar_belakang']);
+        unset($data['gelar_depan']); // Hapus gelar_depan
+        unset($data['gelar_belakang']); // Hapus gelar_belakang
 
-        Guru::create($request->all());
+        Guru::create($data);
         return redirect()->route('guru.index')->with('success', 'Guru created successfully!');
     }
 
@@ -78,7 +82,12 @@ class GuruController extends Controller
             'pendidikan' => 'nullable|string|max:50',
         ]);
 
-        $guru->update($request->all());
+        $data = $request->all();
+        $data['gelar'] = trim($data['gelar_depan']) . '|, ' . trim($data['gelar_belakang']);
+        unset($data['gelar_depan']); // Hapus gelar_depan
+        unset($data['gelar_belakang']); // Hapus gelar_belakang
+
+        $guru->update($data);
         return redirect()->route('guru.index')->with('success', 'Guru updated successfully!');
     }
 
