@@ -236,7 +236,7 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li class="sidebar-item list-except">
+                        {{-- <li class="sidebar-item list-except">
                             <a href="#" class="sidebar-link collapsed" data-bs-target="#komentar-ck" data-bs-toggle="collapse" aria-expanded="false">
                                 <i class="fa-solid fa-comment"></i>
                                 Komentar CK
@@ -250,7 +250,7 @@
                                 </li>
                                 @endforeach
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="sidebar-item">
                             <a href="#" class="sidebar-link">
                                 <i class="fa-solid fa-book-open"></i>
