@@ -14,16 +14,16 @@ function setActiveLink() {
     // Loop melalui setiap link di sidebar
     document.querySelectorAll('.sidebar-nav li.sidebar-item a').forEach(function(link) {
         const linkPath = link.getAttribute('href');
-
+        const path = linkPath.split("/").slice(3).join("/"); // Hapus domain
         // Hapus kelas 'active' dari semua item awalnya
         link.closest('li.sidebar-item').classList.remove('active');
         
         // Jika path link cocok dengan path tersimpan, tambahkan kelas 'active'
-        if (window.location.href === linkPath) {
+        console.log(path);
+        // console.log(linkPath.includes(window.location.pathname))
+        if (window.location.href === linkPath || window.location.href.includes(path) && path) {
             link.closest('li.sidebar-item').classList.add('active');
-            console.log(linkPath);
-        console.log(window.location.href);
-
+            
             // Jika link ini berada di dalam dropdown, buka dropdown tersebut
             const dropdown = link.closest('.sidebar-dropdown');
             if (dropdown) {
