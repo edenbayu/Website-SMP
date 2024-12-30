@@ -40,7 +40,7 @@ class PenilaianController extends Controller
                 DB::raw("GROUP_CONCAT(CONCAT(cp.nomor, '.', t.nomor) ORDER BY cp.nomor ASC, t.nomor ASC SEPARATOR ', ') as tp_ids"), // Gabungkan c_p_s.nomor dan t_p_s.nomor
                 DB::raw("GROUP_CONCAT(c.tp_id ORDER BY cp.nomor ASC, t.nomor ASC) as array_tp_ids_raw") // Gabungkan tp_id dalam urutan yang sama
             )
-            ->groupBy('penilaians.id') // Grouping
+            ->groupBy('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan') // Grouping
             ->orderBy('penilaians.tanggal', 'desc') // Urutkan berdasarkan tanggal
             ->get()
             ->map(function ($item) {
