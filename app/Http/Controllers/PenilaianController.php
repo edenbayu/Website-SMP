@@ -183,7 +183,7 @@ class PenilaianController extends Controller
         $penilaian = Penilaian::where('penilaians.id', $penilaianId)
             ->select('penilaians.id', 'penilaians.tipe', 'penilaians.judul', 'penilaians.kktp', 'penilaians.keterangan')
             ->first();
-
+            
         return view('penilaian.buka', compact('penilaian_siswas', 'mapelKelasId', 'penilaian'));
     }
 
