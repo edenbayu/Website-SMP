@@ -117,7 +117,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::post('/ajax', 'ajax')->name('kalenderakademik.ajax');
         });
 
-        Route::prefix('kalender-mapel')->controller(KalenderMapelController::class)->group(function() {
+        Route::prefix('kalender')->controller(KalenderMapelController::class)->group(function() {
             Route::get('/', 'index')->name('kalendermapel.index');
             Route::post('/get-kelas-by-mapel', 'getKelasByMapel')->name('kalendermapel.ajax');
         });
