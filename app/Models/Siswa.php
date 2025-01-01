@@ -32,7 +32,8 @@ class Siswa extends Model
         'nama_wali',
         'alamat_wali',
         'pekerjaan_wali',
-        'angkatan'
+        'angkatan',
+        'id_user',
     ];
     
     public function user()

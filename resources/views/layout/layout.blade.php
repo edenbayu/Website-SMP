@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -361,7 +361,7 @@
                                 @endif
                                 <form action={{ route('logout') }} method="POST">
                                     @csrf
-                                    <button type="submit" class="dropdown-item text-danger">Keluar</button>
+                                    <button type="submit" style="font-family: 'Poppins';font-size: 16px;" class="dropdown-item text-danger">Keluar</button>
                                 </form>
                             </div>
                         </li>

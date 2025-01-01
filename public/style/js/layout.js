@@ -19,7 +19,7 @@ function setActiveLink() {
         link.closest('li.sidebar-item').classList.remove('active');
         
         // Jika path link cocok dengan path tersimpan, tambahkan kelas 'active'
-        console.log(path);
+        // console.log(path);
         // console.log(linkPath.includes(window.location.pathname))
         if (window.location.href === linkPath || window.location.href.includes(path) && path) {
             link.closest('li.sidebar-item').classList.add('active');

@@ -19,6 +19,7 @@ class Guru extends Model
         'status',
         'pangkat_golongan',
         'pendidikan',
+        'id_user',
     ];
 
     public function user()
