@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\JamPelajaran;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Mapel;
+use App\Observers\JamPelajaranObserver;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
@@ -32,5 +34,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('listMapels', $listMapels);
             }
         });
+
+        JamPelajaran::observe(JamPelajaranObserver::class);
     }
 }

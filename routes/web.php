@@ -119,6 +119,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
 
         Route::prefix('kalender')->controller(KalenderMapelController::class)->group(function() {
             Route::get('/', 'index')->name('kalendermapel.index');
+            Route::get('/ajaxhandler', 'indexAjaxHandler')->name('kalendermapel.ajaxHandler');
             Route::get('/jam-pelajaran', 'showJampel')->name('kalendermapel.index-jampel');
             Route::post('/jam-pelajaran/store', 'storeJampel')->name('kalendermapel.store-jampel');
             Route::delete('/jam-pelajaran/{jampelId}/delete', 'hapusJampel')->name('kalendermapel.delete-jampel');

@@ -33,130 +33,62 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Kalender Mata Pelajaran</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Jam Mata Pelajaran</h2>
         </div>
     </div>
-
-    <form action="{{ route('mapel.index') }}" method="GET" class="mb-4">
-        <div class="row">
-            <!-- Semester Filter -->
-            <div class="col-md-4">
-                <label for="semester_id">Semester:</label>
-                <select name="semester_id" id="semester_id" class="form-control">
-                    {{-- <option value="">Pilih Semester</option>
+    <div class="row mb-4">
+        <div class="col-3">
+            <label for="semester">Semester:</label>
+            <select id="semester" name="semester" class="form-select">
+                <option value="" disabled hidden selected>Pilih Semester</option>
                     @foreach($semesters as $semester)
                     <option value="{{ $semester->id }}" {{ request('semester_id') == $semester->id ? 'selected' : '' }}>
                         {{ $semester->semester }} | {{ $semester->tahun_ajaran }} {{ $semester->status == 1 ? "(Aktif)" : "" }}
                     </option>
-                    @endforeach --}}
-                </select>
-            </div>
-
-            <!-- Class Filter -->
-            <div class="col-md-4">
-                <label for="mapel">Mata Pelajaran:</label>
-                <select name="mapel" id="mapel" class="form-control">
-                    <option value="">Pilih Mata Pelajaran</option>
-                    {{-- @foreach($listMapel as $mapel)
-                    <option value="{{ $mapel->nama }}" {{ request('mapels') == $mapel->nama ? 'selected' : '' }}>
-                        {{ $mapel->nama }}
-                    </option>
-                    @endforeach --}}
-                </select>
-            </div>
-
-            <!-- Filter Button -->
-            <div class="col-md-4 align-self-end">
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
+                    @endforeach
+            </select>
         </div>
-    </form>
+        <div class="col-2">
+            <label for="kelas">Kelas:</label>
+            <select id="kelas" name="kelas" class="form-select" disabled>
+                <option value="">Pilih Kelas</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <label for="rombel">Rombongan Belajar:</label>
+            <select id="rombel" name="rombel" class="form-select" disabled>
+                <option value="">Pilih Rombel</option>
+            </select>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" style="margin-top: 24px;">Lihat Kalender</button>
+            <a href="{{ route('kalendermapel.index-jampel') }}" class="btn btn-warning text-white" style="margin-top: 24px; margin-left:16px;">Buka Jam Pelajaran</a>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-6">
+            <label for="ma_pel">Mata Pelajaran:</label>
+            <select id="ma_pel" name="ma_pel" class="form-select" disabled>
+                <option value="">Pilih Mata Pelajaran</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <label for="jampel">Jam Pelajaran:</label>
+            <select id="jampel" name="jampel" class="form-select" disabled>
+                <option value="">Pilih Jam Pelajaran</option>
+            </select>
+        </div>
+        <div class="col">
+            <button class="btn btn-success" style="margin-top: 24px;">Tambah Jadwal</button>
+        </div>
+    </div>
 
     <!-- Button to open Create Mapel Modal -->
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createMapelModal">Tambah Mata Pelajaran</button>
-    <a href="{{ route('kalendermapel.index-jampel') }}" class="btn btn-warning mb-3">Jam Pelajaran</a>
-
-    {{-- Mata Pelajaran Table --}}
-    <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th class="text-start">No</th>
-                <th>Nama</th>
-                <th class="text-start">Kelas</th>
-                <th>Guru</th>
-                <th>Rombel</th>
-                <th>Semester</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{-- @foreach ($mapels as $mapel)
-            <tr>
-                <td class="text-start">{{ $loop->iteration }}</td>
-                <td>{{ $mapel->nama }}</td>
-                <td class="text-start">{{ $mapel->kelas }}</td>
-                <td>{{ $mapel->guru->nama }}</td>
-                @if ($mapel->kelas != 'Ekskul')
-                <td>
-                    {{ $rombel[$mapel->id] ?? '-' }}
-                </td>
-                @else
-                <td>
-                    -
-                </td>
-                @endif
-                <td>{{ $mapel->semester->semester. " | " . $mapel->semester->tahun_ajaran . ($mapel->semester->status == 1 ? " | Aktif" : "") }}</td>
-                <td>
-                    <!-- Delete Mata Pelajaran Button -->
-                    <form action="{{ route('mapel.delete', $mapel->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
-                    </form>
-
-                    <!-- Button to open Assign Kelas Modal -->
-                    @if ($mapel->kelas != 'Ekskul')
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#assignKelasModal-{{ $mapel->id }}">
-                        Tambah Kelas
-                    </button>
-                    @endif
-
-                    <!-- Modal for Assign Kelas -->
-                    <div class="modal fade" id="assignKelasModal-{{ $mapel->id }}" tabindex="-1" aria-labelledby="assignKelasModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="assignKelasModalLabel">Tambah Kelas ke {{ $mapel->nama }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="{{ route('mapel.assign-kelas', $mapel->id) }}" method="POST">
-                                    @csrf
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="kelas_id" class="form-label">Pilih Kelas</label>
-                                            <select name="kelas_id" id="kelas_id" class="form-select" required>
-                                                @foreach ($kelasOptions->where('id_semester', $mapel->semester_id)->where('kelas', $mapel->kelas) as $k)
-                                                <option value="{{ $k->id }}">{{ $k->rombongan_belajar }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                        <button type="submit" class="btn btn-primary">Tambahkan Kelas</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            @endforeach --}}
-        </tbody>
-    </table>
+    {{-- <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createMapelModal">Tambah Mata Pelajaran</button> --}}
 
     <div class="row">
         <div class="col">
+            <h3 class="text-center mt-4 mb-2">Kalender Mata Pelajaran</h3>
             <div id="schedule" style="overflow-y: hidden; overflow-x: hidden; padding: 40px 20px 20px 20px;"></div>
         </div>
     </div>
@@ -252,21 +184,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('style/js/jquery.schedule.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        // Cek apakah DataTable sudah diinisialisasi
-        if ($.fn.DataTable.isDataTable('#example')) {
-            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
-        }
-
-        // Inisialisasi DataTable dengan opsi
-        $('#example').DataTable({
-            language: {
-                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
-            }
-        });
-    });
-</script>
-<script>
     document.querySelectorAll('.deleteAlert').forEach(function(button, index) {
         button.addEventListener('click', function(event) {
             event.preventDefault();
@@ -286,6 +203,123 @@
                     event.target.closest('form').submit();
                 }
             });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#semester').on('change', function () {
+            const semesterId = $(this).val();
+
+            $('#kelas').empty().append('<option value="" selected hidden disabled>Pilih Kelas</option>').prop('disabled', true);
+            $('#rombel').empty().append('<option value="" selected hidden disabled>Pilih Rombel</option>').prop('disabled', true);
+            $('#ma_pel').empty().append('<option value="" selected hidden disabled>Pilih Mata Pelajaran</option>').prop('disabled', true);
+            $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+
+            if (semesterId) {
+                $.ajax({
+                    url: '{{ route("kalendermapel.ajaxHandler") }}',
+                    type: 'GET',
+                    data: {
+                        action: 'getKelas',
+                        semesterId: semesterId,
+                    },
+                    success: function (data) {
+                        $('#kelas').prop('disabled', false);
+                        if (data.length > 0) {
+                            data.forEach(kelas => {
+                                $('#kelas').append(`<option value="${kelas.kelas}">${kelas.kelas}</option>`);
+                            });
+                        } else {
+                            $('#kelas').append('<option value="" disabled>Tidak Ada</option>');
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#kelas').on('change', function () {
+            const kelasKelas = $(this).val();
+
+            $('#rombel').empty().append('<option value="" selected hidden disabled>Pilih Rombel</option>').prop('disabled', true);
+            $('#ma_pel').empty().append('<option value="" selected hidden disabled>Pilih Mata Pelajaran</option>').prop('disabled', true);
+            $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+
+            if (kelasKelas) {
+                $.ajax({
+                    url: '{{ route("kalendermapel.ajaxHandler") }}',
+                    type: 'GET',
+                    data: {
+                        action: 'getRombel',
+                        kelasKelas: kelasKelas,
+                    },
+                    success: function (data) {
+                        $('#rombel').prop('disabled', false);
+                        if (data.length > 0) {
+                            data.forEach(kelas => {
+                                $('#rombel').append(`<option value="${kelas.id}">${kelas.rombongan_belajar}</option>`);
+                            });
+                        } else {
+                            $('#rombel').append('<option value="" disabled>Tidak Ada</option>');
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#rombel').on('change', function () {
+            const kelasId = $(this).val();
+
+            $('#ma_pel').empty().append('<option value="" selected hidden disabled>Pilih Mata Pelajaran</option>').prop('disabled', true);
+            $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+            
+            if (kelasId) {
+                $.ajax({
+                    url: '{{ route("kalendermapel.ajaxHandler") }}',
+                    type: 'GET',
+                    data: {
+                        action: 'getMapel',
+                        kelasId: kelasId,
+                    },
+                    success: function (data) {
+                        $('#ma_pel').prop('disabled', false);
+                        if (data.length > 0) {
+                            data.forEach(mapel => {
+                                $('#ma_pel').append(`<option value="${mapel.id}">${mapel.nama_mapel} - ${mapel.nama_guru}</option>`);
+                            });
+                        } else {
+                            $('#ma_pel').append('<option value="" disabled>Tidak Ada</option>');
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#ma_pel').on('change', function () {
+            const mapelkelasId = $(this).val();
+
+            $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+            
+            if (mapelkelasId) {
+                $.ajax({
+                    url: '{{ route("kalendermapel.ajaxHandler") }}',
+                    type: 'GET',
+                    data: {
+                        action: 'getJampel',
+                        mapelkelasId: mapelkelasId,
+                    },
+                    success: function (data) {
+                        $('#jampel').prop('disabled', false);
+                        if (data.length > 0) {
+                            data.forEach(jampel => {
+                                $('#jampel').append(`<option value="${jampel.id}">${jampel.hari} | ${jampel.jam_mulai} - ${jampel.jam_selesai}</option>`);
+                            });
+                        } else {
+                            $('#jampel').append('<option value="" disabled>Tidak Ada</option>');
+                        }
+                    }
+                });
+            }
         });
     });
 </script>

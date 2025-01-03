@@ -9,8 +9,9 @@ class JamPelajaran extends Model
     protected $table = 'jam_pelajaran';
     protected $fillable = [
         'hari',
-        'jam_mulai',
-        'jam_selesai',
+        'nomor',
         'event',
+        'jam_mulai',
+        'jam_selesai',  
     ];
 }
