@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AutoAddStudentRequest;
 use App\Models\Kelas;
 use App\Models\Guru;
 use App\Models\Siswa;
@@ -111,7 +112,7 @@ class KelasController extends Controller
             ->pluck('angkatan');
 
         // Load the class along with its students
-        $kelas = Kelas::with('siswas:id,nama,nisn')->findOrFail($kelasId);
+        $kelas = Kelas::with('siswas:id,nama,nisn,angkatan,jenis_kelamin')->findOrFail($kelasId);
 
         // Get the semester ID of the current class
         $semesterId = $kelas->id_semester;
@@ -168,55 +169,64 @@ class KelasController extends Controller
         }
     }
 
-    public function autoAddStudents($kelasId)
-    {
+    public function autoAddStudents($kelasId, AutoAddStudentRequest $request)
+    {  
+        // This method is made to automatically add students to a class based on the remaining slots
+        // This method expects a POST request with the following fields
+        // - angkatan : the angkatan of the students to be added
+        // - jumlahSiswa : the number of students to be added
+        // - jumlahSiswaLaki : the number of male students to be added
+        // - jumlahSiswaPerempuan : the number of female students to be added
+
+
         // Load the class along with its students
         $kelas = Kelas::with('siswas:id,nama,nisn,jenis_kelamin')->findOrFail($kelasId);
 
-        // Check the current number of students in the class
-        $currentCount = $kelas->siswas()->count();
-        $remainingSlots = 30 - $currentCount;
+        // Check the current number of students in the class, and if it is already full
+        $currentSiswaCount = $kelas->siswas()->count();
+        $classIsFull = $currentSiswaCount >= request('jumlahSiswa');
+        
+
+        // Check if male and female student counts are already at the limit
+        $currentMaleCount = $kelas->siswas()->where('jenis_kelamin','Laki-laki')->count();
+        $currentFemaleCount = $kelas->siswas()->where('jenis_kelamin', 'Perempuan')->count();
+        $maleSlots = request('jumlahSiswaLaki') - $currentMaleCount;
+        $femaleSlots = request('jumlahSiswaPerempuan') - $currentFemaleCount;
 
         // If the class is already full, return an error message
-        if ($remainingSlots <= 0) {
-            return redirect()->back()->with('error', 'Kelas sudah penuh. Maksimal 30 siswa.');
+        if ($classIsFull) {
+            return redirect()->back()->with('error', 'Kelas sudah penuh. Jumlah siswa yang ada di kelas melebihi jumlah siswa yang dimasukkan. Jumlah Siswa sekarang: ' . $currentSiswaCount . '. Jumlah siswa yang dimasukkan: ' . request('jumlahSiswa'));
         }
 
         // Get the semester ID of the current class
         $semesterId = $kelas->id_semester;
-
-        // Retrieve IDs of students already assigned to a class for this semester
-        $assignedSiswaIds = DB::table('kelas_siswa')
-            ->join('kelas', 'kelas_siswa.kelas_id', '=', 'kelas.id')
-            ->where('kelas.id_semester', $semesterId)
-            ->pluck('kelas_siswa.siswa_id')
-            ->toArray();
-
+        
         // Get available students of the specified angkatan who are not already assigned this semester
-        $availableSiswa = Siswa::whereNotIn('id', $assignedSiswaIds)
-            ->get();
+        $availableSiswa = Siswa::where('angkatan', request('angkatan'))->whereDoesntHave('kelases', function ($query) use ($semesterId) {
+            $query->where('id_semester', $semesterId);
+        })->get();
 
-        // Split students by gender, limiting to half of remaining slots for each gender
-        $maleSlots = (int) ceil($remainingSlots / 2);
-        $femaleSlots = $remainingSlots - $maleSlots;
+        $maleStudents = collect();
+        $femaleStudents = collect();
 
-        $maleStudents = $availableSiswa->where('jenis_kelamin', 'L')->take($maleSlots);
-        $femaleStudents = $availableSiswa->where('jenis_kelamin', 'P')->take($femaleSlots);
+        // If male slots are available, take a number of students according to the slots
+        
+        if ($maleSlots) {
+            $maleStudents = $availableSiswa->where('jenis_kelamin', 'Laki-laki')->take($maleSlots);
+        } 
 
-        // Combine male and female students; if there’s still room, add more from remaining pool
-        $selectedStudents = $maleStudents->merge($femaleStudents);
-
-        if ($selectedStudents->count() < $remainingSlots) {
-            $extraStudents = $availableSiswa
-                ->whereNotIn('id', $selectedStudents->pluck('id')->toArray())
-                ->take($remainingSlots - $selectedStudents->count());
-            $selectedStudents = $selectedStudents->merge($extraStudents);
+        // If female slots are available, take a number of students according to the slots
+        if ($femaleSlots) {
+            $femaleStudents = $availableSiswa->where('jenis_kelamin', 'Perempuan')->take($femaleSlots);
         }
+
+        // Combine male and female students
+        $selectedStudents = $maleStudents->merge($femaleStudents);
 
         // Attach students to the class without detaching existing students
         $kelas->siswas()->syncWithoutDetaching($selectedStudents->pluck('id')->toArray());
 
-        return redirect()->back()->with('success', $selectedStudents->count() . ' siswa berhasil ditambahkan ke kelas.');
+        return redirect()->back()->with('success', $maleStudents->count() . ' siswa Laki-laki dan '. $femaleStudents->count() . ' siswa Perempuan berhasil ditambahkan ke kelas.' . ' Jumlah siswa sekarang: ' . $kelas->siswas()->count());
     }
 
 
