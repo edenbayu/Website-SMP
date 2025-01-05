@@ -42,6 +42,8 @@
         <button class="btn btn-primary mb-3" data-bs-toggle="modal"
             data-bs-target="#autoAddStudentModal-{{ $kelas->id }}">Penempatan Peserta Didik Otomatis</button>
 
+        <a target="_blank" href="{{ route('kelas.export', ['kelasId' => $kelas->id]) }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
+
 
         <table id="example" class="table table-striped" style="width:100%">
             <thead>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KelasExport;
 use App\Http\Requests\AutoAddStudentRequest;
 use App\Models\Kelas;
 use App\Models\Guru;
@@ -11,7 +12,7 @@ use App\Models\Mapel;
 use App\Models\PenilaianEkskul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
 {
@@ -325,6 +326,11 @@ class KelasController extends Controller
         $mapel->kelas()->syncWithoutDetaching($kelas->id);
 
         return redirect()->route('kelas.index')->with('success', 'Ekstrakulikuler created successfully!');
+    }
+
+    public function exportKelas(Kelas $kelasId) {
+        // dd($kelasId->id);
+        return (new KelasExport($kelasId->id))->download( 'siswa ' . $kelasId->rombongan_belajar . '.xlsx');
     }
 
     public function deleteAssignedSiswa($kelasId, $siswaId)
