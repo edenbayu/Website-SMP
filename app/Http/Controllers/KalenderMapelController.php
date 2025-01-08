@@ -55,6 +55,95 @@ class KalenderMapelController extends Controller
         return response()->json($response);
     }
 
+    private function generateRandomColor() {
+        $min = 127;
+        // Menghasilkan nilai acak untuk komponen RGB antara $min dan 255
+        $r = mt_rand($min, 255);
+        $g = mt_rand($min, 255);
+        $b = mt_rand($min, 255);
+        // Mengonversi nilai RGB ke format heksadesimal
+        return sprintf('#%02x%02x%02x', $r, $g, $b);
+    }
+
+    public function getDataCalendar(Request $request) {
+        $dayMapping = [
+            'Senin' => 0,
+            'Selasa' => 1,
+            'Rabu' => 2,
+            'Kamis' => 3,
+            'Jumat' => 4,
+            'Sabtu' => 5,
+            'Minggu' => 6,
+        ];
+
+        $output = [];
+        $jampelmapels = JamPelajaran::leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
+            ->leftJoin('mapel_kelas as mk', 'mk.id', '=','jpmk.mapel_kelas_id')
+            ->leftJoin('mapels as m', 'm.id', '=', 'mk.mapel_id')
+            ->leftJoin('kelas as k', 'k.id', '=','mk.kelas_id')
+            ->where(function($query) use ($request) {
+                $query->whereNotNull('jam_pelajaran.event')
+                    ->orWhere(function($query) use ($request) {
+                        $query->whereNotNull('m.id')
+                            ->where('k.id', $request->input('rombelId'));
+                    });
+            })
+            ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id')
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
+
+        foreach ($jampelmapels as $jampel) {
+            $day = $dayMapping[$jampel['hari']] ?? null;
+
+            if ($day !== null) {
+                // Cari atau tambahkan elemen day pada hasil
+                $dayKey = array_search($day, array_column($output, 'day'));
+                if ($dayKey === false) {
+                    $output[] = [
+                        'day' => $day,
+                        'periods' => [],
+                    ];
+                    $dayKey = array_key_last($output);
+                }
+
+                // Tentukan judul
+                $title = strip_tags($jampel->event ?? $jampel->nama_mapel);
+
+                // Periksa apakah judul sudah memiliki warna yang ditetapkan
+                if (isset($titleColors[$title])) {
+                    $backgroundColor = $titleColors[$title];
+                } else {
+                    // Hasilkan warna baru dan simpan dalam array
+                    $backgroundColor = $this->generateRandomColor();
+                    $titleColors[$title] = $backgroundColor;
+                }
+
+                // Tambahkan periods ke hari yang sesuai
+                $output[$dayKey]['periods'][] = [
+                    'start' => $jampel->jam_mulai_calendar,
+                    'end' => $jampel->jam_selesai_calendar,
+                    'title' => '<span class="jampelmapelkelas" style="display:none;">'.$jampel->jpmk_id.'</span>'.$title . '<br>' . ($jampel->nomor ? 'Jam ke-' . $jampel->nomor . '<br>' : '') . substr($jampel->jam_mulai, 0, 5) . ' - ' . substr($jampel->jam_selesai, 0, 5),
+                    'backgroundColor' => $backgroundColor,
+                    'borderColor' => '#000',
+                    'textColor' => '#000',
+                ];
+            }
+        }
+
+        return response()->json($output, 200, [], JSON_PRETTY_PRINT);
+        // return response($data, 200)->header('Content-Type', 'application/json');
+    }
+
+    public function storeMapelJampel(Request $request) {
+        $request->validate([
+            'mapelkelasId' =>'required',
+            'jampelId' =>'required',
+        ]);
+
+        MapelKelas::findOrFail($request->input('mapelkelasId'))->jampel()->syncWithoutDetaching($request->input('jampelId'));
+
+        return response()->json(['message' => 'Jadwal berhasil ditambahkan.']);
+    }
+
     public function showJampel(Request $request) {
         $jampels = JamPelajaran::orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
 

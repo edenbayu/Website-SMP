@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\Mapel;
 use App\Models\PenilaianEkskul;
+use App\Models\Semester;
+use App\Models\Siswa;
+use Illuminate\Support\Facades\DB;
 
 class EkstrakulikulerController extends Controller
 {
@@ -14,10 +19,10 @@ class EkstrakulikulerController extends Controller
         $semesterId = $request->input('semester_id');
         
         $kelas = Kelas::with(['guru', 'semester', 'siswas'])
-                      ->when($semesterId, function ($query, $semesterId) {
-                          $query->where('id_semester', $semesterId);
-                      })
-                      ->get();
+            ->when($semesterId, function ($query, $semesterId) {
+                    $query->where('id_semester', $semesterId);
+                })
+            ->get();
     
         $walikelas = Guru::whereHas('user.roles', function ($query) {
             $query->where('name', 'Wali Kelas'); // Check if the role is 'Wali Kelas'

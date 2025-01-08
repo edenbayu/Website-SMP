@@ -24,5 +24,9 @@ class MapelKelas extends Model
     {
         return $this->hasMany(Kelas::class, 'kelas_id');
     }
-
+    
+    public function jampel()
+    {
+        return $this->belongsToMany(JamPelajaran::class, 'jam_pelajaran_mapel_kelas', 'mapel_kelas_id', 'jampel_id');
+    }
 }

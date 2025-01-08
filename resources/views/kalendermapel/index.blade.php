@@ -5,12 +5,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ asset('style/css/jquery.schedule.min.css') }}">
     <style>
-        .jqs-period-time {
-            display: none;
-        }
-
-        .jqs-grid-hour {
-            display: none;
+        .jqs-period-time,
+        .jqs-grid-hour,
+        .jqs-options-time,
+        .jqs-options-title-container,
+        .jqs-options-duplicate,
+        .jqs-period-remove,
+        .jqs-period-duplicate,
+        .jqs-day-remove,
+        .jqs-day-duplicate,
+        .jqs-options {
+            display: none !important;
         }
 
         .jqs-grid {
@@ -18,13 +23,25 @@
         }
 
         .jqs-period-title {
-            font-size: 16px;
+            font-size: 14px;
             padding-top: 4px;
+            overflow: visible;
+            line-height: 15px;
+            letter-spacing: normal;
         }
 
         .jqs-grid-day {
             font-size: 18px;
-            padding: 0px;
+            padding: 0;
+        }
+
+        .jqs-option-remove {
+            margin: 35px 5px 5px;
+        }
+
+        .form-group .jqs-period-container {
+            position: unset;
+            min-height: 5rem;
         }
     </style>
 @endpush
@@ -61,7 +78,7 @@
             </select>
         </div>
         <div class="col">
-            <button class="btn btn-primary" style="margin-top: 24px;">Lihat Kalender</button>
+            <button class="btn btn-primary" id="btnShowCalendar" style="margin-top: 24px;">Lihat Kalender</button>
             <a href="{{ route('kalendermapel.index-jampel') }}" class="btn btn-warning text-white" style="margin-top: 24px; margin-left:16px;">Buka Jam Pelajaran</a>
         </div>
     </div>
@@ -79,7 +96,7 @@
             </select>
         </div>
         <div class="col">
-            <button class="btn btn-success" style="margin-top: 24px;">Tambah Jadwal</button>
+            <button class="btn btn-success" id="btnTambahJadwal" style="margin-top: 24px;" disabled>Tambah Jadwal</button>
         </div>
     </div>
 
@@ -88,59 +105,36 @@
 
     <div class="row">
         <div class="col">
-            <h3 class="text-center mt-4 mb-2">Kalender Mata Pelajaran</h3>
+            <h3 class="text-center mt-4 mb-2">Jadwal Jam Mata Pelajaran</h3>
             <div id="schedule" style="overflow-y: hidden; overflow-x: hidden; padding: 40px 20px 20px 20px;"></div>
         </div>
     </div>
 
-    <!-- Modal for Create Mapel -->
-    <div class="modal fade" id="createMapelModal" tabindex="-1" aria-labelledby="createMapelModalLabel" aria-hidden="true">
+    <div class="modal" id="editJampelKalenderModal" tabindex="-1" aria-labelledby="editJampelKalenderModal-" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createMapelModalLabel">Tambah Mata Pelajaran Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('mapel.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="nama" class="form-label">Nama Mata Pelajaran</label>
-                            <input type="text" class="form-control" name="nama" id="nama" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="kelas" class="form-label">Kelas</label>
-                            <select name="kelas" id="guru_id" class="form-select" required>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="guru_id" class="form-label">Pilih Guru</label>
-                            <select name="guru_id" id="guru_id" class="form-select" required>
-                                {{-- @foreach ($gurus as $guru)
-                                <option value="{{ $guru->id }}">{{ $guru->nama }}</option>
-                                @endforeach --}}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="semester_id" class="form-label">Pilih Semester</label>
-                            <select name="semester_id" id="semester_id" class="form-select" required>
-                                {{-- @foreach ($semesters as $semester)
-                                <option value="{{ $semester->id }}">{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}</option>
-                                @endforeach --}}
-                            </select>
-                        </div>
+                <form id="eventForm">
+                    <input type="hidden" id="eventId">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Judul</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <div class="form-group mb-3" id="showTinyCalendar"></div>
+                    </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Tambah Mata Pelajaran</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeButton">Tutup</button>
+                        <button type="button" class="btn btn-danger" id="deleteEvent" style="display: none;">Hapus</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <button class="btn btn-warning" id="modalButton" data-bs-toggle="modal" data-bs-target="#editJampelKalenderModal" style="width: 5rem; display: none;">Ubah</button>
 </div>
 @endsection
 
@@ -215,6 +209,7 @@
             $('#rombel').empty().append('<option value="" selected hidden disabled>Pilih Rombel</option>').prop('disabled', true);
             $('#ma_pel').empty().append('<option value="" selected hidden disabled>Pilih Mata Pelajaran</option>').prop('disabled', true);
             $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+            $('#btnTambahJadwal').prop('disabled', true);
 
             if (semesterId) {
                 $.ajax({
@@ -244,6 +239,7 @@
             $('#rombel').empty().append('<option value="" selected hidden disabled>Pilih Rombel</option>').prop('disabled', true);
             $('#ma_pel').empty().append('<option value="" selected hidden disabled>Pilih Mata Pelajaran</option>').prop('disabled', true);
             $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+            $('#btnTambahJadwal').prop('disabled', true);
 
             if (kelasKelas) {
                 $.ajax({
@@ -272,6 +268,7 @@
 
             $('#ma_pel').empty().append('<option value="" selected hidden disabled>Pilih Mata Pelajaran</option>').prop('disabled', true);
             $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+            $('#btnTambahJadwal').prop('disabled', true);
             
             if (kelasId) {
                 $.ajax({
@@ -299,6 +296,7 @@
             const mapelkelasId = $(this).val();
 
             $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
+            $('#btnTambahJadwal').prop('disabled', true);
             
             if (mapelkelasId) {
                 $.ajax({
@@ -312,7 +310,7 @@
                         $('#jampel').prop('disabled', false);
                         if (data.length > 0) {
                             data.forEach(jampel => {
-                                $('#jampel').append(`<option value="${jampel.id}">${jampel.hari} | ${jampel.jam_mulai} - ${jampel.jam_selesai}</option>`);
+                                $('#jampel').append(`<option value="${jampel.id}">${jampel.hari} Jam ke-${jampel.nomor} | ${jampel.jam_mulai.substring(0, 5)} - ${jampel.jam_selesai.substring(0, 5)}</option>`);
                             });
                         } else {
                             $('#jampel').append('<option value="" disabled>Tidak Ada</option>');
@@ -321,444 +319,85 @@
                 });
             }
         });
-    });
-</script>
-<script>
-    $('#schedule').jqs({
-        mode: 'read',
-        hour: 24,
-        days: 7,
-        periodDuration: 15,
-        data: [
-  {
-    "day": 0,
-    "periods": [
-      {
-        "start": "00:00",
-        "end": "03:00",
-        "title": "Upacara",
-        "backgroundColor": "rgba(123, 201, 93, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "03:00",
-        "end": "05:00",
-        "title": "Jam ke-2",
-        "backgroundColor": "rgba(245, 123, 76, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "05:00",
-        "end": "07:00",
-        "title": "Jam ke-3",
-        "backgroundColor": "rgba(76, 198, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "07:00",
-        "end": "08:00",
-        "title": "Istirahat 1",
-        "backgroundColor": "rgba(255, 173, 123, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "08:00",
-        "end": "10:00",
-        "title": "Jam ke-4",
-        "backgroundColor": "rgba(123, 255, 153, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "10:00",
-        "end": "12:00",
-        "title": "Jam ke-5",
-        "backgroundColor": "rgba(153, 123, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "12:00",
-        "end": "14:00",
-        "title": "Jam ke-6",
-        "backgroundColor": "rgba(76, 234, 155, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "14:00",
-        "end": "15:00",
-        "title": "Istirahat 2",
-        "backgroundColor": "rgba(233, 144, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "15:00",
-        "end": "17:00",
-        "title": "Jam ke-7",
-        "backgroundColor": "rgba(255, 200, 76, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "17:00",
-        "end": "19:00",
-        "title": "Jam ke-8",
-        "backgroundColor": "rgba(245, 123, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      }
-    ]
-  },
-  {
-    "day": 1,
-    "periods": [
-      {
-        "start": "00:00",
-        "end": "01:00",
-        "title": "Literasi - PPK",
-        "backgroundColor": "rgba(245, 123, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "01:00",
-        "end": "03:00",
-        "title": "Jam ke-1",
-        "backgroundColor": "rgba(255, 200, 123, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "03:00",
-        "end": "05:00",
-        "title": "Jam ke-2",
-        "backgroundColor": "rgba(153, 123, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "05:00",
-        "end": "07:00",
-        "title": "Jam ke-3",
-        "backgroundColor": "rgba(123, 255, 153, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "07:00",
-        "end": "08:00",
-        "title": "Istirahat 1",
-        "backgroundColor": "rgba(255, 173, 123, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "08:00",
-        "end": "10:00",
-        "title": "Jam ke-4",
-        "backgroundColor": "rgba(76, 198, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "10:00",
-        "end": "12:00",
-        "title": "Jam ke-5",
-        "backgroundColor": "rgba(245, 123, 76, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "12:00",
-        "end": "14:00",
-        "title": "Jam ke-6",
-        "backgroundColor": "rgba(123, 201, 93, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "14:00",
-        "end": "15:00",
-        "title": "Istirahat 2",
-        "backgroundColor": "rgba(255, 200, 123, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "15:00",
-        "end": "17:00",
-        "title": "Jam ke-7",
-        "backgroundColor": "rgba(123, 255, 153, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "17:00",
-        "end": "19:00",
-        "title": "Jam ke-8",
-        "backgroundColor": "rgba(153, 123, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      }
-    ]
-  },
-  {
-    "day": 4,
-    "periods": [
-      {
-        "start": "00:00",
-        "end": "01:00",
-        "title": "Literasi - PPK",
-        "backgroundColor": "rgba(255, 150, 76, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "01:00",
-        "end": "03:00",
-        "title": "Jam ke-1",
-        "backgroundColor": "rgba(123, 200, 123, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "03:00",
-        "end": "05:00",
-        "title": "Jam ke-2",
-        "backgroundColor": "rgba(153, 123, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "05:00",
-        "end": "07:00",
-        "title": "Jam ke-3",
-        "backgroundColor": "rgba(255, 123, 200, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "07:00",
-        "end": "08:00",
-        "title": "Istirahat 1",
-        "backgroundColor": "rgba(123, 255, 153, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "08:00",
-        "end": "10:00",
-        "title": "Jam ke-4",
-        "backgroundColor": "rgba(123, 255, 153, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      },
-      {
-        "start": "10:00",
-        "end": "12:00",
-        "title": "Jam ke-5",
-        "backgroundColor": "rgba(153, 123, 255, 0.5)",
-        "borderColor": "#000",
-        "textColor": "#000"
-      }
-    ]
-  }, {
-  "day": 5,
-  "periods": [
-    {
-      "start": "00:00",
-      "end": "01:00",
-      "title": "Literasi - PPK",
-      "backgroundColor": "rgba(76, 198, 255, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "01:00",
-      "end": "03:00",
-      "title": "Jam ke-1",
-      "backgroundColor": "rgba(245, 123, 76, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "03:00",
-      "end": "05:00",
-      "title": "Jam ke-2",
-      "backgroundColor": "rgba(123, 201, 93, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "05:00",
-      "end": "07:00",
-      "title": "Jam ke-3",
-      "backgroundColor": "rgba(153, 123, 255, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "07:00",
-      "end": "08:00",
-      "title": "Istirahat 1",
-      "backgroundColor": "rgba(255, 173, 123, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "08:00",
-      "end": "10:00",
-      "title": "Jam ke-4",
-      "backgroundColor": "rgba(76, 234, 155, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "10:00",
-      "end": "12:00",
-      "title": "Jam ke-5",
-      "backgroundColor": "rgba(245, 123, 255, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "12:00",
-      "end": "13:00",
-      "title": "Istirahat 2",
-      "backgroundColor": "rgba(255, 200, 76, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "13:00",
-      "end": "15:00",
-      "title": "Jam ke-6",
-      "backgroundColor": "rgba(233, 144, 255, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    },
-    {
-      "start": "15:00",
-      "end": "17:00",
-      "title": "Jam ke-7",
-      "backgroundColor": "rgba(123, 255, 153, 0.5)",
-      "borderColor": "#000",
-      "textColor": "#000"
-    }
-  ]
-}
-],
-//         data: [
-//     {
-//         day: 0, // Senin
-//         periods: [
-//             ['07:00', '08:00'],
-//             ['08:00', '08:30'],
-//             ['08:30', '09:15'],
-//             ['09:30', '10:15'],
-//             ['10:15', '11:00'],
-//             ['11:00', '11:30'],
-//             ['12:15', '13:00'],
-//             ['13:00', '13:30']
-//         ]
-//     },
-//     {
-//         day: 1, // Selasa
-//         periods: [
-//             ['07:00', '07:15'],
-//             ['07:15', '08:00'],
-//             ['08:00', '08:30'],
-//             ['08:30', '09:15'],
-//             ['09:30', '10:15'],
-//             ['10:15', '11:00'],
-//             ['11:00', '11:30'],
-//             ['12:15', '13:00'],
-//             ['13:00', '13:30']
-//         ]
-//     },
-//     {
-//         day: 2, // Rabu
-//         periods: [
-//             ['07:00', '07:15'],
-//             ['07:15', '08:00'],
-//             ['08:00', '08:30'],
-//             ['08:30', '09:15'],
-//             ['09:30', '10:15'],
-//             ['10:15', '11:00'],
-//             ['11:00', '11:30'],
-//             ['12:15', '13:00'],
-//             ['13:00', '13:30']
-//         ]
-//     },
-//     {
-//         day: 3, // Kamis
-//         periods: [
-//             ['07:00', '07:15'],
-//             ['07:15', '08:00'],
-//             ['08:00', '08:30'],
-//             ['08:30', '09:15'],
-//             ['09:30', '10:15'],
-//             ['10:15', '11:00'],
-//             ['11:00', '11:30'],
-//             ['12:15', '13:00'],
-//             ['13:00', '13:30']
-//         ]
-//     },
-//     {
-//         day: 4, // Jumat
-//         periods: [
-//             ['07:00', '07:30'],
-//             ['07:30', '08:00'],
-//             ['08:00', '08:45'],
-//             ['08:45', '09:30'],
-//             ['09:45', '10:15'],
-//             ['10:15', '11:00']
-//         ]
-//     },
-//     {
-//         day: 5, // Sabtu
-//         periods: [
-//             ['07:00', '07:15'],
-//             ['07:15', '08:00'],
-//             ['08:00', '08:30'],
-//             ['08:30', '09:15'],
-//             ['09:30', '10:15'],
-//             ['10:15', '10:45'],
-//             ['11:00', '11:45'],
-//             ['11:45', '12:30']
-//         ]
-//     }
-// ],
+        
+        $('#jampel').on('change', function () {
+            $('#btnTambahJadwal').prop('disabled', false);
+        });
+            
 
-        // periodOptions: true,
-        // periodColors: [],
-        // periodTitle: '',
-        periodBackgroundColor: 'rgba(82, 155, 255, 0.5)',
-        periodBorderColor: '#2a3cff',
-        periodTextColor: '#000',
-        periodRemoveButton: 'Remove',
-        periodDuplicateButton: 'Duplicate',
-        periodTitlePlaceholder: 'Title',
-        daysList: [
-            'Senin',
-            'Selasa',
-            'Rabu',
-            'Kamis',
-            'Jumat',
-            'Sabtu',
-            'Minggu',
-        ],
-        onInit: function () {},
-        onAddPeriod: function () {},
-        onRemovePeriod: function () {},
-        onDuplicatePeriod: function () {},
-        onClickPeriod: function () {}
+        $('#btnTambahJadwal').on('click', function () {
+            const maPelValue = $('#ma_pel').val();
+            const jamPelValue = $('#jampel').val();
+
+            // Kirim request AJAX
+            $.ajax({
+                url: '{{ route("kalendermapel.store") }}', // Ganti dengan URL endpoint Anda
+                type: 'POST',
+                data: {
+                    mapelkelasId: maPelValue,
+                    jampelId: jamPelValue
+                },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: response.message,
+                        icon: "success",
+                        timer: 2000, // Waktu dalam milidetik (3000 = 3 detik)
+                        showConfirmButton: false
+                    });
+                }
+            });
+        });
+
+        $('#btnShowCalendar').on('click', function () {
+            const rombelId = $('#rombel').val();
+            console.log(rombelId);
+
+            // Kirim request AJAX
+            $.ajax({
+                url: '{{ route("kalendermapel.get-calendar") }}', // Ganti dengan URL endpoint Anda
+                type: 'GET',
+                data: {
+                    rombelId: rombelId
+                },
+                success: function (data) {
+                    $('#schedule').jqs('reset');
+                    $('#schedule').jqs('import', data);
+                }
+            });
+        });
+
+        $('#schedule').jqs({
+            mode: 'edit',
+            hour: 24,
+            days: 7,
+            periodDuration: 15,
+            daysList: [
+                'Senin',
+                'Selasa',
+                'Rabu',
+                'Kamis',
+                'Jumat',
+                'Sabtu',
+                'Minggu',
+            ],
+            periodOptions: true,
+            periodRemoveButton: 'Hapus',
+            onInit: function () {},
+            onAddPeriod: function () {},
+            onRemovePeriod: function () {},
+            onDuplicatePeriod: function () {},
+            onClickPeriod: function onPeriodClicked(event, period, jqs) {
+                console.log(event.target.innerHTML);
+                document.getElementById('showTinyCalendar').innerHTML = event.delegateTarget.innerHTML;
+                console.log((event.target.innerHTML.match(/<span class="jampelmapelkelas"[^>]*>(.*?)<\/span>/) || [])[1]);
+                document.getElementById('modalButton').click();
+                // document.getElementById('modalTitle').textContent = event.target.innerHTML;
+            }
+        });
     });
 </script>
 @endpush

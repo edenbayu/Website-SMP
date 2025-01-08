@@ -12,6 +12,8 @@ class JamPelajaran extends Model
         'nomor',
         'event',
         'jam_mulai',
-        'jam_selesai',  
+        'jam_selesai',
+        'jam_mulai_calendar',
+        'jam_selesai_calendar',
     ];
 }

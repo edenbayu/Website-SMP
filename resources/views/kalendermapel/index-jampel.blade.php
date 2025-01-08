@@ -111,7 +111,6 @@
                                                 <option value="Jumat" {{ $jampel->hari == "Jumat" ? 'selected' : '' }}>Jumat</option>
                                                 <option value="Sabtu" {{ $jampel->hari == "Sabtu" ? 'selected' : '' }}>Sabtu</option>
                                             </select>
-                                            
                                         </div>
                                         <div class="mb-3">
                                             <label for="jam_mulai" class="form-label">Jam Mulai</label>
