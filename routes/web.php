@@ -98,6 +98,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::post('/{kelasId}/add-student', 'addStudentToClass')->name('kelas.addStudent');
             Route::get('/{kelasId}/buka', 'bukaKelas')->name('kelas.buka');
             Route::post('/{kelasId}/hapus', 'hapusKelas')->name('kelas.hapus');
+            Route::get('/{kelasId}/export', 'exportKelas')->name('kelas.export');
             Route::delete('/kelas/{kelasId}/siswa/{siswaId}', 'deleteAssignedSiswa')->name('kelas.siswa.delete');;
             Route::post('/{kelasId}/auto-assign', 'autoAddStudents')->name('kelas.autoAdd');
         });
