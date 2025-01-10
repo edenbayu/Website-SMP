@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JamPelajaran;
+use App\Models\JamPelajaranMapelKelas;
 use Illuminate\Http\Request;
 use App\Models\KalenderMapel;
 use App\Models\Kelas;
@@ -13,8 +14,6 @@ use Illuminate\Http\JsonResponse;
 
 class KalenderMapelController extends Controller
 {
-
-    // Menampilkan semua jadwal
     public function index(Request $request)
     {
         $semesters = Semester::all();
@@ -30,7 +29,10 @@ class KalenderMapelController extends Controller
         switch ($action) {
             case 'getKelas':
                 $semesterId = $request->input('semesterId');
-                $response = Kelas::select('kelas.kelas')->where('id_semester', $semesterId)->where('kelas.kelas', '!=', 'Ekskul')->groupBy('kelas.kelas')->get();
+                $response = Kelas::select('kelas.kelas')
+                    ->where('id_semester', $semesterId)
+                    ->where('kelas.kelas', '!=', 'Ekskul')
+                    ->groupBy('kelas.kelas')->get();
                 break;
 
             case 'getRombel':
@@ -40,12 +42,42 @@ class KalenderMapelController extends Controller
 
             case 'getMapel':
                 $kelasId = $request->input('kelasId');
-                $response = MapelKelas::join('mapels as m', 'm.id', '=', 'mapel_kelas.mapel_id')->join('gurus as g', 'g.id', '=', 'm.guru_id')->select('mapel_kelas.id as id', 'm.nama as nama_mapel', 'g.nama as nama_guru')->where('mapel_kelas.kelas_id', $kelasId)->get();
+                $response = MapelKelas::join('mapels as m', 'm.id', '=', 'mapel_kelas.mapel_id')
+                    ->join('gurus as g', 'g.id', '=', 'm.guru_id')
+                    ->select('mapel_kelas.id as id', 'm.nama as nama_mapel', 'g.nama as nama_guru')
+                    ->where('mapel_kelas.kelas_id', $kelasId)->get();
                 break;
 
             case 'getJampel':
                 $mapelkelasId = $request->input('mapelkelasId');
-                $response = JamPelajaran::whereNull('event')->get();
+                $response = JamPelajaran::whereNull('event')
+                    ->leftJoinSub(
+                        DB::table('jam_pelajaran')
+                            ->select('jam_pelajaran.id', 'k.rombongan_belajar')
+                            ->leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
+                            ->leftJoin('mapel_kelas as mk', 'mk.id', '=', 'jpmk.mapel_kelas_id')
+                            ->leftJoin('kelas as k', 'k.id', '=', 'mk.kelas_id')
+                            ->leftJoin('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                            ->where('m.guru_id', '=', function($query) use ($mapelkelasId) {
+                                $query->select('guru_id')
+                                    ->from('mapels')
+                                    ->join('mapel_kelas as mk', 'mk.mapel_id', '=', 'mapels.id')
+                                    ->where('mk.id', '=', $mapelkelasId)
+                                    ->limit(1);
+                            }), 'bg', 'bg.id', '=', 'jam_pelajaran.id')
+                    ->leftJoinSub(
+                        DB::table('jam_pelajaran')
+                            ->select('jam_pelajaran.id', DB::raw('1 as booked'))
+                            ->leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
+                            ->leftJoin('mapel_kelas as mk', 'mk.id', '=', 'jpmk.mapel_kelas_id')
+                            ->where('mk.kelas_id', function($query) use ($mapelkelasId) {
+                                $query->select('kelas_id')
+                                    ->from('mapel_kelas')
+                                    ->where('mapel_kelas.id', '=', $mapelkelasId)
+                                    ->limit(1);
+                            }), 'bk', 'bk.id', '=', 'jam_pelajaran.id')
+                    ->select('jam_pelajaran.id', 'jam_pelajaran.hari', 'jam_pelajaran.nomor', 'jam_pelajaran.jam_mulai', 'jam_pelajaran.jam_selesai', 'bg.rombongan_belajar', 'bk.booked')
+                    ->get();
                 break;
 
             default:
@@ -57,11 +89,9 @@ class KalenderMapelController extends Controller
 
     private function generateRandomColor() {
         $min = 127;
-        // Menghasilkan nilai acak untuk komponen RGB antara $min dan 255
         $r = mt_rand($min, 255);
         $g = mt_rand($min, 255);
         $b = mt_rand($min, 255);
-        // Mengonversi nilai RGB ke format heksadesimal
         return sprintf('#%02x%02x%02x', $r, $g, $b);
     }
 
@@ -95,7 +125,6 @@ class KalenderMapelController extends Controller
             $day = $dayMapping[$jampel['hari']] ?? null;
 
             if ($day !== null) {
-                // Cari atau tambahkan elemen day pada hasil
                 $dayKey = array_search($day, array_column($output, 'day'));
                 if ($dayKey === false) {
                     $output[] = [
@@ -105,23 +134,25 @@ class KalenderMapelController extends Controller
                     $dayKey = array_key_last($output);
                 }
 
-                // Tentukan judul
                 $title = strip_tags($jampel->event ?? $jampel->nama_mapel);
 
-                // Periksa apakah judul sudah memiliki warna yang ditetapkan
-                if (isset($titleColors[$title])) {
-                    $backgroundColor = $titleColors[$title];
+                $titleColors = session()->get('titleColors', []);
+                if ($jampel->event) {
+                    $backgroundColor = '#909090';
                 } else {
-                    // Hasilkan warna baru dan simpan dalam array
-                    $backgroundColor = $this->generateRandomColor();
-                    $titleColors[$title] = $backgroundColor;
+                    if (isset($titleColors[$title])) {
+                        $backgroundColor = $titleColors[$title];
+                    } else {
+                        $backgroundColor = $this->generateRandomColor();
+                        $titleColors[$title] = $backgroundColor;
+                        session()->put('titleColors', $titleColors);
+                    }
                 }
 
-                // Tambahkan periods ke hari yang sesuai
                 $output[$dayKey]['periods'][] = [
                     'start' => $jampel->jam_mulai_calendar,
                     'end' => $jampel->jam_selesai_calendar,
-                    'title' => '<span class="jampelmapelkelas" style="display:none;">'.$jampel->jpmk_id.'</span>'.$title . '<br>' . ($jampel->nomor ? 'Jam ke-' . $jampel->nomor . '<br>' : '') . substr($jampel->jam_mulai, 0, 5) . ' - ' . substr($jampel->jam_selesai, 0, 5),
+                    'title' => '<span jpmk-id="'.$jampel->jpmk_id.'" hari='.$jampel->hari.' style="display:none;"></span>'.$title .'<br>'.($jampel->nomor ? 'Jam ke-' . $jampel->nomor . '<br>' : '') . substr($jampel->jam_mulai, 0, 5) . ' - ' . substr($jampel->jam_selesai, 0, 5),
                     'backgroundColor' => $backgroundColor,
                     'borderColor' => '#000',
                     'textColor' => '#000',
@@ -129,8 +160,7 @@ class KalenderMapelController extends Controller
             }
         }
 
-        return response()->json($output, 200, [], JSON_PRETTY_PRINT);
-        // return response($data, 200)->header('Content-Type', 'application/json');
+        return response($output, 200)->header('Content-Type', 'application/json');
     }
 
     public function storeMapelJampel(Request $request) {
@@ -142,6 +172,16 @@ class KalenderMapelController extends Controller
         MapelKelas::findOrFail($request->input('mapelkelasId'))->jampel()->syncWithoutDetaching($request->input('jampelId'));
 
         return response()->json(['message' => 'Jadwal berhasil ditambahkan.']);
+    }
+
+    public function deleteMapelJampel(Request $request) {
+        $request->validate([
+            'jpmkId' =>'required',
+        ]);
+
+        JamPelajaranMapelKelas::findOrFail($request->input('jpmkId'))->delete();
+
+        return response()->json(['message' => 'Jadwal berhasil dihapus.']);
     }
 
     public function showJampel(Request $request) {

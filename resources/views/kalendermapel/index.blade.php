@@ -43,6 +43,10 @@
             position: unset;
             min-height: 5rem;
         }
+
+        .form-group .jqs-period-container .jqs-period-title {
+            font-size: 15px;
+        }
     </style>
 @endpush
 
@@ -113,23 +117,19 @@
     <div class="modal" id="editJampelKalenderModal" tabindex="-1" aria-labelledby="editJampelKalenderModal-" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="eventForm">
-                    <input type="hidden" id="eventId">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle">Judul</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group mb-3" id="showTinyCalendar"></div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeButton">Tutup</button>
-                        <button type="button" class="btn btn-danger" id="deleteEvent" style="display: none;">Hapus</button>
-                        <button type="submit" class="btn btn-success">Simpan</button>
-                    </div>
-                </form>
+                <input type="hidden" id="jpmk-id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Hapus Jadwal Jam Mata Pelajaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Hari <span id="jpmk-hari">Hari</span></h6>
+                    <div class="form-group mb-3" id="showTinyCalendar"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" id="btnHapusJPMK" class="btn btn-danger" data-bs-dismiss="modal">Hapus</button>
+                </div>
             </div>
         </div>
     </div>
@@ -292,8 +292,8 @@
             }
         });
 
-        $('#ma_pel').on('change', function () {
-            const mapelkelasId = $(this).val();
+        function loadJampel() {
+            const mapelkelasId = $('#ma_pel').val();
 
             $('#jampel').empty().append('<option value="" selected hidden disabled>Pilih Jam Pelajaran</option>').prop('disabled', true);
             $('#btnTambahJadwal').prop('disabled', true);
@@ -310,7 +310,7 @@
                         $('#jampel').prop('disabled', false);
                         if (data.length > 0) {
                             data.forEach(jampel => {
-                                $('#jampel').append(`<option value="${jampel.id}">${jampel.hari} Jam ke-${jampel.nomor} | ${jampel.jam_mulai.substring(0, 5)} - ${jampel.jam_selesai.substring(0, 5)}</option>`);
+                                $('#jampel').append(`<option value="${jampel.id}" ${(jampel.rombongan_belajar || jampel.booked) ? 'disabled' : ''}>${jampel.hari} Jam ke-${jampel.nomor} | ${jampel.jam_mulai.substring(0, 5)} - ${jampel.jam_selesai.substring(0, 5)} ${jampel.rombongan_belajar ? '-> ' + jampel.rombongan_belajar : ''}</option>`);
                             });
                         } else {
                             $('#jampel').append('<option value="" disabled>Tidak Ada</option>');
@@ -318,12 +318,35 @@
                     }
                 });
             }
+        }
+
+        $('#ma_pel').on('change', function () {
+            loadJampel();
         });
         
         $('#jampel').on('change', function () {
             $('#btnTambahJadwal').prop('disabled', false);
         });
-            
+        
+        function refreshCalendar() {
+            const rombelId = $('#rombel').val();
+
+            // Kirim request AJAX
+            $.ajax({
+                url: '{{ route("kalendermapel.get-calendar") }}',
+                type: 'GET',
+                data: {
+                    rombelId: rombelId
+                },
+                success: function (data) {
+                    $('#schedule').jqs('reset');
+                    $('#schedule').jqs('import', data);
+                    $('.ui-draggable').each(function() {
+                        $(this).off('mousedown');
+                    });
+                }
+            });
+        }
 
         $('#btnTambahJadwal').on('click', function () {
             const maPelValue = $('#ma_pel').val();
@@ -341,6 +364,8 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function (response) {
+                    loadJampel();
+                    refreshCalendar();
                     Swal.fire({
                         title: "Berhasil!",
                         text: response.message,
@@ -353,19 +378,31 @@
         });
 
         $('#btnShowCalendar').on('click', function () {
-            const rombelId = $('#rombel').val();
-            console.log(rombelId);
+            refreshCalendar();
+        });
 
-            // Kirim request AJAX
+        $('#btnHapusJPMK').on('click', function () {
+            const jpmkValue = $('#jpmk-id').val();
+
             $.ajax({
-                url: '{{ route("kalendermapel.get-calendar") }}', // Ganti dengan URL endpoint Anda
-                type: 'GET',
+                url: '{{ route("kalendermapel.delete") }}',
+                type: 'POST',
                 data: {
-                    rombelId: rombelId
+                    jpmkId: jpmkValue
                 },
-                success: function (data) {
-                    $('#schedule').jqs('reset');
-                    $('#schedule').jqs('import', data);
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    loadJampel();
+                    refreshCalendar();
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: response.message,
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             });
         });
@@ -391,11 +428,13 @@
             onRemovePeriod: function () {},
             onDuplicatePeriod: function () {},
             onClickPeriod: function onPeriodClicked(event, period, jqs) {
-                console.log(event.target.innerHTML);
-                document.getElementById('showTinyCalendar').innerHTML = event.delegateTarget.innerHTML;
-                console.log((event.target.innerHTML.match(/<span class="jampelmapelkelas"[^>]*>(.*?)<\/span>/) || [])[1]);
-                document.getElementById('modalButton').click();
-                // document.getElementById('modalTitle').textContent = event.target.innerHTML;
+                let jpmk_id = (event.target.innerHTML.match(/<span[^>]*jpmk-id="([^"]+)"/) || [])[1];
+                if (jpmk_id) {
+                    document.querySelector('#jpmk-hari').innerHTML = (event.target.innerHTML.match(/<span[^>]*hari="([^"]+)"/) || [])[1];
+                    document.getElementById('showTinyCalendar').innerHTML = event.delegateTarget.innerHTML;
+                    document.querySelector('#jpmk-id').value = jpmk_id;
+                    document.getElementById('modalButton').click();
+                }
             }
         });
     });
