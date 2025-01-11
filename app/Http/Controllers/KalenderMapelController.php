@@ -163,6 +163,140 @@ class KalenderMapelController extends Controller
         return response($output, 200)->header('Content-Type', 'application/json');
     }
 
+    public function getDataCalendarGuru(Request $request) {
+        $dayMapping = [
+            'Senin' => 0,
+            'Selasa' => 1,
+            'Rabu' => 2,
+            'Kamis' => 3,
+            'Jumat' => 4,
+            'Sabtu' => 5,
+            'Minggu' => 6,
+        ];
+
+        $output = [];
+        $jampelmapels = JamPelajaran::leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
+            ->leftJoin('mapel_kelas as mk', 'mk.id', '=','jpmk.mapel_kelas_id')
+            ->leftJoin('mapels as m', 'm.id', '=', 'mk.mapel_id')
+            ->leftJoin('kelas as k', 'k.id', '=','mk.kelas_id')
+            ->leftJoin('gurus as g', 'g.id', '=', 'm.guru_id')
+            ->where('g.id_user', '=', auth()->user()->id)
+            ->where('k.id_semester', '=', session()->get('semester_id'))
+            ->orWhereNotNull('jam_pelajaran.event')
+            ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id', 'k.rombongan_belajar as rombel')
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
+
+        foreach ($jampelmapels as $jampel) {
+            $day = $dayMapping[$jampel['hari']] ?? null;
+
+            if ($day !== null) {
+                $dayKey = array_search($day, array_column($output, 'day'));
+                if ($dayKey === false) {
+                    $output[] = [
+                        'day' => $day,
+                        'periods' => [],
+                    ];
+                    $dayKey = array_key_last($output);
+                }
+
+                $title = strip_tags($jampel->event ?? ($jampel->rombel.' | '.$jampel->nama_mapel));
+
+                $titleColors = session()->get('titleColors', []);
+                if ($jampel->event) {
+                    $backgroundColor = '#909090';
+                } else {
+                    if (isset($titleColors[$title])) {
+                        $backgroundColor = $titleColors[$title];
+                    } else {
+                        $backgroundColor = $this->generateRandomColor();
+                        $titleColors[$title] = $backgroundColor;
+                        session()->put('titleColors', $titleColors);
+                    }
+                }
+
+                $output[$dayKey]['periods'][] = [
+                    'start' => $jampel->jam_mulai_calendar,
+                    'end' => $jampel->jam_selesai_calendar,
+                    'title' => $title .'<br>'.($jampel->nomor ? 'Jam ke-' . $jampel->nomor . '<br>' : '') . substr($jampel->jam_mulai, 0, 5) . ' - ' . substr($jampel->jam_selesai, 0, 5),
+                    'backgroundColor' => $backgroundColor,
+                    'borderColor' => '#000',
+                    'textColor' => '#000',
+                ];
+            }
+        }
+
+        return response($output, 200)->header('Content-Type', 'application/json');
+    }
+
+    public function getDataCalendarSiswa(Request $request) {
+        $dayMapping = [
+            'Senin' => 0,
+            'Selasa' => 1,
+            'Rabu' => 2,
+            'Kamis' => 3,
+            'Jumat' => 4,
+            'Sabtu' => 5,
+            'Minggu' => 6,
+        ];
+
+        $output = [];
+        $jampelmapels = JamPelajaran::leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
+            ->leftJoin('mapel_kelas as mk', 'mk.id', '=','jpmk.mapel_kelas_id')
+            ->leftJoin('mapels as m', 'm.id', '=', 'mk.mapel_id')
+            ->leftJoin('kelas as k', 'k.id', '=','mk.kelas_id')
+            ->where('k.id', '=', function ($query) {
+                $query->select('ks.kelas_id')
+                    ->from('kelas_siswa as ks')
+                    ->join('siswas as s', 'ks.siswa_id', '=', 's.id')
+                    ->where('s.id_user', '=', auth()->user()->id)
+                    ->limit(1);
+            })
+            ->orWhereNotNull('jam_pelajaran.event')
+            ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id', 'k.rombongan_belajar as rombel')
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
+
+        foreach ($jampelmapels as $jampel) {
+            $day = $dayMapping[$jampel['hari']] ?? null;
+
+            if ($day !== null) {
+                $dayKey = array_search($day, array_column($output, 'day'));
+                if ($dayKey === false) {
+                    $output[] = [
+                        'day' => $day,
+                        'periods' => [],
+                    ];
+                    $dayKey = array_key_last($output);
+                }
+
+                $title = strip_tags($jampel->event ?? $jampel->nama_mapel);
+
+                $titleColors = session()->get('titleColors', []);
+                if ($jampel->event) {
+                    $backgroundColor = '#909090';
+                } else {
+                    if (isset($titleColors[$title])) {
+                        $backgroundColor = $titleColors[$title];
+                    } else {
+                        $backgroundColor = $this->generateRandomColor();
+                        $titleColors[$title] = $backgroundColor;
+                        session()->put('titleColors', $titleColors);
+                    }
+                }
+
+                $output[$dayKey]['periods'][] = [
+                    'start' => $jampel->jam_mulai_calendar,
+                    'end' => $jampel->jam_selesai_calendar,
+                    'title' => $title .'<br>'.($jampel->nomor ? 'Jam ke-' . $jampel->nomor . '<br>' : '') . substr($jampel->jam_mulai, 0, 5) . ' - ' . substr($jampel->jam_selesai, 0, 5),
+                    'backgroundColor' => $backgroundColor,
+                    'borderColor' => '#000',
+                    'textColor' => '#000',
+                ];
+            }
+        }
+
+        return response($output, 200)->header('Content-Type', 'application/json');
+    }
+
     public function storeMapelJampel(Request $request) {
         $request->validate([
             'mapelkelasId' =>'required',

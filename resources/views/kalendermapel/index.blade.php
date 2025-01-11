@@ -57,6 +57,7 @@
             <h2 class="m-0" style="color: #EBF4F6">Jam Mata Pelajaran</h2>
         </div>
     </div>
+    @role('Admin|Super Admin')
     <div class="row mb-4">
         <div class="col-3">
             <label for="semester">Semester:</label>
@@ -103,9 +104,7 @@
             <button class="btn btn-success" id="btnTambahJadwal" style="margin-top: 24px;" disabled>Tambah Jadwal</button>
         </div>
     </div>
-
-    <!-- Button to open Create Mapel Modal -->
-    {{-- <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createMapelModal">Tambah Mata Pelajaran</button> --}}
+    @endrole
 
     <div class="row">
         <div class="col">
@@ -114,6 +113,7 @@
         </div>
     </div>
 
+    @role('Admin|Super Admin')
     <div class="modal" id="editJampelKalenderModal" tabindex="-1" aria-labelledby="editJampelKalenderModal-" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -135,6 +135,7 @@
     </div>
 
     <button class="btn btn-warning" id="modalButton" data-bs-toggle="modal" data-bs-target="#editJampelKalenderModal" style="width: 5rem; display: none;">Ubah</button>
+    @endrole
 </div>
 @endsection
 
@@ -200,6 +201,7 @@
         });
     });
 </script>
+@role('Admin|Super Admin')
 <script>
     $(document).ready(function () {
         $('#semester').on('change', function () {
@@ -439,4 +441,71 @@
         });
     });
 </script>
+@endrole
+
+@role('Guru|Wali Kelas')
+<script>
+    $(document).ready(function () {
+        $('#schedule').jqs({
+            mode: 'read',
+            hour: 24,
+            days: 7,
+            periodDuration: 15,
+            daysList: [
+                'Senin',
+                'Selasa',
+                'Rabu',
+                'Kamis',
+                'Jumat',
+                'Sabtu',
+                'Minggu',
+            ],
+            periodOptions: true,
+            periodRemoveButton: 'Hapus'
+        });
+
+        $.ajax({
+            url: '{{ route("kalendermapel.get-calendar-guru") }}',
+            type: 'GET',
+            success: function (data) {
+                $('#schedule').jqs('reset');
+                $('#schedule').jqs('import', data);
+            }
+        });
+    });
+</script>
+@endrole
+
+@role('Siswa')
+<script>
+    $(document).ready(function () {
+        $('#schedule').jqs({
+            mode: 'read',
+            hour: 24,
+            days: 7,
+            periodDuration: 15,
+            daysList: [
+                'Senin',
+                'Selasa',
+                'Rabu',
+                'Kamis',
+                'Jumat',
+                'Sabtu',
+                'Minggu',
+            ],
+            periodOptions: true,
+            periodRemoveButton: 'Hapus'
+        });
+
+        $.ajax({
+            url: '{{ route("kalendermapel.get-calendar-siswa") }}',
+            type: 'GET',
+            success: function (data) {
+                $('#schedule').jqs('reset');
+                $('#schedule').jqs('import', data);
+            }
+        });
+    });
+</script>
+@endrole
 @endpush

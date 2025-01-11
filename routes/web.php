@@ -40,6 +40,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::post('/profile/update-picture', [UserController::class, 'update_picture'])->name('update_picture');
     Route::post('/profile/update-password', [UserController::class, 'update_password'])->name('update_password');
+    Route::get('/kalender', [KalenderMapelController::class, 'index'])->name('kalendermapel.index');
 
     //Ini untuk nge-protect routes biar khusus cuma diakses sama Admin
     Route::middleware('role:Admin|Super Admin')->group(function () {
@@ -119,7 +120,6 @@ Route::middleware(['auth', 'check_role'])->group(function () {
         });
 
         Route::prefix('kalender')->controller(KalenderMapelController::class)->group(function() {
-            Route::get('/', 'index')->name('kalendermapel.index');
             Route::get('/ajaxhandler', 'indexAjaxHandler')->name('kalendermapel.ajaxHandler');
             Route::post('/store', 'storeMapelJampel')->name('kalendermapel.store');
             Route::post('/delete', 'deleteMapelJampel')->name('kalendermapel.delete');
@@ -143,6 +143,8 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     //disini kita protect Routesnya Guru yak!
 
     Route::middleware('role:Guru|Wali Kelas')->group(function () {
+        Route::get('/data-calendar-guru', [KalenderMapelController::class, 'getDataCalendarGuru'])->name('kalendermapel.get-calendar-guru');
+
         Route::prefix('cp')->controller(SillabusController::class)->group(function () {
             Route::get('/{mapelId}', 'index')->name('silabus.index');
             Route::post('/{mapelId}/store', 'storeCP')->name('silabus.storeCP');
@@ -176,7 +178,6 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::get('/', 'index')->name('komentar.index');
             Route::post('/update', 'updateKomentar')->name('komentar.update');
         });
-
     });
 
     Route::middleware('role:Wali Kelas')->group(function () {
@@ -198,6 +199,8 @@ Route::middleware(['auth', 'check_role'])->group(function () {
 
     
     Route::middleware('role:Siswa')->group(function () {
+        Route::get('/data-calendar-siswa', [KalenderMapelController::class, 'getDataCalendarSiswa'])->name('kalendermapel.get-calendar-siswa');
+
         Route::prefix('siswa')->controller(HalamanSiswaController::class)->group(function () {
             Route::get('/absensi', 'absensi')->name('siswapage.absensi');
             Route::get('/nilai/{semesterId}', 'bukuNilaiSiswa')->name('siswapage.bukunilai');

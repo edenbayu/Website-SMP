@@ -168,7 +168,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                            <a href="{{route('kalendermapel.index')}}" class="sidebar-link">
                                 <i class="fa-solid fa-chart-simple"></i>
                                 Jadwal Pelajaran
                             </a>
@@ -252,7 +252,7 @@
                             </ul>
                         </li> --}}
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                            <a href="{{route('kalendermapel.index')}}" class="sidebar-link">
                                 <i class="fa-solid fa-book-open"></i>
                                 Jadwal Pelajaran
                             </a>
