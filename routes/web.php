@@ -101,6 +101,8 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::get('/{kelasId}/export', 'exportKelas')->name('kelas.export');
             Route::delete('/kelas/{kelasId}/siswa/{siswaId}', 'deleteAssignedSiswa')->name('kelas.siswa.delete');;
             Route::post('/{kelasId}/auto-assign', 'autoAddStudents')->name('kelas.autoAdd');
+            Route::post('/{kelasId}/import-from-kelas', 'importSiswaFromKelas')->name('kelas.importFromKelas');
+            Route::get('getKelasBySemester/', 'getKelas')->name('kelas.getKelas');
         });
 
         //Mapel routes

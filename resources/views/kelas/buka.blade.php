@@ -42,7 +42,12 @@
         <button class="btn btn-primary mb-3" data-bs-toggle="modal"
             data-bs-target="#autoAddStudentModal-{{ $kelas->id }}">Penempatan Peserta Didik Otomatis</button>
 
-        <a target="_blank" href="{{ route('kelas.export', ['kelasId' => $kelas->id]) }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
+        <!--Import Student Modal Trigger -->
+        <button class="btn btn-info mb-3" data-bs-toggle="modal"
+            data-bs-target="#importStudentModal-{{ $kelas->id }}">Impor</button>
+
+        <a target="_blank" href="{{ route('kelas.export', ['kelasId' => $kelas->id]) }}" class="btn btn-secondary mb-3 px-3"
+            style="width: 6rem">Ekspor</a>
 
 
         <table id="example" class="table table-striped" style="width:100%">
@@ -127,22 +132,23 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="angkatan">Pilih Angkatan:</label>
-                                <select name="angkatan" id="angkatan" class="form-select @error('angkatan') is-invalid @enderror">                         
+                                <select name="angkatan" id="angkatan"
+                                    class="form-select @error('angkatan') is-invalid @enderror">
                                     <option value="">-- Select Angkatan --</option>
                                     @foreach ($angkatan as $year)
-                                        <option value="{{ $year }}"
-                                            @selected(old('angkatan') == $year) >
+                                        <option value="{{ $year }}" @selected(old('angkatan') == $year)>
                                             {{ $year }}
                                         </option>
                                     @endforeach
                                 </select>
                                 @error('angkatan')
-                                    <p class="invalid-feedback">{{ $message }}</p>                                    
+                                    <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="jumlahsiswa">Jumlah siswa dalam kelas :</label>
-                                <input type="number" id="jumlahSiswa" name="jumlahSiswa" class="form-control @error('jumlahSiswa')
+                                <input type="number" id="jumlahSiswa" name="jumlahSiswa"
+                                    class="form-control @error('jumlahSiswa')
                                     is-invalid
                                 @enderror"
                                     aria-describedby="passwordHelpBlock" value="{{ old('jumlahSiswa') ?? null }}">
@@ -154,13 +160,15 @@
                                 <div class="">
                                     <label for="jumlahsiswa">Jumlah siswa laki-laki:</label>
                                     @error('jumlahSiswaLaki')
-                                        <label class="invalid-feedback">{{ $message }}</label>                                        
+                                        <label class="invalid-feedback">{{ $message }}</label>
                                     @enderror
                                     <div class="input-group">
-                                        <button class="btn btn-outline-secondary" type="button" id="subtractMaleStudents"><i
-                                                class="fa-solid fa-minus"></i></button>
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            id="subtractMaleStudents"><i class="fa-solid fa-minus"></i></button>
                                         <input type="number" id="jumlahSiswaLaki" name="jumlahSiswaLaki"
-                                            class="form-control @error('jumlahSiswaLaki') is-invalid @enderror" aria-describedby="passwordHelpBlock" readonly value="{{ old('jumlahSiswaLaki') ?? null }}">
+                                            class="form-control @error('jumlahSiswaLaki') is-invalid @enderror"
+                                            aria-describedby="passwordHelpBlock" readonly
+                                            value="{{ old('jumlahSiswaLaki') ?? null }}">
                                         <button class="btn btn-outline-secondary" type="button" id="addMaleStudents"><i
                                                 class="fa-solid fa-plus"></i></button>
                                     </div>
@@ -168,17 +176,19 @@
                                 <div class="">
                                     <label for="jumlahsiswa">Jumlah siswa perempuan:</label>
                                     @error('jumlahSiswaPerempuan')
-                                        <label class="form-label invalid-feedback">{{ $message }}</label>                                        
+                                        <label class="form-label invalid-feedback">{{ $message }}</label>
                                     @enderror
                                     <div class="input-group">
-                                        <button class="btn btn-outline-secondary" type="button" id="subtractFemaleStudents"><i
-                                                class="fa-solid fa-minus"></i></button>
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            id="subtractFemaleStudents"><i class="fa-solid fa-minus"></i></button>
                                         <input type="number" id="jumlahSiswaPerempuan" name="jumlahSiswaPerempuan"
-                                            class="form-control @error('jumlahSiswaPerempuan') is-invalid @enderror" aria-describedby="passwordHelpBlock" readonly value="{{ old('jumlahSiswaPerempuan') ?? null }}">
-                                        <button class="btn btn-outline-secondary" type="button" id="addFemaleStudents"><i
-                                                class="fa-solid fa-plus"></i></button>
+                                            class="form-control @error('jumlahSiswaPerempuan') is-invalid @enderror"
+                                            aria-describedby="passwordHelpBlock" readonly
+                                            value="{{ old('jumlahSiswaPerempuan') ?? null }}">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            id="addFemaleStudents"><i class="fa-solid fa-plus"></i></button>
                                     </div>
-                                    
+
                                 </div>
                             </div>
 
@@ -190,6 +200,57 @@
                 </div>
             </div>
         </div>
+
+        {{-- Import Student Modal --}}
+        <div class="modal fade" id="importStudentModal-{{ $kelas->id }}" tabindex="-1"
+            aria-labelledby="addStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form
+                        action="{{ route('kelas.importFromKelas', ['kelasId' => $kelas->id, 'angkatan' => request('angkatan')]) }}"
+                        method="POST" style="display:inline;">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addStudentModalLabel">Impor Data Siswa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-info" role="alert">
+                                Gunakan Fitur ini untuk mengimpor data siswa dari semester/kelas lain
+                            </div>
+                            <div class="mb-3">
+                                <label for="semester">Pilih Semester:</label>
+                                <select name="semester" id="semester"
+                                    class="form-select @error('semester') is-invalid @enderror" id="selectsemester" required>
+                                    <option value="">-- Select semester --</option>
+                                    @foreach ($semesters as $semester)
+                                        <option value="{{ $semester->id }}" @selected(old('semester') == $year)>
+                                            {{ $semester->semester . ' | ' . $semester->tahun_ajaran }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="kelas">Pilih Kelas:</label>
+                                <select name="kelas" id="kelas"
+                                    class="form-select @error('kelas') is-invalid @enderror" id="selectKelas" required>
+                                    <option value="">Mohon pilih semester terlebih dahulu</option>
+                                </select>
+                                @error('kelas')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Impor Siswa</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 @endsection
 
@@ -341,5 +402,28 @@
             jumlahLaki.value = parseInt(jumlahSiswa.value) - parseInt(jumlahPerempuan.value);
         });
     </script>
-    
+    <script>
+        const selectSemester = document.getElementById('semester');
+        semester.addEventListener('change', function() {
+            console.log(semester.value)
+            $.ajax({
+                url: "{{ route('kelas.getKelas') }}",
+                type: 'GET',
+                data: {
+                    semesterId: selectSemester.value
+                },
+                success: function(response) {
+                    console.log(response);
+                    const selectKelas = document.getElementById('kelas');
+                    selectKelas.innerHTML = '<option value="">-- Select Kelas --</option>';
+                    response.forEach(function(kelas) {
+                        const option = document.createElement('option');
+                        option.value = kelas.id;
+                        option.textContent = kelas.rombongan_belajar;
+                        selectKelas.appendChild(option);
+                    });
+                }
+            });
+        });
+    </script>
 @endpush

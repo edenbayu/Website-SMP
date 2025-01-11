@@ -160,12 +160,16 @@ class KelasController extends Controller
                 'daftar_siswa' => $kelas->siswas
             ]);
         } else {
+            // Get all kelas data
+            $semesters = Semester::all();
+
             // Pass the data to the view
             return view('kelas.buka', [
                 'kelas' => $kelas,
                 'siswas' => $availableSiswa,
                 'daftar_siswa' => $kelas->siswas,
-                'angkatan' => $angkatan
+                'angkatan' => $angkatan,
+                'semesters' => $semesters
             ]);
         }
     }
@@ -346,5 +350,29 @@ class KelasController extends Controller
         $siswa->kelases()->detach($kelasId);
 
         return redirect()->back()->with('success', 'Data siswa berhasil dihapus');
+    }
+
+    public function getKelas(Request $request)
+    {
+        $semesterId = $request->input('semesterId');
+        $kelas = Kelas::where('id_semester', $semesterId)->get();
+
+        return response()->json($kelas);
+    }
+
+    public function importSiswaFromKelas(Request $request, Kelas $kelasId)
+    {
+        $request->validate([
+            'semester' => 'required|exists:semesters,id',
+            'kelas' => 'required|exists:kelas,id',
+        ]);
+
+        $siswas = Siswa::whereHas('kelases', function ($query) use($request) {
+            $query->where('kelas_id', $request->kelas);
+        })->get();
+
+        $kelasId->siswas()->syncWithoutDetaching($siswas->pluck('id')->toArray());
+
+        return redirect()->back()->with('success', 'Data siswa berhasil diimport');
     }
 }
