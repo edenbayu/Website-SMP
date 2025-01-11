@@ -13,41 +13,6 @@
         </div>
     </div>
 
-    <form action="{{ route('mapel.index') }}" method="GET" class="mb-4">
-        <div class="row">
-            <!-- Semester Filter -->
-            <div class="col-md-4">
-                <label for="semester_id">Semester:</label>
-                <select name="semester_id" id="semester_id" class="form-control">
-                    {{-- <option value="">Pilih Semester</option>
-                    @foreach($semesters as $semester)
-                    <option value="{{ $semester->id }}" {{ request('semester_id') == $semester->id ? 'selected' : '' }}>
-                        {{ $semester->semester }} | {{ $semester->tahun_ajaran }} {{ $semester->status == 1 ? "(Aktif)" : "" }}
-                    </option>
-                    @endforeach --}}
-                </select>
-            </div>
-
-            <!-- Class Filter -->
-            <div class="col-md-4">
-                <label for="mapel">Mata Pelajaran:</label>
-                <select name="mapel" id="mapel" class="form-control">
-                    <option value="">Pilih Mata Pelajaran</option>
-                    {{-- @foreach($listMapel as $mapel)
-                    <option value="{{ $mapel->nama }}" {{ request('mapels') == $mapel->nama ? 'selected' : '' }}>
-                        {{ $mapel->nama }}
-                    </option>
-                    @endforeach --}}
-                </select>
-            </div>
-
-            <!-- Filter Button -->
-            <div class="col-md-4 align-self-end">
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
-        </div>
-    </form>
-
     <!-- Button to open Create Mapel Modal -->
     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createJampelModal">Tambah Jam Pelajaran</button>
 
