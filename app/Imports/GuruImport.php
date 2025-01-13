@@ -26,6 +26,7 @@ class GuruImport implements ToModel, WithValidation, WithHeadingRow, WithUpserts
         return [
             'nip' => 'unique:gurus,nip',
             'nama' => 'nullable',
+            'gelar' => 'nullable',
             'tempat_lahir' => 'nullable',
             'tanggal_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
@@ -48,6 +49,7 @@ class GuruImport implements ToModel, WithValidation, WithHeadingRow, WithUpserts
         return new Guru([
             'nip' => $row['nip'] ?? null,
             'nama' => $row['nama'] ?? null,
+            'gelar' => $row['gelar'] ?? null,
             'tempat_lahir' => $row['tempat_lahir'] ?? null,
             'tanggal_lahir' => $row['tanggal_lahir'] ?? null,
             'jenis_kelamin' => $row['jenis_kelamin'] ?? null,
