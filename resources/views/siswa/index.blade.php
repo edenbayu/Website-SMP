@@ -127,6 +127,10 @@
                                         <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" value="{{ old('tempat_lahir', $siswa->tempat_lahir) }}">
                                     </div>
                                     <div class="form-group mb-3">
+                                        <label for="tanggal_lahir">Tanggal Lahir</label>
+                                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $siswa->tanggal_lahir) }}">
+                                    </div>
+                                    <div class="form-group mb-3">
                                         <label for="jenis_kelamin">Jenis Kelamin</label>
                                         <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                                             <option value="Laki-laki" {{ $siswa->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
@@ -146,12 +150,12 @@
                                         <input type="number" name="anak_ke" id="anak_ke" class="form-control" value="{{ old('anak_ke', $siswa->anak_ke) }}">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="alamat_lengkap">Alamat Lengkap</label>
-                                        <textarea name="alamat_lengkap" id="alamat_lengkap" class="form-control">{{ old('alamat_lengkap', $siswa->alamat_lengkap) }}</textarea>
+                                        <label for="alamat">Alamat</label>
+                                        <textarea name="alamat" id="alamat" class="form-control">{{ old('alamat', $siswa->alamat) }}</textarea>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="no_telepon_rumah">No Telepon Rumah</label>
-                                        <input type="text" name="no_telepon_rumah" id="no_telepon_rumah" class="form-control" value="{{ old('no_telepon_rumah', $siswa->no_telepon_rumah) }}">
+                                        <label for="telepon">No Telepon </label>
+                                        <input type="text" name="telepon" id="telepon" class="form-control" value="{{ old('telepon', $siswa->telepon) }}">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="asal_sekolah">Asal Sekolah</label>
@@ -182,24 +186,12 @@
                                         <input type="text" name="pekerjaan_ibu" id="pekerjaan_ibu" class="form-control" value="{{ old('pekerjaan_ibu', $siswa->pekerjaan_ibu) }}">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="alamat_ortu">Alamat Orang Tua</label>
-                                        <textarea name="alamat_ortu" id="alamat_ortu" class="form-control">{{ old('alamat_ortu', $siswa->alamat_ortu) }}</textarea>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="no_telp_ortu">No Telepon Orang Tua</label>
-                                        <input type="text" name="no_telp_ortu" id="no_telp_ortu" class="form-control" value="{{ old('no_telp_ortu', $siswa->no_telp_ortu) }}">
-                                    </div>
-                                    <div class="form-group mb-3">
                                         <label for="nama_wali">Nama Wali</label>
                                         <input type="text" name="nama_wali" id="nama_wali" class="form-control" value="{{ old('nama_wali', $siswa->nama_wali) }}">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="pekerjaan_wali">Pekerjaan Wali</label>
                                         <input type="text" name="pekerjaan_wali" id="pekerjaan_wali" class="form-control" value="{{ old('pekerjaan_wali', $siswa->pekerjaan_wali) }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="alamat_wali">Alamat Wali</label>
-                                        <textarea name="alamat_wali" id="alamat_wali" class="form-control">{{ old('alamat_wali', $siswa->alamat_wali) }}</textarea>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="angkatan">Angkatan</label>
