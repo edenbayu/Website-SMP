@@ -36,7 +36,7 @@ class SemesterSeeder extends Seeder
                 'semester' => 'Semester 1',
                 'tahun_ajaran' => '2024/2025',
                 'status' => 0, // Inactive semester
-                'start' => Carbon::parse('2024-08-05'),
+                'start' => Carbon::parse('2024-07-08'),
                 'end' => Carbon::parse('2024-12-20'),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -45,8 +45,8 @@ class SemesterSeeder extends Seeder
                 'semester' => 'Semester 2',
                 'tahun_ajaran' => '2024/2025',
                 'status' => 1, // Inactive semester
-                'start' => Carbon::parse('2025-01-15'),
-                'end' => Carbon::parse('2025-06-05'),
+                'start' => Carbon::parse('2025-01-06'),
+                'end' => Carbon::parse('2025-06-27'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
