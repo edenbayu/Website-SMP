@@ -226,7 +226,7 @@ class KelasController extends Controller
         }
 
         // Combine male and female students
-        $selectedStudents = $maleStudents->merge($femaleStudents);
+        $selectedStudents = $maleStudents->merge($femaleStudents)->sortBy('nama');
 
         // Attach students to the class without detaching existing students
         $kelas->siswas()->syncWithoutDetaching($selectedStudents->pluck('id')->toArray());
