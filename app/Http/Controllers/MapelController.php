@@ -38,6 +38,11 @@ class MapelController extends Controller
         $semesterIds = $mapels->pluck('semester_id')->unique();
         $kelasValues = $mapels->pluck('kelas')->unique();
 
+        // Split the kelas values into an array of values
+        $kelasValues = $kelasValues->map(function ($item) {
+            return explode(',', $item);
+        })->flatten()->unique();
+
         // Filter Kelas based on semester_ids and kelas values from the mapels
         $kelasOptions = Kelas::whereIn('id_semester', $semesterIds)
                             ->whereIn('kelas', $kelasValues)
@@ -73,15 +78,17 @@ class MapelController extends Controller
         // Validate the incoming request data
         $request->validate([
             'nama' => 'required|string|max:255', // Ensure 'nama' is a required string with a maximum length
-            'kelas' => 'required|integer',
+            'kelas' => 'required|array',
+            'kelas.*' => 'required|in:7,8,9', // Ensure 'kelas' is an array with values 7, 8, or 9
             'guru_id' => 'required|exists:gurus,id', // Ensure 'guru_id' exists in the gurus table
             'semester_id' => 'required|exists:semesters,id', // Ensure 'semester_id' exists in the semesters table
         ]);
         
+        
         // Create a new Mata Pelajaran (Mapel) using the validated data
         $mapel = Mapel::create([
             'nama' => $request->nama,
-            'kelas' => $request->kelas,
+            'kelas' => implode(',', $request->kelas),
             'guru_id' => $request->guru_id,
             'semester_id' => $request->semester_id,
         ]);
@@ -104,7 +111,8 @@ class MapelController extends Controller
         // Find the mapel
         $mapel = Mapel::findOrFail($mapelId);
     
-        $mapel->kelas()->syncWithoutDetaching($request->kelas_id);
+        // $mapel->kelas()->syncWithoutDetaching($request->kelas_id);
+        $mapel->kelas()->sync($request->kelas_id);
     
         return redirect()->route('mapel.index')->with('success', 'Kelas has been successfully assigned to the Mata Pelajaran.');
     }
