@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\Mapel;
 use App\Models\Penilaian;
 use App\Models\TP;
 use App\Models\Siswa;
@@ -50,12 +51,16 @@ class PenilaianController extends Controller
                 return $item;
             });
 
-
-        // dd($penilaians);
-
         // Get the Kelas record related to the MapelKelas
         $kelas = Kelas::findOrFail($mapelKelas->kelas_id);
 
+        $mapel = Mapel::findOrFail($mapelKelas->mapel_id);
+        if (!$mapel->guru_id) $mapel = Mapel::join('gurus as g', 'g.id', '=', 'mapels.guru_id')
+            ->where('mapels.parent', '=', $mapelKelas->mapel_id)
+            ->where('g.id_user', '=', auth()->user()->id)
+            ->select('mapels.nama')
+            ->first();
+            
         // Options for TP, based on the provided MapelKelas ID
         $tpOptions = TP::select(
             't_p_s.id',
@@ -77,6 +82,7 @@ class PenilaianController extends Controller
             'penilaians' => $penilaians,
             'typesExist' => $typesExist,
             'kelas' => $kelas,
+            'mapel' => $mapel,
             'tpOptions' => $tpOptions,
             'getSiswaClassData' => $getSiswaClassData,
             'mapelKelasId' => $mapelKelasId,
