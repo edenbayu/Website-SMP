@@ -55,11 +55,11 @@ class PenilaianController extends Controller
         $kelas = Kelas::findOrFail($mapelKelas->kelas_id);
 
         $mapel = Mapel::findOrFail($mapelKelas->mapel_id);
-        if (!$mapel->guru_id) $mapel = Mapel::join('gurus as g', 'g.id', '=', 'mapels.guru_id')
-            ->where('mapels.parent', '=', $mapelKelas->mapel_id)
-            ->where('g.id_user', '=', auth()->user()->id)
-            ->select('mapels.nama')
-            ->first();
+        // if (!$mapel->guru_id) $mapel = Mapel::join('gurus as g', 'g.id', '=', 'mapels.guru_id')
+        //     ->where('mapels.parent', '=', $mapelKelas->mapel_id)
+        //     ->where('g.id_user', '=', auth()->user()->id)
+        //     ->select('mapels.*')
+        //     ->first();
             
         // Options for TP, based on the provided MapelKelas ID
         $tpOptions = TP::select(
@@ -116,12 +116,15 @@ class PenilaianController extends Controller
 
         $penilaian->tps()->sync($request->tp_ids);
 
+        $mapel = Mapel::findOrFail($mapelkelas->mapel_id);
+
         $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
             ->where('kelas_siswa.kelas_id', $mapelkelas->kelas_id)
             ->get();
 
         // Create PenilaianSiswa records
         foreach ($get_siswa_class_data as $siswa) {
+            if ($mapel->parent && strpos($mapel->nama, $siswa->agama) === false) continue;
             PenilaianSiswa::create([
                 'status' => 0, // Default status
                 'nilai' => null,
@@ -237,11 +240,12 @@ class PenilaianController extends Controller
 
     public function bukuNilai($mapelKelasId)
     {
-        $mapelKelas = MapelKelas::find($mapelKelasId);
+        // $mapelKelas = MapelKelas::find($mapelKelasId);
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
             ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
-            ->join('mapel_kelas as f', 'f.mapel_id', '=', 'b.mapel_kelas_id')
-            ->where('f.kelas_id', $mapelKelas->kelas_id)
+            // ->join('mapel_kelas as f', 'f.mapel_id', '=', 'b.mapel_kelas_id')
+            // ->where('f.kelas_id', $mapelKelas->kelas_id)
+            ->where('b.mapel_kelas_id', $mapelKelasId)
             ->select(
                 'c.nama',
                 'c.nisn',
@@ -257,9 +261,14 @@ class PenilaianController extends Controller
         $kelas = Kelas::join('mapel_kelas', 'mapel_kelas.kelas_id', '=', 'kelas.id')
             ->select('kelas.rombongan_belajar as rombel')
             ->where('mapel_kelas.id', $mapelKelasId)
-            ->get();
+            ->first();
 
-        return view('penilaian.bukuNilai', compact('datas', 'kelas'));
+        $mapel = Mapel::join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
+            ->select('mapels.nama')
+            ->where('mapel_kelas.id', $mapelKelasId)
+            ->first();
+
+        return view('penilaian.bukuNilai', compact('datas', 'kelas', 'mapel'));
     }
 
     public function legerNilai() {}

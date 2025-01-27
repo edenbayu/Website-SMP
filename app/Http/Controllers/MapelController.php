@@ -113,6 +113,14 @@ class MapelController extends Controller
     
         // $mapel->kelas()->syncWithoutDetaching($request->kelas_id);
         $mapel->kelas()->sync($request->kelas_id);
+
+        if (!$mapel->guru_id) {
+            $mapelChild = Mapel::where('parent', '=', $mapel->id)->get();
+
+            foreach ($mapelChild as $child) {
+                $child->kelas()->sync($request->kelas_id);
+            }
+        }
     
         return redirect()->route('mapel.index')->with('success', 'Kelas has been successfully assigned to the Mata Pelajaran.');
     }

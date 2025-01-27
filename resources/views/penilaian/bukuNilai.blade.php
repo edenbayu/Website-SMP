@@ -9,9 +9,7 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-        @foreach ($kelas as $k)
-            <h2 class="m-0" style="color: #EBF4F6">Buku Nilai | Kelas {{$k->rombel}}</h2>
-            @endforeach
+        <h2 class="m-0" style="color: #EBF4F6">Buku Nilai {{ $mapel->nama }} | Kelas {{$kelas->rombel}}</h2>
         </div>
     </div>
 

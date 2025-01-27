@@ -51,6 +51,7 @@ class KalenderMapelController extends Controller
                     ->join('gurus as g', 'g.id', '=', 'm.guru_id')
                     ->select('mapel_kelas.id as id', 'm.nama as nama_mapel', 'g.nama as nama_guru')
                     ->orderBy('m.nama', 'asc')
+                    ->whereNull('m.parent')
                     ->where('mapel_kelas.kelas_id', $kelasId)->get();
                 $response = $response->push($responseWithoutParent)->flatten();         
                 break;
