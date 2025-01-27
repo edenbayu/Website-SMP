@@ -10,9 +10,9 @@
     </div>
     <!-- Form to select a Mapel -->
     <select class="form-select mb-3" id="mapelSelect">
-        <option value="">Pilih Mata Pelajaran</option>
+        <option value="" disabled selected hidden>Pilih Mata Pelajaran</option>
         @foreach ($mapels as $mapel)
-        <option value="{{ $mapel->nama }}">{{ $mapel->nama }}</option>
+            <option value="{{ $mapel->nama }}">{{ $mapel->nama }}</option>
         @endforeach
     </select>
     
@@ -42,6 +42,7 @@
             <tr>
                 <th>No</th>
                 <th>Judul</th>
+                <th>Tanggal</th>
                 <th>Tipe</th>
                 <th>TP</th>
                 <th>Nilai</th>
@@ -101,11 +102,13 @@
                                 <tr>
                                     <td>${counter}</td>
                                     <td>${item.judul}</td>
+                                    <td>${item.tanggal}</td>
                                     <td>${item.tipe}</td>
-                                    <td>${item.nomor_cp}.${item.nomor_tp}</td>
+                                    <td>${item.nomor_tp}</td>
                                     <td>${item.nilai}</td>
                                 </tr>
                             `);
+                            counter++; // Increment the counter for the next row
                         });
                     }
                 });
