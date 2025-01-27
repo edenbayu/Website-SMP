@@ -3,6 +3,7 @@
 @push('style')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"> 
 @endpush
 
 @section('content')
@@ -94,12 +95,12 @@
                     <!-- Button to open Assign Kelas Modal -->
                     @if ($mapel->kelas != 'Ekskul' && !$mapel->parent)
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#assignKelasModal-{{ $mapel->id }}">
-                        Tambah Kelas
+                        Pilih Kelas
                     </button>
                     @endif
 
                     <!-- Modal for Assign Kelas -->
-                    <div class="modal fade" id="assignKelasModal-{{ $mapel->id }}" tabindex="-1" aria-labelledby="assignKelasModalLabel" aria-hidden="true">
+                    <div class="modal fade assignKelasModal" id="assignKelasModal-{{ $mapel->id }}" tabindex="-1" aria-labelledby="assignKelasModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -111,16 +112,16 @@
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="kelas_id" class="form-label">Pilih Kelas</label>
-                                            <select name="kelas_id" id="kelas_id" class="form-select" required>
-                                                @foreach ($kelasOptions->where('id_semester', $mapel->semester_id)->where('kelas', $mapel->kelas) as $k)
-                                                <option value="{{ $k->id }}">{{ $k->rombongan_belajar }}</option>
+                                            <select name="kelas_id[]" id="kelas_id" class="form-select select-kelas" required multiple>
+                                                @foreach ($kelasOptions->where('id_semester', $mapel->semester_id)->whereIn('kelas',explode(',',$mapel->kelas)) as $k)
+                                                <option value="{{ $k->id }}" @selected(in_array($k->id,$mapel->kelas()->pluck('kelas_id')->toArray())) >{{ $k->rombongan_belajar }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                        <button type="submit" class="btn btn-primary">Tambahkan Kelas</button>
+                                        <button type="submit" class="btn btn-primary">Pilih Kelas</button>
                                     </div>
                                 </form>
                             </div>
@@ -149,7 +150,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="kelas" class="form-label">Kelas</label>
-                            <select name="kelas" id="guru_id" class="form-select" required>
+                            <select name="kelas[]" id="kelas" class="form-select select2" multiple required>
                                 <option value="7">7</option>
                                 <option value="8">8</option>
                                 <option value="9">9</option>
@@ -219,6 +220,7 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
 <script>
     $(document).ready(function() {
         // Cek apakah DataTable sudah diinisialisasi
@@ -232,6 +234,47 @@
                 url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
             }
         });
+
+        $('#kelas').select2({
+            width: '100%',
+            placeholder: "Pilih kelas",
+            multiple : true,
+            dropdownParent : $('#createMapelModal')
+        })
+
+
+        // Iterasi melalui setiap modal
+            $('.assignKelasModal').each(function () {
+                const modal = $(this);
+                const selectElement = modal.find('.select-kelas');
+                if (!selectElement.hasClass('select2-hidden-accessible')) {
+                    selectElement.select2({
+                        dropdownParent: modal,
+                        width: '100%',
+                        placeholder: "Pilih kelas",
+                        multiple: true
+                    });
+                    console.log('Select2 initialized');
+                } else {
+                    console.log('Select2 already initialized');
+                }
+                        });
+                        
+        $(document).on('show.bs.modal', '.assignKelasModal', function () {
+            const modal = $(this);
+            const selectElement = modal.find('.select-kelas');
+
+            // Initialize Select2 if not already initialized
+            if (!selectElement.hasClass('select2-hidden-accessible')) {
+                selectElement.select2({
+                    dropdownParent: modal,
+                    width: '100%',
+                    placeholder: "Pilih kelas",
+                    multiple: true
+                });
+            }
+        });
+
     });
 </script>
 <script>

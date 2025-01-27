@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('agama')->nullable();
             $table->string('status_keluarga')->nullable();
             $table->integer('anak_ke')->nullable();
-            $table->string('alamat_lengkap')->nullable();
-            $table->string('no_telepon_rumah')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('telepon')->nullable();
             $table->string('asal_sekolah')->nullable();
             $table->date('tanggal_diterima')->nullable();
             $table->string('jalur_penerimaan')->nullable();
@@ -31,8 +31,6 @@ return new class extends Migration
             $table->string('pekerjaan_ayah')->nullable();
             $table->string('nama_ibu')->nullable();
             $table->string('pekerjaan_ibu')->nullable();
-            $table->string('alamat_ortu')->nullable();
-            $table->string('no_telp_ortu')->nullable();
             $table->string('nama_wali')->nullable();
             $table->string('alamat_wali')->nullable();
             $table->string('pekerjaan_wali')->nullable();

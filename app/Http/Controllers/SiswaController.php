@@ -74,34 +74,32 @@ class SiswaController extends Controller
     public function update(Request $request, $siswaId)
     {
         // Validate that only `no_pendaftaran` is required and all other fields are nullable
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'nullable|string|max:255',
             'nis' => 'nullable|string|max:50|unique:siswas,nis,' . $siswaId,
             'nisn' => 'nullable|string|max:50|unique:siswas,nisn,' . $siswaId,
+            'tanggal_lahir' => 'nullable|date|max:255',
             'tempat_lahir' => 'nullable|string|max:255',
             'jenis_kelamin' => 'nullable|string|max:10',
             'agama' => 'nullable|string|max:50',
             'status_keluarga' => 'nullable|string|max:50',
             'anak_ke' => 'nullable|integer',
-            'alamat_lengkap' => 'nullable|string|max:500',
-            'no_telepon_rumah' => 'nullable|string|max:15',
+            'alamat' => 'nullable|string|max:500',
+            'telepon' => 'nullable|string|max:15',
             'asal_sekolah' => 'nullable|string|max:255',
             'tanggal_diterima' => 'nullable|date',
             'jalur_penerimaan' => 'nullable|string|max:255',
             'nama_ayah' => 'nullable|string|max:255',
             'nama_ibu' => 'nullable|string|max:255',
-            'alamat_ortu' => 'nullable|string|max:500',
-            'no_telp_ortu' => 'nullable|string|max:15',
             'pekerjaan_ayah' => 'nullable|string|max:255',
             'pekerjaan_ibu' => 'nullable|string|max:255',
             'nama_wali' => 'nullable|string|max:255',
-            'alamat_wali' => 'nullable|string|max:500',
             'pekerjaan_wali' => 'nullable|string|max:255',
             'angkatan' => 'nullable|integer',
         ]);
         
         $siswa = Siswa::findOrFail($siswaId);
-        $siswa->update($request->all());
+        $siswa->update($validated);
 
         return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil diubah');
     }   

@@ -207,7 +207,7 @@ class KelasController extends Controller
         $semesterId = $kelas->id_semester;
         
         // Get available students of the specified angkatan who are not already assigned this semester
-        $availableSiswa = Siswa::where('angkatan', request('angkatan'))->whereDoesntHave('kelases', function ($query) use ($semesterId) {
+        $availableSiswa = Siswa::inRandomOrder()->where('angkatan', request('angkatan'))->whereDoesntHave('kelases', function ($query) use ($semesterId) {
             $query->where('id_semester', $semesterId);
         })->get();
 
@@ -226,7 +226,7 @@ class KelasController extends Controller
         }
 
         // Combine male and female students
-        $selectedStudents = $maleStudents->merge($femaleStudents);
+        $selectedStudents = $maleStudents->merge($femaleStudents)->sortBy('nama');
 
         // Attach students to the class without detaching existing students
         $kelas->siswas()->syncWithoutDetaching($selectedStudents->pluck('id')->toArray());
