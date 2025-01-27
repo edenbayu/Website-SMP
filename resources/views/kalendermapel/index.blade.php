@@ -273,6 +273,7 @@
             $('#btnTambahJadwal').prop('disabled', true);
             
             if (kelasId) {
+                refreshCalendar();
                 $.ajax({
                     url: '{{ route("kalendermapel.ajaxHandler") }}',
                     type: 'GET',
@@ -284,7 +285,7 @@
                         $('#ma_pel').prop('disabled', false);
                         if (data.length > 0) {
                             data.forEach(mapel => {
-                                $('#ma_pel').append(`<option value="${mapel.id}">${mapel.nama_mapel} - ${mapel.nama_guru}</option>`);
+                                $('#ma_pel').append(`<option value="${mapel.id}">${mapel.nama_mapel}${mapel.nama_guru ? ` - ${mapel.nama_guru}` : ''}</option>`);
                             });
                         } else {
                             $('#ma_pel').append('<option value="" disabled>Tidak Ada</option>');

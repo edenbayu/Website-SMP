@@ -43,9 +43,16 @@ class KalenderMapelController extends Controller
             case 'getMapel':
                 $kelasId = $request->input('kelasId');
                 $response = MapelKelas::join('mapels as m', 'm.id', '=', 'mapel_kelas.mapel_id')
+                    ->select('mapel_kelas.id as id', 'm.nama as nama_mapel')
+                    ->orderBy('m.nama', 'asc')
+                    ->whereNull('m.guru_id')
+                    ->where('mapel_kelas.kelas_id', $kelasId)->get();
+                $responseWithoutParent = MapelKelas::join('mapels as m', 'm.id', '=', 'mapel_kelas.mapel_id')
                     ->join('gurus as g', 'g.id', '=', 'm.guru_id')
                     ->select('mapel_kelas.id as id', 'm.nama as nama_mapel', 'g.nama as nama_guru')
+                    ->orderBy('m.nama', 'asc')
                     ->where('mapel_kelas.kelas_id', $kelasId)->get();
+                $response = $response->push($responseWithoutParent)->flatten();         
                 break;
 
             case 'getJampel':
@@ -67,6 +74,21 @@ class KalenderMapelController extends Controller
                             }), 'bg', 'bg.id', '=', 'jam_pelajaran.id')
                     ->leftJoinSub(
                         DB::table('jam_pelajaran')
+                            ->select('jam_pelajaran.id', 'k.rombongan_belajar')
+                            ->leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
+                            ->leftJoin('mapel_kelas as mk', 'mk.id', '=', 'jpmk.mapel_kelas_id')
+                            ->leftJoin('kelas as k', 'k.id', '=', 'mk.kelas_id')
+                            ->leftJoin('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                            ->whereNull('m.guru_id')
+                            ->where('m.id', '=', function($query) use ($mapelkelasId) {
+                                $query->select('mapels.id')
+                                    ->from('mapels')
+                                    ->join('mapel_kelas as mk', 'mk.mapel_id', '=', 'mapels.id')
+                                    ->where('mk.id', '=', $mapelkelasId)
+                                    ->limit(1);
+                            }), 'bp', 'bp.id', '=', 'jam_pelajaran.id')
+                    ->leftJoinSub(
+                        DB::table('jam_pelajaran')
                             ->select('jam_pelajaran.id', DB::raw('1 as booked'))
                             ->leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
                             ->leftJoin('mapel_kelas as mk', 'mk.id', '=', 'jpmk.mapel_kelas_id')
@@ -76,7 +98,7 @@ class KalenderMapelController extends Controller
                                     ->where('mapel_kelas.id', '=', $mapelkelasId)
                                     ->limit(1);
                             }), 'bk', 'bk.id', '=', 'jam_pelajaran.id')
-                    ->select('jam_pelajaran.id', 'jam_pelajaran.hari', 'jam_pelajaran.nomor', 'jam_pelajaran.jam_mulai', 'jam_pelajaran.jam_selesai', 'bg.rombongan_belajar', 'bk.booked')
+                    ->select('jam_pelajaran.id', 'jam_pelajaran.hari', 'jam_pelajaran.nomor', 'jam_pelajaran.jam_mulai', 'jam_pelajaran.jam_selesai', DB::raw('COALESCE(bg.rombongan_belajar, bp.rombongan_belajar) as rombongan_belajar'), 'bk.booked')
                     ->get();
                 break;
 
@@ -185,6 +207,19 @@ class KalenderMapelController extends Controller
             ->orWhereNotNull('jam_pelajaran.event')
             ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id', 'k.rombongan_belajar as rombel')
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
+
+        $jampelmapelsParent = JamPelajaran::leftJoin('jam_pelajaran_mapel_kelas as jpmk', 'jpmk.jampel_id', '=', 'jam_pelajaran.id')
+            ->leftJoin('mapel_kelas as mk', 'mk.id', '=','jpmk.mapel_kelas_id')
+            ->leftJoin('mapels as m', 'm.parent', '=', 'mk.mapel_id')
+            ->leftJoin('kelas as k', 'k.id', '=','mk.kelas_id')
+            ->leftJoin('gurus as g', 'g.id', '=', 'm.guru_id')
+            ->where('g.id_user', '=', auth()->user()->id)
+            ->where('k.id_semester', '=', session()->get('semester_id'))
+            ->WhereNull('jam_pelajaran.event')
+            ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id', 'k.rombongan_belajar as rombel')
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
+
+        $jampelmapels = $jampelmapels->push($jampelmapelsParent)->flatten();
 
         foreach ($jampelmapels as $jampel) {
             $day = $dayMapping[$jampel['hari']] ?? null;

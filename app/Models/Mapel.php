@@ -8,6 +8,7 @@ class Mapel extends Model
 {
     protected $fillable = [
         'nama',
+        'parent',
         'kelas',
         'guru_id',
         'semester_id',

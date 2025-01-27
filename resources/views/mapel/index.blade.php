@@ -72,7 +72,7 @@
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td>{{ $mapel->nama }}</td>
                 <td class="text-start">{{ $mapel->kelas }}</td>
-                <td>{{ $mapel->guru->nama }}</td>
+                <td>{{ $mapel->guru ? $mapel->guru->nama : '-' }}</td>
                 @if ($mapel->kelas != 'Ekskul')
                 <td>
                     {{ $rombel[$mapel->id] ?? '-' }}
@@ -92,7 +92,7 @@
                     </form>
 
                     <!-- Button to open Assign Kelas Modal -->
-                    @if ($mapel->kelas != 'Ekskul')
+                    @if ($mapel->kelas != 'Ekskul' && !$mapel->parent)
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#assignKelasModal-{{ $mapel->id }}">
                         Tambah Kelas
                     </button>
