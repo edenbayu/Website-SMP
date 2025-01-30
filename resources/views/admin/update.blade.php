@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editAdminModalLabel">Ubah Data</h5>
+                <h5 class="modal-title" id="editAdminModalLabel">Ubah data {{ $a->nama }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('admin.update', $a->id) }}" method="POST">
@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="nip">NIP</label>
+                        <label for="nip">NIP / Kode Pegawai</label>
                         <input type="text" name="nip" id="nip" class="form-control" value="{{ old('nip', $a->nip) }}" required>
                     </div>
 

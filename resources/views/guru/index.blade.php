@@ -51,11 +51,11 @@
             <tr>
                 <th class="text-start">No</th>
                 <th>Nama</th>
-                <th class="text-start">NIP</th>
+                <th class="text-start">NIP / Kode Pegawai</th>
                 <th>Jenis Kelamin</th>
                 <th>Jabatan</th>
+                <th>Status - Pangkat</th>
                 <th>Pendidikan</th>
-                <th>Pangkat</th>
                 <th>Aksi</th>
                 <th>Akun</th>
             </tr>
@@ -68,27 +68,32 @@
                 <td class="text-start">{{ $guru->nip }}</td>
                 <td>{{ $guru->jenis_kelamin }}</td>
                 <td>{{ $guru->jabatan }}</td>
-                <td>{{ $guru->pendidikan }}</td>
                 <td>{{ $guru->status.' - '.$guru->pangkat_golongan }}</td>
-                <td>
-                    <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}" style="width: 5rem">Ubah</button>
+                <td>{{ $guru->pendidikan }}</td>
+                <td >
+                    <div class="d-flex gap-2">
+                    <!-- View Class Modal Trigger -->   
+                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewGuruModal-{{ $guru->id }}"><i class="fa-solid fa-eye"></i></button>
+                    <!-- Edit Class Modal Trigger -->   
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}"><i class="fa-solid fa-edit"></i></button>
                     @role('Super Admin')
                         <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
+                            <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     @endrole
+                    </div>
                 </td>
                 <td>
                     @if(empty($guru->id_user))
                     <!-- Button to open the generate user modal -->
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $guru->id }} "style="width: 5rem">Buat</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $guru->id }}" ><i class="fa-solid fa-plus"></i></button>
                     @include('guru._generate_user_modal')
                     @else
                         @role("Super Admin")
-                            <span>User ID: {{ $guru->id_user }}</span>
+                            {{-- <span>User ID: {{ $guru->id_user }}</span> --}}
+                            <a href="{{ route('account.index') }}">Lihat</a>
                         @else
                             {{-- <span>Sudah Ada</span> --}}
                             <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editRoleModal-{{ $guru->id }} "style="width: 5rem">Edit</button>
@@ -98,6 +103,7 @@
                 </td>
             </tr>
             @include('guru.update')
+            @include('guru.view')
             @endforeach
         </tbody>
     </table>

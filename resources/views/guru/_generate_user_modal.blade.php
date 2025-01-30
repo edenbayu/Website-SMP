@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="generateUserModalLabel-{{ $guru->id }}">Buat for {{ $guru->nama }}</h5>
+                <h5 class="modal-title" id="generateUserModalLabel-{{ $guru->id }}">Buat Akun untuk {{ $guru->nama }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -14,16 +14,16 @@
                         <input type="text" class="form-control" id="email-{{ $guru->id }}" name="email" placeholder="example@email.com" required>
                     </div>
                     <div class="mb-3">
-                        <label for="username-{{ $guru->id }}" class="form-label">Username</label>
+                        <label for="username-{{ $guru->id }}" class="form-label">Nama Pengguna</label>
                         <input type="hidden" class="form-control" id="username-{{ $guru->id }}" name="username" value="{{ $guru->nip }}" required>
                         <input type="text" class="form-control" placeholder="{{ $guru->nip }}" disabled>
                     </div>
                     <div class="mb-3">
-                        <label for="password-{{ $guru->id }}" class="form-label">Password</label>
+                        <label for="password-{{ $guru->id }}" class="form-label">Kata Sandi</label>
                         <input type="text" class="form-control" id="password-{{ $guru->id }}" name="password" value="{{ Str::random(6) }}" required>
                     </div>
                     <div class="mb-3">
-                        <label for="roles" class="form-label">Role</label>
+                        <label for="roles" class="form-label">Hak Akses</label>
                         <select class="role-multiple form-select" name="roles[]" multiple="multiple" required>
                             @role('Super Admin')
                             <option value="Super Admin">Super Admin</option>
@@ -33,7 +33,7 @@
                             <option value="Wali Kelas">Wali Kelas</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Generate</button>
+                    <button type="submit" class="btn btn-primary">Buat</button>
                 </form>
             </div>
         </div>

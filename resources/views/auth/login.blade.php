@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="footer">
-        <p>&copy; Made By TIM TA Satyagraha x Rizqi | 2024 SMP Negeri 1 Karangawen x Universitas Diponegoro</p>
+        <p>&copy; Dibuat oleh TIM TA Satyagraha x Rizqi | 2024/2025 | SMP Negeri 1 Karangawen x Universitas Diponegoro</p>
     </div>
 </body>
 

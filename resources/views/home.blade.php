@@ -51,11 +51,11 @@
                         @foreach($kepalaSekolah as $kepala)
                         <p class="card-text text-content ml-2">{{ $kepala->nama }}</p>
                         @endforeach
-                        <h5 class="card-title mt-3" style="font-size: 1.15rem">Admin</h5>
+                        <h5 class="card-title mt-3" style="font-size: 1.15rem">Operator</h5>
                         @if($operator->isNotEmpty())
                             <ul style="padding-left: 0rem;">
                                 @foreach($operator as $op)
-                                    <li style="font-size: 1.1rem">- {{ $op->nama }}</li>
+                                    <li style="font-size: 1.1rem"> {{ $op->nama }}</li>
                                 @endforeach
                             </ul>
                         @else

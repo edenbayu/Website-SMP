@@ -10,6 +10,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Colors\Rgb\Channels\Red;
 
 class SiswaController extends Controller 
 {
@@ -36,31 +38,33 @@ class SiswaController extends Controller
         return view('siswa.import');
     }
 
-    public function generateUser($siswaId)
+    public function generateUser(Request $request, $siswaId)
     {
-        // Find the `Siswa` record
+        // // Find the `Siswa` record
         $siswa = Siswa::findOrFail($siswaId);
 
-        // Generate a random 6-digit password
-        $password = substr($siswa->nisn, -6);
-
-        // Create a new user with the required attributes (no hashing)
-        $user = User::create([
-            'name' => $siswa->nama,  // Use 'name' to match the database field
-            'email' => $siswa->nisn.'@gmail.com',
-            'username' => $siswa->nisn,
-            'password' => $password,  // Directly assign password without hashing
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
         ]);
 
-        // Automatically assign the 'Siswa' role to the new user
+        // // Create a new user with the required attributes (no hashing)
+        $user = User::create([
+            'name' => $siswa->nama,
+            'email' => $validated['email'],
+            'username' => $siswa->nisn,
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        // // Automatically assign the 'Siswa' role to the new user
         $user->assignRole('Siswa');
 
-        // Update `Siswa` to reference the new user's ID
-        $siswa->id_user = $user->id; // Set the new id_user
-        $siswa->nis = $siswa->id; // Set user nis same as siswa's id
-        $siswa->save(); // Save the changes
+        // // Update `Siswa` to reference the new user's ID
+        $siswa->update([
+            'id_user' => $user->id,
+        ]);
 
-        return redirect()->route('siswa.index')->with('success', 'User berhasil dibuat dengan username ' . $user->username . ' dan password ' . $password);
+        return redirect()->route('siswa.index')->with('success', 'User berhasil dibuat dengan username ' . $user->username . ' dan password ' . $user->password);
     }
 
     public function delete($siswaId)

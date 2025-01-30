@@ -81,7 +81,7 @@ class AdminController extends Controller
     public function destroy($id) {
         $guru = Admin::findOrFail($id);
         $guru->delete();
-        return redirect()->route('admin.index')->with('success', 'Data deleted successfully!');
+        return redirect()->route('admin.index')->with('success', 'Data berhasil dihapus');
     }
 
     public function generateUser(Request $request, $adminId)

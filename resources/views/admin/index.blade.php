@@ -28,7 +28,7 @@
                 <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="m-3">
-                        <input type="file" name="file" class="form-control" accept=".xlsx" required>
+                        <input type="file" name="file" class="form-control" accept=".xlsx" required placeholder="Pilih File">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -53,7 +53,7 @@
             <tr>
                 <th class="text-start">No</th>
                 <th>Nama</th>
-                <th class="text-start">Kode Pegawai</th>
+                <th class="text-start">NIP / Kode Pegawai</th>
                 <th>Jenis Kelamin</th>
                 <th>Jabatan</th>
                 <th>Status</th>
@@ -73,25 +73,30 @@
                 <td>{{ (strpos(old('status', $a->status), "TT")) ? $a->status : $a->status.' - '.$a->pangkat_golongan }}</td>
                 <td>{{ $a->pendidikan }}</td>
                 <td>
+                    <div class="d-flex gap-2">
+                    <!-- View Class Modal Trigger -->
+                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewAdminModal-{{ $a->id }}"><i class="fa-solid fa-eye"></i></button>
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}" style="width: 5rem">Ubah</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}"><i class="fa-solid fa-edit"></i></button>
                     @role('Super Admin')
                         <form action="{{ route('admin.destroy', $a->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
+                            <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     @endrole
+                    </div>
                 </td>
                 <td>
                     @role('Super Admin')
                         @if(empty($a->id_user))
                             <!-- Button to open the generate user modal -->
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $a->id }}" style="width: 5rem">
-                                Buat
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $a->id }}">
+                                <i class="fa-solid fa-plus"></i>
                             </button>
                         @else
-                            <span> User ID: {{ $a->id_user }}</span>
+                            {{-- <span> User ID: {{ $a->id_user }}</span> --}}
+                            <a href="{{ route('account.index') }}">Lihat</a>
                         @endif
                     @endrole
                     @role('Admin')
@@ -104,6 +109,7 @@
                 </td>
             </tr>
             @include('admin.update')
+            @include('admin.view')
             @endforeach
         </tbody>
     </table>

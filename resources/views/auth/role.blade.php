@@ -96,6 +96,24 @@
             background-color: #b6eafb; /* Warna hijau muda */
         }
 
+        .footer {
+            padding: 5px 0;
+            /* Reduces vertical padding */
+            background-color: #00BFFF;
+            /* Optional: Set background color */
+            text-align: center;
+            /* Centers the text */
+        }
+
+        .footer p {
+            margin: 0;
+            /* Removes extra margin around paragraph */
+            font-size: 12px;
+            /* Adjust font size as needed */
+            color: #ffffff;
+            /* Optional: Adjust text color */
+        }
+
     </style>
 </head>
 
@@ -107,8 +125,8 @@
             <h2>SMP Negeri 1 Karangawen</h2>
         </div>
         <div class="form-section">
-            <p class="intro">Select Role</p>
-            <p style="margin-bottom: 30px">Pilih role yang ingin Anda gunakan untuk masuk.</p>
+            <p class="intro">Pilih Hak Akses</p>
+            <p style="margin-bottom: 30px">Pilih hak akses yang ingin anda gunakan untuk masuk.</p>
             @if (count($roles) > 0)
             <form id="roleForm" action="{{ route('post_role') }}" method="POST" style="justify-items: center">
                 @csrf
@@ -125,9 +143,9 @@
                                 <div class="role-box">
                                     <div style="margin-top: 20px;">
                                         @if ($role === 'Super Admin')
-                                            <i class="fa-solid fa-users-gear fa-2xl" style="font-size: 40px;"></i>
-                                        @elseif ($role === 'Admin')
                                             <i class="fa-solid fa-user-gear fa-2xl" style="font-size: 40px;"></i>
+                                        @elseif ($role === 'Admin')
+                                            <i class="fa-solid fa-users-gear fa-2xl fa-solid fa-user-gear fa-2xl" style="font-size: 40px;"></i>
                                         @elseif ($role === 'Guru')
                                             <i class="fa-solid fa-chalkboard-user fa-2xl" style="font-size: 40px;"></i>
                                         @elseif ($role === 'Wali Kelas')
@@ -156,7 +174,7 @@
         </div>
     </div>
     <div class="footer">
-        <p>&copy; Made By TIM TA Satyagraha x Rizqi | 2024 SMP Negeri 1 Karangawen x Universitas Diponegoro</p>
+        <p class="footer">&copy; Dibuat oleh TIM TA Satyagraha x Rizqi | 2024/2025 | SMP Negeri 1 Karangawen x Universitas Diponegoro</p>
     </div>
 </body>
 

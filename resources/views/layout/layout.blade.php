@@ -357,7 +357,7 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a href={{ route('profile') }} class="dropdown-item">Profil</a>
                                 @if (count(auth()->user()->getRoleNames()->toArray()) > 1)
-                                    <a href={{ route('role') }} class="dropdown-item">Ganti Role</a>
+                                    <a href={{ route('role') }} class="dropdown-item">Ganti Hak Akses</a>
                                 @endif
                                 <form action={{ route('logout') }} method="POST">
                                     @csrf
