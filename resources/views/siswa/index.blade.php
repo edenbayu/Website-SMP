@@ -39,6 +39,12 @@
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
     <!-- Ekspor Button -->
     <a target="_blank" href="{{ route('siswa.export') }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
+    
+    {{-- toggle to enable "Edit" and "Delete" buttons --}} 
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+        <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+    </div>
 
 
     <!-- Data Table -->
@@ -68,7 +74,7 @@
                 <td class="text-start">{{ $siswa->agama }}</td>
                 <td>
                     <!-- Edit Button to trigger modal -->
-                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}" >
+                    <button type="button" class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}" >
                         <i class="fa-solid fa-edit"></i>
                     </button>
 
@@ -76,7 +82,7 @@
                     <form action="{{ route('siswa.delete', $siswa->id) }}" method="POST" class="d-inline delete-form" id="deleteForm-{{ $siswa->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger delete-button deleteAlert" data-siswa-id="{{ $siswa->id }}" aria-label="Hapus Siswa" >
+                        <button type="submit" class="btn btn-danger delete-button deleteAlert controlled" data-siswa-id="{{ $siswa->id }}" aria-label="Hapus Siswa" >
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </form>
@@ -263,6 +269,16 @@
                 url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
             }
         });
+
+        // Enable Edit and Delete buttons when toggle is checked
+            $('#flexSwitchCheckDefault').on('change', function() {
+                const isEditMode = this.checked;
+
+                // Enable or disable all controlled buttons
+                document.querySelectorAll('.controlled').forEach(button => {
+                    button.disabled = !isEditMode;
+                });
+            });
     });
 </script>
 <script>

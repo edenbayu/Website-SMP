@@ -44,6 +44,12 @@
     <a target="_blank" href="{{ route('admin.export') }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
     <button class="btn btn-success mb-3 px-2" data-bs-toggle="modal" data-bs-target="#createAdminModal" style="width: 6rem">Tambah</button>
 
+    {{-- toggle to enable "Edit" and "Delete" buttons --}} 
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+        <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+    </div>
+
     <!-- Add Admin Button -->
     <!-- <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#createAdminModal">Tambah Data</button> -->
 
@@ -77,12 +83,12 @@
                     <!-- View Class Modal Trigger -->
                     <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewAdminModal-{{ $a->id }}"><i class="fa-solid fa-eye"></i></button>
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}"><i class="fa-solid fa-edit"></i></button>
+                    <button class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editAdminModal-{{ $a->id }}"><i class="fa-solid fa-edit"></i></button>
                     @role('Super Admin')
                         <form action="{{ route('admin.destroy', $a->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger deleteAlert controlled"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     @endrole
                     </div>
@@ -252,6 +258,16 @@
                             golonganHiddenElement.disabled = false;
                         }
                     }
+                });
+            });
+
+            // Enable Edit and Delete buttons when toggle is checked
+            $('#flexSwitchCheckDefault').on('change', function() {
+                const isEditMode = this.checked;
+
+                // Enable or disable all controlled buttons
+                document.querySelectorAll('.controlled').forEach(button => {
+                    button.disabled = !isEditMode;
                 });
             });
         });

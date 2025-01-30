@@ -44,6 +44,12 @@
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
     <a target="_blank" href="{{ route('guru.export') }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createGuruModal" style="width: 6rem">Tambah</button>
+    
+    {{-- toggle to enable "Edit" and "Delete" buttons --}} 
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+        <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+    </div>
 
     <!-- Guru List -->
     <table id="example" class="table table-striped" style="width:100%">
@@ -75,12 +81,12 @@
                     <!-- View Class Modal Trigger -->   
                     <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewGuruModal-{{ $guru->id }}"><i class="fa-solid fa-eye"></i></button>
                     <!-- Edit Class Modal Trigger -->   
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}"><i class="fa-solid fa-edit"></i></button>
+                    <button class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editGuruModal-{{ $guru->id }}"><i class="fa-solid fa-edit"></i></button>
                     @role('Super Admin')
                         <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger deleteAlert controlled"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     @endrole
                     </div>
@@ -250,6 +256,16 @@
                             e.preventDefault(); // Cegah penghapusan jika teks adalah "Guru"
                         }
                     });
+                });
+            });
+
+            // Enable Edit and Delete buttons when toggle is checked
+            $('#flexSwitchCheckDefault').on('change', function() {
+                const isEditMode = this.checked;
+
+                // Enable or disable all controlled buttons
+                document.querySelectorAll('.controlled').forEach(button => {
+                    button.disabled = !isEditMode;
                 });
             });
         });

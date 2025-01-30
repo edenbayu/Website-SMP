@@ -14,6 +14,13 @@
             <h2 class="m-0" style="color: #EBF4F6" style="color: #EBF4F6">Daftar Akun</h2>
         </div>
     </div>
+    <div class="">
+        {{-- toggle to enable "Edit" and "Delete" buttons --}} 
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+            <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+        </div>
+    </div>
 
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
@@ -36,11 +43,11 @@
                 <td>{{ count($account->getRoleNames()) > 0 ? $account->getRoleNames()->implode(', ') : "Tidak Ada" }}</td>
                 <td>
                     {{-- <a href="{{ route('account.edit', $account->id) }}" class="btn btn-warning" style="width: 5rem">Ubah</a> --}}
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAccountModal-{{ $account->id }}" style="width: 5rem">Ubah</button>
+                    <button class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editAccountModal-{{ $account->id }}" ><i class="fa-solid fa-edit "></i></button>
 
                     <form action="{{ route('account.destroy', $account->id) }}" method="POST" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn btn-danger deleteAlert"  style="width: 5rem">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert controlled"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>
@@ -112,6 +119,16 @@
     </script>
     <script>
         $(document).ready(function () {
+            // Enable Edit and Delete buttons when toggle is checked
+            $('#flexSwitchCheckDefault').on('change', function() {
+                const isEditMode = this.checked;
+
+                // Enable or disable all controlled buttons
+                document.querySelectorAll('.controlled').forEach(button => {
+                    button.disabled = !isEditMode;
+                });
+            });
+
             // Iterasi melalui setiap modal
             $('.modal').each(function () {
                 const modal = $(this);
