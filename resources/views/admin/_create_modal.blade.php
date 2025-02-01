@@ -14,7 +14,7 @@
                         <input type="text" name="nama" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label for="nip">NIP</label>
+                        <label for="nip">NIP / Kode Pegawai</label>
                         <input type="text" name="nip" class="form-control" maxlength="50" required>
                     </div>
                     <div class="form-group mb-3">

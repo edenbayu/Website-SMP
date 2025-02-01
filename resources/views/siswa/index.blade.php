@@ -39,6 +39,12 @@
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#excelModal" style="width: 6rem">Impor</button>
     <!-- Ekspor Button -->
     <a target="_blank" href="{{ route('siswa.export') }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
+    
+    {{-- toggle to enable "Edit" and "Delete" buttons --}} 
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+        <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+    </div>
 
 
     <!-- Data Table -->
@@ -48,8 +54,9 @@
                 <th class="text-start">No</th>
                 <th class="text-start">Nama</th>
                 <th class="text-start">NISN</th>
-                <!-- <th class="text-start">NIS</th> -->
                 <th class="text-start">Jenis Kelamin</th>
+                <th class="text-start">Angkatan</th>
+                <th class="text-start">Agama</th>
                 <!-- <th>Alamat</th> -->
                 <th>Aksi</th>
                 <th>Akun</th>
@@ -63,32 +70,35 @@
                 <td class="text-start">{{ $siswa->nisn }}</td>
                 <!-- <td class="text-start">{{ $siswa->nis }}</td> -->
                 <td class="text-start">{{ $siswa->jenis_kelamin }}</td>
-                <!-- <td>{{ $siswa->alamat_lengkap }}</td> -->
+                <td class="text-start">{{ $siswa->angkatan }}</td>
+                <td class="text-start">{{ $siswa->agama }}</td>
                 <td>
                     <!-- Edit Button to trigger modal -->
-                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}" style="width: 5rem">
-                        Ubah
+                    <button type="button" class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}" >
+                        <i class="fa-solid fa-edit"></i>
                     </button>
 
                     <!-- Delete Form -->
                     <form action="{{ route('siswa.delete', $siswa->id) }}" method="POST" class="d-inline delete-form" id="deleteForm-{{ $siswa->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger delete-button deleteAlert" data-siswa-id="{{ $siswa->id }}" aria-label="Hapus Siswa" style="width: 5rem">
-                            Hapus
+                        <button type="submit" class="btn btn-danger delete-button deleteAlert controlled" data-siswa-id="{{ $siswa->id }}" aria-label="Hapus Siswa" >
+                            <i class="fa-solid fa-trash"></i>
                         </button>
                     </form>
                 </td>
                 <td>
                     <!-- Generate Single User Form -->
                     @if(empty($siswa->id_user))
-                        <form action="{{ route('siswa.generateUser', $siswa->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-primary" style="width: 5rem">Buat</button>
-                        </form>
+                        <!-- Button to open the generate user modal -->
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $siswa->id }}">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            @include('siswa._generate_user_modal')
                     @else
                         @role('Super Admin')
-                            <span>User ID: {{ $siswa->id_user }}</span>
+                            {{-- <span>User ID: {{ $siswa->id_user }}</span> --}}
+                            <a href="{{ route('account.index') }}">Lihat</a>
                         @endrole
                         @role('Admin')
                             <span>Sudah Ada</span>
@@ -234,6 +244,18 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+@if($errors->hasAny(['username','password','email']))
+    <!-- success alert -->
+    <script>
+        Swal.fire({
+            title: "Gagal! Mohon periksa kembali data yang digunakan",
+            text: "Mohon periksa kembali data yang digunakan",
+            icon: "error",
+            timer: 5000, // Waktu dalam milidetik (3000 = 3 detik)
+            showConfirmButton: false
+        });
+    </script>
+@endif
 <script>
     $(document).ready(function() {
         // Cek apakah DataTable sudah diinisialisasi
@@ -247,6 +269,16 @@
                 url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
             }
         });
+
+        // Enable Edit and Delete buttons when toggle is checked
+            $('#flexSwitchCheckDefault').on('change', function() {
+                const isEditMode = this.checked;
+
+                // Enable or disable all controlled buttons
+                document.querySelectorAll('.controlled').forEach(button => {
+                    button.disabled = !isEditMode;
+                });
+            });
     });
 </script>
 <script>
@@ -272,4 +304,5 @@
         });
     });
 </script>
+
 @endpush

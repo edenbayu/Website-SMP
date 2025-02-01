@@ -116,7 +116,7 @@
                     <p><strong>Nama dan Gelar</strong> : {{ trim($data->gelar_depan." ".$data->nama."".$data->gelar_belakang) }}</p>
                 @endif
                 @role('Super Admin|Admin|Guru|Wali Kelas')
-                    <p><strong>NIP</strong> : {{ $data->nip ?? '-' }}</p>
+                    <p><strong>Nomor Induk Pegawai (NIP) </strong> : {{ $data->nip ?? '-' }}</p>
                     <p><strong>Jabatan</strong> : {{ $data->jabatan ?? '-' }}</p>
                     <p><strong>Status</strong> : {{ $data->status ?? '-' }}</p>
                     <p><strong>Pangkat Golongan</strong> : {{ $data->pangkat_golongan ?? '-' }}</p>
