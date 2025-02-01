@@ -29,8 +29,8 @@ class KalenderAkademikController extends Controller
             'id' => $item->id,
             'title' => $item->title,
             'start' => $item->start,
-            'end' => date('Y-m-d',strtotime($item->end. '+1 days')),
-            'className' => ['bg-'. $item->category]
+            'end' => $item->end,
+            'tipe_kegiatan' => $item->tipe_kegiatan
         ]);
 
         return response()->json($events);
