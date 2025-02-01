@@ -74,7 +74,7 @@
                 <td class="text-start">{{ $guru->nip }}</td>
                 <td>{{ $guru->jenis_kelamin }}</td>
                 <td>{{ $guru->jabatan }}</td>
-                <td>{{ $guru->status.' - '.$guru->pangkat_golongan }}</td>
+                <td>{{ $guru->pangkat_golongan ? $guru->status.' - '.$guru->pangkat_golongan : $guru->status }}</td>
                 <td>{{ $guru->pendidikan }}</td>
                 <td >
                     <div class="d-flex gap-2">
@@ -94,7 +94,7 @@
                 <td>
                     @if(empty($guru->id_user))
                     <!-- Button to open the generate user modal -->
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $guru->id }}" ><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateUserModal-{{ $guru->id }}" style="min-width: 42px;"><i class="fa-solid fa-plus"></i></button>
                     @include('guru._generate_user_modal')
                     @else
                         @role("Super Admin")
@@ -102,7 +102,7 @@
                             <a href="{{ route('account.index') }}">Lihat</a>
                         @else
                             {{-- <span>Sudah Ada</span> --}}
-                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editRoleModal-{{ $guru->id }} "style="width: 5rem">Edit</button>
+                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editRoleModal-{{ $guru->id }}" style="min-width: 42px;"><i class="fa-solid fa-edit"></i></button>
                             @include('guru._edit_role_modal')
                         @endrole
                     @endif
