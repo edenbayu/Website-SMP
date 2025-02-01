@@ -123,7 +123,7 @@ class GuruController extends Controller
         $user->syncRoles($request->roles);
         $guru->id_user = $user->id;
         $guru->save();
-        return redirect()->route('guru.index')->with('success', 'Berhasil membuat akun guru baru.');
+        return redirect()->route('guru.index')->with('success', 'Berhasil membuat akun pendidik baru.');
     }
 
     public function editRole(Request $request, $guruId)
