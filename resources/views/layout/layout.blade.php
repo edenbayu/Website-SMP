@@ -115,11 +115,11 @@
                             </a>
                         </li>
                         <li class="sidebar-item list-except">
-                            <a href="#" class="sidebar-link collapsed" data-bs-target="#mapel" data-bs-toggle="collapse" aria-expanded="false">
+                            <a href="#" class="sidebar-link collapsed" data-bs-target="#mapelsidebar" data-bs-toggle="collapse" aria-expanded="false">
                                 <i class="fa-solid fa-book-open"></i>
                                 Mata Pelajaran
                             </a>
-                            <ul id="mapel" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <ul id="mapelsidebar" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                 <li class="sidebar-item">
                                     <a href="{{route('mapel.index')}}" class="sidebar-link">Mengelola Mata Pelajaran</a>
                                 </li>
