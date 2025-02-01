@@ -98,7 +98,7 @@ class PenilaianController extends Controller
             'judul' => 'required|string|max:255',
             'tanggal' => 'required',
             'kktp' => 'required|integer',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'nullable|string|max:255',
             'tp_ids' => 'required',
         ]);
 
@@ -147,7 +147,7 @@ class PenilaianController extends Controller
             'judul' => 'required|string|max:255',
             'tanggal' => 'required',
             'kktp' => 'required|integer',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'nullable|string|max:255',
             'tp_ids' => 'required',
         ]);
         // Find the Penilaian record by its ID

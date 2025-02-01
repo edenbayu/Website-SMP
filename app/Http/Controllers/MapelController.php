@@ -28,7 +28,9 @@ class MapelController extends Controller
         }
 
         if ($request->filled('mapel')) {
-            $query->where('nama', $request->input('mapel'));
+            $mapel = Mapel::where('nama', $request->input('mapel'))->first();
+            $query->where('id', $mapel->id);
+            if (!$mapel->guru) $query->orWhere('parent', $mapel->id);
         }
 
         // Get the filtered results

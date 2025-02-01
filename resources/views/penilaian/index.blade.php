@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="keterangan{{ $penilaian->id }}" class="form-label">Keterangan</label>
-                                    <textarea class="form-control" id="keterangan{{ $penilaian->id }}" name="keterangan" required>{{ $penilaian->keterangan }}</textarea>
+                                    <textarea class="form-control" id="keterangan{{ $penilaian->id }}" name="keterangan">{{ $penilaian->keterangan }}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="tp_ids" class="form-label">TP</label>
@@ -176,7 +176,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan</label>
-                            <textarea class="form-control" id="keterangan" name="keterangan" required></textarea>
+                            <textarea class="form-control" id="keterangan" name="keterangan" ></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="tp_ids" class="form-label">TP</label>

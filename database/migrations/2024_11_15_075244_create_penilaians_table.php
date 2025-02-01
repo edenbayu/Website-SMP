@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('judul');
             $table->integer('kktp');
             $table->date('tanggal');
-            $table->string('keterangan');
+            $table->string('keterangan')->nullable();
             $table->foreignId('mapel_kelas_id')->constrained('mapel_kelas')->onDelete('cascade');
             $table->timestamps();
         }); 
