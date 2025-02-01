@@ -146,34 +146,73 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama Mata Pelajaran</label>
-                            <input type="text" class="form-control" name="nama" id="nama" required>
+                            <input type="text" class="form-control @error('nama')
+                                is-invalid
+                            @enderror" name="nama" id="nama" value="{{ old('nama') }}" required>
+                            @error('nama')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="setParent">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Atur sebagai parent
+                                </label>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="kelas" class="form-label">Kelas</label>
-                            <select name="kelas[]" id="kelas" class="form-select select2" multiple required>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
+                            <select name="kelas" id="kelas" class="form-select @error('kelas')
+                                is-invalid
+                            @enderror" required>
+                                <option value="7" @selected(old('kelas') == '7')>7</option>
+                                <option value="8" @selected(old('kelas') == '8')>8</option>
+                                <option value="9" @selected(old('kelas') == '9')>9</option>
                             </select>
+                            @error('kelas')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="guru">
                             <label for="guru_id" class="form-label">Pilih Guru</label>
-                            <select name="guru_id" id="guru_id" class="form-select" required>
+                            <select name="guru_id" id="guru_id" class="form-select @error('guru_id')
+                                is-invalid
+                            @enderror" >
+                                <option value="">Pilih Guru</option>
                                 @foreach ($gurus as $guru)
-                                <option value="{{ $guru->id }}">{{ $guru->nama }}</option>
+                                <option value="{{ $guru->id }}" @selected(old('guru_id') == $guru->id)>{{ $guru->nama }}</option>
                                 @endforeach
                             </select>
+                            @error('guru_id')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="semester_id" class="form-label">Pilih Semester</label>
-                            <select name="semester_id" id="semester_id" class="form-select" required>
+                            <select name="semester_id" id="selectSemester" class="form-select @error('semester_id')
+                                is-invalid
+                            @enderror" required>
+                                <option value="">Pilih Semester</option>
                                 @foreach ($semesters as $semester)
-                                <option value="{{ $semester->id }}">{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}</option>
+                                <option value="{{ $semester->id }}" @selected(old('semester_id') == $semester->id)>{{ $semester->semester . " | " . $semester->tahun_ajaran . ($semester->status == 1 ? " | Aktif" : "") }}</option>
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-3" id="parent">
+                            <label for="parent_id" class="form-label">Pilih Mata Pelajaran parent</label>
+                            <select name="parent_id" id="parent_id" class="form-select">
+                                <option value="">Mohon Pilih Semester terlebih dahulu</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" >
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Tambah Mata Pelajaran</button>
                     </div>
@@ -235,12 +274,6 @@
             }
         });
 
-        $('#kelas').select2({
-            width: '100%',
-            placeholder: "Pilih kelas",
-            multiple : true,
-            dropdownParent : $('#createMapelModal')
-        })
 
 
         // Iterasi melalui setiap modal
@@ -272,9 +305,49 @@
                     placeholder: "Pilih kelas",
                     multiple: true
                 });
-            }
+            }    
         });
 
+        // Toggle select parent when mapel is set as parent
+            $('#setParent').on('change', function() {
+                if (this.checked) {
+                    // disable parent_id select and hide it
+                    $('#parent_id').prop('disabled',true) 
+                    $('#parent').hide()
+
+                    // disable guru select and hide it
+                    $('#guru_id').prop('disabled',true) 
+                    $('#guru').hide()
+                }
+                else {
+                    $('#parent').show()
+                    $('#parent_id').prop('disabled',false)
+
+                    // disable guru select and hide it
+                    $('#guru').show()
+                    $('#guru_id').prop('disabled',false) 
+                }
+            });
+
+            // when semester value changes inside the create modal, fetch new mapel options data
+        selectSemester = document.getElementById('semester_id');
+        
+        $('#selectSemester').on('change', function(e) {
+            $.ajax({
+                url: `{{ route('mapel.getMapelBySemester') }}`,
+                type: 'GET',
+                data: {
+                    semester_id: e.target.value
+                },
+                success: function (response) {
+                    $('#parent_id').empty();
+                    $('#parent_id').append(`<option value="">Pilih Mata pelajaran</option>`);
+                    Object.entries(response.data).forEach(([name, id]) => {
+                        $('#parent_id').append(`<option value="${id}">${name}</option>`);
+                    });
+                }
+            });
+        });
     });
 </script>
 <script>
@@ -300,4 +373,13 @@
         });
     });
 </script>
+@if ($errors->has('guru_id') || $errors->has('nama') || $errors->has('kelas') || $errors->has('semester_id'))
+{{-- @if ($errors->any()) --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        modal = new bootstrap.Modal(document.getElementById('createMapelModal'));
+        modal.show();
+    });
+</script>
+@endif
 @endpush

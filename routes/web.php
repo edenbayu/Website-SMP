@@ -112,6 +112,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::post('/store', 'store')->name('mapel.store');
             Route::delete('/{mapelId}/delete', 'hapusMapel')->name('mapel.delete');
             Route::post('/{mapelId}/assign-kelas', 'assignKelasToMapel')->name('mapel.assign-kelas');
+            Route::get('/getMapelBySemester', 'getMapelBySemester')->name('mapel.getMapelBySemester');
         });
 
         // Kalender Akademik routes

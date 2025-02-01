@@ -76,22 +76,29 @@ class MapelController extends Controller
     public function store(Request $request)
     {
         // Validate the incoming request data
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255', // Ensure 'nama' is a required string with a maximum length
-            'kelas' => 'required|array',
+            'kelas' => 'required',
             'kelas.*' => 'required|in:7,8,9', // Ensure 'kelas' is an array with values 7, 8, or 9
-            'guru_id' => 'required|exists:gurus,id', // Ensure 'guru_id' exists in the gurus table
-            'semester_id' => 'required|exists:semesters,id', // Ensure 'semester_id' exists in the semesters table
+            'guru_id' => 'required_unless:parent_id,null|exists:gurus,id', // Ensure 'guru_id' exists in the gurus table
+            'semester_id' => 'required|exists:semesters,id', // Ensure 'semester_id' exists in the semesters table,
+            'parent_id' => 'nullable|prohibited_if:guru_id,null|exists:mapels,id'
         ]);
         
         
         // Create a new Mata Pelajaran (Mapel) using the validated data
         $mapel = Mapel::create([
             'nama' => $request->nama,
-            'kelas' => implode(',', $request->kelas),
+            'kelas' => $request->kelas,
             'guru_id' => $request->guru_id,
             'semester_id' => $request->semester_id,
+            'parent' => $request->parent_id
         ]);
+
+        if ($request->parent_id) {
+            $mapelParent = Mapel::findOrFail($request->parent_id);
+            $mapel->kelas()->sync($mapelParent->kelas()->get());
+        }
 
         $komentarCK = KomentarCK::create([
             'komentar_tengah_semester' => null,
@@ -123,5 +130,13 @@ class MapelController extends Controller
         }
     
         return redirect()->route('mapel.index')->with('success', 'Kelas has been successfully assigned to the Mata Pelajaran.');
+    }
+
+    public function getMapelBySemester(Request $request) {
+        $mapel = Mapel::where('semester_id', $request->semester_id)->whereNull('parent')->get()->pluck('id','nama')->toArray();
+
+        return response()->json([
+            'data' => $mapel
+        ], 200);
     }
 }
