@@ -121,6 +121,8 @@ class PenilaianController extends Controller
         $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
             ->where('kelas_siswa.kelas_id', $mapelkelas->kelas_id)
             ->get();
+        
+        // dd($get_siswa_class_data);
 
         // Create PenilaianSiswa records
         foreach ($get_siswa_class_data as $siswa) {
@@ -131,7 +133,7 @@ class PenilaianController extends Controller
                 'remedial' => null,
                 'nilai_akhir' => null,
                 'penilaian_id' => $penilaian->id,
-                'siswa_id' => $siswa->id,
+                'siswa_id' => $siswa->siswa_id,
             ]);
         }
 
@@ -243,6 +245,7 @@ class PenilaianController extends Controller
         // $mapelKelas = MapelKelas::find($mapelKelasId);
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
             ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
+            
             // ->join('mapel_kelas as f', 'f.mapel_id', '=', 'b.mapel_kelas_id')
             // ->where('f.kelas_id', $mapelKelas->kelas_id)
             ->where('b.mapel_kelas_id', $mapelKelasId)
