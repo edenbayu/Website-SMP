@@ -16,12 +16,13 @@
     <!-- Student Dropdown -->
     <div class="form-group mb-3">
         <label for="siswa">Pilih Peserta Didik</label>
-        <select id="siswa" class="form-control">
-            <option value="">Pilih Peserta Didik</option>
+        <select id="siswa" class="form-control" style="width: 30%">
+            <option value="" selected disabled hidden>Pilih Peserta Didik</option>
             @foreach ($siswaOptions as $siswa)
             <option value="{{ $siswa->id }}">{{ $siswa->nama }} - {{ $siswa->rombongan_belajar }}</option>
             @endforeach
         </select>
+        
     </div>
 
     <button type="submit" id="submitButton" class="btn btn-primary mb-3">Simpan</button>

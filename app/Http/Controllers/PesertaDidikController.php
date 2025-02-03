@@ -85,7 +85,7 @@ class PesertaDidikController extends Controller
         }
 
         return redirect()->route('pesertadidik.attendanceIndex', ['semesterId' => $request->semester_id])
-            ->with('success', 'Attendance has been saved successfully.');
+            ->with('success', 'Presensi berhasil disimpan!');
     }
 
     public function fetchAttendance(Request $request)
@@ -145,7 +145,7 @@ class PesertaDidikController extends Controller
     
         return response()->json([
             'success' => true,
-            'message' => 'Attendance has been saved successfully.',
+            'message' => 'Presensi berhasil disimpan!',
         ]);
     }
 
@@ -390,7 +390,7 @@ class PesertaDidikController extends Controller
     
         return response()->json([
             'success' => true,
-            'message' => 'P5BK data saved successfully.',
+            'message' => 'Penilaian P5 berhasil disimpan!',
         ]);
     }
     
@@ -409,13 +409,13 @@ class PesertaDidikController extends Controller
             ->select(
                 'b.nama',
                 'b.nisn',
-                DB::raw("COUNT(CASE WHEN a.status = 'hadir' THEN 1 END) AS count_hadir"),
-                DB::raw("COUNT(CASE WHEN a.status = 'terlambat' THEN 1 END) AS count_terlambat"),
-                DB::raw("COUNT(CASE WHEN a.status = 'ijin' THEN 1 END) AS count_ijin"),
-                DB::raw("COUNT(CASE WHEN a.status = 'alpha' THEN 1 END) AS count_alpha"),
-                DB::raw("COUNT(CASE WHEN a.status = 'sakit' THEN 1 END) AS count_sakit")
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'hadir' THEN a.id END) AS count_hadir"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'terlambat' THEN a.id END) AS count_terlambat"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'ijin' THEN a.id END) AS count_ijin"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'alpha' THEN a.id END) AS count_alpha"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'sakit' THEN a.id END) AS count_sakit")
             )
-            ->groupBy('b.nama', 'b.nisn')
+            ->groupBy('b.id', 'b.nama', 'b.nisn')
             ->get();
     
         return view('walikelas.bukuAbsen', compact('students'));

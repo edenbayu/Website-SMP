@@ -39,23 +39,8 @@
                 })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas','nisn']));
                 @endphp
                 @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
+                    <th class="text-start">{{ $subject }}</th>
                 @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                {{-- @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach --}}
                 <th>Buat Rapor</th>
             </tr>
         </thead>
@@ -67,23 +52,8 @@
                 <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['kelas'] }}</td>
                 @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                    <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                {{-- @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach --}}
                 <td class="text-start">
                     <!-- Modal Trigger Buttons -->
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}" style="width:10.5rem">

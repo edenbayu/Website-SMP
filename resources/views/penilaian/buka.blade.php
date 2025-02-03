@@ -22,6 +22,7 @@
                 <tr>
                     <th class="text-start">No</th>
                     <th>Nama</th>
+                    <!-- <th class="text-start">NISN</th> -->
                     <th class="text-start">KKTP</th>
                     <th>Nilai</th>
                     <th>Remedial/Pengayaan</th>
@@ -33,6 +34,7 @@
                 <tr>
                     <td class="text-start">{{ $loop->iteration }}</td>
                     <td>{{ $penilaian_siswa->nama }}</td>
+                    <!-- <td class="text-start">{{ $penilaian_siswa->penilaian->nisn }}</td> -->
                     <td class="text-start">{{ $penilaian_siswa->penilaian->kktp }}</td>
                     <td>
                         <input
@@ -40,7 +42,7 @@
                             name="penilaian[{{ $penilaian_siswa->id }}][nilai]"
                             class="form-control"
                             value="{{ old("penilaian.{$penilaian_siswa->id}.nilai", $penilaian_siswa->nilai) }}"
-                            placeholder="Enter nilai">
+                            placeholder="Masukkan nilai">
                     </td>
                     <td>
                         <input
@@ -48,7 +50,7 @@
                             name="penilaian[{{ $penilaian_siswa->id }}][remedial]"
                             class="form-control"
                             value="{{ old("penilaian.{$penilaian_siswa->id}.remedial", $penilaian_siswa->remedial) }}"
-                            placeholder="Enter remedial">
+                            placeholder="Masukkan nilai">
                     </td>
                     <td class="text-start">{{ $penilaian_siswa->nilai_akhir }}</td>
                 </tr>

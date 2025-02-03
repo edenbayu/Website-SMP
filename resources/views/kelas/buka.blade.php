@@ -79,7 +79,7 @@
                                 onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger deleteAlert">Hapus</button>
+                                <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>

@@ -22,7 +22,7 @@
 
     <!-- modal Informasi -->
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoPenilaianModal">
-        Informasi
+        <i class="fa-solid fa-circle-info"></i> Informasi
     </button>
 
     <!-- Modal -->
@@ -73,11 +73,11 @@
                     <a href="{{ route('penilaian.buka', [$mapelKelasId, 'penilaianId' => $penilaian->id]) }}" class="btn btn-primary">
                         Buka Penilaian
                     </a>
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}" style="width: 5rem">Ubah</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPenilaianModal{{ $penilaian->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
                     <form action="{{ route('penilaian.delete', [$mapelKelasId, $penilaian->id]) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
+                        <button class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>

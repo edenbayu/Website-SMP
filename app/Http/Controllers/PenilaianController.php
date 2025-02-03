@@ -137,7 +137,7 @@ class PenilaianController extends Controller
             ]);
         }
 
-        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian created successfully!');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil ditambahkan!');
     }
 
 
@@ -167,7 +167,7 @@ class PenilaianController extends Controller
         $penilaian->tps()->sync($request->tp_ids);
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil diperbarui.');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil diperbarui!');
     }
 
     public function deletePenilaian($mapelKelasId, $penilaianId)
@@ -179,7 +179,7 @@ class PenilaianController extends Controller
         $penilaian->delete();
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil dihapus.');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil dihapus!');
     }
 
     // End of Penilaian's function codes //
@@ -237,7 +237,7 @@ class PenilaianController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Penilaian updated successfully!');
+        return redirect()->back()->with('success', 'Penilaian berhasil diperbarui!');
     }
 
     public function bukuNilai($mapelKelasId)
@@ -274,8 +274,6 @@ class PenilaianController extends Controller
         return view('penilaian.bukuNilai', compact('datas', 'kelas', 'mapel'));
     }
 
-    public function legerNilai() {}
-
     public function penilaianEkskul(Request $request, $kelasId, $mapelId)
     {
         // Fetch all penilaianEkskul records related to the specified mapel
@@ -302,6 +300,6 @@ class PenilaianController extends Controller
         }
 
         return redirect()->back()
-            ->with('success', 'All penilaian updated successfully!');
+            ->with('success', 'Penilaian ekstrakurikuler berhasil diperbarui!');
     }
 }

@@ -22,9 +22,13 @@
             <tr>
                 <th class="text-start">No</th>
                 <th class="text-start">Nama</th>
-                <th class="text-start">Rombongan Belajar</th>
+                <!-- <th class="text-start">Rombongan Belajar</th> -->
                 <th class="text-start">NISN</th>
+                <th class="text-start">Angkatan</th>
                 <th class="text-start">Jenis Kelamin</th>
+                <th class="text-start">Agama</th>
+                <th class="text-start">Telepon</th>
+                <th class="text-start">Nama Ayah</th>
                 <th class="text-start">Aksi</th>
             </tr>
         </thead>
@@ -33,15 +37,17 @@
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $siswa->nama }}</td>
-                <td class="text-start">{{$siswa->rombongan_belajar}}</th>
+                <!-- <td class="text-start">{{$siswa->rombongan_belajar}}</th> -->
                 <td class="text-start">{{ $siswa->nisn }}</td>
+                <td class="text-start">{{ $siswa->angkatan }}</td>
                 <td class="text-start">{{ $siswa->jenis_kelamin }}</td>
+                <td class="text-start">{{ $siswa->agama }}</td>
+                <td class="text-start">{{ $siswa->telepon }}</td>
+                <td class="text-start">{{ $siswa->nama_ayah }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}" style="width: 5rem">
-                        Lihat
-                    </button>
+                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#editSiswaModal-{{ $siswa->id }}"><i class="fa-solid fa-eye"></i></button>
                 </td>
-                <!-- Edit Modal for each Siswa -->
+                <!-- View Modal for each Siswa -->
                 <div class="modal fade" id="editSiswaModal-{{ $siswa->id }}" tabindex="-1" aria-labelledby="editSiswaModalLabel-{{ $siswa->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable modal-lg">
                         <div class="modal-content">
@@ -54,13 +60,17 @@
                                     <label for="nama">Nama</label>
                                     <input readonly type="text" name="nama" id="nama" class="form-control" value="{{ old('nama', $siswa->nama) }}">
                                 </div>
-                                {{-- <div class="form-group mb-3">
+                                <!-- {{-- <div class="form-group mb-3">
                                     <label for="nis">NIS</label>
                                     <input readonly type="text" name="nis" id="nis" class="form-control" value="{{ old('nis', $siswa->nis) }}">
-                                </div> --}}
+                                </div> --}} -->
                                 <div class="form-group mb-3">
                                     <label for="nisn">NISN</label>
                                     <input readonly type="text" name="nisn" id="nisn" class="form-control" value="{{ old('nisn', $siswa->nisn) }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                                    <input readonly type="text" name="tanggal_lahir" id="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $siswa->tanggal_lahir) }}">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="tempat_lahir">Tempat Lahir</label>
@@ -83,12 +93,12 @@
                                     <input readonly type="number" name="anak_ke" id="anak_ke" class="form-control" value="{{ old('anak_ke', $siswa->anak_ke) }}">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="alamat_lengkap">Alamat Lengkap</label>
-                                    <textarea name="alamat_lengkap" id="alamat_lengkap" class="form-control">{{ old('alamat_lengkap', $siswa->alamat_lengkap) }}</textarea>
+                                    <label for="alamat">Alamat</label>
+                                    <textarea name="alamat" id="alamat" class="form-control">{{ old('alamat', $siswa->alamat) }}</textarea>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="no_telepon_rumah">No Telepon Rumah</label>
-                                    <input readonly type="text" name="no_telepon_rumah" id="no_telepon_rumah" class="form-control" value="{{ old('no_telepon_rumah', $siswa->no_telepon_rumah) }}">
+                                    <label for="telepon">Telepon</label>
+                                    <input readonly type="text" name="telepon" id="telepon" class="form-control" value="{{ old('telepon', $siswa->telepon) }}">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="asal_sekolah">Asal Sekolah</label>
@@ -118,14 +128,14 @@
                                     <label for="pekerjaan_ibu">Pekerjaan Ibu</label>
                                     <input readonly type="text" name="pekerjaan_ibu" id="pekerjaan_ibu" class="form-control" value="{{ old('pekerjaan_ibu', $siswa->pekerjaan_ibu) }}">
                                 </div>
-                                <div class="form-group mb-3">
+                                <!-- <div class="form-group mb-3">
                                     <label for="alamat_ortu">Alamat Orang Tua</label>
                                     <textarea name="alamat_ortu" id="alamat_ortu" class="form-control">{{ old('alamat_ortu', $siswa->alamat_ortu) }}</textarea>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="no_telp_ortu">No Telepon Orang Tua</label>
                                     <input readonly type="text" name="no_telp_ortu" id="no_telp_ortu" class="form-control" value="{{ old('no_telp_ortu', $siswa->no_telp_ortu) }}">
-                                </div>
+                                </div> -->
                                 <div class="form-group mb-3">
                                     <label for="nama_wali">Nama Wali</label>
                                     <input readonly type="text" name="nama_wali" id="nama_wali" class="form-control" value="{{ old('nama_wali', $siswa->nama_wali) }}">
@@ -134,10 +144,10 @@
                                     <label for="pekerjaan_wali">Pekerjaan Wali</label>
                                     <input readonly type="text" name="pekerjaan_wali" id="pekerjaan_wali" class="form-control" value="{{ old('pekerjaan_wali', $siswa->pekerjaan_wali) }}">
                                 </div>
-                                <div class="form-group mb-3">
+                                <!-- <div class="form-group mb-3">
                                     <label for="alamat_wali">Alamat Wali</label>
                                     <textarea name="alamat_wali" id="alamat_wali" class="form-control">{{ old('alamat_wali', $siswa->alamat_wali) }}</textarea>
-                                </div>
+                                </div> -->
                                 <div class="form-group mb-3">
                                     <label for="angkatan">Angkatan</label>
                                     <input readonly type="number" name="angkatan" id="angkatan" class="form-control" value="{{ old('angkatan', $siswa->angkatan) }}">

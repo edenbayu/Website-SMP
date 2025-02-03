@@ -5,7 +5,7 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Student Attendance Status</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Buku Presensi</h2>
         </div>
     </div>
 
@@ -17,9 +17,9 @@
                 <th class="text-start">NISN</th>
                 <th class="text-start">Hadir</th>
                 <th class="text-start">Terlambat</th>
-                <th class="text-start">Ijin</th>
-                <th class="text-start">Alpha</th>
+                <th class="text-start">Izin</th>
                 <th class="text-start">Sakit</th>
+                <th class="text-start">Alpa</th>
             </tr>
         </thead>
         <tbody>
@@ -31,8 +31,8 @@
                 <td class="text-start">{{ $student->count_hadir }}</td>
                 <td class="text-start">{{ $student->count_terlambat }}</td>
                 <td class="text-start">{{ $student->count_ijin }}</td>
-                <td class="text-start">{{ $student->count_alpha }}</td>
                 <td class="text-start">{{ $student->count_sakit }}</td>
+                <td class="text-start">{{ $student->count_alpha }}</td>
             </tr>
             @endforeach
         </tbody>
