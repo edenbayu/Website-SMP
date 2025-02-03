@@ -34,9 +34,9 @@
                 <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
                 @php
-                $subjects = collect($datas)->flatMap(function ($row) {
-                return array_keys((array)$row);
-                })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas','nisn']));
+                    $subjects = collect($datas)->flatMap(function ($row) {
+                        return array_keys((array)$row);
+                    })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn', 'agama']));
                 @endphp
                 @foreach ($subjects as $subject)
                     <th class="text-start">{{ $subject }}</th>
@@ -80,6 +80,7 @@
                                 <input type="hidden" name="student_name" value="{{ $data['nama'] }}">
                                 <!-- Pass index (as id) as hidden field -->
                                 <input type="hidden" name="student_id" value="{{ $index }}">
+                                <input type="hidden" name="student_religion" value="{{ $data['agama'] }}">
 
                                 <!-- Loop through subjects and pass them with grades -->
                                 @foreach ($subjects as $subject)
