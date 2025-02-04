@@ -75,6 +75,37 @@ class SiswaController extends Controller
         return redirect()->route('siswa.index')->with('success', 'Account deleted successfully');
     }
     
+    public function store(Request $request)
+    {
+        // Validate that only `no_pendaftaran` is required and all other fields are nullable
+        $validated = $request->validate([
+            'nama' => 'nullable|string|max:255',
+            'nis' => 'nullable|string|max:50|unique:siswas,nis,',
+            'nisn' => 'nullable|string|max:50|unique:siswas,nisn,',
+            'tanggal_lahir' => 'nullable|date|max:255',
+            'tempat_lahir' => 'nullable|string|max:255',
+            'jenis_kelamin' => 'nullable|string|max:10',
+            'agama' => 'nullable|string|max:50',
+            'status_keluarga' => 'nullable|string|max:50',
+            'anak_ke' => 'nullable|integer',
+            'alamat_lengkap' => 'nullable|string|max:500',
+            'telepon' => 'nullable|string|max:15',
+            'asal_sekolah' => 'nullable|string|max:255',
+            'tanggal_diterima' => 'nullable|date',
+            'jalur_penerimaan' => 'nullable|string|max:255',
+            'nama_ayah' => 'nullable|string|max:255',
+            'nama_ibu' => 'nullable|string|max:255',
+            'pekerjaan_ayah' => 'nullable|string|max:255',
+            'pekerjaan_ibu' => 'nullable|string|max:255',
+            'nama_wali' => 'nullable|string|max:255',
+            'pekerjaan_wali' => 'nullable|string|max:255',
+            'angkatan' => 'nullable|integer',
+        ]);
+        
+        Siswa::create($validated);
+
+        return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil ditambahkan');
+    }   
     public function update(Request $request, $siswaId)
     {
         // Validate that only `no_pendaftaran` is required and all other fields are nullable
