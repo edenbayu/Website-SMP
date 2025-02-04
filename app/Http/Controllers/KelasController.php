@@ -113,7 +113,7 @@ class KelasController extends Controller
             ->pluck('angkatan');
 
         // Load the class along with its students
-        $kelas = Kelas::with('siswas:id,nama,nisn,angkatan,jenis_kelamin')->findOrFail($kelasId);
+        $kelas = Kelas::with('siswas:id,nama,nisn,angkatan,jenis_kelamin,agama')->findOrFail($kelasId);
 
         // Get the semester ID of the current class
         $semesterId = $kelas->id_semester;

@@ -81,10 +81,10 @@
                 <td>{{ $k->semester->semester . " | " . $k->semester->tahun_ajaran }}</td>
                 <td>
                     <!-- View Students Button -->
-                    <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info" style="width: 5rem">Lihat</a>
+                    <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
 
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}" style="width: 5rem">Ubah</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
 
                     <!-- Edit Class Modal -->
                     @if ($k->kelas != 'Ekskul')
@@ -193,7 +193,7 @@
                     <!-- Delete Class Button -->
                     <form action="{{ route('kelas.hapus', ['kelasId' => $k->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
                         @csrf
-                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>

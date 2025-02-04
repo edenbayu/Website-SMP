@@ -61,16 +61,14 @@
                 <td class="text-start">{{ $tp->nama }}</td>
                 <td class="text-start">{{ $tp->keterangan }}</td>
                 <td class="text-start">
-                    {{-- Edit Button --}}
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editTPModal{{ $tp->id }}" style="width: 5.5rem;">
-                        Ubah
-                    </button>
+                    <!-- {{-- Edit Button --}} -->
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editTPModal{{ $tp->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
 
-                    {{-- Delete Button --}}
+                    <!-- {{-- Delete Button --}} -->
                     <form action="{{ route('silabus.deleteTP', [$mapelId, $cpId, $tp->id]) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5.5rem;">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>

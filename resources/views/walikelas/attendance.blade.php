@@ -15,7 +15,7 @@
 
     <!-- Date Selection -->
     <div class="row mb-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="date">Pilih Tanggal:</label>
             <input type="date" id="date" class="form-control" value="{{ \Carbon\Carbon::today()->toDateString() }}">
         </div>
@@ -152,8 +152,8 @@
             if (data.success) {
                 // Show success message
                 Swal.fire({
-                    title: "Saved!",
-                    text: data.message || "Attendance has been successfully saved!",
+                    title: "Berhasil!",
+                    text: data.message || "Presensi harian berhasil disimpan!",
                     icon: "success",
                     timer: 1500,
                     showConfirmButton: false
@@ -162,7 +162,7 @@
                 // Show failure message from the server
                 Swal.fire({
                     title: "Failed!",
-                    text: data.message || "Failed to save attendance. Please try again.",
+                    text: data.message || "Presensi harian gagal disimpan, silahkan coba lagi!",
                     icon: "error"
                 });
             }
@@ -171,7 +171,7 @@
             // Show error alert
             Swal.fire({
                 title: "Error!",
-                text: "An error occurred while saving attendance. Please try again.",
+                text: "Terjadi kesalahan saat menyimpan presensi, silahkan coba lagi!",
                 icon: "error"
             });
         }

@@ -15,7 +15,7 @@
 
     <!-- modal Informasi -->
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoBukuNilaiModal">
-        Informasi
+    <i class="fa-solid fa-circle-info"></i> Informasi
     </button>
 
     <!-- Modal Informasi -->

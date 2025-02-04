@@ -63,15 +63,13 @@
                         </button>
                     </form>
                     <!-- Update Button -->
-                    <button type="button" style="width: 5.5rem;" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}" class="m-0">
-                        Ubah
-                    </button>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}" class="m-0"><i class="fa-solid fa-pen-to-square"></i></button>
 
                     <!-- Delete Form -->
                     <form action="{{ route('silabus.deleteCP', [$mapelId, $cp->id]) }}" method="POST" style="display: inline-block;" class="m-0">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" style="width: 5.5rem;" class="btn btn-danger deleteAlert">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>

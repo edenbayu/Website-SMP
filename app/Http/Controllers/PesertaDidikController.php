@@ -12,6 +12,7 @@ use App\Models\PenilaianSiswa;
 use App\Models\AbsensiSiswa;
 use App\Models\Penilaian;
 use App\Models\P5BK;
+use App\Models\Mapel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -85,7 +86,7 @@ class PesertaDidikController extends Controller
         }
 
         return redirect()->route('pesertadidik.attendanceIndex', ['semesterId' => $request->semester_id])
-            ->with('success', 'Attendance has been saved successfully.');
+            ->with('success', 'Presensi berhasil disimpan!');
     }
 
     public function fetchAttendance(Request $request)
@@ -145,7 +146,7 @@ class PesertaDidikController extends Controller
     
         return response()->json([
             'success' => true,
-            'message' => 'Attendance has been saved successfully.',
+            'message' => 'Presensi berhasil disimpan!',
         ]);
     }
 
@@ -169,16 +170,22 @@ class PesertaDidikController extends Controller
                 'c.id as siswa_id',  // Add siswa_id to the select query
                 'c.nama as siswa_name',
                 'c.nisn as nisn',
+                'c.agama',
                 'g.rombongan_belajar as kelas',
                 'z.nama as mapel_name',
+                'z.parent',
                 DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) AS avg_tugas"),
                 DB::raw("AVG(CASE WHEN b.tipe = 'UH' THEN penilaian_siswa.nilai_akhir END) AS avg_uh"),
                 DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) AS avg_sas"),
                 DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) AS avg_sts")
             )
-            ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar', 'c.nisn') // Include siswa_id in the groupBy clause
+            ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar', 'c.nisn', 'c.agama', 'z.parent') // Include siswa_id in the groupBy clause
+            ->orderBy('siswa_name', 'asc')
+            ->orderBy('mapel_name', 'asc')
             ->get();
     
+        $parents = Mapel::whereNull('guru_id')->pluck('nama', 'id');
+
         // Transform the data
         $result = [];
         foreach ($datas as $data) {
@@ -194,10 +201,12 @@ class PesertaDidikController extends Controller
                     'nama' => $data->siswa_name,
                     'nisn' => $data->nisn,
                     'kelas' => $data->kelas,
+                    'agama' => $data->agama
                 ];
             }
-    
-            $result[$data->siswa_id][$data->mapel_name] = round($hasil_akhir, 2);
+            
+            if ($data->parent) $result[$data->siswa_id][$parents[$data->parent]] = round($hasil_akhir, 2);
+            else $result[$data->siswa_id][$data->mapel_name] = round($hasil_akhir, 2);
         }
     
         return view('walikelas.legerNilai', ['datas' => $result ,'semesterId' => $semesterId]);
@@ -213,6 +222,7 @@ class PesertaDidikController extends Controller
         // Extract data from the form
         $subjects = $data['subjects'] ?? [];
         $studentName = $data['student_name'] ?? 'Unknown Student';
+        $agama = $data['student_religion'] ?? 'Unknown Religion';
     
         // Additional form data
         $komentar = $data['komentar'] ?? '';
@@ -222,11 +232,32 @@ class PesertaDidikController extends Controller
             'prestasi_3' => $data['prestasi_3'] ?? null,
         ];
     
+        $parents =Mapel::whereNull('guru_id')->get();
+        $parentWithChildren = [];
+        foreach ($parents as $parent) {
+            // Ambil child yang memiliki parent_id sama dengan id dari parent ini
+            $children = Mapel::where('parent', $parent->id)
+                             ->pluck('nama')
+                             ->toArray(); // Ambil nama child dalam bentuk array
+        
+            // Simpan parent dan child dalam array
+            $parentWithChildren[$parent->nama] = $children;
+        }
+    
         // Initialize komentarRapot
         $komentarRapot = [];
-    
-        // Fetch komentar for each subject
+        $newSubjects = [];
+
         foreach ($subjects as $subject => $grades) {
+            if (isset($parentWithChildren[$subject])) {
+                $subject = array_filter($parentWithChildren[$subject], function($value) use ($agama) {
+                    return strpos($value, $agama) !== false;
+                });
+                $subject = reset($subject);
+            }
+
+            // Menyimpan subjek baru ke array baru
+            $newSubjects[$subject] = $grades;
             $komentarCK = Penilaian::query()
                 ->select('tps.nama')
                 ->join('penilaian_t_p_s as a', 'a.penilaian_id', '=', 'penilaians.id')
@@ -254,6 +285,7 @@ class PesertaDidikController extends Controller
                 $komentarRapot[$subject][] = $komentarItem->nama;
             }
         }        
+        $subjects = $newSubjects;
     
         // Fetch extracurricular (ekskul) data
         $ekskulData = DB::table('penilaian_ekskuls as a')
@@ -390,7 +422,7 @@ class PesertaDidikController extends Controller
     
         return response()->json([
             'success' => true,
-            'message' => 'P5BK data saved successfully.',
+            'message' => 'Penilaian P5 berhasil disimpan!',
         ]);
     }
     
@@ -409,13 +441,13 @@ class PesertaDidikController extends Controller
             ->select(
                 'b.nama',
                 'b.nisn',
-                DB::raw("COUNT(CASE WHEN a.status = 'hadir' THEN 1 END) AS count_hadir"),
-                DB::raw("COUNT(CASE WHEN a.status = 'terlambat' THEN 1 END) AS count_terlambat"),
-                DB::raw("COUNT(CASE WHEN a.status = 'ijin' THEN 1 END) AS count_ijin"),
-                DB::raw("COUNT(CASE WHEN a.status = 'alpha' THEN 1 END) AS count_alpha"),
-                DB::raw("COUNT(CASE WHEN a.status = 'sakit' THEN 1 END) AS count_sakit")
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'hadir' THEN a.id END) AS count_hadir"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'terlambat' THEN a.id END) AS count_terlambat"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'ijin' THEN a.id END) AS count_ijin"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'alpha' THEN a.id END) AS count_alpha"),
+                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'sakit' THEN a.id END) AS count_sakit")
             )
-            ->groupBy('b.nama', 'b.nisn')
+            ->groupBy('b.id', 'b.nama', 'b.nisn')
             ->get();
     
         return view('walikelas.bukuAbsen', compact('students'));

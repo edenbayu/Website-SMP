@@ -34,28 +34,13 @@
                 <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
                 @php
-                $subjects = collect($datas)->flatMap(function ($row) {
-                return array_keys((array)$row);
-                })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas','nisn']));
+                    $subjects = collect($datas)->flatMap(function ($row) {
+                        return array_keys((array)$row);
+                    })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn', 'agama']));
                 @endphp
                 @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
+                    <th class="text-start">{{ $subject }}</th>
                 @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                {{-- @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <th class="text-start">{{ $subject }}</th>
-                @endforeach --}}
                 <th>Buat Rapor</th>
             </tr>
         </thead>
@@ -67,23 +52,8 @@
                 <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['kelas'] }}</td>
                 @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                    <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                {{-- @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach
-                @foreach ($subjects as $subject)
-                <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
-                @endforeach --}}
                 <td class="text-start">
                     <!-- Modal Trigger Buttons -->
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}" style="width:10.5rem">
@@ -110,6 +80,7 @@
                                 <input type="hidden" name="student_name" value="{{ $data['nama'] }}">
                                 <!-- Pass index (as id) as hidden field -->
                                 <input type="hidden" name="student_id" value="{{ $index }}">
+                                <input type="hidden" name="student_religion" value="{{ $data['agama'] }}">
 
                                 <!-- Loop through subjects and pass them with grades -->
                                 @foreach ($subjects as $subject)

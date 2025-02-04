@@ -45,13 +45,14 @@
                     <td class="text-start">{{ $semester->end }}</td>
                     <td class="text-center">
                         <!-- Trigger Button for the Edit Modal -->
-                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}" style="width: 5rem">Ubah</button>
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
 
                         <!-- Delete Button -->
-                        <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
+                        <!-- <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');"> -->
+                        <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" >
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
+                            <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </td>
                 </tr>

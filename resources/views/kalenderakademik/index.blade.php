@@ -138,9 +138,14 @@
             var form = document.getElementById('eventForm');
             var deleteButton = document.getElementById('deleteEvent');
 
+            @php
+                use Carbon\Carbon;    
+                $datenow = Carbon::now()->toDateString();
+            @endphp
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                initialDate: '2024-10-07',
+                initialDate: '{{ $datenow }}',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -152,11 +157,11 @@
                 eventDidMount: function(info) {
                     // Assign color based on tipe_kegiatan
                     if (info.event.extendedProps.tipe_kegiatan === 1) {
-                        info.el.classList.add('bg-blue');
+                        info.el.classList.add('bg-success');
                     } else if (info.event.extendedProps.tipe_kegiatan === 2) {
-                        info.el.classList.add('bg-red');
+                        info.el.classList.add('bg-warning');
                     } else if (info.event.extendedProps.tipe_kegiatan === 3) {
-                        info.el.classList.add('bg-green');
+                        info.el.classList.add('bg-danger');
                     }
                 },
                 select: function(info) {
@@ -172,8 +177,7 @@
                     document.getElementById('title').value = info.event.title;
                     document.getElementById('start').value = info.event.startStr;
                     document.getElementById('end').value = info.event.endStr;
-                    document.getElementById('tipe_kegiatan').value = info.event.tipe_kegiatan;
-                    console.log(info.event.extendedProps);
+                    document.getElementById('tipe_kegiatan').value = info.event.extendedProps.tipe_kegiatan;
                 },
                 eventDrop: function(info) {
                     // Update event when dragged

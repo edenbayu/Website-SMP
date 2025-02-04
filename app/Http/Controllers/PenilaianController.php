@@ -98,7 +98,7 @@ class PenilaianController extends Controller
             'judul' => 'required|string|max:255',
             'tanggal' => 'required',
             'kktp' => 'required|integer',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'nullable|string|max:255',
             'tp_ids' => 'required',
         ]);
 
@@ -121,6 +121,8 @@ class PenilaianController extends Controller
         $get_siswa_class_data = Siswa::join('kelas_siswa', 'kelas_siswa.siswa_id', '=', 'siswas.id')
             ->where('kelas_siswa.kelas_id', $mapelkelas->kelas_id)
             ->get();
+        
+        // dd($get_siswa_class_data);
 
         // Create PenilaianSiswa records
         foreach ($get_siswa_class_data as $siswa) {
@@ -131,11 +133,11 @@ class PenilaianController extends Controller
                 'remedial' => null,
                 'nilai_akhir' => null,
                 'penilaian_id' => $penilaian->id,
-                'siswa_id' => $siswa->id,
+                'siswa_id' => $siswa->siswa_id,
             ]);
         }
 
-        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian created successfully!');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil ditambahkan!');
     }
 
 
@@ -147,7 +149,7 @@ class PenilaianController extends Controller
             'judul' => 'required|string|max:255',
             'tanggal' => 'required',
             'kktp' => 'required|integer',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'nullable|string|max:255',
             'tp_ids' => 'required',
         ]);
         // Find the Penilaian record by its ID
@@ -165,7 +167,7 @@ class PenilaianController extends Controller
         $penilaian->tps()->sync($request->tp_ids);
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil diperbarui.');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil diperbarui!');
     }
 
     public function deletePenilaian($mapelKelasId, $penilaianId)
@@ -177,7 +179,7 @@ class PenilaianController extends Controller
         $penilaian->delete();
 
         // Redirect with success message
-        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil dihapus.');
+        return redirect()->route('penilaian.index', [$mapelKelasId])->with('success', 'Penilaian berhasil dihapus!');
     }
 
     // End of Penilaian's function codes //
@@ -235,7 +237,7 @@ class PenilaianController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Penilaian updated successfully!');
+        return redirect()->back()->with('success', 'Penilaian berhasil diperbarui!');
     }
 
     public function bukuNilai($mapelKelasId)
@@ -243,6 +245,7 @@ class PenilaianController extends Controller
         // $mapelKelas = MapelKelas::find($mapelKelasId);
         $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
             ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
+            
             // ->join('mapel_kelas as f', 'f.mapel_id', '=', 'b.mapel_kelas_id')
             // ->where('f.kelas_id', $mapelKelas->kelas_id)
             ->where('b.mapel_kelas_id', $mapelKelasId)
@@ -271,8 +274,6 @@ class PenilaianController extends Controller
         return view('penilaian.bukuNilai', compact('datas', 'kelas', 'mapel'));
     }
 
-    public function legerNilai() {}
-
     public function penilaianEkskul(Request $request, $kelasId, $mapelId)
     {
         // Fetch all penilaianEkskul records related to the specified mapel
@@ -299,6 +300,6 @@ class PenilaianController extends Controller
         }
 
         return redirect()->back()
-            ->with('success', 'All penilaian updated successfully!');
+            ->with('success', 'Penilaian ekstrakurikuler berhasil diperbarui!');
     }
 }

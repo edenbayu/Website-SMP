@@ -58,6 +58,7 @@
                     <th class="text-start">NISN</th>
                     <th class="text-start">Angkatan</th>
                     <th class="text-start">Jenis Kelamin</th>
+                    <th class="text-start">Agama</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -70,6 +71,7 @@
                         <td class="text-start">{{ $siswa->nisn }}</td>
                         <td class="text-start">{{ $siswa->angkatan }}</td>
                         <td class="text-start">{{ $siswa->jenis_kelamin }}</td>
+                        <td class="text-start">{{ $siswa->agama }}</td>
                         <td>
                             <form
                                 action="{{ route('kelas.siswa.delete', ['kelasId' => $kelas->id, 'siswaId' => $siswa->id]) }}"
@@ -77,7 +79,7 @@
                                 onsubmit="return confirm('Are you sure you want to delete this student from this class?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger deleteAlert">Hapus</button>
+                                <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>

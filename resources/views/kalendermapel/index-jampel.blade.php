@@ -45,14 +45,12 @@
                 @endphp
                 <td>{{ ($jampel->event ?? '').($jampel->event ? ' (' : '').$totalMenit.' menit'.($jampel->event ? ')' : '') }}</td>
                 <td>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubahJampelModal-{{ $jampel->id }}">
-                        Ubah
-                    </button>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubahJampelModal-{{ $jampel->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
                     
                     <form action="{{ route('kalendermapel.delete-jampel', $jampel->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
+                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
                     </form>
 
                     <div class="modal fade" id="ubahJampelModal-{{ $jampel->id }}" tabindex="-1" aria-labelledby="ubahJampelModalLabel" aria-hidden="true">
@@ -86,7 +84,7 @@
                                             <input type="time" class="form-control" name="jam_selesai" value="{{ old('jam_selesai', $jampel->jam_selesai) }}" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="event" class="form-label">Event</label>
+                                            <label for="event" class="form-label">Kegiatan Khusus</label>
                                             <input type="text" class="form-control" name="event" value="{{ old('event', $jampel->event) }}">
                                         </div>
                                     </div>
@@ -104,7 +102,7 @@
         </tbody>
     </table>
 
-    <!-- Modal for Jam Mapel -->
+    <!-- Modal for Create Jam Mapel -->
     <div class="modal fade" id="createJampelModal" tabindex="-1" aria-labelledby="createJampelModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -136,7 +134,7 @@
                             <input type="time" class="form-control" name="jam_selesai" required>
                         </div>
                         <div class="mb-3">
-                            <label for="event" class="form-label">Event</label>
+                            <label for="event" class="form-label">Kegiatan Khusus</label>
                             <input type="text" class="form-control" name="event">
                         </div>
                     </div>

@@ -20,7 +20,7 @@
             <div class="col-md-4">
                 <label for="semester_id">Semester:</label>
                 <select name="semester_id" id="semester_id" class="form-control">
-                    <option value="">Pilih Semester</option>
+                    <option value="" selected disabled hidden>Pilih Semester</option>
                     @foreach($semesters as $semester)
                     <option value="{{ $semester->id }}" {{ request('semester_id') == $semester->id ? 'selected' : '' }}>
                         {{ $semester->semester }} | {{ $semester->tahun_ajaran }} {{ $semester->status == 1 ? "(Aktif)" : "" }}
@@ -33,7 +33,7 @@
             <div class="col-md-4">
                 <label for="mapel">Mata Pelajaran:</label>
                 <select name="mapel" id="mapel" class="form-control">
-                    <option value="">Pilih Mata Pelajaran</option>
+                    <option value="" selected disabled hidden>Pilih Mata Pelajaran</option>
                     @foreach($listMapel as $mapel)
                     <option value="{{ $mapel->nama }}" {{ request('mapels') == $mapel->nama ? 'selected' : '' }}>
                         {{ $mapel->nama }}
