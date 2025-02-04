@@ -60,6 +60,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
             Route::get('/export', 'export')->name('siswa.export');
             Route::get('/import', 'showImportForm')->name('siswa.showImportForm');
             Route::post('/{id}/generate-user', 'generateUser')->name('siswa.generateUser');
+            Route::put('/store', 'store')->name('siswa.store');
             Route::put('/update/{siswaId}', 'update')->name('siswa.update');
             Route::delete('/delete/{siswaId}', 'delete')->name('siswa.delete');
 
