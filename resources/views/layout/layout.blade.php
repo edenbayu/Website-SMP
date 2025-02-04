@@ -258,7 +258,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                            <a href="{{route('kalenderakademik.index')}}" class="sidebar-link">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 Kalender Akademik
                             </a>

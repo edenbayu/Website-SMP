@@ -36,7 +36,7 @@
                 @php
                     $subjects = collect($datas)->flatMap(function ($row) {
                         return array_keys((array)$row);
-                    })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn', 'agama']));
+                    })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn']));
                 @endphp
                 @foreach ($subjects as $subject)
                     <th class="text-start">{{ $subject }}</th>

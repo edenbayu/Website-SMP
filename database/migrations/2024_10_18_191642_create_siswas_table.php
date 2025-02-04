@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('nis')->nullable();
+            // $table->string('nis')->nullable();
             $table->string('nisn')->nullable();
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('nama_ibu')->nullable();
             $table->string('pekerjaan_ibu')->nullable();
             $table->string('nama_wali')->nullable();
-            $table->string('alamat_wali')->nullable();
+            // $table->string('alamat_wali')->nullable();
             $table->string('pekerjaan_wali')->nullable();
             $table->string('angkatan')->nullable();
             $table->foreignId('id_user')->nullable()->constrained('users')->onDelete('set null');

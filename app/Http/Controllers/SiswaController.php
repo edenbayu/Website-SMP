@@ -80,7 +80,7 @@ class SiswaController extends Controller
         // Validate that only `no_pendaftaran` is required and all other fields are nullable
         $validated = $request->validate([
             'nama' => 'nullable|string|max:255',
-            'nis' => 'nullable|string|max:50|unique:siswas,nis,' . $siswaId,
+            // 'nis' => 'nullable|string|max:50|unique:siswas,nis,' . $siswaId,
             'nisn' => 'nullable|string|max:50|unique:siswas,nisn,' . $siswaId,
             'tanggal_lahir' => 'nullable|date|max:255',
             'tempat_lahir' => 'nullable|string|max:255',

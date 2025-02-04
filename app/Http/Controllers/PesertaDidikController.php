@@ -13,6 +13,7 @@ use App\Models\AbsensiSiswa;
 use App\Models\Penilaian;
 use App\Models\P5BK;
 use App\Models\Mapel;
+use App\Models\MapelKelas;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -154,67 +155,160 @@ class PesertaDidikController extends Controller
     {
         $user = Auth::user(); // Get the currently logged-in user
     
-        $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
-            ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
-            ->join('penilaian_t_p_s as j', 'j.penilaian_id', '=', 'b.id')
-            ->join('t_p_s as d', 'd.id', '=', 'j.tp_id')
-            ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
-            ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
-            ->join('mapels as z', 'z.id', '=', 'f.mapel_id')
-            ->join('kelas as g', 'g.id', '=', 'f.kelas_id')
-            ->join('gurus as h', 'h.id', '=', 'g.id_guru')
-            ->join('users as i', 'i.id', '=', 'h.id_user')
-            ->where('i.id', $user->id) 
-            ->where('g.id', $kelasId)
-            ->select(
-                'c.id as siswa_id',  // Add siswa_id to the select query
-                'c.nama as siswa_name',
-                'c.nisn as nisn',
-                'c.agama',
-                'g.rombongan_belajar as kelas',
-                'z.nama as mapel_name',
-                'z.parent',
-                DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) AS avg_tugas"),
-                DB::raw("AVG(CASE WHEN b.tipe = 'UH' THEN penilaian_siswa.nilai_akhir END) AS avg_uh"),
-                DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) AS avg_sas"),
-                DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) AS avg_sts")
-            )
-            ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar', 'c.nisn', 'c.agama', 'z.parent') // Include siswa_id in the groupBy clause
-            ->orderBy('siswa_name', 'asc')
-            ->orderBy('mapel_name', 'asc')
-            ->get();
+        // $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
+        //     ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
+        //     ->join('penilaian_t_p_s as j', 'j.penilaian_id', '=', 'b.id')
+        //     ->join('t_p_s as d', 'd.id', '=', 'j.tp_id')
+        //     ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
+        //     ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
+        //     ->join('mapels as z', 'z.id', '=', 'f.mapel_id')
+        //     ->join('kelas as g', 'g.id', '=', 'f.kelas_id')
+        //     ->join('gurus as h', 'h.id', '=', 'g.id_guru')
+        //     ->join('users as i', 'i.id', '=', 'h.id_user')
+        //     ->where('i.id', $user->id)
+        //     ->where('g.id', $kelasId)
+        //     ->where('z.semester_id', request()->session()->get('semester_id'))
+        //     // ->where(function ($query) {
+        //     //     $query->where('b.tipe', '=', 'SAS')
+        //     //         ->orWhere('b.tanggal', '<', function ($subquery) {
+        //     //             $subquery->selectRaw('MIN(penilaians.tanggal)')
+        //     //                 ->from('penilaians')
+        //     //                 ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+        //     //                 ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+        //     //                 ->where('m.id', '=', 'z.id')
+        //     //                 ->where('penilaians.tipe', '=', 'SAS');
+        //     //         });
+        //     // })
+        //     ->select(
+        //         'c.id as siswa_id',  // Add siswa_id to the select query
+        //         'c.nama as siswa_name',
+        //         'c.nisn as nisn',
+        //         'c.agama',
+        //         'g.rombongan_belajar as kelas',
+        //         'z.nama as mapel_name',
+        //         'z.parent',
+        //         DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) AS avg_tugas"),
+        //         DB::raw("AVG(CASE WHEN b.tipe = 'UH' THEN penilaian_siswa.nilai_akhir END) AS avg_uh"),
+        //         DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) AS avg_sas"),
+        //         DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) AS avg_sts"),
+        //         DB::raw("MIN(b.tanggal) AS first_tanggal"),
+        //         DB::raw("MAX(b.tanggal) AS last_tanggal"),
+        //         DB::raw("COUNT(*) as count")
+        //     )
+        //     ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar', 'c.nisn', 'c.agama', 'z.parent') // Include siswa_id in the groupBy clause
+        //     ->orderBy('siswa_name', 'asc')
+        //     ->orderBy('mapel_name', 'asc')
+        //     ->get();
+
+        $mapelIds = MapelKelas::where('kelas_id', $kelasId)
+            ->pluck('mapel_id'); // Ambil semua mapel_id dalam kelas
+
+        $datas = collect(); // Gunakan collection untuk menyimpan hasil loop
+
+        foreach ($mapelIds as $mapelId) {
+            $query = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
+                ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
+                ->join('penilaian_t_p_s as j', 'j.penilaian_id', '=', 'b.id')
+                ->join('t_p_s as d', 'd.id', '=', 'j.tp_id')
+                ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
+                ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
+                ->join('mapels as z', 'z.id', '=', 'f.mapel_id')
+                ->join('kelas as g', 'g.id', '=', 'f.kelas_id')
+                // ->join('gurus as h', 'h.id', '=', 'g.id_guru')
+                // ->join('users as i', 'i.id', '=', 'h.id_user')
+                // ->where('i.id', $user->id)
+                
+                ->where('g.id', $kelasId)
+                ->where('z.id', $mapelId) // Filter hanya untuk mapel saat ini
+                ->where('z.semester_id', request()->session()->get('semester_id'))
+                ->where(function ($query) use ($mapelId) {
+                    $query->where('b.tipe', '=', 'SAS')
+                        ->orWhere('b.tanggal', '<', function ($subquery) use ($mapelId) {
+                            $subquery->selectRaw('MIN(penilaians.tanggal)')
+                                ->from('penilaians')
+                                ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+                                ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                                ->where('m.id', $mapelId)
+                                ->where('penilaians.tipe', '=', 'SAS');
+                        });
+                })
+                ->select(
+                    'c.id as siswa_id',
+                    'c.nama as siswa_name',
+                    'c.nisn as nisn',
+                    'c.agama',
+                    'g.rombongan_belajar as kelas',
+                    'z.nama as mapel_name',
+                    'z.parent',
+                    DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) AS avg_tugas"),
+                    DB::raw("AVG(CASE WHEN b.tipe = 'UH' THEN penilaian_siswa.nilai_akhir END) AS avg_uh"),
+                    DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) AS avg_sas"),
+                    DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) AS avg_sts"),
+                    DB::raw("MIN(b.tanggal) AS first_tanggal"),
+                    DB::raw("MAX(b.tanggal) AS last_tanggal"),
+                    DB::raw("COUNT(*) as count")
+                )
+                ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar', 'c.nisn', 'c.agama', 'z.parent')
+                ->orderBy('siswa_name', 'asc')
+                ->orderBy('mapel_name', 'asc')
+                ->get();
+
+            $datas = $datas->merge($query); // Gabungkan hasil query ke dalam collection utama
+        }
     
         $parents = Mapel::whereNull('guru_id')->pluck('nama', 'id');
 
         // Transform the data
         $result = [];
-        foreach ($datas as $data) {
-            $hasil_akhir = collect([ 
-                $data->avg_tugas, 
-                $data->avg_uh, 
-                $data->avg_sas, 
-                $data->avg_sts,
-            ])->filter()->avg(); // Calculate average
-            
-            if (!isset($result[$data->siswa_id])) {
-                $result[$data->siswa_id] = [
-                    'nama' => $data->siswa_name,
-                    'nisn' => $data->nisn,
-                    'kelas' => $data->kelas,
-                    'agama' => $data->agama
-                ];
-            }
-            
-            if ($data->parent) $result[$data->siswa_id][$parents[$data->parent]] = round($hasil_akhir, 2);
-            else $result[$data->siswa_id][$data->mapel_name] = round($hasil_akhir, 2);
-        }
+foreach ($datas as $data) {
+    $hasil_akhir = collect([ 
+        $data->avg_tugas, 
+        $data->avg_uh, 
+        $data->avg_sas, 
+        $data->avg_sts,
+    ])->filter()->avg(); // Hitung rata-rata hanya dari nilai yang tidak null
+
+    if (!isset($result[$data->siswa_id])) {
+        $result[$data->siswa_id] = [
+            'nama' => $data->siswa_name,
+            'nisn' => $data->nisn,
+            'kelas' => $data->kelas,
+            'agama' => $data->agama,
+            'first_tanggal' => $data->first_tanggal,
+            'last_tanggal' => $data->last_tanggal,
+            'count' => $data->count ?? 0
+        ];
+    } else {
+        // Jika sudah ada, perbarui first_tanggal dan last_tanggal
+        $result[$data->siswa_id]['first_tanggal'] = min($result[$data->siswa_id]['first_tanggal'], $data->first_tanggal);
+        $result[$data->siswa_id]['last_tanggal'] = max($result[$data->siswa_id]['last_tanggal'], $data->last_tanggal);
+        // Tambahkan count
+        $result[$data->siswa_id]['count'] += $data->count ?? 0;
+    }
+
+    if ($data->parent && isset($parents[$data->parent])) {
+        $result[$data->siswa_id][$parents[$data->parent]] = round($hasil_akhir, 2);
+    } else {
+        $result[$data->siswa_id][$data->mapel_name] = round($hasil_akhir, 2);
+    }
+}
+
+// Gabungkan first_tanggal dan last_tanggal dalam format "YYYY-MM-DD - YYYY-MM-DD"
+foreach ($result as &$res) {
+    $res['tanggal'] = trim(($res['first_tanggal'] ?? '') . ' - ' . ($res['last_tanggal'] ?? ''), ' -');
+    unset($res['first_tanggal'], $res['last_tanggal']); // Hapus setelah digabung
+}
+unset($res); // Hapus reference untuk keamanan
+
     
         return view('walikelas.legerNilai', ['datas' => $result ,'semesterId' => $semesterId]);
     }    
 
-    public function generateRapotPDF(Request $request, $semesterId)
+    public function generateRapotPDF(Request $request)
     {
         $user = Auth::user();
+
+        $semesterId = request()->session()->get('semester_id');
 
         // Retrieve data from the form submission
         $data = $request->all();
@@ -232,13 +326,14 @@ class PesertaDidikController extends Controller
             'prestasi_3' => $data['prestasi_3'] ?? null,
         ];
     
-        $parents =Mapel::whereNull('guru_id')->get();
+        $parents =Mapel::where('semester_id', $semesterId)->whereNull('guru_id')->get();
         $parentWithChildren = [];
         foreach ($parents as $parent) {
             // Ambil child yang memiliki parent_id sama dengan id dari parent ini
-            $children = Mapel::where('parent', $parent->id)
-                             ->pluck('nama')
-                             ->toArray(); // Ambil nama child dalam bentuk array
+            $children = Mapel::where('semester_id', $semesterId)
+                ->where('parent', $parent->id)
+                ->pluck('nama')
+                ->toArray(); // Ambil nama child dalam bentuk array
         
             // Simpan parent dan child dalam array
             $parentWithChildren[$parent->nama] = $children;
@@ -266,6 +361,7 @@ class PesertaDidikController extends Controller
                 ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
                 ->join('mapels as mapels', 'mapels.id', '=', 'mk.mapel_id') // Mapel join dari mapel_kelas
                 ->where('mapels.nama', '=', $subject)
+                ->where('mapels.semester_id', request()->session()->get('semester_id'))
                 ->where(function ($query) use ($subject) {
                     $query->where('penilaians.tipe', '=', 'STS')
                         ->orWhere('penilaians.tanggal', '<', function ($subquery) use ($subject) {

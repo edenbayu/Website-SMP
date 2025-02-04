@@ -25,7 +25,7 @@ class SiswaImport implements ToModel, WithValidation, WithHeadingRow, WithUpsert
     {
         return [
             'nama' => 'nullable',
-            'nis' => 'nullable',
+            // 'nis' => 'nullable',
             'nisn' => 'nullable',
             'tanggal_lahir' => 'nullable',
             'tempat_lahir' => 'nullable',
@@ -43,7 +43,7 @@ class SiswaImport implements ToModel, WithValidation, WithHeadingRow, WithUpsert
             'pekerjaan_ayah' => 'nullable',
             'pekerjaan_ibu' => 'nullable',
             'nama_wali' => 'nullable',
-            'alamat_wali' => 'nullable',
+            // 'alamat_wali' => 'nullable',
             'pekerjaan_wali' => 'nullable',
             'angkatan' => 'nullable',
         ];

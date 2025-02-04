@@ -18,6 +18,13 @@
             Tambah
         </button>
 
+        <!-- toggle to enable "Edit" and "Delete" buttons -->
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+            <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+        </div>
+        
+
         <!-- Load the modal -->
         @include('modal.semester')
 
@@ -45,14 +52,14 @@
                     <td class="text-start">{{ $semester->end }}</td>
                     <td class="text-center">
                         <!-- Trigger Button for the Edit Modal -->
-                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editSemesterModal-{{ $semester->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
 
                         <!-- Delete Button -->
                         <!-- <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');"> -->
                         <form action="{{ route('semesters.destroy', ['id' => $semester->id]) }}" method="POST" style="display:inline;" >
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger deleteAlert controlled"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -96,6 +103,16 @@
                     url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
                 }
             });
+
+            // Enable Edit and Delete buttons when toggle is checked
+            $('#flexSwitchCheckDefault').on('change', function() {
+                const isEditMode = this.checked;
+
+                // Enable or disable all controlled buttons
+                document.querySelectorAll('.controlled').forEach(button => {
+                    button.disabled = !isEditMode;
+                });
+            });            
         });
     </script>
     <script>

@@ -184,7 +184,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     });
 
     Route::middleware('role:Wali Kelas')->group(function () {
-        Route::post('/generate-rapor/{semesterId}', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
+        Route::post('/generate-rapor', [PesertaDidikController::class, 'generateRapotPDF'])->name('pesertadidik.generateRapot');
 
         Route::prefix('peserta-didik')->controller(PesertaDidikController::class)->group(function () {
             Route::post('/attendance/fetch', 'fetchAttendance')->name('pesertadidik.fetchAttendance');
