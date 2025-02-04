@@ -34,7 +34,7 @@
                 <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
                 @php
-                    $subjects = collect($datas)->flatMap(function ($row) {
+                    $subjects = collect($datas['sas'])->flatMap(function ($row) {
                         return array_keys((array)$row);
                     })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn']));
                 @endphp
@@ -45,7 +45,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($datas as $index => $data)
+            @foreach ($datas['sas'] as $index => $data)
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
                 <td class="text-start">{{ $data['nama'] }}</td>
