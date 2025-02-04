@@ -200,7 +200,10 @@ class PesertaDidikController extends Controller
         //     ->orderBy('mapel_name', 'asc')
         //     ->get();
 
-        $mapelIds = MapelKelas::where('kelas_id', $kelasId)->pluck('mapel_id');
+        $mapelIds = MapelKelas::join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
+            ->where('mapel_kelas.kelas_id', $kelasId)
+            ->orderBy('mapels.nama')
+            ->pluck('mapel_kelas.mapel_id');
 
         $datas['all'] = collect();
         $datas['sts'] = collect();
@@ -266,9 +269,9 @@ class PesertaDidikController extends Controller
                     });
             })->get();
 
-            $datas['all'] = $datas['all']->merge($all); // Gabungkan hasil query ke dalam collection utama
-            $datas['sts'] = $datas['sts']->merge($sts); // Gabungkan hasil query ke dalam collection utama
-            $datas['sas'] = $datas['sas']->merge($sas); // Gabungkan hasil query ke dalam collection utama
+            $datas['all'] = $datas['all']->merge($all);
+            $datas['sts'] = $datas['sts']->merge($sts);
+            $datas['sas'] = $datas['sas']->merge($sas);
         }
     
         $parents = Mapel::whereNull('guru_id')->pluck('nama', 'id');
@@ -294,14 +297,14 @@ class PesertaDidikController extends Controller
                         'agama' => $data->agama,
                         'first_tanggal' => $data->first_tanggal,
                         'last_tanggal' => $data->last_tanggal,
-                        'count' => $data->count ?? 0
+                        // 'count' => $data->count ?? 0
                     ];
                 } else {
                     // Jika sudah ada, perbarui first_tanggal dan last_tanggal
                     $result[$key_data][$data->siswa_id]['first_tanggal'] = min($result[$key_data][$data->siswa_id]['first_tanggal'], $data->first_tanggal);
                     $result[$key_data][$data->siswa_id]['last_tanggal'] = max($result[$key_data][$data->siswa_id]['last_tanggal'], $data->last_tanggal);
                     // Tambahkan count
-                    $result[$key_data][$data->siswa_id]['count'] += $data->count ?? 0;
+                    // $result[$key_data][$data->siswa_id]['count'] += $data->count ?? 0;
                 }
 
                 if ($data->parent && isset($parents[$data->parent])) {
@@ -318,9 +321,6 @@ class PesertaDidikController extends Controller
             }
             unset($res); // Hapus reference untuk keamanan
         }
-
-
-        
 
         return view('walikelas.legerNilai', ['datas' => $result ,'semesterId' => $semesterId]);
     }    

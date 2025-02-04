@@ -33,10 +33,11 @@
                 <th class="text-start">Nama</th>
                 <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
+                <th class="text-start">Tanggal Penilaian</th>
                 @php
                     $subjects = collect($datas['sas'])->flatMap(function ($row) {
                         return array_keys((array)$row);
-                    })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn']));
+                    })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn', 'tanggal', 'agama']));
                 @endphp
                 @foreach ($subjects as $subject)
                     <th class="text-start">{{ $subject }}</th>
@@ -51,6 +52,7 @@
                 <td class="text-start">{{ $data['nama'] }}</td>
                 <td class="text-start">{{ $data['nisn'] }}</td>
                 <td class="text-start">{{ $data['kelas'] }}</td>
+                <td class="text-start">{{ $data['tanggal'] }}</td>
                 @foreach ($subjects as $subject)
                     <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
                 @endforeach
@@ -90,7 +92,7 @@
                                 @foreach ($subjects as $subject)
                                 <div class="mb-3">
                                     <label for="subject-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
-                                    <input type="text" class="form-control" id="subject-{{ $loop->index }}" value="{{ $data[$subject] ?? 0 }}" readonly>
+                                    <input type="text" class="form-control" id="subject-{{ $loop->index }}" value="{{ $data[$subject] ?? 0 }}" readonly disabled>
                                 </div>
                                 @endforeach
 
