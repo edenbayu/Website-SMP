@@ -322,7 +322,20 @@ class PesertaDidikController extends Controller
             unset($res); // Hapus reference untuk keamanan
         }
 
-        return view('walikelas.legerNilai', ['datas' => $result ,'semesterId' => $semesterId]);
+        // dd($result);
+
+        $subjects = collect($result['sts'])->flatMap(function ($row) {
+            return array_keys((array)$row);
+        })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn', 'tanggal', 'agama']));
+
+        $transposed = [];
+        foreach (array_keys($result) as $key) {
+            foreach ($result[$key] as $index => $value) {
+                $transposed[$index][$key] = $value;
+            }
+        }
+
+        return view('walikelas.legerNilai', ['data' => $transposed , 'subjects' => $subjects, 'semesterId' => $semesterId]);
     }    
 
     public function generateRapotPDF(Request $request)
@@ -331,146 +344,250 @@ class PesertaDidikController extends Controller
 
         $semesterId = request()->session()->get('semester_id');
 
-        // Retrieve data from the form submission
         $data = $request->all();
-    
-        // Extract data from the form
+
         $subjects = $data['subjects'] ?? [];
         $studentName = $data['student_name'] ?? 'Unknown Student';
         $agama = $data['student_religion'] ?? 'Unknown Religion';
     
-        // Additional form data
-        $komentar = $data['komentar'] ?? '';
-        $prestasi = [
-            'prestasi_1' => $data['prestasi_1'] ?? null,
-            'prestasi_2' => $data['prestasi_2'] ?? null,
-            'prestasi_3' => $data['prestasi_3'] ?? null,
-        ];
-    
-        $parents =Mapel::where('semester_id', $semesterId)->whereNull('guru_id')->get();
-        $parentWithChildren = [];
-        foreach ($parents as $parent) {
-            // Ambil child yang memiliki parent_id sama dengan id dari parent ini
-            $children = Mapel::where('semester_id', $semesterId)
-                ->where('parent', $parent->id)
-                ->pluck('nama')
-                ->toArray(); // Ambil nama child dalam bentuk array
-        
-            // Simpan parent dan child dalam array
-            $parentWithChildren[$parent->nama] = $children;
-        }
-    
-        // Initialize komentarRapot
-        $komentarRapot = [];
-        $newSubjects = [];
+        $tipe = $data['tipe_penilaian'];
+        if ($tipe === 'sts') {
+            $tanggal_sts = explode(" - ", $data['tanggal_sts'])[1];
 
-        foreach ($subjects as $subject => $grades) {
-            if (isset($parentWithChildren[$subject])) {
-                $subject = array_filter($parentWithChildren[$subject], function($value) use ($agama) {
-                    return strpos($value, $agama) !== false;
-                });
-                $subject = reset($subject);
+            $komentar = $data['komentar'] ?? '';
+            
+            $parents =Mapel::where('semester_id', $semesterId)->whereNull('guru_id')->get();
+            $parentWithChildren = [];
+            foreach ($parents as $parent) {
+                $children = Mapel::where('semester_id', $semesterId)
+                    ->where('parent', $parent->id)
+                    ->pluck('nama')
+                    ->toArray(); 
+
+                $parentWithChildren[$parent->nama] = $children;
             }
+        
+            // Initialize komentarRapot
+            $komentarRapot = [];
+            $newSubjects = [];
 
-            // Menyimpan subjek baru ke array baru
-            $newSubjects[$subject] = $grades;
-            $komentarCK = Penilaian::query()
-                ->select('tps.nama')
-                ->join('penilaian_t_p_s as a', 'a.penilaian_id', '=', 'penilaians.id')
-                ->join('t_p_s as tps', 'tps.id', '=', 'a.tp_id')
-                ->join('c_p_s as cps', 'cps.id', '=', 'tps.cp_id')
-                ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
-                ->join('mapels as mapels', 'mapels.id', '=', 'mk.mapel_id') // Mapel join dari mapel_kelas
-                ->where('mapels.nama', '=', $subject)
-                ->where('mapels.semester_id', request()->session()->get('semester_id'))
-                ->where(function ($query) use ($subject) {
-                    $query->where('penilaians.tipe', '=', 'STS')
-                        ->orWhere('penilaians.tanggal', '<', function ($subquery) use ($subject) {
-                            $subquery->selectRaw('MIN(penilaians.tanggal)')
-                                ->from('penilaians')
-                                ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
-                                ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
-                                ->where('m.nama', '=', $subject)
-                                ->where('penilaians.tipe', '=', 'STS');
-                        });
-                })
-                ->groupBy('tps.id', 'tps.nama') // Mengelompokkan berdasarkan kolom 'tps.id' dan 'tps.nama'
+            foreach ($subjects as $subject => $grades) {
+                if (isset($parentWithChildren[$subject])) {
+                    $subject = array_filter($parentWithChildren[$subject], function($value) use ($agama) {
+                        return strpos($value, $agama) !== false;
+                    });
+                    $subject = reset($subject);
+                }
+
+                // Menyimpan subjek baru ke array baru
+                $newSubjects[$subject] = $grades;
+                $komentarCK = Penilaian::query()
+                    ->select('tps.nama')
+                    ->join('penilaian_t_p_s as a', 'a.penilaian_id', '=', 'penilaians.id')
+                    ->join('t_p_s as tps', 'tps.id', '=', 'a.tp_id')
+                    ->join('c_p_s as cps', 'cps.id', '=', 'tps.cp_id')
+                    ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+                    ->join('mapels as mapels', 'mapels.id', '=', 'mk.mapel_id') // Mapel join dari mapel_kelas
+                    ->where('mapels.nama', '=', $subject)
+                    ->where('mapels.semester_id', request()->session()->get('semester_id'))
+                    ->where(function ($query) use ($subject) {
+                        $query->where('penilaians.tipe', '=', 'STS')
+                            ->orWhere('penilaians.tanggal', '<', function ($subquery) use ($subject) {
+                                $subquery->selectRaw('MIN(penilaians.tanggal)')
+                                    ->from('penilaians')
+                                    ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+                                    ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                                    ->where('m.nama', '=', $subject)
+                                    ->where('penilaians.tipe', '=', 'STS');
+                            });
+                    })
+                    ->groupBy('tps.id', 'tps.nama')
+                    ->get();
+            
+                // Store the retrieved 'nama' values in komentarRapot
+                foreach ($komentarCK as $komentarItem) {
+                    $komentarRapot[$subject][] = $komentarItem->nama;
+                }
+            }        
+            $subjects = $newSubjects;
+            
+            $rombelData = Kelas::join('kelas_siswa', 'kelas.id', '=', 'kelas_siswa.kelas_id')
+                ->join('siswas', 'siswas.id', '=', 'kelas_siswa.siswa_id')
+                ->join('semesters', 'kelas.id_semester', '=', 'semesters.id')
+                ->where('siswas.id', $data['student_id'])
+                ->where('kelas.kelas', '!=', 'Ekskul')
+                ->where('semesters.id', $semesterId)
+                ->value('rombongan_belajar');
+
+            $siswaData = Siswa::find($data['student_id']);
+
+            // Fetch attendance summary for the student
+            $absensiSummary = AbsensiSiswa::where('id_siswa', $data['student_id'])
+                ->where('status', '!=', 'hadir')
+                ->where('date', '<=', $tanggal_sts)
+                ->selectRaw('status, COUNT(status) as count')
+                ->groupBy('status')
                 ->get();
+
+            $ttd = [];
+            $guru = Guru::join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('users.id', $user->id)
+                ->first();
+            $ttd["walikelas"] = trim($guru->gelar_depan." ".$guru->nama."".$guru->gelar_belakang);
+            $ttd["nip_walikelas"] = $guru->nip;
+
+            $semesterData = Semester::find($semesterId);
+
+            // Pass the data to the view for PDF generation
+            $pdf = PDF::loadView('walikelas.rapot_sts', [
+                'ttd' => $ttd,
+                'nisn' => $siswaData->nisn,
+                'semester' => $semesterData->semester,
+                'tahunAjaran' => $semesterData->tahun_ajaran,
+                'rombelData' => $rombelData,
+                'semester_id' => $semesterId,
+                'subjects' => $subjects,
+                'studentName' => $studentName,
+                'komentar' => $komentar,
+                'komentarRapot' => $komentarRapot,
+                'absensiSummary' => $absensiSummary, // Include absensiSummary in the view
+            ]);
         
-            // Store the retrieved 'nama' values in komentarRapot
-            foreach ($komentarCK as $komentarItem) {
-                $komentarRapot[$subject][] = $komentarItem->nama;
+            // Return the PDF as a stream
+            return $pdf->stream("RAPOR TENGAH SEMESTER_".strtoupper($studentName)."_{$siswaData->nisn}.pdf");
+
+        } else if ($tipe === 'sas') {
+
+            $komentar = $data['komentar'] ?? '';
+            $prestasi = [
+                'prestasi_1' => $data['prestasi_1'] ?? null,
+                'prestasi_2' => $data['prestasi_2'] ?? null,
+                'prestasi_3' => $data['prestasi_3'] ?? null,
+            ];
+        
+            $parents =Mapel::where('semester_id', $semesterId)->whereNull('guru_id')->get();
+            $parentWithChildren = [];
+            foreach ($parents as $parent) {
+                $children = Mapel::where('semester_id', $semesterId)
+                    ->where('parent', $parent->id)
+                    ->pluck('nama')
+                    ->toArray(); 
+
+                $parentWithChildren[$parent->nama] = $children;
             }
-        }        
-        $subjects = $newSubjects;
-    
-        // Fetch extracurricular (ekskul) data
-        $ekskulData = DB::table('penilaian_ekskuls as a')
-            ->join('kelas as b', 'b.id', '=', 'a.kelas_id')
-            ->join('siswas as c', 'c.id', '=', 'a.siswa_id')
-            ->join('semesters as d', 'd.id', '=', 'b.id_semester')
-            ->where('a.siswa_id', $data['student_id'])
-            ->where('d.id', $semesterId)
-            ->select('b.rombongan_belajar', 'a.nilai')
-            ->get();
         
-        $rombelData = Kelas::join('kelas_siswa', 'kelas.id', '=', 'kelas_siswa.kelas_id')
-            ->join('siswas', 'siswas.id', '=', 'kelas_siswa.siswa_id')
-            ->join('semesters', 'kelas.id_semester', '=', 'semesters.id')
-            ->where('siswas.id', $data['student_id'])
-            ->where('kelas.kelas', '!=', 'Ekskul')
-            ->where('semesters.id', $semesterId)
-            ->value('rombongan_belajar');
+            // Initialize komentarRapot
+            $komentarRapot = [];
+            $newSubjects = [];
 
-        $siswaData = Siswa::find($data['student_id']);
+            foreach ($subjects as $subject => $grades) {
+                if (isset($parentWithChildren[$subject])) {
+                    $subject = array_filter($parentWithChildren[$subject], function($value) use ($agama) {
+                        return strpos($value, $agama) !== false;
+                    });
+                    $subject = reset($subject);
+                }
 
-        // Fetch attendance summary for the student
-        $absensiSummary = AbsensiSiswa::where('id_siswa', $data['student_id'])
-            ->where('status', '!=', 'hadir')
-            ->selectRaw('status, COUNT(status) as count')
-            ->groupBy('status')
+                // Menyimpan subjek baru ke array baru
+                $newSubjects[$subject] = $grades;
+                $komentarCK = Penilaian::query()
+                    ->select('tps.nama')
+                    ->join('penilaian_t_p_s as a', 'a.penilaian_id', '=', 'penilaians.id')
+                    ->join('t_p_s as tps', 'tps.id', '=', 'a.tp_id')
+                    ->join('c_p_s as cps', 'cps.id', '=', 'tps.cp_id')
+                    ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+                    ->join('mapels as mapels', 'mapels.id', '=', 'mk.mapel_id') // Mapel join dari mapel_kelas
+                    ->where('mapels.nama', '=', $subject)
+                    ->where('mapels.semester_id', request()->session()->get('semester_id'))
+                    ->where(function ($query) use ($subject) {
+                        $query->where('penilaians.tipe', '=', 'STS')
+                            ->orWhere('penilaians.tanggal', '<', function ($subquery) use ($subject) {
+                                $subquery->selectRaw('MIN(penilaians.tanggal)')
+                                    ->from('penilaians')
+                                    ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
+                                    ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                                    ->where('m.nama', '=', $subject)
+                                    ->where('penilaians.tipe', '=', 'STS');
+                            });
+                    })
+                    ->groupBy('tps.id', 'tps.nama')
+                    ->get();
+            
+                // Store the retrieved 'nama' values in komentarRapot
+                foreach ($komentarCK as $komentarItem) {
+                    $komentarRapot[$subject][] = $komentarItem->nama;
+                }
+            }        
+            $subjects = $newSubjects;
+        
+            // Fetch extracurricular (ekskul) data
+            $ekskulData = DB::table('penilaian_ekskuls as a')
+                ->join('kelas as b', 'b.id', '=', 'a.kelas_id')
+                ->join('siswas as c', 'c.id', '=', 'a.siswa_id')
+                ->join('semesters as d', 'd.id', '=', 'b.id_semester')
+                ->where('a.siswa_id', $data['student_id'])
+                ->where('d.id', $semesterId)
+                ->select('b.rombongan_belajar', 'a.nilai')
+                ->get();
+            
+            $rombelData = Kelas::join('kelas_siswa', 'kelas.id', '=', 'kelas_siswa.kelas_id')
+                ->join('siswas', 'siswas.id', '=', 'kelas_siswa.siswa_id')
+                ->join('semesters', 'kelas.id_semester', '=', 'semesters.id')
+                ->where('siswas.id', $data['student_id'])
+                ->where('kelas.kelas', '!=', 'Ekskul')
+                ->where('semesters.id', $semesterId)
+                ->value('rombongan_belajar');
+
+            $siswaData = Siswa::find($data['student_id']);
+
+            // Fetch attendance summary for the student
+            $absensiSummary = AbsensiSiswa::where('id_siswa', $data['student_id'])
+                ->where('status', '!=', 'hadir')
+                ->selectRaw('status, COUNT(status) as count')
+                ->groupBy('status')
+                ->get();
+
+            $p5bkData = P5BK::where('semester_id', $semesterId)
+            ->where('siswa_id', $data['student_id'])
+            ->select('dimensi', 'capaian')
             ->get();
 
-        $p5bkData = P5BK::where('semester_id', $semesterId)
-        ->where('siswa_id', $data['student_id'])
-        ->select('dimensi', 'capaian')
-        ->get();
+            $ttd = [];
+            $guru = Guru::join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('users.id', $user->id)
+                ->first();
+            $ttd["walikelas"] = trim($guru->gelar_depan." ".$guru->nama."".$guru->gelar_belakang);
+            $ttd["nip_walikelas"] = $guru->nip;
+            $kepsek = Guru::where('jabatan', 'Kepala Sekolah')
+                ->first();
+            $ttd["kepsek"] = trim($kepsek->gelar_depan." ".$kepsek->nama."".$kepsek->gelar_belakang);
+            $ttd["nip_kepsek"] = $kepsek->nip;
 
-        $ttd = [];
-        $guru = Guru::join('users', 'users.id', '=', 'gurus.id_user')
-            ->where('users.id', $user->id)
-            ->first();
-        $ttd["walikelas"] = trim($guru->gelar_depan." ".$guru->nama."".$guru->gelar_belakang);
-        $ttd["nip_walikelas"] = $guru->nip;
-        $kepsek = Guru::where('jabatan', 'Kepala Sekolah')
-            ->first();
-        $ttd["kepsek"] = trim($kepsek->gelar_depan." ".$kepsek->nama."".$kepsek->gelar_belakang);
-        $ttd["nip_kepsek"] = $kepsek->nip;
+            $semesterData = Semester::find($semesterId);
 
-        $semesterData = Semester::find($semesterId);
+            // dd($komentarRapot);
 
-        // dd($komentarRapot);
-
-        // Pass the data to the view for PDF generation
-        $pdf = PDF::loadView('rapot', [
-            'ttd' => $ttd,
-            'nisn' => $siswaData->nisn,
-            'semester' => $semesterData->semester,
-            'tahunAjaran' => $semesterData->tahun_ajaran,
-            'rombelData' => $rombelData,
-            'semester_id' => $semesterId,
-            'p5bkData' => $p5bkData,
-            'subjects' => $subjects,
-            'studentName' => $studentName,
-            'komentar' => $komentar,
-            'prestasi' => $prestasi,
-            'ekskulData' => $ekskulData,
-            'komentarRapot' => $komentarRapot,
-            'absensiSummary' => $absensiSummary, // Include absensiSummary in the view
-        ]);
-    
-        // Return the PDF as a stream
-        return $pdf->stream("RAPOR TENGAH SEMESTER_".strtoupper($studentName)."_{$siswaData->nisn}.pdf");
+            // Pass the data to the view for PDF generation
+            $pdf = PDF::loadView('rapot', [
+                'ttd' => $ttd,
+                'nisn' => $siswaData->nisn,
+                'semester' => $semesterData->semester,
+                'tahunAjaran' => $semesterData->tahun_ajaran,
+                'rombelData' => $rombelData,
+                'semester_id' => $semesterId,
+                'p5bkData' => $p5bkData,
+                'subjects' => $subjects,
+                'studentName' => $studentName,
+                'komentar' => $komentar,
+                'prestasi' => $prestasi,
+                'ekskulData' => $ekskulData,
+                'komentarRapot' => $komentarRapot,
+                'absensiSummary' => $absensiSummary, // Include absensiSummary in the view
+            ]);
+        
+            // Return the PDF as a stream
+            return $pdf->stream("RAPOR TENGAH SEMESTER_".strtoupper($studentName)."_{$siswaData->nisn}.pdf");
+        }
     }
 
     // Index function for displaying the form with siswa options

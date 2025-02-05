@@ -34,11 +34,6 @@
                 <th class="text-start">NISN</th>
                 <th class="text-start">Kelas</th>
                 <th class="text-start">Tanggal Penilaian</th>
-                @php
-                    $subjects = collect($datas['sas'])->flatMap(function ($row) {
-                        return array_keys((array)$row);
-                    })->unique()->filter(fn($key) => !in_array($key, ['nama', 'kelas', 'nisn', 'tanggal', 'agama']));
-                @endphp
                 @foreach ($subjects as $subject)
                     <th class="text-start">{{ $subject }}</th>
                 @endforeach
@@ -46,22 +41,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($datas['sas'] as $index => $data)
+            @foreach ($data as $index => $siswa)
             <tr>
                 <td class="text-start">{{ $loop->iteration }}</td>
-                <td class="text-start">{{ $data['nama'] }}</td>
-                <td class="text-start">{{ $data['nisn'] }}</td>
-                <td class="text-start">{{ $data['kelas'] }}</td>
-                <td class="text-start">{{ $data['tanggal'] }}</td>
+                <td class="text-start">{{ $siswa['all']['nama'] }}</td>
+                <td class="text-start">{{ $siswa['all']['nisn'] }}</td>
+                <td class="text-start">{{ $siswa['all']['kelas'] }}</td>
+                <td class="text-start">{{ $siswa['all']['tanggal'] }}</td>
                 @foreach ($subjects as $subject)
-                    <td class="text-start">{{ $data[$subject] ?? 0 }}</td>
+                    <td class="text-start">{{ number_format($siswa['all'][$subject] ?? 0, 2) }}</td>
                 @endforeach
                 <td class="text-start">
                     <!-- Modal Trigger Buttons -->
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}" style="width:10.5rem">
                         Tengah Semester
                     </button>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotSemester{{ $loop->index }}" style="width:10.5rem">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buatRapotSemester{{ $loop->index }}" style="width:10.5rem">
                         Akhir Semester
                     </button>
                 </td>
@@ -72,35 +67,33 @@
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="buatRapotMidLabel{{ $loop->index }}">Rapot Mid - {{ $data['nama'] }}</h5>
+                            <h5 class="modal-title" id="buatRapotMidLabel{{ $loop->index }}">Rapot Tengah Semester - {{ $siswa['sts']['nama'] }}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <form action="{{ route('pesertadidik.generateRapot', $semesterId) }}" method="POST" class="m-0" target="blank">
+                        <form action="{{ route('pesertadidik.generateRapot') }}" method="POST" class="m-0" target="blank">
+                            <div class="modal-body">
                                 @csrf
-                                <!-- Pass student name as hidden field -->
-                                <input type="hidden" name="student_name" value="{{ $data['nama'] }}">
-                                <!-- Pass index (as id) as hidden field -->
+                                <input type="hidden" name="tipe_penilaian" value="sts">
+                                <input type="hidden" name="tanggal_sts" value="{{ $siswa['sts']['tanggal'] }}">
+                                <input type="hidden" name="student_name" value="{{ $siswa['sts']['nama'] }}">
                                 <input type="hidden" name="student_id" value="{{ $index }}">
-                                <input type="hidden" name="student_religion" value="{{ $data['agama'] }}">
-
-                                <!-- Loop through subjects and pass them with grades -->
-                                @foreach ($subjects as $subject)
-                                <input type="hidden" name="subjects[{{ $subject }}]" value="{{ $data[$subject] ?? 0 }}">
-                                @endforeach
+                                <input type="hidden" name="student_religion" value="{{ $siswa['sts']['agama'] }}">
 
                                 @foreach ($subjects as $subject)
-                                <div class="mb-3">
-                                    <label for="subject-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
-                                    <input type="text" class="form-control" id="subject-{{ $loop->index }}" value="{{ $data[$subject] ?? 0 }}" readonly disabled>
-                                </div>
+                                    <input type="hidden" name="subjects[{{ $subject }}]" value="{{ $siswa['sts'][$subject] ?? 0 }}">
                                 @endforeach
 
-                                <!-- Komentar Text Area (fillable) -->
                                 <div class="mb-3">
-                                    <label for="komentar" class="form-label">Komentar</label>
-                                    <textarea class="form-control" id="komentar" name="komentar" rows="3">{{ old('komentar') }}</textarea>
+                                    <label for="tanggal-{{ $loop->index }}" class="form-label">Tanggal Penilaian</label>
+                                    <input type="text" class="form-control" id="tanggal-{{ $loop->index }}" value="{{ $siswa['sts']['tanggal'] }}" readonly disabled>
                                 </div>
+
+                                @foreach ($subjects as $subject)
+                                    <div class="mb-3">
+                                        <label for="subject-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
+                                        <input type="text" class="form-control" id="subject-{{ $loop->index }}" value="{{ $siswa['sts'][$subject] ?? 0 }}" readonly disabled>
+                                    </div>
+                                @endforeach
 
                                 <!-- Prestasi Fields (nullable, can be filled) -->
                                 <div class="mb-3">
@@ -116,12 +109,17 @@
                                     <input type="text" class="form-control" id="prestasi_3" name="prestasi_3" value="{{ old('prestasi_3') }}">
                                 </div>
 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Unduh Rapor</button>
-                            </form>
-                        </div>
+                                <!-- Komentar Text Area (fillable) -->
+                                <div class="mb-3">
+                                    <label for="komentar" class="form-label">Komentar Wali Kelas</label>
+                                    <textarea class="form-control" id="komentar" name="komentar" rows="3">{{ old('komentar') }}</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Unduh Rapor</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -131,15 +129,20 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="buatRapotSemesterLabel{{ $loop->index }}">Rapot Semester - {{ $data['nama'] }}</h5>
+                            <h5 class="modal-title" id="buatRapotSemesterLabel{{ $loop->index }}">Rapot Akhir Semester - {{ $siswa['sas']['nama'] }}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tanggal-{{ $loop->index }}" class="form-label">Tanggal Penilaian</label>
+                            <input type="text" class="form-control" id="tanggal-{{ $loop->index }}" value="{{ $siswa['sas']['tanggal'] }}" readonly disabled>
+                        </div>
+
                             @foreach ($subjects as $subject)
-                            <div class="mb-3">
-                                <label for="subject-semester-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
-                                <input type="text" class="form-control" id="subject-semester-{{ $loop->index }}" value="{{ $data[$subject] ?? 0 }}" readonly>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="subject-semester-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
+                                    <input type="text" class="form-control" id="subject-semester-{{ $loop->index }}" value="{{ $siswa['sas'][$subject] ?? 0 }}" readonly disabled>
+                                </div>
                             @endforeach
                         </div>
                         <div class="modal-footer">

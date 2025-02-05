@@ -26,8 +26,14 @@
 
     <!-- modal Informasi -->
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#infoTPModal">
-        Informasi
+        <i class="fa-solid fa-circle-info"></i> Informasi
     </button>
+
+    <!-- toggle to enable "Edit" and "Delete" buttons  -->
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+        <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="infoTPModal" tabindex="-1" aria-labelledby="infoModalTP" aria-hidden="true">
@@ -62,13 +68,13 @@
                 <td class="text-start">{{ $tp->keterangan }}</td>
                 <td class="text-start">
                     <!-- {{-- Edit Button --}} -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editTPModal{{ $tp->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editTPModal{{ $tp->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
 
                     <!-- {{-- Delete Button --}} -->
                     <form action="{{ route('silabus.deleteTP', [$mapelId, $cpId, $tp->id]) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
+                        <button type="submit" class="btn btn-danger deleteAlert controlled"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>
@@ -232,6 +238,17 @@
                 }
             });
         });
+            
+        // Enable Edit and Delete buttons when toggle is checked
+        $('#flexSwitchCheckDefault').on('change', function() {
+            const isEditMode = this.checked;
+
+        // Enable or disable all controlled buttons
+            document.querySelectorAll('.controlled').forEach(button => {
+                button.disabled = !isEditMode;
+            });
+        });
+        
     });
 </script>
 @endpush

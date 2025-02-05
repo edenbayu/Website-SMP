@@ -142,7 +142,7 @@
         </tr>
     </table>
 
-    <h2 class="text-center judul">LAPORAN HASIL BELAJAR PESERTA DIDIK</h2>
+    <h2 class="text-center judul">LAPORAN HASIL BELAJAR TENGAH SEMESTER</h2>
     <h3>A. Mata Pelajaran</h3>
     <table>
         <thead>
@@ -158,7 +158,7 @@
             <tr>
                 <td class="text-center">{{$loop->iteration}}</td>
                 <td>{{ $subject }}</td>
-                <td class="text-center">{{ number_format($grade, 2) }}</td>
+                <td class="text-center">{{ round($grade, 0, PHP_ROUND_HALF_DOWN) }}</td>
                 <td>
                     Ananda {{$studentName}} telah menguasai
                     @if (!empty($komentarRapot[$subject]))

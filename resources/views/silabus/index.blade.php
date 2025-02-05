@@ -23,6 +23,12 @@
         <i class="fa-solid fa-circle-info"></i> Informasi
     </button>
 
+    <!-- toggle to enable "Edit" and "Delete" buttons  -->
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+        <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="infoCPModal" tabindex="-1" aria-labelledby="infoModalTP" aria-hidden="true">
         <div class="modal-dialog">
@@ -63,13 +69,13 @@
                         </button>
                     </form>
                     <!-- Update Button -->
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}" class="m-0"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button type="button" class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#updateCPModal-{{ $cp->id }}" class="m-0"><i class="fa-solid fa-pen-to-square"></i></button>
 
                     <!-- Delete Form -->
                     <form action="{{ route('silabus.deleteCP', [$mapelId, $cp->id]) }}" method="POST" style="display: inline-block;" class="m-0">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
+                        <button type="submit" class="btn btn-danger deleteAlert controlled"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>
@@ -242,6 +248,16 @@
                 }
             });
         });
+
+        // Enable Edit and Delete buttons when toggle is checked
+        $('#flexSwitchCheckDefault').on('change', function() {
+            const isEditMode = this.checked;
+
+        // Enable or disable all controlled buttons
+            document.querySelectorAll('.controlled').forEach(button => {
+                button.disabled = !isEditMode;
+            });
+        });        
     });
 </script>
 @endpush

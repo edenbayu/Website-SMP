@@ -5,7 +5,7 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Absensi Siswa</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Presensi Siswa</h2>
         </div>
     </div>
 
@@ -13,21 +13,21 @@
         <!-- Attendance Summary -->
         <div class="col">
             <div class="card text-center">
-                <div class="card-header bg-primary text-white">
-                    <h5>Sakit</h5>
-                </div>
-                <div class="card-body">
-                    <h3>{{ $sakit }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card text-center">
                 <div class="card-header bg-success text-white">
                     <h5>Hadir</h5>
                 </div>
                 <div class="card-body">
                     <h3>{{ $hadir }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center">
+                <div class="card-header bg-primary text-white">
+                    <h5>Sakit</h5>
+                </div>
+                <div class="card-body">
+                    <h3>{{ $sakit }}</h3>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="col">
             <div class="card text-center">
                 <div class="card-header bg-info text-white">
-                    <h5>Ijin</h5>
+                    <h5>Izin</h5>
                 </div>
                 <div class="card-body">
                     <h3>{{ $ijin }}</h3>
@@ -54,7 +54,7 @@
         <div class="col">
             <div class="card text-center">
                 <div class="card-header bg-danger text-white">
-                    <h5>Alpha</h5>
+                    <h5>Alpa</h5>
                 </div>
                 <div class="card-body">
                     <h3>{{ $alpha }}</h3>

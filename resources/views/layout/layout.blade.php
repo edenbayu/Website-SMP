@@ -158,7 +158,7 @@
                         <li class="sidebar-item">
                             <a href="{{ route('siswapage.absensi') }}" class="sidebar-link">
                                 <i class="fa-solid fa-address-book"></i>
-                                Absensi
+                                Presensi
                             </a>
                         </li>
                         <li class="sidebar-item">

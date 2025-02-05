@@ -44,7 +44,7 @@
     <a target="_blank" href="{{ route('admin.export') }}" class="btn btn-secondary mb-3 px-3" style="width: 6rem">Ekspor</a>
     <button class="btn btn-success mb-3 px-2" data-bs-toggle="modal" data-bs-target="#createAdminModal" style="width: 6rem">Tambah</button>
 
-    {{-- toggle to enable "Edit" and "Delete" buttons --}} 
+    <!-- toggle to enable "Edit" and "Delete" buttons  -->
     <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
         <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
