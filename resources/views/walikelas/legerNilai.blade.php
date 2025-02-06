@@ -95,6 +95,54 @@
                                     </div>
                                 @endforeach
 
+                                <!-- Komentar Text Area (fillable) -->
+                                <div class="mb-3">
+                                    <label for="komentar" class="form-label">Komentar Wali Kelas</label>
+                                    <textarea class="form-control" id="komentar" name="komentar" rows="3">{{ old('komentar') }}</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Unduh Rapor</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Semester Rapot -->
+            <div class="modal fade" id="buatRapotSemester{{ $loop->index }}" tabindex="-1" aria-labelledby="buatRapotSemesterLabel{{ $loop->index }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="buatRapotSemesterLabel{{ $loop->index }}">Rapot Akhir Semester - {{ $siswa['sas']['nama'] }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('pesertadidik.generateRapot') }}" method="POST" class="m-0" target="blank">
+                            <div class="modal-body">
+                                @csrf
+                                <input type="hidden" name="tipe_penilaian" value="sas">
+                                <input type="hidden" name="tanggal_sas" value="{{ $siswa['sas']['tanggal'] }}">
+                                <input type="hidden" name="student_name" value="{{ $siswa['sas']['nama'] }}">
+                                <input type="hidden" name="student_id" value="{{ $index }}">
+                                <input type="hidden" name="student_religion" value="{{ $siswa['sas']['agama'] }}">
+
+                                @foreach ($subjects as $subject)
+                                    <input type="hidden" name="subjects[{{ $subject }}]" value="{{ $siswa['sas'][$subject] ?? 0 }}">
+                                @endforeach
+
+                                <div class="mb-3">
+                                    <label for="tanggal-{{ $loop->index }}" class="form-label">Tanggal Penilaian</label>
+                                    <input type="text" class="form-control" id="tanggal-{{ $loop->index }}" value="{{ $siswa['sas']['tanggal'] }}" readonly disabled>
+                                </div>
+
+                                @foreach ($subjects as $subject)
+                                    <div class="mb-3">
+                                        <label for="subject-semester-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
+                                        <input type="text" class="form-control" id="subject-semester-{{ $loop->index }}" value="{{ $siswa['sas'][$subject] ?? 0 }}" readonly disabled>
+                                    </div>
+                                @endforeach
+
                                 <!-- Prestasi Fields (nullable, can be filled) -->
                                 <div class="mb-3">
                                     <label for="prestasi_1" class="form-label">Prestasi 1</label>
@@ -120,34 +168,6 @@
                                 <button type="submit" class="btn btn-primary">Unduh Rapor</button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal for Semester Rapot -->
-            <div class="modal fade" id="buatRapotSemester{{ $loop->index }}" tabindex="-1" aria-labelledby="buatRapotSemesterLabel{{ $loop->index }}" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="buatRapotSemesterLabel{{ $loop->index }}">Rapot Akhir Semester - {{ $siswa['sas']['nama'] }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="tanggal-{{ $loop->index }}" class="form-label">Tanggal Penilaian</label>
-                            <input type="text" class="form-control" id="tanggal-{{ $loop->index }}" value="{{ $siswa['sas']['tanggal'] }}" readonly disabled>
-                        </div>
-
-                            @foreach ($subjects as $subject)
-                                <div class="mb-3">
-                                    <label for="subject-semester-{{ $loop->index }}" class="form-label">{{ $subject }}</label>
-                                    <input type="text" class="form-control" id="subject-semester-{{ $loop->index }}" value="{{ $siswa['sas'][$subject] ?? 0 }}" readonly disabled>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
                     </div>
                 </div>
             </div>

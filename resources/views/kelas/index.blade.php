@@ -60,6 +60,12 @@
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createKelasModal">Tambah Kelas</button>
     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createEkstrakulikulerModal">Tambah Ekstrakurikuler</button>
 
+    <!-- toggle to enable "Edit" and "Delete" buttons  -->
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>  
+        <label class="form-check-label" for="flexSwitchCheckDefault">Mode Edit</label>
+    </div>
+
     <table id="example" class="table table-striped" style="width:100%">
         <thead>
             <tr>
@@ -84,7 +90,7 @@
                     <a href="{{ route('kelas.buka', $k->id) }}" class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
 
                     <!-- Edit Class Modal Trigger -->
-                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn btn-warning controlled" data-bs-toggle="modal" data-bs-target="#editKelasModal-{{ $k->id }}"><i class="fa-solid fa-pen-to-square"></i></button>
 
                     <!-- Edit Class Modal -->
                     @if ($k->kelas != 'Ekskul')
@@ -193,7 +199,7 @@
                     <!-- Delete Class Button -->
                     <form action="{{ route('kelas.hapus', ['kelasId' => $k->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this class?');">
                         @csrf
-                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
+                        <button type="submit" class="btn btn-danger deleteAlert controlled"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>
@@ -374,6 +380,16 @@
                 }
             });
         });
+
+        // Enable Edit and Delete buttons when toggle is checked
+        $('#flexSwitchCheckDefault').on('change', function() {
+            const isEditMode = this.checked;
+
+        // Enable or disable all controlled buttons
+            document.querySelectorAll('.controlled').forEach(button => {
+                button.disabled = !isEditMode;
+            });
+        });       
     });
 </script>
 @endpush

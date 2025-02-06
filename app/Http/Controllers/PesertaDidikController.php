@@ -308,9 +308,9 @@ class PesertaDidikController extends Controller
                 }
 
                 if ($data->parent && isset($parents[$data->parent])) {
-                    $result[$key_data][$data->siswa_id][$parents[$data->parent]] = round($hasil_akhir, 2);
+                    $result[$key_data][$data->siswa_id][$parents[$data->parent]] = number_format(round($hasil_akhir, 2), 2);
                 } else {
-                    $result[$key_data][$data->siswa_id][$data->mapel_name] = round($hasil_akhir, 2);
+                    $result[$key_data][$data->siswa_id][$data->mapel_name] = number_format(round($hasil_akhir, 2), 2);
                 }
             }
 
@@ -457,6 +457,7 @@ class PesertaDidikController extends Controller
             return $pdf->stream("RAPOR TENGAH SEMESTER_".strtoupper($studentName)."_{$siswaData->nisn}.pdf");
 
         } else if ($tipe === 'sas') {
+            $tanggal_sas = explode(" - ", $data['tanggal_sas'])[1];
 
             $komentar = $data['komentar'] ?? '';
             $prestasi = [
@@ -500,14 +501,14 @@ class PesertaDidikController extends Controller
                     ->where('mapels.nama', '=', $subject)
                     ->where('mapels.semester_id', request()->session()->get('semester_id'))
                     ->where(function ($query) use ($subject) {
-                        $query->where('penilaians.tipe', '=', 'STS')
+                        $query->where('penilaians.tipe', '=', 'SAS')
                             ->orWhere('penilaians.tanggal', '<', function ($subquery) use ($subject) {
                                 $subquery->selectRaw('MIN(penilaians.tanggal)')
                                     ->from('penilaians')
                                     ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
                                     ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
                                     ->where('m.nama', '=', $subject)
-                                    ->where('penilaians.tipe', '=', 'STS');
+                                    ->where('penilaians.tipe', '=', 'SAS');
                             });
                     })
                     ->groupBy('tps.id', 'tps.nama')
@@ -543,6 +544,7 @@ class PesertaDidikController extends Controller
             // Fetch attendance summary for the student
             $absensiSummary = AbsensiSiswa::where('id_siswa', $data['student_id'])
                 ->where('status', '!=', 'hadir')
+                ->where('date', '<=', $tanggal_sas)
                 ->selectRaw('status, COUNT(status) as count')
                 ->groupBy('status')
                 ->get();
@@ -568,7 +570,7 @@ class PesertaDidikController extends Controller
             // dd($komentarRapot);
 
             // Pass the data to the view for PDF generation
-            $pdf = PDF::loadView('rapot', [
+            $pdf = PDF::loadView('walikelas.rapot_sas', [
                 'ttd' => $ttd,
                 'nisn' => $siswaData->nisn,
                 'semester' => $semesterData->semester,
@@ -582,11 +584,11 @@ class PesertaDidikController extends Controller
                 'prestasi' => $prestasi,
                 'ekskulData' => $ekskulData,
                 'komentarRapot' => $komentarRapot,
-                'absensiSummary' => $absensiSummary, // Include absensiSummary in the view
+                'absensiSummary' => $absensiSummary, 
             ]);
         
             // Return the PDF as a stream
-            return $pdf->stream("RAPOR TENGAH SEMESTER_".strtoupper($studentName)."_{$siswaData->nisn}.pdf");
+            return $pdf->stream("RAPOR AKHIR SEMESTER_".strtoupper($studentName)."_{$siswaData->nisn}.pdf");
         }
     }
 

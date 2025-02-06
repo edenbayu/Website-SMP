@@ -79,7 +79,7 @@
                 <td class="text-start">{{ $siswa->agama }}</td>
                 <td>
                     <!-- View Button to trigger modal -->
-                    <button type="button" class="btn btn-info controlled" data-bs-toggle="modal" data-bs-target="#viewSiswaModal-{{ $siswa->id }}" >
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewSiswaModal-{{ $siswa->id }}" >
                         <i class="fa-solid fa-eye"></i>
                     </button>
                     

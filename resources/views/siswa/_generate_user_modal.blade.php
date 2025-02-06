@@ -18,7 +18,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="username-{{ $siswa->id }}" class="form-label">Username</label>
+                        <label for="username-{{ $siswa->id }}" class="form-label">Nama Pengguna</label>
                         <input type="hidden" class="form-control " id="username-{{ $siswa->id }}" name="username" value="{{ $siswa->nisn }}" required>
                         <input type="text" class="form-control @error('username') is-invalid @enderror" placeholder="{{ $siswa->nisn }}" disabled>
 
@@ -27,14 +27,14 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="password-{{ $siswa->id }}" class="form-label">Password</label>
+                        <label for="password-{{ $siswa->id }}" class="form-label">Kata Sandi</label>
                         <input type="text" class="form-control @error('password') is-invalid @enderror" id="password-{{ $siswa->id }}" name="password" value="{{ Str::random(6) }}" required>
 
                         @error('password')
                             <label for="" class="invalid-feedback">{{ $message }}</label>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary">Generate</button>
+                    <button type="submit" class="btn btn-primary">Buat</button>
                 </form>
             </div>
         </div>

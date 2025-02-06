@@ -85,12 +85,6 @@
                 @endif
                 <td>{{ $mapel->semester->semester. " | " . $mapel->semester->tahun_ajaran . ($mapel->semester->status == 1 ? " | Aktif" : "") }}</td>
                 <td>
-                    <!-- Delete Mata Pelajaran Button -->
-                    <form action="{{ route('mapel.delete', $mapel->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger deleteAlert" style="width: 5rem">Hapus</button>
-                    </form>
 
                     <!-- Button to open Assign Kelas Modal -->
                     @if ($mapel->kelas != 'Ekskul' && !$mapel->parent)
@@ -98,6 +92,13 @@
                         Pilih Kelas
                     </button>
                     @endif
+
+                    <!-- Delete Mata Pelajaran Button -->
+                    <form action="{{ route('mapel.delete', $mapel->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger deleteAlert"><i class="fa-solid fa-trash"></i></button>
+                    </form>
 
                     <!-- Modal for Assign Kelas -->
                     <div class="modal fade assignKelasModal" id="assignKelasModal-{{ $mapel->id }}" tabindex="-1" aria-labelledby="assignKelasModalLabel" aria-hidden="true">

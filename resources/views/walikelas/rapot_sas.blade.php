@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{asset('style/assets/logo-sekolah.png')}}">
-    <title>Rapor_{{ $studentName."_".$nisn }}</title>
+    <title>RAPOR AKHIR SEMESTER_{{ strtoupper($studentName)."_".$nisn }}</title>
 
     <style>
         body {
@@ -48,6 +48,7 @@
 
         .signature-table td {
             border: none;
+            padding: 3px;
         }
 
         tr.komentar td.text-center {
@@ -142,7 +143,7 @@
         </tr>
     </table>
 
-    <h2 class="text-center judul">LAPORAN HASIL BELAJAR TENGAH SEMESTER</h2>
+    <h2 class="text-center judul" style="margin-top: 25px; margin-bottom: 25px;">LAPORAN HASIL BELAJAR AKHIR SEMESTER</h2>
     <h3>A. Mata Pelajaran</h3>
     <table>
         <thead>
@@ -245,12 +246,28 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($absensiSummary as $record)
+            @php
+                $absensi = [];
+                foreach ($absensiSummary as $record) {
+                    $absensi[$record->status] = $record->count;
+                }
+            @endphp
             <tr>
-                <td>{{ ucfirst($record->status) }}</td>
-                <td>{{ $record->count }}</td>
+                <td>Terlambat
+                <td>{{ $absensi['terlambat'] ?? 0 }}</td>
             </tr>
-            @endforeach
+            <tr>
+                <td>Izin</td>
+                <td>{{ $absensi['ijin'] ?? 0 }}</td>
+            </tr>
+            <tr>
+                <td>Alpa</td>
+                <td>{{ $absensi['alpha'] ?? 0 }}</td>
+            </tr>
+            <tr>
+                <td>Sakit</td>
+                <td>{{ $absensi['sakit'] ?? 0 }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -289,7 +306,7 @@
 
     <table class="signature-table" style="margin-top: 50px; width: 100%;">
         <tr>
-            <td width="35%">Mengetahui<br>Orang Tua/Wali,</td>
+            <td width="35%"><span style="color: white;">Mengetahui</span><br>Orang Tua/Wali,</td>
             <td width="30%"></td>
             @php
                 use Carbon\Carbon;
@@ -299,21 +316,9 @@
             <td width="40%">Demak, {{ $tanggalSekarang }}<br>Wali Kelas,</td>
         </tr>
         <tr>
+            <td style="padding-top: 70px;">..................................<br><span style="color: white">Space</span></td>
             <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td>..................................<br><span style="color: white">Space</span></td>
-            <td></td>
-            <td><span style="text-decoration: underline; font-weight: bold;">{{ $ttd["walikelas"] }}</span><br>NIP. {{ $ttd["nip_walikelas"] }}</td>
+            <td style="padding-top: 70px;"><span style="text-decoration: underline; font-weight: bold;">{{ $ttd["walikelas"] }}</span><br>NIP. {{ $ttd["nip_walikelas"] }}</td>
         </tr>
     </table>
     <table class="signature-table" style="margin-top: 30px; width: 100%;">
@@ -324,19 +329,7 @@
         </tr>
         <tr>
             <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><span style="text-decoration: underline; font-weight: bold;">{{ $ttd["kepsek"] }}</span><br>NIP. {{ $ttd["nip_kepsek"] }}</td>
+            <td style="padding-top: 70px;"><span style="text-decoration: underline; font-weight: bold;">{{ $ttd["kepsek"] }}</span><br>NIP. {{ $ttd["nip_kepsek"] }}</td>
         </tr>
     </table>
 </body>

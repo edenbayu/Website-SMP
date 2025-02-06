@@ -98,7 +98,7 @@
                 @endrole
 
                 @role('Siswa')
-                    <h4 style="margin-top: 10px">Siswa</h4>
+                    <h4 style="margin-top: 10px">Peserta Didik</h4>
                 @endrole
             </div>
             <div class="col">
