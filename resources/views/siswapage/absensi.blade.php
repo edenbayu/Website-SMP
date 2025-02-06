@@ -1,8 +1,8 @@
 @extends('layout.layout')
 
 @push('style')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 @endpush
 
 @section('content')
@@ -21,7 +21,7 @@
                     <h5>Hadir</h5>
                 </div>
                 <div class="card-body">
-                    <h3>{{ $hadir }}</h3>
+                    <h3>{{ $absensi['hadir'] ?? 0 }}</h3>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <h5>Sakit</h5>
                 </div>
                 <div class="card-body">
-                    <h3>{{ $sakit }}</h3>
+                    <h3>{{ $absensi['sakit'] ?? 0 }}</h3>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
                     <h5>Terlambat</h5>
                 </div>
                 <div class="card-body">
-                    <h3>{{ $terlambat }}</h3>
+                    <h3>{{ $absensi['terlambat'] ?? 0 }}</h3>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                     <h5>Izin</h5>
                 </div>
                 <div class="card-body">
-                    <h3>{{ $ijin }}</h3>
+                    <h3>{{ $absensi['ijin'] ?? 0 }}</h3>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@
                     <h5>Alpa</h5>
                 </div>
                 <div class="card-body">
-                    <h3>{{ $alpha }}</h3>
+                    <h3>{{ $absensi['alpha'] ?? 0 }}</h3>
                 </div>
             </div>
         </div>
@@ -76,9 +76,9 @@
             <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th class="text-start" width="5%">No</th>
-                        <th class="text-start" width="47.5%">Tanggal</th>
-                        <th class="text-start" width="47.5%">Status</th>
+                        <th class="text-start" width="10%">No</th>
+                        <th class="text-start" width="70%">Tanggal</th>
+                        <th class="text-start" width="20%">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,19 +88,31 @@
                         <td class="text-start">{{ $absensi->date }}</td>
                         <td class="text-start">
                             <span class="badge 
-                                    @if($absensi->status == 'sakit') bg-danger 
+                                    @if($absensi->status == 'sakit') bg-primary 
                                     @elseif($absensi->status == 'hadir') bg-success 
                                     @elseif($absensi->status == 'terlambat') bg-warning 
                                     @elseif($absensi->status == 'ijin') bg-info 
-                                    @elseif($absensi->status == 'alpha') bg-secondary 
+                                    @elseif($absensi->status == 'alpha') bg-danger 
                                     @endif">
-                                {{ ucfirst($absensi->status) }}
+                                @if ($absensi->status === 'sakit')
+                                    {{ 'Sakit' }}
+                                @elseif ($absensi->status === 'hadir')
+                                    {{ 'Hadir' }}
+                                @elseif ($absensi->status === 'terlambat')
+                                    {{ 'Terlambat' }}
+                                @elseif ($absensi->status === 'ijin')
+                                    {{ 'Izin' }}
+                                @elseif ($absensi->status === 'alpha')
+                                    {{ 'Alpa' }}
+                                @endif
                             </span>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center">No attendance data found.</td>
+                        <td colspan="3" class="text-center">No attendance data found.</td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -108,24 +120,26 @@
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-<script>
-    $(document).ready(function() {
-        // Cek apakah DataTable sudah diinisialisasi
-        if ($.fn.DataTable.isDataTable('#example')) {
-            $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
-        }
-
-        // Inisialisasi DataTable dengan opsi
-        $('#example').DataTable({
-            language: {
-                url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
-            }
-        });
-    });
-</script> class="text-start"
 @endsection
+
+@push('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Cek apakah DataTable sudah diinisialisasi
+            if ($.fn.DataTable.isDataTable('#example')) {
+                $('#example').DataTable().destroy(); // Hancurkan DataTable yang ada
+            }
+
+            // Inisialisasi DataTable dengan opsi
+            $('#example').DataTable({
+                language: {
+                    url: "{{ asset('style/js/bahasa.json') }}" // Ganti dengan path ke file bahasa Anda
+                }
+            });
+        });
+    </script>
+@endpush

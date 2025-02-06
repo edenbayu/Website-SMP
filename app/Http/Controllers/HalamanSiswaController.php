@@ -15,30 +15,23 @@ class HalamanSiswaController extends Controller
     public function absensi()
     {
         $user = Auth::user(); 
-        $dataAbsensi = AbsensiSiswa::where('id_siswa', $user->id)
+        $dataAbsensi = AbsensiSiswa::join('siswas as s', 's.id', '=', 'absensi_siswas.id_siswa')
+        ->where('s.id_user', $user->id)
+        ->orderBy('absensi_siswas.date', 'desc')
         ->get();
 
-        $sakit = AbsensiSiswa::where('id_siswa', $user->id)
-        ->where('status', 'sakit')
-        ->count();
-
-        $hadir = AbsensiSiswa::where('id_siswa', $user->id)
-        ->where('status', 'hadir')
-        ->count();
-
-        $terlambat = AbsensiSiswa::where('id_siswa', $user->id)
-        ->where('status', 'terlambat')
-        ->count();
-
-        $ijin = AbsensiSiswa::where('id_siswa', $user->id)
-        ->where('status', 'ijin')
-        ->count();
-
-        $alpha = AbsensiSiswa::where('id_siswa', $user->id)
-        ->where('status', 'alpha')
-        ->count();
+        $absensiSummary = AbsensiSiswa::join('siswas as s', 's.id', '=', 'absensi_siswas.id_siswa')
+                ->where('s.id_user', $user->id)
+                ->selectRaw('absensi_siswas.status, COUNT(absensi_siswas.status) as count')
+                ->groupBy('absensi_siswas.status')
+                ->get();
         
-        return view('siswapage.absensi', compact('dataAbsensi', 'sakit', 'terlambat', 'ijin', 'hadir', 'alpha'));
+        $absensi = [];
+        foreach ($absensiSummary as $record) {
+            $absensi[$record->status] = $record->count;
+        }
+        
+        return view('siswapage.absensi', compact('dataAbsensi', 'absensi'));
     }
 
     public function bukuNilaiSiswa(Request $request, $semesterId)

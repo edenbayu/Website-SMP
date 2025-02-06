@@ -314,7 +314,7 @@
                 <button class="btn" id="sidebar-toggle" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                @role('Guru|Wali Kelas')
+                @role('Guru|Wali Kelas|Siswa')
                     <form action="{{ route('select.semester') }}" method="POST" class="m-0">
                         @csrf
                         <div class="dropdown">
