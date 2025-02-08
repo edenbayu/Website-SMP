@@ -14,7 +14,11 @@
     </div>
 
     <div class="row mb-3">
-        <!-- Attendance Summary -->
+        <h3>Kelas : {{ $dataKelas['nama'] }}</h3>
+        <h3>Wali Kelas : {{ $dataKelas['nama_guru'] }}</h3>
+    </div>
+
+    <div class="row mb-3">
         <div class="col">
             <div class="card text-center">
                 <div class="card-header bg-success text-white">

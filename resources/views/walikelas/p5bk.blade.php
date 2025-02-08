@@ -136,17 +136,22 @@
             const formData = new FormData(form);
 
             fetch(`{{ route('p5bk.save', ['semesterId' => $semesterId]) }}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                })
-                .catch(error => console.error('Error:', error));
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "P5 berhasil disimpan.",
+                    icon: "success",
+                    timer: 1500, // Waktu dalam milidetik (3000 = 3 detik)
+                    showConfirmButton: false
+                });
+            });
         });
     });
 </script>

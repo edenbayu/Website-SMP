@@ -7,6 +7,7 @@ use App\Models\Penilaian;
 use App\Models\PenilaianSiswa;
 use App\Models\Mapel;
 use App\Models\Siswa;
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,19 @@ class HalamanSiswaController extends Controller
     public function absensi()
     {
         $user = Auth::user(); 
+        $kelas = Kelas::join('kelas_siswa as ks', 'ks.kelas_id', '=', 'kelas.id')
+            ->join('siswas as s', 's.id', '=', 'ks.siswa_id')
+            ->join('gurus as g', 'g.id', '=', 'kelas.id_guru')
+            ->where('s.id_user', $user->id)
+            ->where('kelas.kelas', '!=', 'Ekskul')
+            ->orderBy('kelas.id_semester')
+            ->select('kelas.rombongan_belajar', 'g.nama', 'g.gelar')
+            ->first();
+
+        $gelar = explode('|', $kelas->gelar);
+        $dataKelas['nama'] = $kelas->rombongan_belajar;
+        $dataKelas['nama_guru'] = ($gelar[0] ? $gelar[0].' ' : '').$kelas->nama.$gelar[1];
+
         $dataAbsensi = AbsensiSiswa::join('siswas as s', 's.id', '=', 'absensi_siswas.id_siswa')
         ->where('s.id_user', $user->id)
         ->orderBy('absensi_siswas.date', 'desc')
@@ -31,41 +45,33 @@ class HalamanSiswaController extends Controller
             $absensi[$record->status] = $record->count;
         }
         
-        return view('siswapage.absensi', compact('dataAbsensi', 'absensi'));
+        return view('siswapage.absensi', compact('dataAbsensi', 'absensi', 'dataKelas'));
     }
 
     public function bukuNilaiSiswa(Request $request, $semesterId)
     {        
         $siswa = Siswa::where('id_user', auth()->user()->id)->first();
-        // Fetch mapels the user is enrolled in
+
         $mapels = Mapel::join('mapel_kelas', 'mapels.id', '=', 'mapel_kelas.mapel_id')
             ->join('kelas', 'mapel_kelas.kelas_id', '=', 'kelas.id')
             ->join('kelas_siswa', 'kelas.id', '=', 'kelas_siswa.kelas_id')
             ->join('siswas', 'kelas_siswa.siswa_id', '=', 'siswas.id')
-            ->join('users', 'siswas.id_user', '=', 'users.id')
-            ->where('users.id', auth()->user()->id)
+            ->where('siswas.id_user', auth()->user()->id)
             ->where('mapels.kelas', '!=', 'Ekskul')
-            ->whereNull('mapels.parent')
             ->whereNotNull('mapels.guru_id')
-            ->select('mapels.id', 'mapels.nama')
+            ->whereNull('mapels.parent')
+            ->orWhere(function ($query) use ($siswa) {
+                $query->whereNotNull('mapels.parent')
+                    ->where('siswas.id_user', auth()->user()->id)
+                    ->where('mapels.kelas', '!=', 'Ekskul')
+                    ->whereNotNull('mapels.guru_id')
+                    ->where('mapels.nama', 'like', '%' . $siswa->agama . '%');
+            })
+            ->select('mapels.id', DB::raw("CONCAT(kelas.rombongan_belajar, ' - ', mapels.nama) as nama"))
+            ->orderBy('mapels.nama')
+            ->distinct()
             ->get();
         
-        
-
-        $mapelsParent = Mapel::join('mapel_kelas', 'mapels.id', '=', 'mapel_kelas.mapel_id')
-            ->join('kelas', 'mapel_kelas.kelas_id', '=', 'kelas.id')
-            ->join('kelas_siswa', 'kelas.id', '=', 'kelas_siswa.kelas_id')
-            ->join('siswas', 'kelas_siswa.siswa_id', '=', 'siswas.id')
-            ->join('users', 'siswas.id_user', '=', 'users.id')
-            ->where('users.id', auth()->user()->id)
-            ->where('mapels.kelas', '!=', 'Ekskul')
-            ->whereNotNull('mapels.parent')
-            ->where('mapels.nama', 'like', '%' . $siswa->agama . '%')
-            ->select('mapels.id', 'mapels.nama')
-            ->get();
-
-        $mapels = $mapels->push($mapelsParent)->flatten();
-        // Initial rendering of the page (without any specific mapel filter yet)
         return view('siswapage.bukunilai', compact('mapels', 'semesterId'));
     }
     
@@ -74,14 +80,14 @@ class HalamanSiswaController extends Controller
     public function fetchBukuNilai(Request $request)
     {
         $user = Auth::user();
-        $namaMapel = $request->namaMapel; // The selected mapel name from AJAX request
+        $idMapel = $request->idMapel; // The selected mapel name from AJAX request
     
         // Fetch data for the student's scores based on selected mapel name
-        $penilaians = $this->fetchPenilaianSiswa($user->id, $namaMapel);
+        $penilaians = $this->fetchPenilaianSiswa($user->id, $idMapel);
     
         // Calculate average scores for 'Tugas' and 'UH'
-        $nilaiAkhirTugas = $this->calculateAverageScore($penilaians, 'Tugas');
-        $nilaiAkhirUH = $this->calculateAverageScore($penilaians, 'UH');
+        $nilaiAkhirTugas = number_format($this->calculateAverageScore($penilaians, 'Tugas'), 2);
+        $nilaiAkhirUH = number_format($this->calculateAverageScore($penilaians, 'UH'), 2);
     
         // Return the data as JSON for AJAX response
         return response()->json([
@@ -92,19 +98,8 @@ class HalamanSiswaController extends Controller
     }
     
     // Helper method to fetch student's scores for a given mapel
-    private function fetchPenilaianSiswa($userId, $namaMapel)
+    private function fetchPenilaianSiswa($userId, $idMapel)
     {
-        // return PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
-        //     ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
-        //     ->join('t_p_s as d', 'd.id', '=', 'b.tp_id')
-        //     ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
-        //     ->join('mapels as f', 'f.id', '=', 'e.mapel_id')
-        //     ->join('users as g', 'g.id', '=', 'c.id_user')
-        //     ->where('g.id', $userId)  // Filter by user ID
-        //     ->where('f.nama', $namaMapel)  // Filter by mapel name
-        //     ->select('b.judul', 'b.tipe', 'e.nomor as nomor_cp', 'd.nomor as nomor_tp', 'penilaian_siswa.nilai')
-        //     ->get();
-
         return PenilaianSiswa::join('penilaians as p', 'p.id', '=', 'penilaian_siswa.penilaian_id')
             ->join('siswas as s', 's.id', '=', 'penilaian_siswa.siswa_id')
             ->join('penilaian_t_p_s as pt', 'pt.penilaian_id', '=', 'p.id')
@@ -112,7 +107,7 @@ class HalamanSiswaController extends Controller
             ->join('c_p_s as cp', 'cp.id', '=', 't.cp_id')
             ->join('mapels as m', 'm.id', '=', 'cp.mapel_id')
             ->where('s.id_user', $userId)  // Filter by user ID
-            ->where('m.nama', $namaMapel)  // Filter by mapel name
+            ->where('m.id', $idMapel)  // Filter by mapel name
             ->select(
                 'p.judul',
                 'p.tanggal',
@@ -120,7 +115,7 @@ class HalamanSiswaController extends Controller
                 DB::raw("GROUP_CONCAT(CONCAT(cp.nomor, '.', t.nomor) ORDER BY cp.nomor ASC, t.nomor ASC SEPARATOR ', ') as nomor_tp"),
                 'penilaian_siswa.nilai')
             ->groupBy('p.judul', 'p.tipe', 'penilaian_siswa.nilai', 'p.tanggal')
-            ->orderBy('p.tanggal', 'asc')
+            ->orderBy('p.tanggal', 'desc')
             ->get();
     }
     

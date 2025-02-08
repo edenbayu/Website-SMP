@@ -42,6 +42,11 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     Route::post('/profile/update-password', [UserController::class, 'update_password'])->name('update_password');
     Route::get('/kalender', [KalenderMapelController::class, 'index'])->name('kalendermapel.index');
 
+    Route::prefix('kalender-akademik')->controller(KalenderAkademikController::class)->group(function() {
+        Route::get('/', 'index')->name('kalenderakademik.index');              
+        Route::get('/list', 'listEvent')->name('kalenderakademik.list');       
+    });
+
     //Ini untuk nge-protect routes biar khusus cuma diakses sama Admin
     Route::middleware('role:Admin|Super Admin')->group(function () {
 
@@ -117,9 +122,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
         });
 
         // Kalender Akademik routes
-        Route::prefix('kalender-akademik')->controller(KalenderAkademikController::class)->group(function() {
-            Route::get('/', 'index')->name('kalenderakademik.index');              
-            Route::get('/list', 'listEvent')->name('kalenderakademik.list');       
+        Route::prefix('kalender-akademik')->controller(KalenderAkademikController::class)->group(function() {      
             Route::post('/ajax', 'ajax')->name('kalenderakademik.ajax');
         });
 

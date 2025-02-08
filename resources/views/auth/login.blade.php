@@ -52,7 +52,7 @@
             </div>
             @endif
 
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('post_login') }}" method="POST">
                 @csrf
                 <div class="form-group" style="margin-top: 10px;">
                     <label for="username">Nama Pengguna</label>

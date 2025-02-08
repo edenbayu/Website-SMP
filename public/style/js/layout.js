@@ -21,7 +21,7 @@ function setActiveLink() {
         // Jika path link cocok dengan path tersimpan, tambahkan kelas 'active'
         // console.log(path);
         // console.log(linkPath.includes(window.location.pathname))
-        if (window.location.href === linkPath || window.location.href.includes(path) && path && path != 'kalender') {
+        if (window.location.href === linkPath || window.location.href.includes(path) && path && path != 'kalender' || (window.location.href.includes('jam-pelajaran') && path === 'kalender')) {
             link.closest('li.sidebar-item').classList.add('active');
             
             // Jika link ini berada di dalam dropdown, buka dropdown tersebut

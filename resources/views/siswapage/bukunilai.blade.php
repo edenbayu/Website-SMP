@@ -16,7 +16,7 @@
     <select class="form-select mb-3" id="mapelSelect">
         <option value="" disabled selected hidden>Pilih Mata Pelajaran</option>
         @foreach ($mapels as $mapel)
-            <option value="{{ $mapel->nama }}">{{ $mapel->nama }}</option>
+            <option value="{{ $mapel->id }}">{{ $mapel->nama }}</option>
         @endforeach
     </select>
     
@@ -82,13 +82,14 @@
 <script>
     $(document).ready(function() {
         $('#mapelSelect').change(function() {
-            var namaMapel = $(this).val();
+            var idMapel = $(this).val();
 
-            if (namaMapel) {
+            if (idMapel) {
+                console.log(idMapel);
                 $.ajax({
                     url: '{{ route('fetchBukuNilai') }}',  // Use the correct route for the AJAX call
                     method: 'GET',
-                    data: { namaMapel: namaMapel },
+                    data: { idMapel: idMapel },
                     success: function(response) {
                         // Update the scores and table data
                         $('#nilaiAkhirTugas').text(response.nilaiAkhirTugas);
