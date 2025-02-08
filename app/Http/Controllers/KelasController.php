@@ -17,18 +17,18 @@ use Maatwebsite\Excel\Facades\Excel;
 class KelasController extends Controller
 {
     // Show form to create a new class
-    // public function create()
-    // {
-    //     // Get all Wali Kelas
-    //     $walikelas = Guru::whereHas('user.roles', function ($query) {
-    //         $query->where('name', 'Wali Kelas'); // Check if the role is 'Wali Kelas'
-    //     })->get(); // Fetch the full objects so we can use IDs
+    public function create()
+    {
+        // Get all Wali Kelas
+        $walikelas = Guru::whereHas('user.roles', function ($query) {
+            $query->where('name', 'Wali Kelas'); // Check if the role is 'Wali Kelas'
+        })->get(); // Fetch the full objects so we can use IDs
 
-    //     // Get all semesters
-    //     $semesters = Semester::all();
+        // Get all semesters
+        $semesters = Semester::all();
 
-    //     return view('kelas.create', compact('walikelas', 'semesters'));
-    // }
+        return view('kelas.create', compact('walikelas', 'semesters'));
+    }
 
     // Store a new class
     public function store(Request $request)

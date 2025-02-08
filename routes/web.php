@@ -93,7 +93,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     Route::middleware('role:Admin')->group(function () {
         Route::prefix('kelas')->controller(KelasController::class)->group(function () {
             Route::get('/', 'index')->name('kelas.index');
-            Route::get('/create', 'create')->name('kelas.create');
+            // Route::get('/create', 'create')->name('kelas.create');
             Route::post('/store', 'store')->name('kelas.store');
             Route::post('/storeEkskul', 'storeEkskul')->name('kelas.storeEkskul');
             Route::post('/{kelasId}/update', 'update')->name('kelas.update');
