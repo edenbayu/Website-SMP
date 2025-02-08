@@ -62,6 +62,12 @@
         background-color: green !important;
         color: white !important;
     }
+
+    .fc-dayGridMonth-button {
+        color: white !important;
+        background-color: white !important;
+        border-color: white !important;
+    }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
@@ -144,6 +150,20 @@
             @endphp
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'id',
+                buttonText: {
+                    today: 'Hari Ini', // Ubah teks tombol "Today" menjadi "Hari Ini"
+                    month: 'Bulan Ini',
+                    week: 'Minggu',
+                    day: 'Hari',
+                    list: 'Agenda'
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
+                dayHeaderFormat: { weekday: 'long' },
                 initialView: 'dayGridMonth',
                 initialDate: '{{ $datenow }}',
                 headerToolbar: {
