@@ -61,7 +61,7 @@ class GuruController extends Controller
         unset($data['gelar_belakang']); // Hapus gelar_belakang
 
         Guru::create($data);
-        return redirect()->route('guru.index')->with('success', 'Guru created successfully!');
+        return redirect()->route('guru.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
@@ -88,13 +88,13 @@ class GuruController extends Controller
         unset($data['gelar_belakang']); // Hapus gelar_belakang
 
         $guru->update($data);
-        return redirect()->route('guru.index')->with('success', 'Guru updated successfully!');
+        return redirect()->route('guru.index')->with('success', 'Data berhasil diperbarui!');
     }
 
     public function destroy($id) {
         $guru = Guru::findOrFail($id);
         $guru->delete();
-        return redirect()->route('guru.index')->with('success', 'Guru deleted successfully!');
+        return redirect()->route('guru.index')->with('success', 'Data berhasil dihapus!');
     }
 
     public function generateUser(Request $request, $guruId)

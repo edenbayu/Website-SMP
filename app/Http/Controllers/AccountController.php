@@ -30,7 +30,7 @@ class AccountController extends Controller
         $account = User::findOrFail($id);
         $account->delete();
 
-        return redirect()->route('account.index')->with('success', 'Account deleted successfully');
+        return redirect()->route('account.index')->with('success', 'Akun berhasil dihapus!');
     }
 
     public function update(Request $request, $id) {
@@ -45,6 +45,6 @@ class AccountController extends Controller
         // Update the user's role
         $account->syncRoles($request->input('roles')); // Use syncRoles to replace the current role with the new one
     
-        return redirect()->route('account.index')->with('success', 'Account and roles updated successfully');
+        return redirect()->route('account.index')->with('success', 'Akun dan Hak Akses berhasil diperbarui!');
     }
 }

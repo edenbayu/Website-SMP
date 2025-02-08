@@ -53,7 +53,7 @@ class AdminController extends Controller
         ]);
 
         Admin::create($request->all());
-        return redirect()->route('admin.index')->with('success', 'Data created successfully!');
+        return redirect()->route('admin.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
@@ -75,13 +75,13 @@ class AdminController extends Controller
         ]);
 
         $guru->update($request->all());
-        return redirect()->route('admin.index')->with('success', 'Data updated successfully!');
+        return redirect()->route('admin.index')->with('success', 'Data berhasil diperbarui!');
     }
 
     public function destroy($id) {
         $guru = Admin::findOrFail($id);
         $guru->delete();
-        return redirect()->route('admin.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('admin.index')->with('success', 'Data berhasil dihapus!');
     }
 
     public function generateUser(Request $request, $adminId)

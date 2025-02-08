@@ -72,7 +72,7 @@ class SiswaController extends Controller
         $siswa = Siswa::findOrFail($siswaId);
         $siswa->delete();
 
-        return redirect()->route('siswa.index')->with('success', 'Account deleted successfully');
+        return redirect()->route('siswa.index')->with('success', 'Data berhasil dihapus!');
     }
     
     public function store(Request $request)

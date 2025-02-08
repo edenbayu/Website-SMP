@@ -44,7 +44,7 @@ class UserController extends Controller
             User::where('id', $user->id)->update(['picture' => $imageData]);
         }
     
-        return redirect()->route('profile')->with('success', 'Picture updated successfully.');
+        return redirect()->route('profile')->with('success', 'Gambar berhasil diperbarui!');
     }
 
     public function update_password(Request $request) {

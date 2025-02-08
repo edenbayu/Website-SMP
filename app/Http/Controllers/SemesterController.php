@@ -30,7 +30,7 @@ class SemesterController extends Controller
 
         Semester::create($request->all());
 
-        return redirect()->route('semesters.index')->with('success', 'Semester created successfully.');
+        return redirect()->route('semesters.index')->with('success', 'Semester berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
@@ -51,12 +51,12 @@ class SemesterController extends Controller
         $semester = Semester::findOrFail($id);
         $semester->update($request->all());
 
-        return redirect()->route('semesters.index')->with('success', 'Semester updated successfully.');
+        return redirect()->route('semesters.index')->with('success', 'Semester berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         Semester::find($id)->delete();
-        return redirect()->route('semesters.index')->with('success', 'Semester deleted successfully.');
+        return redirect()->route('semesters.index')->with('success', 'Semester berhasil dihapus!');
     }
 }

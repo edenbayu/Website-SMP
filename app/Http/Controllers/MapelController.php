@@ -108,7 +108,7 @@ class MapelController extends Controller
             'mapel_id' => $mapel->id
         ]);
 
-        return redirect()->route('mapel.index')->with('success', 'Mata Pelajaran created successfully!'); // Redirect with success message
+        return redirect()->route('mapel.index')->with('success', 'Mata Pelajaran berhasil ditambahkan!'); // Redirect with success message
     }
 
     public function assignKelasToMapel(Request $request, $mapelId)
@@ -131,7 +131,7 @@ class MapelController extends Controller
             }
         }
     
-        return redirect()->route('mapel.index')->with('success', 'Kelas has been successfully assigned to the Mata Pelajaran.');
+        return redirect()->route('mapel.index')->with('success', 'Kelas berhasil ditambahkan ke Mata Pelajaran');
     }
 
     public function getMapelBySemester(Request $request) {

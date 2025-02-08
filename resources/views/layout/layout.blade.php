@@ -163,19 +163,19 @@
                         </li>
                         <li class="sidebar-item">
                             <a href="{{ route('siswapage.bukunilai', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
-                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-scroll"></i>
                                 Buku Nilai
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{route('kalendermapel.index')}}" class="sidebar-link">
-                                <i class="fa-solid fa-chart-simple"></i>
+                                <i class="fa-regular fa-calendar"></i>
                                 Jadwal Pelajaran
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="#" class="sidebar-link">
-                                <i class="fa-solid fa-chart-simple"></i>
+                                <i class="fa-solid fa-calendar-days"></i>
                                 Kalender Akademik
                             </a>
                         </li>
@@ -253,7 +253,7 @@
                         </li> --}}
                         <li class="sidebar-item">
                             <a href="{{route('kalendermapel.index')}}" class="sidebar-link">
-                                <i class="fa-solid fa-book-open"></i>
+                                <i class="fa-regular fa-calendar"></i>
                                 Jadwal Pelajaran
                             </a>
                         </li>
@@ -282,9 +282,15 @@
                                 Presensi
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('p5bk.index', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
+                                <i class="fa-solid fa-lightbulb"></i>
+                                P5
+                            </a>
+                        </li>
                         <li class="sidebar-item list-except">
                             <a href="#" class="sidebar-link collapsed" data-bs-target="#legerNilai" data-bs-toggle="collapse" aria-expanded="false">
-                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-book"></i>
                                 Leger Nilai
                             </a>
                             <ul id="legerNilai" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -296,13 +302,7 @@
                                 </li>
                                 @endforeach
                             </ul>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('p5bk.index', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
-                                <i class="fa-solid fa-address-book"></i>
-                                P5
-                            </a>
-                        </li>
+                        </li>                        
                     @endrole
                 </ul>
 

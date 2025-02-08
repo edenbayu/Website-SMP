@@ -17,18 +17,18 @@ use Maatwebsite\Excel\Facades\Excel;
 class KelasController extends Controller
 {
     // Show form to create a new class
-    public function create()
-    {
-        // Get all Wali Kelas
-        $walikelas = Guru::whereHas('user.roles', function ($query) {
-            $query->where('name', 'Wali Kelas'); // Check if the role is 'Wali Kelas'
-        })->get(); // Fetch the full objects so we can use IDs
+    // public function create()
+    // {
+    //     // Get all Wali Kelas
+    //     $walikelas = Guru::whereHas('user.roles', function ($query) {
+    //         $query->where('name', 'Wali Kelas'); // Check if the role is 'Wali Kelas'
+    //     })->get(); // Fetch the full objects so we can use IDs
 
-        // Get all semesters
-        $semesters = Semester::all();
+    //     // Get all semesters
+    //     $semesters = Semester::all();
 
-        return view('kelas.create', compact('walikelas', 'semesters'));
-    }
+    //     return view('kelas.create', compact('walikelas', 'semesters'));
+    // }
 
     // Store a new class
     public function store(Request $request)
@@ -43,7 +43,7 @@ class KelasController extends Controller
         // Create the class
         $kelas = Kelas::create($request->only(['kelas', 'rombongan_belajar', 'id_guru', 'id_semester']));
 
-        return redirect()->route('kelas.index')->with('success', 'Kelas created successfully!');
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil ditambahkan!');
     }
 
     // Show classes
@@ -301,7 +301,7 @@ class KelasController extends Controller
         $kelas->save();
 
         // Redirect back to the index with a success message
-        return redirect()->route('kelas.index')->with('success', 'Kelas updated successfully.');
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil diperbarui!');
     }
 
     public function storeEkskul(Request $request)
@@ -329,7 +329,7 @@ class KelasController extends Controller
 
         $mapel->kelas()->syncWithoutDetaching($kelas->id);
 
-        return redirect()->route('kelas.index')->with('success', 'Ekstrakulikuler created successfully!');
+        return redirect()->route('kelas.index')->with('success', 'Ekstrakurikuler berhasil ditambahkan!');
     }
 
     public function exportKelas(Kelas $kelasId) {

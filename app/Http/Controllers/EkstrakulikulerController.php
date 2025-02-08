@@ -62,7 +62,7 @@ class EkstrakulikulerController extends Controller
 
         $mapel->kelas()->syncWithoutDetaching($kelas->id);
 
-        return redirect()->route('kelas.ekstrakulikuler')->with('success', 'Ekstrakulikuler created successfully!');
+        return redirect()->route('kelas.ekstrakulikuler')->with('success', 'Ekstrakulikuler berhasil ditambahkan!');
     }
 
     public function hapusEkskul($ekskulId)
@@ -72,7 +72,7 @@ class EkstrakulikulerController extends Controller
 
         Mapel::where('kelas_id', $ekskulId)->delete();
 
-        return redirect()->route('ekstrakulikuler.index')->with('success', 'Siswa berhasil ditambahkan ke kelas.');
+        return redirect()->route('ekstrakulikuler.index')->with('success', 'Ekstrakurikuler berhasil dihapus!');
     }
 
     public function bukaKelas($ekskulId)
@@ -157,6 +157,6 @@ class EkstrakulikulerController extends Controller
         $kelas->rombongan_belajar = $request->input('rombongan_belajar');
         $kelas->save();
     
-        return redirect()->route('kelas.ekstrakulikuler')->with('success', 'Kelas updated successfully.');
+        return redirect()->route('kelas.ekstrakulikuler')->with('success', 'Kelas berhasil diperbarui!');
     }
 }

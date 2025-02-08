@@ -18,6 +18,15 @@
                         <input type="text" name="nip" class="form-control" maxlength="50" required>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="gelar_depan">Gelar Depan</label>
+                        <input type="text" name="gelar_depan" id="gelar_depan" class="form-control" value="{{ old('gelar_depan','') }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="gelar_belakang">Gelar Belakang</label>
+                        <input type="text" name="gelar_belakang" id="gelar_belakang" class="form-control" value="{{ old('gelar_belakang','') }}">
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="tempat_lahir">Tempat Lahir</label>
                         <input type="text" name="tempat_lahir" class="form-control" maxlength="255" required>
                     </div>
@@ -78,8 +87,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>

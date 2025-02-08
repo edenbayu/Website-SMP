@@ -34,7 +34,7 @@ class SillabusController extends Controller
             'mapel_id' => $mapelId,
         ]);
     
-        return redirect()->route('silabus.index', $mapelId)->with('success', 'Silabus created successfully!');
+        return redirect()->route('silabus.index', $mapelId)->with('success', 'CP berhasil ditambahkan!');
     }
     
     public function updateCP(Request $request, $mapelId, $cpId)
@@ -100,7 +100,7 @@ class SillabusController extends Controller
             'cp_id' => $cpId,
         ]);
     
-        return redirect()->back()->with('success', 'TP created successfully!');
+        return redirect()->back()->with('success', 'TP berhasil ditambahkan!');
     }
     
     // Update TP

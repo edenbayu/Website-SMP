@@ -151,7 +151,7 @@
                                     @csrf
                                     @method('POST') <!-- Use PUT for updates as per REST conventions -->
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="editEkstraModalLabel">Ubah Ekstra - {{ $k->rombongan_belajar }}</h5>
+                                        <h5 class="modal-title" id="editEkstraModalLabel">Ubah Ekstrakurikuler - {{ $k->rombongan_belajar }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -160,7 +160,7 @@
                                             <input type="text" name="kelas" class="form-control" value="{{ $k->kelas }}" readonly>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="rombongan_belajar" class="form-label">Ekstra Name</label>
+                                            <label for="rombongan_belajar" class="form-label">Nama Ekstrakurikuler</label>
                                             <input type="text" name="rombongan_belajar" class="form-control" value="{{ $k->rombongan_belajar }}" required>
                                         </div>
                                         <div class="mb-3">
@@ -187,7 +187,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Simpan Perubahan Ekstra</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
                                     </div>
                                 </form>
                             </div>

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\KomentarCK;
 use App\Models\Mapel;
 
-class KomentarController extends Controller
+class KomentarController extends Controller //INI GA DIPAKE, BEKAS DULU KOMENTAR CK RAPOR
 {
     public function index($mapelId){
 
