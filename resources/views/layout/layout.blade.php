@@ -317,17 +317,17 @@
                     <form action="{{ route('select.semester') }}" method="POST" class="m-0">
                         @csrf
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #37B7C3;">
                                 @if (is_null($selectedSemester))
-                                Pilih Semester
+                                    Pilih Semester
                                 @else
-                                {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
+                                    {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
                                 @endif
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg-start">
                                 @foreach($semesters as $semester)
                                     <li>
-                                        <button class="dropdown-item" type="submit" name="semester_id" value="{{ $semester->id }}">
+                                        <button class="btn dropdown-item @if ($selectedSemesterId == $semester->id) {{ 'text-white' }} @endif" type="submit" name="semester_id" value="{{ $semester->id }}" style="@if ($selectedSemesterId == $semester->id) {{ 'background-color: #37B7C3;' }} @endif">
                                             {{ $semester->semester }} | {{ $semester->tahun_ajaran }}
                                             {{ $semester->status == 1 ? "(Aktif)" : "" }}
                                         </button>

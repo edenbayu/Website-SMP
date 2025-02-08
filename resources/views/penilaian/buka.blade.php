@@ -31,29 +31,29 @@
             </thead>
             <tbody>
                 @foreach($penilaian_siswas as $penilaian_siswa)
-                <tr>
-                    <td class="text-start">{{ $loop->iteration }}</td>
-                    <td>{{ $penilaian_siswa->nama }}</td>
-                    <!-- <td class="text-start">{{ $penilaian_siswa->penilaian->nisn }}</td> -->
-                    <td class="text-start">{{ $penilaian_siswa->penilaian->kktp }}</td>
-                    <td>
-                        <input
-                            type="number"
-                            name="penilaian[{{ $penilaian_siswa->id }}][nilai]"
-                            class="form-control"
-                            value="{{ old("penilaian.{$penilaian_siswa->id}.nilai", $penilaian_siswa->nilai) }}"
-                            placeholder="Masukkan nilai">
-                    </td>
-                    <td>
-                        <input
-                            type="number"
-                            name="penilaian[{{ $penilaian_siswa->id }}][remedial]"
-                            class="form-control"
-                            value="{{ old("penilaian.{$penilaian_siswa->id}.remedial", $penilaian_siswa->remedial) }}"
-                            placeholder="Masukkan nilai">
-                    </td>
-                    <td class="text-start">{{ $penilaian_siswa->nilai_akhir }}</td>
-                </tr>
+                    <tr>
+                        <td class="text-start">{{ $loop->iteration }}</td>
+                        <td>{{ $penilaian_siswa->nama }}</td>
+                        <!-- <td class="text-start">{{ $penilaian_siswa->penilaian->nisn }}</td> -->
+                        <td class="text-start">{{ $penilaian_siswa->penilaian->kktp }}</td>
+                        <td>
+                            <input
+                                type="number"
+                                name="penilaian[{{ $penilaian_siswa->id }}][nilai]"
+                                class="form-control"
+                                value="{{ old("penilaian.{$penilaian_siswa->id}.nilai", $penilaian_siswa->nilai) }}"
+                                placeholder="Masukkan nilai">
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                name="penilaian[{{ $penilaian_siswa->id }}][remedial]"
+                                class="form-control"
+                                value="{{ old("penilaian.{$penilaian_siswa->id}.remedial", $penilaian_siswa->remedial) }}"
+                                placeholder="Masukkan nilai">
+                        </td>
+                        <td class="text-start">{{ $penilaian_siswa->nilai_akhir }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
