@@ -161,7 +161,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="{{ route('siswapage.bukunilai', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
+                            <a href="{{ route('siswapage.bukunilai') }}" class="sidebar-link">
                                 <i class="fa-solid fa-scroll"></i>
                                 Buku Nilai
                             </a>

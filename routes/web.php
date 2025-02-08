@@ -210,7 +210,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
 
         Route::prefix('siswa')->controller(HalamanSiswaController::class)->group(function () {
             Route::get('/absensi', 'absensi')->name('siswapage.absensi');
-            Route::get('/nilai/{semesterId}', 'bukuNilaiSiswa')->name('siswapage.bukunilai');
+            Route::get('/nilai', 'bukuNilaiSiswa')->name('siswapage.bukunilai');
             Route::get('/fetch-buku-nilai','fetchBukuNilai')->name('fetchBukuNilai');
         });
     });

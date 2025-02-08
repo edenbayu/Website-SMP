@@ -15,9 +15,11 @@
     <!-- Form to select a Mapel -->
     <select class="form-select mb-3" id="mapelSelect">
         <option value="" disabled selected hidden>Pilih Mata Pelajaran</option>
-        @foreach ($mapels as $mapel)
+        @forelse ($mapels as $mapel)
             <option value="{{ $mapel->id }}">{{ $mapel->nama }}</option>
-        @endforeach
+        @empty
+            <option value="" disabled>Tidak Ada Mata Pelajaran</option>
+        @endforelse
     </select>
     
     <!-- Display Average Scores -->
@@ -25,7 +27,7 @@
         <div class="col">
             <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
                 <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-                    <h3 class="text-center m-0" style="color: #EBF4F6">Rata-rata Tugas : <span id="nilaiAkhirTugas"></span></h3>
+                    <h3 class="text-center m-0" style="color: #EBF4F6">Rata-rata Tugas : <span id="nilaiAkhirTugas">0</span></h3>
                 </div>
             </div>
             <!-- <h3>Average Tugas: <span id="nilaiAkhirTugas"></span></h3> -->
@@ -33,7 +35,7 @@
         <div class="col">
             <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
                 <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-                    <h3 class="text-center m-0" style="color: #EBF4F6">Rata-rata UH : <span id="nilaiAkhirUH"></span></h3>
+                    <h3 class="text-center m-0" style="color: #EBF4F6">Rata-rata UH : <span id="nilaiAkhirUH">0</span></h3>
                 </div>
             </div>
             <!-- <h3>Average UH: <span id="nilaiAkhirUH"></span></h3> -->

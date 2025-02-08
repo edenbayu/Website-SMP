@@ -13,58 +13,75 @@ use Illuminate\Support\Facades\DB;
 
 class HalamanSiswaController extends Controller
 {
-    public function absensi()
+    public function absensi(Request $request)
     {
+        $semesterId = $request->session()->get('semester_id');
+        
         $user = Auth::user(); 
         $kelas = Kelas::join('kelas_siswa as ks', 'ks.kelas_id', '=', 'kelas.id')
             ->join('siswas as s', 's.id', '=', 'ks.siswa_id')
             ->join('gurus as g', 'g.id', '=', 'kelas.id_guru')
             ->where('s.id_user', $user->id)
+            ->where('kelas.id_semester', $semesterId)
             ->where('kelas.kelas', '!=', 'Ekskul')
             ->orderBy('kelas.id_semester')
             ->select('kelas.rombongan_belajar', 'g.nama', 'g.gelar')
             ->first();
 
-        $gelar = explode('|', $kelas->gelar);
-        $dataKelas['nama'] = $kelas->rombongan_belajar;
-        $dataKelas['nama_guru'] = ($gelar[0] ? $gelar[0].' ' : '').$kelas->nama.$gelar[1];
-
+        $dataKelas = [];
+        if ($kelas) {
+            $gelar = explode('|', $kelas->gelar);
+            $dataKelas['nama'] = $kelas->rombongan_belajar;
+            $dataKelas['nama_guru'] = ($gelar[0] ? $gelar[0].' ' : '').$kelas->nama.$gelar[1];
+        }
+        
         $dataAbsensi = AbsensiSiswa::join('siswas as s', 's.id', '=', 'absensi_siswas.id_siswa')
-        ->where('s.id_user', $user->id)
-        ->orderBy('absensi_siswas.date', 'desc')
-        ->get();
+            ->join('kelas_siswa as ks', 'ks.siswa_id', '=', 's.id')
+            ->join('kelas as k', 'k.id', '=', 'ks.kelas_id')
+            ->where('k.id_semester', $semesterId)
+            ->where('s.id_user', $user->id)
+            ->where('k.kelas', '!=', 'Ekskul')
+            ->orderBy('absensi_siswas.date', 'desc')
+            ->get();
 
         $absensiSummary = AbsensiSiswa::join('siswas as s', 's.id', '=', 'absensi_siswas.id_siswa')
-                ->where('s.id_user', $user->id)
-                ->selectRaw('absensi_siswas.status, COUNT(absensi_siswas.status) as count')
-                ->groupBy('absensi_siswas.status')
-                ->get();
-        
+            ->join('kelas_siswa as ks', 'ks.siswa_id', '=', 's.id')
+            ->join('kelas as k', 'k.id', '=', 'ks.kelas_id')
+            ->where('k.id_semester', $semesterId)
+            ->where('s.id_user', $user->id)
+            ->where('k.kelas', '!=', 'Ekskul')
+            ->selectRaw('absensi_siswas.status, COUNT(absensi_siswas.status) as count')
+            ->groupBy('absensi_siswas.status')
+            ->get();
+                
         $absensi = [];
         foreach ($absensiSummary as $record) {
             $absensi[$record->status] = $record->count;
         }
-        
+
         return view('siswapage.absensi', compact('dataAbsensi', 'absensi', 'dataKelas'));
     }
 
-    public function bukuNilaiSiswa(Request $request, $semesterId)
+    public function bukuNilaiSiswa(Request $request)
     {        
+        $semesterId = $request->session()->get('semester_id');
         $siswa = Siswa::where('id_user', auth()->user()->id)->first();
 
         $mapels = Mapel::join('mapel_kelas', 'mapels.id', '=', 'mapel_kelas.mapel_id')
             ->join('kelas', 'mapel_kelas.kelas_id', '=', 'kelas.id')
             ->join('kelas_siswa', 'kelas.id', '=', 'kelas_siswa.kelas_id')
             ->join('siswas', 'kelas_siswa.siswa_id', '=', 'siswas.id')
+            ->where('kelas.id_semester', $semesterId)
             ->where('siswas.id_user', auth()->user()->id)
             ->where('mapels.kelas', '!=', 'Ekskul')
             ->whereNotNull('mapels.guru_id')
             ->whereNull('mapels.parent')
-            ->orWhere(function ($query) use ($siswa) {
+            ->orWhere(function ($query) use ($siswa, $semesterId) {
                 $query->whereNotNull('mapels.parent')
                     ->where('siswas.id_user', auth()->user()->id)
                     ->where('mapels.kelas', '!=', 'Ekskul')
                     ->whereNotNull('mapels.guru_id')
+                    ->where('kelas.id_semester', $semesterId)
                     ->where('mapels.nama', 'like', '%' . $siswa->agama . '%');
             })
             ->select('mapels.id', DB::raw("CONCAT(kelas.rombongan_belajar, ' - ', mapels.nama) as nama"))

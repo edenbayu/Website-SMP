@@ -14,8 +14,8 @@
     </div>
 
     <div class="row mb-3">
-        <h3>Kelas : {{ $dataKelas['nama'] }}</h3>
-        <h3>Wali Kelas : {{ $dataKelas['nama_guru'] }}</h3>
+        <h3>Kelas : {{ $dataKelas['nama'] ?? '-' }}</h3>
+        <h3>Wali Kelas : {{ $dataKelas['nama_guru'] ?? '-' }}</h3>
     </div>
 
     <div class="row mb-3">
