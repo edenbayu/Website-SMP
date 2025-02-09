@@ -107,7 +107,7 @@
                 <form action="{{ route('update_password') }}" method="POST" style="display: flex; align-items: center;">
                     @csrf
                     <p><strong>Kata Sandi</strong> : 
-                        <input type="text" name="new_password" style="height: 25px; border-radius: 5px; width: 250px;" required placeholder="Masukkan kata sandi baru"/>
+                        <input type="text" name="new_password" style="height: 25px; border-radius: 5px; width: 250px;" required placeholder="Masukkan kata sandi baru" minlength="6"/>
                         <button type="submit" style="height: 25px; background-color: #37B7C3; color: white; border: none; border-radius: 5px; cursor: pointer;">Ubah</button>
                     </p>
                 </form>
