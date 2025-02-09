@@ -15,6 +15,7 @@ use App\Models\Admin;
 use App\Models\TP;
 use App\Models\CP;
 use App\Models\Penilaian;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -24,6 +25,32 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+
+        // RETRIEVE DATA FOR CHART
+
+        // query to retrieve tenaga data for chart
+        $query = "SELECT COUNT(CASE WHEN `jabatan` = 'Tenaga Kebersihan' THEN 1 END) AS tenaga_kebersihan,
+            COUNT(CASE WHEN `jabatan` = 'Tenaga Keamanan' THEN 1 END) AS tenaga_keamanan,
+            COUNT(CASE WHEN `jabatan` = 'Tata Usaha' THEN 1 END) AS tata_usaha
+            FROM admins";
+
+        // retrieve data
+        $tenagaKependidikanChartData = DB::select($query)[0];
+        // $queryResult = DB::select($query)[0];
+        // $tenagaKependidikanChartData = json_encode($queryResult);
+
+        // query to retrieve pendidik data for chart
+        $query = "SELECT COUNT(CASE WHEN `status` = 'PNS' THEN 1 END) AS pns,
+            COUNT(CASE WHEN `status` = 'PPPK' THEN 1 END) AS pppk,
+            COUNT(CASE WHEN `status` = 'PTT' THEN 1 END) AS ptt,
+            COUNT(CASE WHEN `status` = 'GTT' THEN 1 END) AS gtt
+            FROM `gurus`";
+
+        // retrieve data
+        $pendidikChartData = DB::select($query)[0];
+        // $queryResult = DB::select($query)[0];
+        // $pendidikChartData = json_encode($queryResult);
+        
 
         // Check if user is an Admin
         if ($user->hasRole(['Admin', 'Super Admin'])) {
@@ -66,6 +93,8 @@ class HomeController extends Controller
                 'totalAdmin',
                 'totalKelas',
                 'totalOperator',
+                'tenagaKependidikanChartData',
+                'pendidikChartData',
             ));
         } else if ($user->hasRole('Guru')) {
 
@@ -146,6 +175,8 @@ class HomeController extends Controller
                 'semesterAktif',
                 'kepalaSekolah',
                 'operator',
+                'tenagaKependidikanChartData',
+                'pendidikChartData',
             ));
         } else if ($user->hasRole('Wali Kelas')) {
 
@@ -233,6 +264,8 @@ class HomeController extends Controller
                 'semesterAktif',
                 'kepalaSekolah',
                 'operator',
+                'tenagaKependidikanChartData',
+                'pendidikChartData',
             ));
         } else {
             return view('home');
