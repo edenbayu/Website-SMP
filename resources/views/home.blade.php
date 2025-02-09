@@ -192,6 +192,32 @@
                         <div class="card mb-4" style="height: 90%;">
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <div class="d-flex justify-content-between">
+                                    <h5 class="card-title mb-3">Total Mata<br>Pelajaran Diampu</h5>
+                                    <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
+                                </div>
+                                <h5 class="card-text">{{ $totalMapel }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="h-100">
+                        <div class="card mb-4" style="height: 90%;">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title mb-3">Total Rombongan<br>Belajar Diampu</h5>
+                                    <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
+                                </div>
+                                <h5 class="card-text">{{ $totalRombel }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="h-100">
+                        <div class="card mb-4" style="height: 90%;">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between">
                                     <h5 class="card-title mb-3">Total Capaian<br>Pembelajaran</h5>
                                     <i class="fa-solid fa-graduation-cap fa-2xl" style="margin-top: 32px;"></i>
                                 </div>
@@ -261,6 +287,19 @@
                                     <i class="fa-solid fa-check-double fa-2xl" style="margin-top: 32px;"></i>
                                 </div>
                                 <h5 class="card-text">{{ $totalSAS }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="h-100">
+                        <div class="card mb-4" style="height: 90%;">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title mb-3">Total Ekstrakurikuler</h5>
+                                    <i class="fa-solid fa-person-swimming fa-2xl" style="margin-top: 32px;"></i>
+                                </div>
+                                <h5 class="card-text">{{ $totalEkskul }}</h5>
                             </div>
                         </div>
                     </div>

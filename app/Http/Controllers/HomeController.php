@@ -97,92 +97,7 @@ class HomeController extends Controller
                 'tenagaKependidikanChartData',
                 'pendidikChartData',
             ));
-        } else if ($user->hasRole('Guru')) {
-
-            $semesterAktif = Semester::select('semester', 'tahun_ajaran')
-                ->where('status', 1)
-                ->get();
-
-            $kepalaSekolah = Guru::select('nama')
-                ->where('jabatan', 'Kepala Sekolah')
-                ->get();
-
-            $operator = Guru::select('nama')
-                ->where('jabatan', "Operator")
-                ->get();
-            $operator = $operator->concat(
-                Admin::select('nama')
-                    ->where('jabatan', "Operator")
-                    ->get()
-            );
-
-            $totalCP = CP::join('mapels', 'mapels.id', '=', 'c_p_s.mapel_id')
-                ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
-                ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
-                ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
-                ->join('users', 'users.id', '=', 'gurus.id_user')
-                ->where('users.id', $user->id)
-                ->where('kelas.id_semester', $semesterId)
-                ->count();
-
-            $totalTP = TP::join('c_p_s', 't_p_s.cp_id', '=', 'c_p_s.id')
-                ->join('mapels', 'mapels.id', '=', 'c_p_s.mapel_id')
-                ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
-                ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
-                ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
-                ->join('users', 'users.id', '=', 'gurus.id_user')
-                ->where('users.id', $user->id)
-                ->where('kelas.id_semester', $semesterId)
-                ->count();
-            
-            // $totalTugas = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'Tugas')
-            //     ->where('users.id', $user->id)
-            //     ->count();
-            
-            // $totalUH = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'UH')
-            //     ->where('users.id', $user->id)
-            //     ->count();
-            
-            // $totalSTS = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'STS')
-            //     ->where('users.id', $user->id)
-            //     ->count();
-
-            // $totalSAS = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'SAS')
-            //     ->where('users.id', $user->id)
-            //     ->count();
-
-            $totalTugas = "Meong";
-            $totalUH = "Meong";
-            $totalSTS = "Meong";
-            $totalSAS = "Meong";
-
-            return view('home', compact(
-                'totalCP',
-                'totalTP',
-                'totalTugas',
-                'totalUH',
-                'totalSTS',
-                'totalSAS',
-                'semesterAktif',
-                'kepalaSekolah',
-                'operator',
-                'tenagaKependidikanChartData',
-                'pendidikChartData',
-            ));
-        } else if ($user->hasRole('Wali Kelas')) {
-
+        } else if ($user->hasRole(['Guru', 'Wali Kelas'])) {
             $semesterAktif = Semester::select('semester', 'tahun_ajaran')
                 ->where('status', 1)
                 ->get();
@@ -199,6 +114,22 @@ class HomeController extends Controller
                 Admin::select('nama')
                     ->where('jabatan', "Operator")
                     ->get());
+
+            $totalMapel = Mapel::join('gurus', 'gurus.id', '=', 'mapels.guru_id')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('users.id', $user->id)
+                ->where('mapels.semester_id', $semesterId)
+                ->where('mapels.kelas', '!=', 'Ekskul')
+                ->count();
+
+            $totalRombel = Kelas::join('mapel_kelas as mk', 'mk.kelas_id', '=', 'kelas.id')
+                ->join('mapels', 'mapels.id', '=','mk.mapel_id')
+                ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('users.id', $user->id)
+                ->where('mapels.semester_id', $semesterId)
+                ->where('mapels.kelas', '!=', 'Ekskul')
+                ->count();
             
             $totalCP = CP::join('mapels', 'mapels.id', '=', 'c_p_s.mapel_id')
                 ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
@@ -251,29 +182,56 @@ class HomeController extends Controller
                 ->where('m.semester_id', $semesterId)
                 ->count();
 
-            $totalPerwalian = KelasSiswa::join('kelas as b', 'kelas_siswa.kelas_id', '=', 'b.id')
-                ->join('gurus as c', 'c.id', '=', 'b.id_guru')
-                ->join('users as d', 'd.id', '=', 'c.id_user')
-                ->where('d.id', $user->id)
-                ->where('b.id_semester', $semesterId)
+            $totalEkskul = Mapel::join('gurus', 'gurus.id', '=', 'mapels.guru_id')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('users.id', $user->id)
+                ->where('mapels.semester_id', $semesterId)
+                ->where('mapels.kelas', '=', 'Ekskul')
                 ->count();
 
-            return view('home', compact(
-                'totalPerwalian',
-                'totalCP',
-                'totalTP',
-                'totalTugas',
-                'totalUH',
-                'totalSTS',
-                'totalSAS',
-                'semesterAktif',
-                'kepalaSekolah',
-                'operator',
-                'tenagaKependidikanChartData',
-                'pendidikChartData',
-            ));
-        } else {
-            return view('home');
+            if ($user->hasRole('Wali Kelas')) {
+                $totalPerwalian = KelasSiswa::join('kelas as b', 'kelas_siswa.kelas_id', '=', 'b.id')
+                    ->join('gurus as c', 'c.id', '=', 'b.id_guru')
+                    ->join('users as d', 'd.id', '=', 'c.id_user')
+                    ->where('d.id', $user->id)
+                    ->where('b.id_semester', $semesterId)
+                    ->count();
+
+                return view('home', compact(
+                    'totalMapel',
+                    'totalRombel',
+                    'totalCP',
+                    'totalTP',
+                    'totalTugas',
+                    'totalUH',
+                    'totalSTS',
+                    'totalSAS',
+                    'totalEkskul',
+                    'totalPerwalian',
+                    'semesterAktif',
+                    'kepalaSekolah',
+                    'operator',
+                    'tenagaKependidikanChartData',
+                    'pendidikChartData',
+                ));
+            } else if ($user->hasRole('Guru')) {
+                return view('home', compact(
+                    'totalMapel',
+                    'totalRombel',
+                    'totalCP',
+                    'totalTP',
+                    'totalTugas',
+                    'totalUH',
+                    'totalSTS',
+                    'totalSAS',
+                    'totalEkskul',
+                    'semesterAktif',
+                    'kepalaSekolah',
+                    'operator',
+                    'tenagaKependidikanChartData',
+                    'pendidikChartData',
+                ));
+            }
         }
 
         // Redirect if user is not an Admin
