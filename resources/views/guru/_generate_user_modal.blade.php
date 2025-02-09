@@ -20,7 +20,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="password-{{ $guru->id }}" class="form-label">Kata Sandi</label>
-                        <input type="text" class="form-control" id="password-{{ $guru->id }}" name="password" value="{{ Str::random(6) }}" required>
+                        <input type="text" class="form-control" id="password-{{ $guru->id }}" name="password" value="{{ Str::random(6) }}" required minlength="6">
                     </div>
                     <div class="mb-3">
                         <label for="roles" class="form-label">Hak Akses</label>

@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Colors\Rgb\Channels\Red;
+use Mail;
 
 class SiswaController extends Controller 
 {
@@ -56,13 +57,15 @@ class SiswaController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        // // Automatically assign the 'Siswa' role to the new user
-        $user->assignRole('Siswa');
+        Mail::send('email.akun', ['username' => $siswa->nisn, 'password' => $request->password], function($message) use($request) {
+            $message->to("$request->email");
+            $message->subject('Akun SMP anda telah dibuat!');
+        }); 
 
-        // // Update `Siswa` to reference the new user's ID
-        $siswa->update([
-            'id_user' => $user->id,
-        ]);
+        // Automatically assign the 'Siswa' role to the new user
+        $user->assignRole('Siswa');
+        $siswa->id_user = $user->id;
+        $siswa->save();
 
         return redirect()->route('siswa.index')->with('success', 'User berhasil dibuat dengan username ' . $user->username . ' dan password ' . $user->password);
     }
