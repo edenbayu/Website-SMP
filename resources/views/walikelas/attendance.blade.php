@@ -9,7 +9,7 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Presensi</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Presensi {{ optional($kelasSemester)->rombongan_belajar ? '| '.$kelasSemester->rombongan_belajar: '' }}</h2>
         </div>
     </div>
 
@@ -36,7 +36,8 @@
                 <tr>
                     <th class="text-start">No</th>
                     <th>Nama</th>
-                    <th>Rombongan Belajar</th>
+                    <th>NISN</th>
+                    {{-- <th>Rombongan Belajar</th> --}}
                     <th>Status</th>
                 </tr>
             </thead>
@@ -103,7 +104,7 @@
                             <tr>
                                 <td class="text-start">${index + 1}</td>
                                 <td>${student.nama}</td>
-                                <td>${student.rombongan_belajar}</td>
+                                <td>${student.nisn}</td>
                                 <td>
                                     <select name="attendance[${student.id}]" class="form-control form-select">
                                         <option value="hadir" ${status === 'hadir' ? 'selected' : ''}>Hadir</option>

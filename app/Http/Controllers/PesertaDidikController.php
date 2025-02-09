@@ -32,7 +32,7 @@ class PesertaDidikController extends Controller
         ->where('users.id', $user->id)
         ->where('semesters.id', $semesterId)
         ->where('kelas.kelas', '!=', 'Ekskul')
-        ->select('siswas.*', 'kelas.rombongan_belajar')
+        ->select('siswas.*')
         ->get();
 
         return view('walikelas.index', compact('pesertadidiks'));
@@ -52,7 +52,7 @@ class PesertaDidikController extends Controller
             ->where('users.id', $user->id)
             ->where('semesters.id', $semesterId)
             ->where('kelas.kelas', '!=', 'Ekskul')
-            ->select('siswas.id', 'siswas.nama', 'kelas.rombongan_belajar')
+            ->select('siswas.id', 'siswas.nama', 'siswas.nisn')
             ->get();
 
         // Get attendance records for the current date
@@ -108,7 +108,7 @@ class PesertaDidikController extends Controller
             ->where('users.id', $user->id)
             ->where('semesters.id', $request->semester_id)
             ->where('kelas.kelas', '!=', 'Ekskul')
-            ->select('siswas.id', 'siswas.nama', 'kelas.rombongan_belajar')
+            ->select('siswas.id', 'siswas.nama', 'siswas.nisn')
             ->get();
 
         // Get attendance records for the selected date

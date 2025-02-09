@@ -19,10 +19,10 @@
 @endpush
 
 @section('content')
-<div class="container-fluid mt-3">
+<div class="container-fluid my-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Leger Nilai</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Leger Nilai {{ optional($kelasSemester)->rombongan_belajar ? '| '.$kelasSemester->rombongan_belajar: '' }}</h2>
         </div>
     </div>
 
@@ -53,11 +53,11 @@
                 @endforeach
                 <td class="text-start">
                     <!-- Modal Trigger Buttons -->
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}" style="width:10.5rem">
-                        Tengah Semester
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buatRapotMid{{ $loop->index }}">
+                        TS
                     </button>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buatRapotSemester{{ $loop->index }}" style="width:10.5rem">
-                        Akhir Semester
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buatRapotSemester{{ $loop->index }}">
+                        AS
                     </button>
                 </td>
             </tr>

@@ -267,9 +267,9 @@
 
                 <!-- Wali Kelas -->
                 @role('Wali Kelas')
-                    <ul class="sidebar-nav">
+                    <ul class="sidebar-nav mb-5">
                         <li class="sidebar-header">
-                            Wali Kelas
+                            Wali Kelas {{ optional($kelasSemester)->rombongan_belajar ? '| '.$kelasSemester->rombongan_belajar: '' }}
                         </li>
                         <li class="sidebar-item">
                             <a href="{{ route('pesertadidik.index',  ['semesterId' => $selectedSemesterId ?? 'default'])}}" class="sidebar-link">
@@ -289,7 +289,13 @@
                                 P5
                             </a>
                         </li>
-                        <li class="sidebar-item list-except">
+                        <li class="sidebar-item">
+                            <a href="{{route('pesertadidik.legerNilai', [optional($kelasSemester)->id ?? 'default' , $selectedSemesterId ?? 'default'])}}" class="sidebar-link">
+                                <i class="fa-solid fa-book"></i>
+                                Leger Nilai
+                            </a>
+                        </li>
+                        {{-- <li class="sidebar-item list-except">
                             <a href="#" class="sidebar-link collapsed" data-bs-target="#legerNilai" data-bs-toggle="collapse" aria-expanded="false">
                                 <i class="fa-solid fa-book"></i>
                                 Leger Nilai
@@ -303,7 +309,7 @@
                                 </li>
                                 @endforeach
                             </ul>
-                        </li>   
+                        </li>    --}}
                     </ul>                     
                 @endrole
             </div>

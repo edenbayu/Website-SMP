@@ -98,16 +98,16 @@ class ViewServiceProvider extends ServiceProvider
 
                     
                 
-                $listKelas = Kelas::select('kelas.id', 'kelas.rombongan_belajar')
+                $kelasSemester = Kelas::select('kelas.id', 'kelas.rombongan_belajar')
                     ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
                     ->join('users', 'users.id', '=', 'gurus.id_user')
                     ->join('semesters', 'semesters.id', '=', 'kelas.id_semester')
                     ->where('users.id', $user->id)
                     ->where('semesters.id', $semesterId)
                     ->where('kelas.kelas', '!=', 'Ekskul')
-                    ->get();
+                    ->first();
 
-                $view->with('listKelas', $listKelas);
+                $view->with('kelasSemester', $kelasSemester);
                 $view->with('listRombel', $listRombel);
                 $view->with('listMataPelajaran', $listMataPelajaran);
                 $view->with('listEkskul', $listEkskul);
@@ -118,7 +118,23 @@ class ViewServiceProvider extends ServiceProvider
             $view->with('selectedSemesterId', $semesterId);
             $view->with('selectedSemester', $selectedSemester);
         });
-    }
+
+        View::composer('walikelas.*', function ($view) use ($request) {
+            $user = Auth::user();
+            $semesterId = session('semester_id') ?? request()->input('semester_id');
+        
+            $kelasSemester = Kelas::select('kelas.id', 'kelas.rombongan_belajar')
+                ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->join('semesters', 'semesters.id', '=', 'kelas.id_semester')
+                ->where('users.id', $user->id)
+                ->where('semesters.id', $semesterId)
+                ->where('kelas.kelas', '!=', 'Ekskul')
+                ->first();
+        
+            $view->with('kelasSemester', $kelasSemester);
+        });
+    }   
 
     public function register()
     {

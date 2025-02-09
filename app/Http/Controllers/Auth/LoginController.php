@@ -41,7 +41,7 @@ class LoginController extends Controller
         }
 
         // Jika username atau password salah
-        return back()->withErrors(['invalid_credentials' => 'Either username or password is invalid.']);
+        return back()->withErrors(['invalid_credentials' => 'Login gagal, mohon periksa kembali!']);
     }
 
     public function select_role()

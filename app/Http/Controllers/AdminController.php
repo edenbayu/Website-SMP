@@ -33,7 +33,7 @@ class AdminController extends Controller
     }
 
     public function export() {
-        return Excel::download(new AdminExport, 'admin.xlsx', );
+        return Excel::download(new AdminExport, 'Tenaga Kependidikan.xlsx', );
     }
 
     public function create(Request $request)
