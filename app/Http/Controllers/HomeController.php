@@ -25,6 +25,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+        $semesterId = $request->session()->get('semester_id');
 
         // RETRIEVE DATA FOR CHART
 
@@ -121,6 +122,7 @@ class HomeController extends Controller
                 ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
                 ->join('users', 'users.id', '=', 'gurus.id_user')
                 ->where('users.id', $user->id)
+                ->where('kelas.id_semester', $semesterId)
                 ->count();
 
             $totalTP = TP::join('c_p_s', 't_p_s.cp_id', '=', 'c_p_s.id')
@@ -130,6 +132,7 @@ class HomeController extends Controller
                 ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
                 ->join('users', 'users.id', '=', 'gurus.id_user')
                 ->where('users.id', $user->id)
+                ->where('kelas.id_semester', $semesterId)
                 ->count();
             
             // $totalTugas = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
@@ -198,60 +201,62 @@ class HomeController extends Controller
                     ->get());
             
             $totalCP = CP::join('mapels', 'mapels.id', '=', 'c_p_s.mapel_id')
-                ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
-                ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
-                ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
+                ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                 ->join('users', 'users.id', '=', 'gurus.id_user')
                 ->where('users.id', $user->id)
+                ->where('mapels.semester_id', $semesterId)
                 ->count();
 
             $totalTP = TP::join('c_p_s', 't_p_s.cp_id', '=', 'c_p_s.id')
                 ->join('mapels', 'mapels.id', '=', 'c_p_s.mapel_id')
-                ->join('mapel_kelas', 'mapel_kelas.mapel_id', '=', 'mapels.id')
-                ->join('kelas', 'kelas.id', '=', 'mapel_kelas.kelas_id')
-                ->join('gurus', 'gurus.id', '=', 'kelas.id_guru')
+                ->join('gurus', 'gurus.id', '=', 'mapels.guru_id')
                 ->join('users', 'users.id', '=', 'gurus.id_user')
                 ->where('users.id', $user->id)
+                ->where('mapels.semester_id', $semesterId)
                 ->count();
             
-            // $totalTugas = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'Tugas')
-            //     ->where('users.id', $user->id)
-            //     ->count();
-            
-            // $totalUH = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'UH')
-            //     ->where('users.id', $user->id)
-            //     ->count();
-            
-            // $totalSTS = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'STS')
-            //     ->where('users.id', $user->id)
-            //     ->count();
+            $totalTugas = Penilaian::join('mapel_kelas as mk', 'penilaians.mapel_kelas_id', '=', 'mk.id')
+                ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                ->join('gurus', 'm.guru_id', '=', 'gurus.id')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('penilaians.tipe', 'Tugas')
+                ->where('users.id', $user->id)
+                ->where('m.semester_id', $semesterId)
+                ->count();
 
-            // $totalSAS = Penilaian::join('kelas', 'penilaians.kelas_id', '=', 'kelas.id')
-            //     ->join('gurus', 'kelas.id_guru', '=', 'gurus.id')
-            //     ->join('users', 'users.id', '=', 'gurus.id_user')
-            //     ->where('penilaians.tipe', 'SAS')
-            //     ->where('users.id', $user->id)
-            //     ->count();
-            
+            $totalUH = Penilaian::join('mapel_kelas as mk', 'penilaians.mapel_kelas_id', '=', 'mk.id')
+                ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                ->join('gurus', 'm.guru_id', '=', 'gurus.id')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('penilaians.tipe', 'UH')
+                ->where('users.id', $user->id)
+                ->where('m.semester_id', $semesterId)
+                ->count();
+
+            $totalSTS = Penilaian::join('mapel_kelas as mk', 'penilaians.mapel_kelas_id', '=', 'mk.id')
+                ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                ->join('gurus', 'm.guru_id', '=', 'gurus.id')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('penilaians.tipe', 'STS')
+                ->where('users.id', $user->id)
+                ->where('m.semester_id', $semesterId)
+                ->count();
+
+            $totalSAS = Penilaian::join('mapel_kelas as mk', 'penilaians.mapel_kelas_id', '=', 'mk.id')
+                ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
+                ->join('gurus', 'm.guru_id', '=', 'gurus.id')
+                ->join('users', 'users.id', '=', 'gurus.id_user')
+                ->where('penilaians.tipe', 'SAS')
+                ->where('users.id', $user->id)
+                ->where('m.semester_id', $semesterId)
+                ->count();
+
             $totalPerwalian = KelasSiswa::join('kelas as b', 'kelas_siswa.kelas_id', '=', 'b.id')
                 ->join('gurus as c', 'c.id', '=', 'b.id_guru')
                 ->join('users as d', 'd.id', '=', 'c.id_user')
                 ->where('d.id', $user->id)
+                ->where('b.id_semester', $semesterId)
                 ->count();
-
-            $totalTugas = "Meong";
-            $totalUH = "Meong";
-            $totalSTS = "Meong";
-            $totalSAS = "Meong";
 
             return view('home', compact(
                 'totalPerwalian',
