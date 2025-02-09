@@ -36,8 +36,11 @@ class KalenderMapelController extends Controller
                 break;
 
             case 'getRombel':
+                $semesterId = $request->input('semesterId');
                 $kelasKelas = $request->input('kelasKelas');
-                $response = Kelas::where('kelas.kelas', $kelasKelas)->get();
+                $response = Kelas::where('kelas.kelas', $kelasKelas)
+                    ->where('id_semester', $semesterId)
+                    ->get();
                 break;
 
             case 'getMapel':
@@ -100,6 +103,8 @@ class KalenderMapelController extends Controller
                                     ->limit(1);
                             }), 'bk', 'bk.id', '=', 'jam_pelajaran.id')
                     ->select('jam_pelajaran.id', 'jam_pelajaran.hari', 'jam_pelajaran.nomor', 'jam_pelajaran.jam_mulai', 'jam_pelajaran.jam_selesai', DB::raw('COALESCE(bg.rombongan_belajar, bp.rombongan_belajar) as rombongan_belajar'), 'bk.booked')
+                    ->orderBy('jam_pelajaran.hari', 'asc')
+                    ->orderBy('jam_pelajaran.nomor', 'asc')
                     ->get();
                 break;
 

@@ -236,6 +236,7 @@
         });
 
         $('#kelas').on('change', function () {
+            const semesterId = $('#semester').val();
             const kelasKelas = $(this).val();
 
             $('#rombel').empty().append('<option value="" selected hidden disabled>Pilih Rombel</option>').prop('disabled', true);
@@ -249,6 +250,7 @@
                     type: 'GET',
                     data: {
                         action: 'getRombel',
+                        semesterId: semesterId,
                         kelasKelas: kelasKelas,
                     },
                     success: function (data) {

@@ -22,6 +22,7 @@
                 <th class="text-start">Izin</th>
                 <th class="text-start">Sakit</th>
                 <th class="text-start">Alpa</th>
+                <th class="text-start">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,7 @@
                 <td class="text-start">{{ $student->count_ijin }}</td>
                 <td class="text-start">{{ $student->count_sakit }}</td>
                 <td class="text-start">{{ $student->count_alpha }}</td>
+                <td class="text-start">{{ $student->count_all }}</td>
             </tr>
             @endforeach
         </tbody>

@@ -674,14 +674,16 @@ class PesertaDidikController extends Controller
             ->join('semesters as h', 'h.id', '=', 'd.id_semester')
             ->where('g.id', $user->id)
             ->where('h.id', $semesterId)
+            ->where('d.kelas', '!=', 'Ekskul')
             ->select(
                 'b.nama',
                 'b.nisn',
-                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'hadir' THEN a.id END) AS count_hadir"),
-                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'terlambat' THEN a.id END) AS count_terlambat"),
-                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'ijin' THEN a.id END) AS count_ijin"),
-                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'alpha' THEN a.id END) AS count_alpha"),
-                DB::raw("COUNT(DISTINCT CASE WHEN a.status = 'sakit' THEN a.id END) AS count_sakit")
+                DB::raw("COUNT(CASE WHEN a.status = 'hadir' THEN a.id END) AS count_hadir"),
+                DB::raw("COUNT(CASE WHEN a.status = 'terlambat' THEN a.id END) AS count_terlambat"),
+                DB::raw("COUNT(CASE WHEN a.status = 'ijin' THEN a.id END) AS count_ijin"),
+                DB::raw("COUNT(CASE WHEN a.status = 'alpha' THEN a.id END) AS count_alpha"),
+                DB::raw("COUNT(CASE WHEN a.status = 'sakit' THEN a.id END) AS count_sakit"),
+                DB::raw("COUNT(a.id) AS count_all")
             )
             ->groupBy('b.id', 'b.nama', 'b.nisn')
             ->get();
