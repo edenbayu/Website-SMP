@@ -25,8 +25,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="password-{{ $a->id }}" class="form-label">Kata Sandi</label>
-                            <input type="text" class="form-control" id="password-{{ $a->id }}"
-                                name="password" value="{{ Str::random(6) }}" required>
+                            <input type="text" class="form-control" id="password-{{ $a->id }}" name="password" value="{{ Str::random(6) }}" required minlength="6">
                         </div>
                         <button type="submit" class="btn btn-primary">Buat</button>
                     </form>

@@ -187,6 +187,8 @@ class KalenderMapelController extends Controller
     }
 
     public function getDataCalendarGuru(Request $request) {
+        $semesterId = $request->session()->get('semester_id');
+
         $dayMapping = [
             'Senin' => 0,
             'Selasa' => 1,
@@ -204,7 +206,7 @@ class KalenderMapelController extends Controller
             ->leftJoin('kelas as k', 'k.id', '=','mk.kelas_id')
             ->leftJoin('gurus as g', 'g.id', '=', 'm.guru_id')
             ->where('g.id_user', '=', auth()->user()->id)
-            ->where('k.id_semester', '=', session()->get('semester_id'))
+            ->where('k.id_semester', '=', $semesterId)
             ->orWhereNotNull('jam_pelajaran.event')
             ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id', 'k.rombongan_belajar as rombel')
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
@@ -215,7 +217,7 @@ class KalenderMapelController extends Controller
             ->leftJoin('kelas as k', 'k.id', '=','mk.kelas_id')
             ->leftJoin('gurus as g', 'g.id', '=', 'm.guru_id')
             ->where('g.id_user', '=', auth()->user()->id)
-            ->where('k.id_semester', '=', session()->get('semester_id'))
+            ->where('k.id_semester', '=', $semesterId)
             ->WhereNull('jam_pelajaran.event')
             ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id', 'k.rombongan_belajar as rombel')
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();
@@ -265,6 +267,8 @@ class KalenderMapelController extends Controller
     }
 
     public function getDataCalendarSiswa(Request $request) {
+        $semesterId = $request->session()->get('semester_id');
+
         $dayMapping = [
             'Senin' => 0,
             'Selasa' => 1,
@@ -287,6 +291,7 @@ class KalenderMapelController extends Controller
                     ->where('s.id_user', '=', auth()->user()->id)
                     ->limit(1);
             })
+            ->where('k.id_semester', $semesterId)
             ->orWhereNotNull('jam_pelajaran.event')
             ->select('jam_pelajaran.*', 'm.nama as nama_mapel', 'jpmk.id as jpmk_id', 'k.rombongan_belajar as rombel')
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jam_mulai ASC")->get();

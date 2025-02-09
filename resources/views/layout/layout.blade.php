@@ -144,7 +144,6 @@
                 @endrole
 
                 @role('Siswa')
-                    <!-- Admin -->
                     <ul class="sidebar-nav">
                         <li class="sidebar-header">
                             Peserta Didik
@@ -162,7 +161,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="{{ route('siswapage.bukunilai', ['semesterId' => $selectedSemesterId ?? 'default']) }}" class="sidebar-link">
+                            <a href="{{ route('siswapage.bukunilai') }}" class="sidebar-link">
                                 <i class="fa-solid fa-scroll"></i>
                                 Buku Nilai
                             </a>
@@ -174,7 +173,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                            <a href="{{ route('kalenderakademik.index') }}" class="sidebar-link">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 Kalender Akademik
                             </a>
@@ -183,9 +182,9 @@
                 @endrole
 
                 
-                <ul class="sidebar-nav">
-                    @role('Guru|Wali Kelas')
-                    <!-- Guru -->
+                
+                @role('Guru|Wali Kelas')
+                    <ul class="sidebar-nav">
                         <li class="sidebar-header">
                             Guru
                         </li>
@@ -252,21 +251,23 @@
                             </ul>
                         </li> --}}
                         <li class="sidebar-item">
-                            <a href="{{route('kalendermapel.index')}}" class="sidebar-link">
+                            <a href="{{ route('kalendermapel.index') }}" class="sidebar-link">
                                 <i class="fa-regular fa-calendar"></i>
                                 Jadwal Pelajaran
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="{{route('kalenderakademik.index')}}" class="sidebar-link">
+                            <a href="{{ route('kalenderakademik.index') }}" class="sidebar-link">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 Kalender Akademik
                             </a>
                         </li>
-                    @endrole
+                    </ul>
+                @endrole
 
-                    <!-- Wali Kelas -->
-                    @role('Wali Kelas')
+                <!-- Wali Kelas -->
+                @role('Wali Kelas')
+                    <ul class="sidebar-nav">
                         <li class="sidebar-header">
                             Wali Kelas
                         </li>
@@ -302,11 +303,9 @@
                                 </li>
                                 @endforeach
                             </ul>
-                        </li>                        
-                    @endrole
-                </ul>
-
-
+                        </li>   
+                    </ul>                     
+                @endrole
             </div>
         </aside>
         <div class="main">
@@ -318,17 +317,17 @@
                     <form action="{{ route('select.semester') }}" method="POST" class="m-0">
                         @csrf
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #37B7C3;">
                                 @if (is_null($selectedSemester))
-                                Pilih Semester
+                                    Pilih Semester
                                 @else
-                                {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
+                                    {{$selectedSemester->semester}} | {{$selectedSemester->tahun_ajaran}}
                                 @endif
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg-start">
                                 @foreach($semesters as $semester)
                                     <li>
-                                        <button class="dropdown-item" type="submit" name="semester_id" value="{{ $semester->id }}">
+                                        <button class="btn dropdown-item @if ($selectedSemesterId == $semester->id) {{ 'text-white' }} @endif" type="submit" name="semester_id" value="{{ $semester->id }}" style="@if ($selectedSemesterId == $semester->id) {{ 'background-color: #37B7C3;' }} @endif">
                                             {{ $semester->semester }} | {{ $semester->tahun_ajaran }}
                                             {{ $semester->status == 1 ? "(Aktif)" : "" }}
                                         </button>

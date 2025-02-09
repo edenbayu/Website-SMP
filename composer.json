@@ -10,7 +10,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "laravolt/avatar": "^6.0",
-        "maatwebsite/excel": "^3.1.48",
+        "maatwebsite/excel": "*",
         "niklasravnsborg/laravel-pdf": "^4.1",
         "spatie/laravel-permission": "^6.9",
         "tecnickcom/tcpdf": "^6.8"
