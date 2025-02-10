@@ -77,7 +77,7 @@
                     <!-- Admin -->
                     <ul class="sidebar-nav">
                         <li class="sidebar-header">
-                            Tenaga Kependidikan
+                            Admin
                         </li>
                         <li class="sidebar-item">
                             <a href="{{route('home')}}" class="sidebar-link">

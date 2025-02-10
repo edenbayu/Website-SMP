@@ -29,7 +29,7 @@
                 <th>Nama</th>
                 <th>Nama Pengguna</th>
                 <th>Email</th>
-                <th>Role</th>
+                <th>Hak Akses</th>
                 <th>Aksi</th>
             </tr>
         </thead>

@@ -30,32 +30,30 @@ class HomeController extends Controller
         // RETRIEVE DATA FOR CHART
 
         // query to retrieve tenaga data for chart
-        $query = "SELECT COUNT(CASE WHEN `jabatan` = 'Tenaga Kebersihan' THEN 1 END) AS tenaga_kebersihan,
-            COUNT(CASE WHEN `jabatan` = 'Tenaga Keamanan' THEN 1 END) AS tenaga_keamanan,
-            COUNT(CASE WHEN `jabatan` = 'Tata Usaha' THEN 1 END) AS tata_usaha
-            FROM admins";
+        // $query = "SELECT COUNT(CASE WHEN `jabatan` = 'Tenaga Kebersihan' THEN 1 END) AS tenaga_kebersihan,
+        //     COUNT(CASE WHEN `jabatan` = 'Tenaga Keamanan' THEN 1 END) AS tenaga_keamanan,
+        //     COUNT(CASE WHEN `jabatan` = 'Tata Usaha' THEN 1 END) AS tata_usaha
+        //     FROM admins";
 
-        // retrieve data
-        $tenagaKependidikanChartData = DB::select($query)[0];
-        // $queryResult = DB::select($query)[0];
-        // $tenagaKependidikanChartData = json_encode($queryResult);
+        // // retrieve data
+        // $tenagaKependidikanChartData = DB::select($query)[0];
+        // // $queryResult = DB::select($query)[0];
+        // // $tenagaKependidikanChartData = json_encode($queryResult);
 
-        // query to retrieve pendidik data for chart
-        $query = "SELECT COUNT(CASE WHEN `status` = 'PNS' THEN 1 END) AS pns,
-            COUNT(CASE WHEN `status` = 'PPPK' THEN 1 END) AS pppk,
-            COUNT(CASE WHEN `status` = 'PTT' THEN 1 END) AS ptt,
-            COUNT(CASE WHEN `status` = 'GTT' THEN 1 END) AS gtt
-            FROM `gurus`";
+        // // query to retrieve pendidik data for chart
+        // $query = "SELECT COUNT(CASE WHEN `status` = 'PNS' THEN 1 END) AS pns,
+        //     COUNT(CASE WHEN `status` = 'PPPK' THEN 1 END) AS pppk,
+        //     COUNT(CASE WHEN `status` = 'PTT' THEN 1 END) AS ptt,
+        //     COUNT(CASE WHEN `status` = 'GTT' THEN 1 END) AS gtt
+        //     FROM `gurus`";
 
-        // retrieve data
-        $pendidikChartData = DB::select($query)[0];
-        // $queryResult = DB::select($query)[0];
-        // $pendidikChartData = json_encode($queryResult);
-        
+        // // retrieve data
+        // $pendidikChartData = DB::select($query)[0];
+        // // $queryResult = DB::select($query)[0];
+        // // $pendidikChartData = json_encode($queryResult);        
 
         // Check if user is an Admin
         if ($user->hasRole(['Admin', 'Super Admin'])) {
-
             // Retrieve data only if user is an Admin
             $semesterAktif = Semester::select('semester', 'tahun_ajaran')
                 ->where('status', 1)
@@ -72,21 +70,36 @@ class HomeController extends Controller
             $totalMapel = Mapel::count();
             $totalAdmin = Admin::count();
 
-            $operator = Guru::select('nama')
-                ->where('jabatan', "Operator")
-                ->get();
-            $operator = $operator->concat(
-                Admin::select('nama')
-                    ->where('jabatan', "Operator")
-                    ->get()
-            );
+            // $operator = Guru::select('nama')
+            //     ->where('jabatan', "Operator")
+            //     ->get();
+            // $operator = $operator->concat(
+            //     Admin::select('nama')
+            //         ->where('jabatan', "Operator")
+            //         ->get()
+            // );
 
-            $totalOperator = $operator->count();
+            // $totalOperator = $operator->count();
+            $totalOperator = User::role('Admin')->count();
+
+            $tenagaKependidikanChartData = Admin::selectRaw("
+                COUNT(CASE WHEN jabatan = 'Tenaga Kebersihan' THEN 1 END) AS tenaga_kebersihan,
+                COUNT(CASE WHEN jabatan = 'Tenaga Keamanan' THEN 1 END) AS tenaga_keamanan,
+                COUNT(CASE WHEN jabatan = 'Tata Usaha' THEN 1 END) AS tata_usaha
+            ")->first();
+
+            // Query untuk pendidik
+            $pendidikChartData = Guru::selectRaw("
+                COUNT(CASE WHEN status = 'PNS' THEN 1 END) AS pns,
+                COUNT(CASE WHEN status = 'PPPK' THEN 1 END) AS pppk,
+                COUNT(CASE WHEN status = 'PTT' THEN 1 END) AS ptt,
+                COUNT(CASE WHEN status = 'GTT' THEN 1 END) AS gtt
+            ")->first();
 
             return view('home', compact(
                 'semesterAktif',
                 'kepalaSekolah',
-                'operator',
+                // 'operator',
                 'totalSiswa',
                 'totalGuru',
                 'totalEkskul',
@@ -234,7 +247,8 @@ class HomeController extends Controller
             }
         }
 
-        // Redirect if user is not an Admin
-        return redirect()->route('home')->with('error', 'Access Denied');
+        return view('home');
+
+        abort(403, 'Access Denied');
     }
 }

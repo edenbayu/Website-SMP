@@ -101,7 +101,7 @@ class KelasController extends Controller
             }
         }
 
-        return redirect()->route('kelas.index')->with('success', 'Siswa berhasil dihapus.');
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus!');
     }
 
     public function bukaKelas($kelasId, Request $request)
@@ -349,7 +349,7 @@ class KelasController extends Controller
         // Detach the student (siswa) from the class (kelas)
         $siswa->kelases()->detach($kelasId);
 
-        return redirect()->back()->with('success', 'Data siswa berhasil dihapus');
+        return redirect()->back()->with('success', 'Peserta Didik berhasil dihapus!');
     }
 
     public function getKelas(Request $request)

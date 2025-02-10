@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <!-- Form to filter based on Angkatan -->
+        {{-- <!-- Form to filter based on Angkatan -->
         <form action="{{ route('kelas.buka', ['kelasId' => $kelas->id]) }}" method="GET">
             <div class="row mb-3">
                 <div class="col-md-4">
@@ -32,23 +32,22 @@
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
             </div>
-        </form>
+        </form> --}}
 
         <!-- Add Student Modal Trigger -->
         <button class="btn btn-success mb-3" data-bs-toggle="modal"
             data-bs-target="#addStudentModal-{{ $kelas->id }}">Tambah</button>
 
+        <!--Import & Export Student Modal Trigger -->
+        <button class="btn btn-info mb-3" data-bs-toggle="modal"
+            data-bs-target="#importStudentModal-{{ $kelas->id }}" style="width: 5rem">Impor</button>
+
+        <a target="_blank" href="{{ route('kelas.export', ['kelasId' => $kelas->id]) }}" class="btn btn-secondary mb-3 px-3"
+            style="width: 5rem">Ekspor</a>
+
         <!-- Auto Assign Student Modal Trigger -->
         <button class="btn btn-primary mb-3" data-bs-toggle="modal"
             data-bs-target="#autoAddStudentModal-{{ $kelas->id }}">Penempatan Peserta Didik Otomatis</button>
-
-        <!--Import Student Modal Trigger -->
-        <button class="btn btn-info mb-3" data-bs-toggle="modal"
-            data-bs-target="#importStudentModal-{{ $kelas->id }}">Impor</button>
-
-        <a target="_blank" href="{{ route('kelas.export', ['kelasId' => $kelas->id]) }}" class="btn btn-secondary mb-3 px-3"
-            style="width: 6rem">Ekspor</a>
-
 
         <table id="example" class="table table-striped" style="width:100%">
             <thead>

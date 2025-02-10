@@ -13,7 +13,7 @@
                 <div class="modal-body">
                     <!-- Name Input -->
                     <div class="form-group mb-3">
-                        <label for="name">Name</label>
+                        <label for="name">Nama</label>
                         <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $account->name) }}" required>
                     </div>
 
@@ -25,19 +25,19 @@
 
                     <!-- Username Input -->
                     <div class="form-group mb-3">
-                        <label for="username">Username</label>
+                        <label for="username">Nama Pengguna</label>
                         <input type="text" name="username" id="username" class="form-control" value="{{ old('username', $account->username) }}" required>
                     </div>
 
                     <!-- Password Input -->
                     <div class="form-group mb-3">
-                        <label for="password">New Password</label>
+                        <label for="password">Kata Sandi Baru</label>
                         <input type="text" name="password" id="password" class="form-control" placeholder="Masukkan kata sandi baru">
                     </div>
 
                     <!-- Role Selection Dropdown -->
                     <div class="form-group mb-3">
-                        <label for="roles">Role</label>
+                        <label for="roles">Hak Akses</label>
                         <select class="role-multiple form-select" name="roles[]" multiple="multiple">
                             @foreach(["Super Admin", "Admin", "Guru", "Wali Kelas", "Siswa"] as $role)
                                 <option value="{{ $role }}" {{ in_array($role, $account->getRoleNames()->toArray()) ? 'selected' : '' }}>{{ $role }}</option>

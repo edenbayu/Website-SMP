@@ -17,7 +17,8 @@ use Mail;
 class SiswaController extends Controller 
 {
     public function index(){
-        $siswas = Siswa::all();
+        $siswas = Siswa::orderBy('nama', 'asc')
+            ->get();
         return view('siswa.index', compact('siswas'));
     }
 

@@ -15,7 +15,9 @@ use Mail;
 class GuruController extends Controller 
 {
     public function index(){
-        $gurus = Guru::with('user')->orderBy('created_at', 'desc')->get();
+        $gurus = Guru::with('user')
+            ->orderBy('nama', 'asc')
+            ->get();
         // foreach ($gurus as $guru) {
         //     if ($guru->user) {
         //         $roles = $guru->user->getRoleNames();
