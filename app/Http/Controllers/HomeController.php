@@ -224,8 +224,8 @@ class HomeController extends Controller
                     'semesterAktif',
                     'kepalaSekolah',
                     'operator',
-                    'tenagaKependidikanChartData',
-                    'pendidikChartData',
+                    // 'tenagaKependidikanChartData',
+                    // 'pendidikChartData',
                 ));
             } else if ($user->hasRole('Guru')) {
                 return view('home', compact(
@@ -241,8 +241,8 @@ class HomeController extends Controller
                     'semesterAktif',
                     'kepalaSekolah',
                     'operator',
-                    'tenagaKependidikanChartData',
-                    'pendidikChartData',
+                    // 'tenagaKependidikanChartData',
+                    // 'pendidikChartData',
                 ));
             }
         }

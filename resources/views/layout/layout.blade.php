@@ -18,6 +18,10 @@
             object-fit: cover !important; /* Memastikan gambar memenuhi kotak tanpa distorsi */
             object-position: center top !important; /* Fokuskan pada bagian atas gambar */
         }
+
+        #selectSemesterModal .btn-semester:hover {
+            border-color: #37B7C3 !important;
+        }
     </style>
     
 </head>
@@ -378,6 +382,42 @@
             </div>
         </div>
     </div>
+
+    @role('Guru|Wali Kelas|Siswa')
+        <div class="modal fade" id="selectSemesterModal" tabindex="-1" aria-labelledby="selectSemesterLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="selectSemesterLabel">Pilih Semester</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('select.semester') }}" method="POST" class="mt-3 mb-4">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="text-center">                            
+                                @foreach($semesters as $semester)
+                                    <li>
+                                        <button class="btn btn-semester my-1 @if ($selectedSemesterId == $semester->id) {{ 'btn-white' }} @endif" type="submit" name="semester_id" value="{{ $semester->id }}" style="min-width:250px; @if ($selectedSemesterId == $semester->id) {{ 'background-color: #37B7C3; color:white;' }} @else {{ 'border: 2px solid #212529;' }} @endif">
+                                            {{ $semester->semester }} | {{ $semester->tahun_ajaran }}
+                                            {{ $semester->status == 1 ? "(Aktif)" : "" }}
+                                        </button>
+                                    </li>
+                                @endforeach
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @if (!session()->get('semester_id'))
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var myModal = new bootstrap.Modal(document.getElementById("selectSemesterModal"));
+                    myModal.show();
+                });
+            </script>
+        @endif
+    @endrole
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('style/js/layout.js')}}"></script>
