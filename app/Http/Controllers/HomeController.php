@@ -204,10 +204,13 @@ class HomeController extends Controller
 
             if ($user->hasRole('Wali Kelas')) {
                 $totalPerwalian = KelasSiswa::join('kelas as b', 'kelas_siswa.kelas_id', '=', 'b.id')
+                    ->join('siswas as s', 's.id', '=', 'kelas_siswa.siswa_id')
                     ->join('gurus as c', 'c.id', '=', 'b.id_guru')
                     ->join('users as d', 'd.id', '=', 'c.id_user')
                     ->where('d.id', $user->id)
+                    ->where('b.kelas', '!=', 'Ekskul')
                     ->where('b.id_semester', $semesterId)
+                    ->distinct('s.id')
                     ->count();
 
                 return view('home', compact(
