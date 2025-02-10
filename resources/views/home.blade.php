@@ -332,73 +332,85 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Get data from Laravel
-            let tenagaKependidikanData = @json($tenagaKependidikanChartData);
-            let pendidikData = @json($pendidikChartData);   
-            console.log(typeof tenagaKependidikanData);
+                let tenagaKependidikanData = @json($tenagaKependidikanChartData);
+                let pendidikData = @json($pendidikChartData);   
+                console.log(typeof tenagaKependidikanData);
 
-            // Extract labels and values for tenaga kependidikan
-            let tenagaLabels = ["Tenaga Kebersihan", "Tenaga Keamanan", "Tata Usaha"];
-            let tenagaValues = [
-                tenagaKependidikanData.tenaga_kebersihan,
-                tenagaKependidikanData.tenaga_keamanan,
-                tenagaKependidikanData.tata_usaha
-            ];
+                // Extract labels and values for tenaga kependidikan
+                let tenagaLabels = ["Tenaga Kebersihan", "Tenaga Keamanan", "Tata Usaha"];
+                let tenagaValues = [
+                    tenagaKependidikanData.tenaga_kebersihan,
+                    tenagaKependidikanData.tenaga_keamanan,
+                    tenagaKependidikanData.tata_usaha
+                ];
 
-            // Extract labels and values for pendidik
-            let pendidikLabels = ["PNS", "PPPK", "PTT", "GTT"];
-            let pendidikValues = [
-                pendidikData.pns,
-                pendidikData.pppk,
-                pendidikData.ptt,
-                pendidikData.gtt
-            ];
+                // Extract labels and values for pendidik
+                let pendidikLabels = ["PNS", "PPPK", "PTT", "GTT"];
+                let pendidikValues = [
+                    pendidikData.pns,
+                    pendidikData.pppk,
+                    pendidikData.ptt,
+                    pendidikData.gtt
+                ];
 
-            // Create Tenaga Kependidikan Chart
-            new Chart(document.getElementById("tenagaKependidikanChart"), {
-                type: 'bar',
-                data: {
-                    labels: tenagaLabels,
-                    datasets: [{
-                        label: 'Jumlah',
-                        data: tenagaValues,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(255, 159, 64, 0.6)',
-                            'rgba(255, 205, 86, 0.6)'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true }
+                // Create Tenaga Kependidikan Chart
+                new Chart(document.getElementById("tenagaKependidikanChart"), {
+                    type: 'bar',
+                    data: {
+                        labels: tenagaLabels,
+                        datasets: [{
+                            label: 'Jumlah',
+                            data: tenagaValues,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 159, 64, 0.6)',
+                                'rgba(255, 205, 86, 0.6)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1, // Pastikan hanya menampilkan angka bulat
+                                    precision: 0, // Hindari angka desimal
+                                }
+                            }
+                        }
                     }
-                }
-            });
+                });
 
-            // Create Pendidik Chart
-            new Chart(document.getElementById("pendidikChart"), {
-                type: 'bar',
-                data: {
-                    labels: pendidikLabels,
-                    datasets: [{
-                        label: 'Jumlah',
-                        data: pendidikValues,
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(201, 203, 207, 0.6)'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true }
+                // Create Pendidik Chart
+                new Chart(document.getElementById("pendidikChart"), {
+                    type: 'bar',
+                    data: {
+                        labels: pendidikLabels,
+                        datasets: [{
+                            label: 'Jumlah',
+                            data: pendidikValues,
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(201, 203, 207, 0.6)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1, // Pastikan hanya menampilkan angka bulat
+                                    precision: 0, // Hindari angka desimal
+                                }
+                            }
+                        }
                     }
-                }
-            });
+                });
             });
         </script>
     @endrole
