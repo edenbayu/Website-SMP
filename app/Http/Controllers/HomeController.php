@@ -248,10 +248,87 @@ class HomeController extends Controller
                     // 'pendidikChartData',
                 ));
             }
+        } else if ($user->hasRole('Siswa')) {
+
+            $semesterAktif = Semester::select('semester', 'tahun_ajaran','start','end')
+                ->where('status', 1)
+                ->get();
+                // dd($semesterAktif);
+
+            $kepalaSekolah = Guru::select('nama')
+                ->where('jabatan', 'Kepala Sekolah')
+                ->get();
+
+            $operator = Guru::select('nama')
+                ->where('jabatan', "Operator")
+                ->get();
+
+            $operator = $operator->concat(
+                Admin::select('nama')
+                    ->where('jabatan', "Operator")
+                    ->get());
+
+            // RETRIEVE DATA FOR CHART
+            $siswa = Siswa::where('nama', auth()->user()->name)->first();
+            $query = "SELECT COUNT(CASE WHEN `status` = 'hadir' THEN 1 END) AS 'hadir',
+                                COUNT(CASE WHEN `status` = 'terlambat' THEN 1 END) AS 'terlambat',
+                                COUNT(CASE WHEN `status` = 'ijin' THEN 1 END) AS 'ijin',
+                                COUNT(CASE WHEN `status` = 'sakit' THEN 1 END) AS 'sakit',
+                                COUNT(CASE WHEN `status` = 'alpha' THEN 1 END) AS 'alpha'
+                                
+                        FROM absensi_siswas
+                        WHERE `id_siswa` = " . $siswa->id ;
+                        " AND 'created_at' <= " . $semesterAktif->first()->end .
+                        " AND 'created_at' >= " . $semesterAktif->first()->start;
+            // dd($query);
+            $ketidakhadiranChartData = DB::select($query)[0];
+
+            return view('home', compact(
+                'semesterAktif',
+                'kepalaSekolah',
+                'operator',
+                'ketidakhadiranChartData'
+            ));
         }
 
         return view('home');
 
         abort(403, 'Access Denied');
+    }
+
+    public function getKetidakHadiranChartData(Request $request)
+    {
+        $user = Auth::user();
+        $semesterId = $request->session()->get('semester_id');
+        if ($semesterId == null) {
+            $semesterAktif = Semester::where('status', 1)->first();
+        } else {
+            $semesterAktif = Semester::findOrfail($semesterId);
+        }
+
+        if ($user->hasRole('Siswa')) {
+            $siswa = Siswa::where('nama', auth()->user()->name)->first();
+            $query = "SELECT COUNT(CASE WHEN `status` = 'hadir' THEN 1 END) AS 'hadir',
+                                COUNT(CASE WHEN `status` = 'terlambat' THEN 1 END) AS 'terlambat',
+                                COUNT(CASE WHEN `status` = 'ijin' THEN 1 END) AS 'ijin',
+                                COUNT(CASE WHEN `status` = 'sakit' THEN 1 END) AS 'sakit',
+                                COUNT(CASE WHEN `status` = 'alpha' THEN 1 END) AS 'alpha'
+                                
+                        FROM absensi_siswas
+                        WHERE `id_siswa` = " . $siswa->id ;
+                        " AND 'created_at' <= " . $semesterAktif->first()->end .
+                        " AND 'created_at' >= " . $semesterAktif->first()->start;
+            // dd($query);
+            $ketidakhadiranChartData = DB::select($query)[0];
+
+            return response()->json([
+                'success' => true,
+                'message' => "Data for semester with id " . $semesterId .  " retrieved successfully",
+                'data' =>  $ketidakhadiranChartData]);
+        }
+
+        return response()->json([
+            'message' => 'Access Denied'
+        ], 403);
     }
 }
