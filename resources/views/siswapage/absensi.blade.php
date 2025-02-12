@@ -9,7 +9,7 @@
 <div class="container-fluid mt-3">
     <div class="card mb-3 border-0 shadow-sm" style="background-color:#f2f2f2;">
         <div class="card-body" style="background-color: #37B7C3; border-radius: 8px">
-            <h2 class="m-0" style="color: #EBF4F6">Presensi Siswa</h2>
+            <h2 class="m-0" style="color: #EBF4F6">Presensi Peserta Didik</h2>
         </div>
     </div>
 
@@ -74,7 +74,7 @@
     <!-- Attendance Data Table -->
     <div class="card">
         <div class="card-header">
-            <h5>Detail Absensi</h5>
+            <h5>Riwayat Presensi</h5>
         </div>
         <div class="card-body">
             <table id="example" class="table table-striped" style="width:100%">
