@@ -208,6 +208,8 @@ Route::middleware(['auth', 'check_role'])->group(function () {
     Route::middleware('role:Siswa')->group(function () {
         Route::get('/data-calendar-siswa', [KalenderMapelController::class, 'getDataCalendarSiswa'])->name('kalendermapel.get-calendar-siswa');
 
+        Route::get('/fetch-kehadiran-semester',[HomeController::class,'getKetidakHadiranChartData'])->name('fetchKehadiranSemester');
+
         Route::prefix('siswa')->controller(HalamanSiswaController::class)->group(function () {
             Route::get('/absensi', 'absensi')->name('siswapage.absensi');
             Route::get('/nilai', 'bukuNilaiSiswa')->name('siswapage.bukunilai');
