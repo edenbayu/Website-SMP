@@ -193,6 +193,7 @@ Route::middleware(['auth', 'check_role'])->group(function () {
         Route::prefix('peserta-didik')->controller(PesertaDidikController::class)->group(function () {
             Route::post('/attendance/fetch', 'fetchAttendance')->name('pesertadidik.fetchAttendance');
             Route::post('/attendance/save', 'saveAttendanceAjax')->name('pesertadidik.saveAttendanceAjax');
+            Route::post('/attendance/remove', 'removeAttendanceAjax')->name('pesertadidik.removeAttendanceAjax');
             Route::get('/buku-absen/{semesterId}', 'bukuAbsen')->name('pesertadidik.bukuAbsen');
             Route::get('/{semesterId}', 'index')->name('pesertadidik.index');
             Route::get('/leger-nilai/{kelasId}/{semesterId}', 'bukaLegerNilai')->name('pesertadidik.legerNilai');

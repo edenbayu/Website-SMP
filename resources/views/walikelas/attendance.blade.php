@@ -21,6 +21,7 @@
         </div>
     </div>
     <button id="saveAttendance" class="btn btn-primary mb-3">Simpan Presensi</button>
+    <button id="removeAttendance" class="btn btn-danger mb-3 mx-1">Hapus Presensi</button>
 
     <!-- buku absensi -->
     <button class="btn btn-warning mb-3">
@@ -29,16 +30,20 @@
         </a>
     </button>
 
+    
+
     <!-- Attendance Table -->
     <div class="table-responsive mb-3">
         <table id="example" class="attendance-table table table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th class="text-start">No</th>
-                    <th>Nama</th>
-                    <th>NISN</th>
+                    <th class="text-start">Nama</th>
+                    <th class="text-start">NISN</th>
                     {{-- <th>Rombongan Belajar</th> --}}
-                    <th>Status</th>
+                    <th class="text-start">Status</th>
+                    <th class="text-start">Terakhir Diperbarui</th>
+                    <th class="text-start">Absensi</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +65,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const dateInput = document.getElementById('date');
         const saveButton = document.getElementById('saveAttendance');
+        const removeButton = document.getElementById('removeAttendance');
         const tableBody = document.querySelector('.attendance-table tbody');
         const alertDiv = document.getElementById('alertMessage');
         const semesterId = {{ $semesterId }}; // Passed from the controller
@@ -99,13 +105,25 @@
                     // Populate Table
                     tableBody.innerHTML = '';
                     data.students.forEach((student, index) => {
-                        const status = data.attendance[student.id] || 'hadir'; // Default to "alpha"
+                        const status = data.attendance[student.id] || 'hadir';
+                        const update = data.last_update[student.id] || 'Tidak Tersedia';
+                        const statusLabel = {
+                                hadir: 'Hadir',
+                                ijin: 'Izin',
+                                sakit: 'Sakit',
+                                terlambat: 'Terlambat',
+                                alpha: 'Alpa'
+                            }[data.attendance[student.id]] || 'Not Set';
+                        if (!data.attendance[student.id]) removeButton.classList.add('disabled');
+                        else removeButton.classList.remove('disabled');
                         const row = `
                             <tr>
                                 <td class="text-start">${index + 1}</td>
-                                <td>${student.nama}</td>
-                                <td>${student.nisn}</td>
-                                <td>
+                                <td class="text-start">${student.nama}</td>
+                                <td class="text-start">${student.nisn}</td>
+                                <td class="text-start">${statusLabel}</td>
+                                <td class="text-start">${update}</td>
+                                <td class="text-start">
                                     <select name="attendance[${student.id}]" class="form-control form-select">
                                         <option value="hadir" ${status === 'hadir' ? 'selected' : ''}>Hadir</option>
                                         <option value="ijin" ${status === 'ijin' ? 'selected' : ''}>Izin</option>
@@ -130,57 +148,108 @@
 
         // Save Attendance Data
         async function saveAttendance() {
-        const date = dateInput.value;
+            const date = dateInput.value;
 
-        const attendance = {};
-        document.querySelectorAll('.attendance-table tbody select').forEach(select => {
-            const studentId = select.name.match(/\d+/)[0]; // Extract ID from name
-            attendance[studentId] = select.value;
-        });
-
-        try {
-            const response = await fetch('{{ route("pesertadidik.saveAttendanceAjax") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ semester_id: semesterId, date: date, attendance: attendance })
+            const attendance = {};
+            document.querySelectorAll('.attendance-table tbody select').forEach(select => {
+                const studentId = select.name.match(/\d+/)[0]; // Extract ID from name
+                attendance[studentId] = select.value;
             });
 
-            const data = await response.json();
-
-            if (data.success) {
-                // Show success message
-                Swal.fire({
-                    title: "Berhasil!",
-                    text: data.message || "Presensi harian berhasil disimpan!",
-                    icon: "success",
-                    timer: 1500,
-                    showConfirmButton: false
+            try {
+                const response = await fetch('{{ route("pesertadidik.saveAttendanceAjax") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ semester_id: semesterId, date: date, attendance: attendance })
                 });
-            } else {
-                // Show failure message from the server
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success message
+                    fetchAttendance();
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: data.message || "Presensi harian berhasil disimpan!",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    // Show failure message from the server
+                    Swal.fire({
+                        title: "Failed!",
+                        text: data.message || "Presensi harian gagal disimpan, silahkan coba lagi!",
+                        icon: "error"
+                    });
+                }
+            } catch (error) {
+                // Show error alert
                 Swal.fire({
-                    title: "Failed!",
-                    text: data.message || "Presensi harian gagal disimpan, silahkan coba lagi!",
+                    title: "Error!",
+                    text: "Terjadi kesalahan saat menyimpan presensi, silahkan coba lagi!",
                     icon: "error"
                 });
             }
-        } catch (error) {
-            console.error('Error saving attendance:', error);
-            // Show error alert
-            Swal.fire({
-                title: "Error!",
-                text: "Terjadi kesalahan saat menyimpan presensi, silahkan coba lagi!",
-                icon: "error"
-            });
         }
-    }
+
+        //Remove attendance data
+        async function removeAttendance() {
+            const date = dateInput.value;
+
+            const attendance = [];
+            document.querySelectorAll('.attendance-table tbody select').forEach(select => {
+                const studentId = select.name.match(/\d+/)[0]; // Extract ID from name
+                attendance.push(studentId);
+            });
+
+            try {
+                const response = await fetch('{{ route("pesertadidik.removeAttendanceAjax") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ semester_id: semesterId, date: date, attendance: attendance })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success message
+                    fetchAttendance();
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: data.message || "Presensi harian berhasil dihapus!",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    // Show failure message from the server
+                    Swal.fire({
+                        title: "Failed!",
+                        text: data.message || "Presensi harian gagal dihapus, silahkan coba lagi!",
+                        icon: "error"
+                    });
+                }
+            } catch (error) {
+                // Show error alert
+                Swal.fire({
+                    title: "Error!",
+                    text: "Terjadi kesalahan saat menghapus presensi, silahkan coba lagi!",
+                    icon: "error"
+                });
+            }
+        }
 
         // Event Listeners
         dateInput.addEventListener('change', fetchAttendance);
         saveButton.addEventListener('click', saveAttendance);
+        removeButton.addEventListener('click', removeAttendance);
 
         // Initial Fetch
         fetchAttendance();

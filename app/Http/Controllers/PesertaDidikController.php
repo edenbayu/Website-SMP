@@ -53,6 +53,7 @@ class PesertaDidikController extends Controller
             ->where('semesters.id', $semesterId)
             ->where('kelas.kelas', '!=', 'Ekskul')
             ->select('siswas.id', 'siswas.nama', 'siswas.nisn')
+            ->orderBy('siswas.nama', 'asc')
             ->get();
 
         // Get attendance records for the current date
@@ -63,11 +64,13 @@ class PesertaDidikController extends Controller
         // dd($pesertadidiks);
         // Map attendance status by student ID
         $attendance = [];
+        $last_update = [];
         foreach ($attendanceRecords as $record) {
             $attendance[$record->id_siswa] = $record->status;
+            $last_update[$record->id_siswa] = Carbon::parse($record->updated_at)->addHours(7)->format('Y-m-d H:i:s');
         }
 
-        return view('walikelas.attendance', compact('pesertadidiks', 'attendance', 'semesterId'));
+        return view('walikelas.attendance', compact('pesertadidiks', 'attendance', 'last_update', 'semesterId'));
     }
 
     // Store the attendance for students
@@ -109,6 +112,7 @@ class PesertaDidikController extends Controller
             ->where('semesters.id', $request->semester_id)
             ->where('kelas.kelas', '!=', 'Ekskul')
             ->select('siswas.id', 'siswas.nama', 'siswas.nisn')
+            ->orderBy('siswas.nama', 'asc')
             ->get();
 
         // Get attendance records for the selected date
@@ -118,14 +122,17 @@ class PesertaDidikController extends Controller
 
         // Map attendance status by student ID
         $attendance = [];
+        $last_update = [];
         foreach ($attendanceRecords as $record) {
             $attendance[$record->id_siswa] = $record->status;
+            $last_update[$record->id_siswa] = Carbon::parse($record->updated_at)->addHours(7)->format('Y-m-d H:i:s');
         }
 
         return response()->json([
             'success' => true,
             'students' => $pesertadidiks,
             'attendance' => $attendance,
+            'last_update' => $last_update,
         ]);
     }
 
@@ -151,55 +158,32 @@ class PesertaDidikController extends Controller
         ]);
     }
 
+    public function removeAttendanceAjax(Request $request)
+    {
+        $request->validate([
+            'attendance' => 'required|array',
+            'date' => 'required|date',
+            'semester_id' => 'required|integer',
+        ]);
+
+        foreach ($request->attendance as $siswaId) {
+            AbsensiSiswa::where([
+                'id_siswa' => $siswaId,
+                'date' => $request->date
+            ])->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Presensi berhasil dihapus!',
+        ]);
+    }
+
+
     public function bukaLegerNilai($kelasId, $semesterId)
     {
         $user = Auth::user(); // Get the currently logged-in user
     
-        // $datas = PenilaianSiswa::join('penilaians as b', 'b.id', '=', 'penilaian_siswa.penilaian_id')
-        //     ->join('siswas as c', 'c.id', '=', 'penilaian_siswa.siswa_id')
-        //     ->join('penilaian_t_p_s as j', 'j.penilaian_id', '=', 'b.id')
-        //     ->join('t_p_s as d', 'd.id', '=', 'j.tp_id')
-        //     ->join('c_p_s as e', 'e.id', '=', 'd.cp_id')
-        //     ->join('mapel_kelas as f', 'f.mapel_id', '=', 'e.mapel_id')
-        //     ->join('mapels as z', 'z.id', '=', 'f.mapel_id')
-        //     ->join('kelas as g', 'g.id', '=', 'f.kelas_id')
-        //     ->join('gurus as h', 'h.id', '=', 'g.id_guru')
-        //     ->join('users as i', 'i.id', '=', 'h.id_user')
-        //     ->where('i.id', $user->id)
-        //     ->where('g.id', $kelasId)
-        //     ->where('z.semester_id', request()->session()->get('semester_id'))
-        //     // ->where(function ($query) {
-        //     //     $query->where('b.tipe', '=', 'SAS')
-        //     //         ->orWhere('b.tanggal', '<', function ($subquery) {
-        //     //             $subquery->selectRaw('MIN(penilaians.tanggal)')
-        //     //                 ->from('penilaians')
-        //     //                 ->join('mapel_kelas as mk', 'mk.id', '=', 'penilaians.mapel_kelas_id')
-        //     //                 ->join('mapels as m', 'm.id', '=', 'mk.mapel_id')
-        //     //                 ->where('m.id', '=', 'z.id')
-        //     //                 ->where('penilaians.tipe', '=', 'SAS');
-        //     //         });
-        //     // })
-        //     ->select(
-        //         'c.id as siswa_id',  // Add siswa_id to the select query
-        //         'c.nama as siswa_name',
-        //         'c.nisn as nisn',
-        //         'c.agama',
-        //         'g.rombongan_belajar as kelas',
-        //         'z.nama as mapel_name',
-        //         'z.parent',
-        //         DB::raw("AVG(CASE WHEN b.tipe = 'Tugas' THEN penilaian_siswa.nilai_akhir END) AS avg_tugas"),
-        //         DB::raw("AVG(CASE WHEN b.tipe = 'UH' THEN penilaian_siswa.nilai_akhir END) AS avg_uh"),
-        //         DB::raw("AVG(CASE WHEN b.tipe = 'SAS' THEN penilaian_siswa.nilai_akhir END) AS avg_sas"),
-        //         DB::raw("AVG(CASE WHEN b.tipe = 'STS' THEN penilaian_siswa.nilai_akhir END) AS avg_sts"),
-        //         DB::raw("MIN(b.tanggal) AS first_tanggal"),
-        //         DB::raw("MAX(b.tanggal) AS last_tanggal"),
-        //         DB::raw("COUNT(*) as count")
-        //     )
-        //     ->groupBy('c.id', 'c.nama', 'z.nama', 'g.rombongan_belajar', 'c.nisn', 'c.agama', 'z.parent') // Include siswa_id in the groupBy clause
-        //     ->orderBy('siswa_name', 'asc')
-        //     ->orderBy('mapel_name', 'asc')
-        //     ->get();
-
         $mapelIds = MapelKelas::join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
             ->where('mapel_kelas.kelas_id', $kelasId)
             ->orderBy('mapels.nama')
